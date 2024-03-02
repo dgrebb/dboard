@@ -51,6 +51,10 @@
           "title": "wip",
           "description": "Work in progress."
         },
+        "refactor": {
+          "title": "refactor",
+          "description": "Change the way something previously worked."
+        },
         "chore": {
           "title": "chore",
           "description": "Maintenance and chores."
