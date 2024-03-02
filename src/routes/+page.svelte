@@ -10,6 +10,10 @@
 	let ws: WebSocket | null = null;
 	let log: string[] = [];
 
+	// export let data;
+	let items: Item[] = [];
+	let weather: { temperature: any }[];
+
 	const logEvent = (str: string) => {
 		log = [...log, str];
 	};
@@ -33,19 +37,28 @@
 		});
 	};
 
-	const requestData = async () => {
-		const res = await fetch('/api/test');
+	const nightscoutData = async () => {
+		const res = await fetch('/api/nightscout');
 		const data = await res.json();
 		console.log('Data from GET endpoint', data);
 		// logEvent(`[GET] data received: ${JSON.stringify(data)}`);
-		return data;
+		const { nightscout } = data;
+		items = nightscout.items;
 	};
+
+	// const weatherData = async () => {
+	// 	const res = await fetch('/api/weather');
+	// 	const hours = await res.json();
+	// 	weather = hours.data;
+	// 	console.log('🚀 ~ weatherData ~ weather:', weather);
+	// };
 
 	const closeSocket = () => {
 		ws?.close();
 	};
 
 	interface Item {
+		requestInterval: number;
 		title: string;
 		content: {
 			small: {
@@ -59,29 +72,22 @@
 		};
 	}
 
-	// export let data;
-	let items: Item[] = [];
-
 	onMount(async () => {
+		nightscoutData();
+		// weatherData();
 		setInterval(async () => {
-			const { data } = await requestData();
-			console.log('🚀 ~ onMount ~ data:', data);
-			items = data.items;
-		}, 3333);
-
-		console.log('🚀 ~ items:', items);
+			nightscoutData();
+			// weatherData();
+		}, 333333);
 	});
 </script>
 
 <main>
 	<Button on:click={closeSocket}>Stop Socket</Button>
-	<h1>SvelteKit with WebSocket Integration</h1>
 
 	<button disabled={webSocketEstablished} on:click={() => establishWebSocket()}>
 		Establish WebSocket connection
 	</button>
-
-	<button on:click={() => requestData()}> Request Data from GET endpoint </button>
 
 	<ul>
 		{#each log as event}
@@ -97,6 +103,16 @@
 				<p>{small.value}</p>
 			</Card>
 		{/each}
+		<!-- {#each weather as { temperature }}
+			<h1 class="text-7xl">{temperature}</h1>
+		{/each} -->
+		<!-- <Card>
+			<h2>Lansdale</h2>
+			<p>{weather[1].temperature}</p>
+			<p>{weather[2].temperature}</p>
+			<p>{weather[3].temperature}</p>
+			<p>{weather[4].temperature}</p>
+		</Card> -->
 	</div>
 </main>
 
