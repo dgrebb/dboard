@@ -3,8 +3,9 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --host --port 80",
 		"build": "vite build",
+		"build.dev": "vite build --mode development",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -13,8 +14,8 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-    "cz": "cz",
-    "release": "standard-version --no-verify"
+		"cz": "cz",
+		"release": "standard-version --no-verify"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.42.1",
@@ -24,43 +25,51 @@
 		"@types/eslint": "^8.56.5",
 		"@typescript-eslint/eslint-plugin": "^7.1.0",
 		"@typescript-eslint/parser": "^7.1.0",
+		"autoprefixer": "^10.4.18",
+		"commitizen": "^4.3.0",
+		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-svelte": "^2.36.0-next.4",
+		"eslint-plugin-svelte": "^2.35.1",
+		"flowbite": "^2.3.0",
+		"flowbite-svelte": "^0.44.24",
+		"flowbite-svelte-icons": "^1.4.1",
+		"postcss": "^8.4.35",
+		"postcss-load-config": "^5.0.3",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.2.2",
-		"svelte": "^5.0.0-next.1",
+		"prettier-plugin-tailwindcss": "^0.5.11",
+		"standard-version": "^9.5.0",
+		"svelte": "^4.2.12",
 		"svelte-check": "^3.6.6",
+		"tailwindcss": "^3.4.1",
 		"tslib": "^2.6.2",
 		"typescript": "^5.3.3",
 		"vite": "^5.1.4",
-		"vitest": "^1.3.1",
-    "commitizen": "^4.3.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "standard-version": "^9.5.0"
+		"vitest": "^1.3.1"
 	},
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog",
-      "types": {
-        "feat": {
-          "title": "feat",
-          "description": "New feature."
-        },
-        "wip": {
-          "title": "wip",
-          "description": "Work in progress."
-        },
-        "refactor": {
-          "title": "refactor",
-          "description": "Change the way something previously worked."
-        },
-        "chore": {
-          "title": "chore",
-          "description": "Maintenance and chores."
-        }
-      }
-    }
-  },
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog",
+			"types": {
+				"feat": {
+					"title": "feat",
+					"description": "New feature."
+				},
+				"wip": {
+					"title": "wip",
+					"description": "Work in progress."
+				},
+				"refactor": {
+					"title": "refactor",
+					"description": "Change the way something previously worked."
+				},
+				"chore": {
+					"title": "chore",
+					"description": "Maintenance and chores."
+				}
+			}
+		}
+	},
 	"type": "module"
 }
