@@ -17,7 +17,7 @@ export const GET = (async ({ url, locals }) => {
 		redirect: 'follow'
 	};
 
-	const [test] = await Promise.all([
+	const [nightscout] = await Promise.all([
 		fetch(
 			`https://glu.7ub3s.net/api/v1/entries.json?count=1&token=${SECRET_NIGHTSCOUT_TOKEN}`,
 			requestOptions
@@ -28,7 +28,7 @@ export const GET = (async ({ url, locals }) => {
 
 	return json({
     success: true,
-    data: {
+    nightscout: {
       items: [
         {
           title: 'glu',
@@ -38,7 +38,7 @@ export const GET = (async ({ url, locals }) => {
               color: '#CC4522'
             },
             large: {
-              value: test[0]['sgv'],
+              value: nightscout[0]['sgv'],
               color: '#A5371B'
             }
           }
