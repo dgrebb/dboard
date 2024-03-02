@@ -1,24 +1,16 @@
 <script lang="ts">
-	// import { onMount } from 'svelte';
-	// $lib auto-resolves to ./src/lib in Svelte.
-	// import { state, connect } from '$lib/state';
+	import Main from './(layouts)/Main.svelte';
 	import { Button } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 	import { Card } from 'flowbite-svelte';
+	import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
 
 	let webSocketEstablished = false;
 	let ws: WebSocket | null = null;
 	let log: string[] = [];
 
-	// export let data;
-	let items: Item[] = [];
-	let weather: { temperature: any }[];
-
-	const logEvent = (str: string) => {
-		log = [...log, str];
-	};
-
 	const establishWebSocket = () => {
+		console.log('connecting', webSocketEstablished);
 		if (webSocketEstablished) return;
 		const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 		ws = new WebSocket(`${protocol}//${window.location.host}/websocket`);
@@ -28,6 +20,7 @@
 			logEvent('[websocket] connection open');
 		});
 		ws.addEventListener('close', (event) => {
+			webSocketEstablished = false;
 			console.log('[websocket] connection closed', event);
 			logEvent('[websocket] connection closed');
 		});
@@ -35,26 +28,6 @@
 			console.log('[websocket] message received', event);
 			logEvent(`[websocket] message received: ${event.data}`);
 		});
-	};
-
-	const nightscoutData = async () => {
-		const res = await fetch('/api/nightscout');
-		const data = await res.json();
-		console.log('Data from GET endpoint', data);
-		// logEvent(`[GET] data received: ${JSON.stringify(data)}`);
-		const { nightscout } = data;
-		items = nightscout.items;
-	};
-
-	// const weatherData = async () => {
-	// 	const res = await fetch('/api/weather');
-	// 	const hours = await res.json();
-	// 	weather = hours.data;
-	// 	console.log('🚀 ~ weatherData ~ weather:', weather);
-	// };
-
-	const closeSocket = () => {
-		ws?.close();
 	};
 
 	interface Item {
@@ -72,30 +45,66 @@
 		};
 	}
 
+	interface Hour {
+		number?: number;
+		name?: string;
+		startTime?: string;
+		endTime?: string;
+		isDaytime?: boolean;
+		temperature: number;
+	}
+
+	// export let data;
+	let items: Item[] = [];
+	let weather: Hour[] = [];
+
+	const logEvent = (str: string) => {
+		log = [...log, str];
+	};
+
+	const nightscoutData = async () => {
+		const res = await fetch('/api/nightscout');
+		const data = await res.json();
+		const { nightscout } = data;
+		items = nightscout.items;
+	};
+
+	const weatherData = async () => {
+		const res = await fetch('/api/weather');
+		const { weather } = await res.json();
+
+		return weather;
+	};
+
+	const closeSocket = () => {
+		ws?.close();
+	};
+
 	onMount(async () => {
 		nightscoutData();
-		// weatherData();
+		weather = await weatherData();
 		setInterval(async () => {
 			nightscoutData();
-			// weatherData();
-		}, 333333);
+			weather = await weatherData();
+		}, 300000);
 	});
 </script>
 
-<main>
-	<Button on:click={closeSocket}>Stop Socket</Button>
+<Main>
+	<div slot="additional-controls">
+		<Button size="sm" color="light" disabled={!webSocketEstablished} on:click={closeSocket}
+			><XCircleOutline /></Button
+		>
 
-	<button disabled={webSocketEstablished} on:click={() => establishWebSocket()}>
-		Establish WebSocket connection
-	</button>
+		<Button
+			size="sm"
+			color="light"
+			disabled={webSocketEstablished}
+			on:click={() => establishWebSocket()}><ArrowUpDownOutline /></Button
+		>
+	</div>
 
-	<ul>
-		{#each log as event}
-			<li>{event}</li>
-		{/each}
-	</ul>
-
-	<div class="p-8">
+	<div class="grid grid-cols-3 gap-3 p-8">
 		{#each items as { title, content: { small, large } }}
 			<Card>
 				<h2>{title}</h2>
@@ -103,24 +112,25 @@
 				<p>{small.value}</p>
 			</Card>
 		{/each}
-		<!-- {#each weather as { temperature }}
-			<h1 class="text-7xl">{temperature}</h1>
-		{/each} -->
-		<!-- <Card>
-			<h2>Lansdale</h2>
-			<p>{weather[1].temperature}</p>
-			<p>{weather[2].temperature}</p>
-			<p>{weather[3].temperature}</p>
-			<p>{weather[4].temperature}</p>
-		</Card> -->
+		{#if weather}
+			<Card>
+				<h2>Lansdale</h2>
+				<h1 class="text-7xl">{weather.current}</h1>
+				<!-- <p>{weather[1].temperature}</p>
+					<p>{weather[2].temperature}</p>
+					<p>{weather[3].temperature}</p>
+					<p>{weather[4].temperature}</p>
+				-->
+			</Card>
+		{/if}
 	</div>
-</main>
+</Main>
 
 <style>
 	h1 {
 		color: red;
 	}
-	main {
+	Main {
 		font-family: sans-serif;
 	}
 </style>

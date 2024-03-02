@@ -23,6 +23,7 @@
 		"@sveltejs/kit": "^2.5.2",
 		"@sveltejs/vite-plugin-svelte": "^3.0.2",
 		"@types/eslint": "^8.56.5",
+		"@types/ws": "^8.5.10",
 		"@typescript-eslint/eslint-plugin": "^7.1.0",
 		"@typescript-eslint/parser": "^7.1.0",
 		"autoprefixer": "^10.4.18",
@@ -34,6 +35,7 @@
 		"flowbite": "^2.3.0",
 		"flowbite-svelte": "^0.44.24",
 		"flowbite-svelte-icons": "^1.4.1",
+		"nanoid": "^5.0.6",
 		"postcss": "^8.4.35",
 		"postcss-load-config": "^5.0.3",
 		"prettier": "^3.2.5",
@@ -46,7 +48,8 @@
 		"tslib": "^2.6.2",
 		"typescript": "^5.3.3",
 		"vite": "^5.1.4",
-		"vitest": "^1.3.1"
+		"vitest": "^1.3.1",
+		"ws": "^8.16.0"
 	},
 	"config": {
 		"commitizen": {
