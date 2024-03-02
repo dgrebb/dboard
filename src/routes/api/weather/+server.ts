@@ -17,20 +17,23 @@ export const GET = (async ({ url, locals }) => {
 		redirect: 'follow'
 	};
 
+	// TODO: refactor for open-meto
+	// https://open-meteo.com/en/docs/#current=temperature_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=1
 	const [weather] = await Promise.all([
 		fetch(
-		'https://api.weather.gov/gridpoints/PHI/44,87/forecast/hourly',
+		'https://api.open-meteo.com/v1/forecast?latitude=40.2260689&longitude=-75.2830657&current=temperature_2m&hourly=temperature_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=1',
 			requestOptions
 		)
 			.then((response) => response.json())
 			.catch((error) => console.error(error))
 	]);
-
-  const hours = weather.properties.periods;
+	console.log("🚀 ~ GET ~ weather:", weather)
 
 	return json({
     success: true,
-    data: hours
+    weather: {
+			current: weather.current.temperature_2m,
+		}
 	});
 
 	return json({ success: true, message: 'Hello world from GET handler', url });
