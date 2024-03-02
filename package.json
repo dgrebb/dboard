@@ -1,0 +1,38 @@
+{
+  "name": "dboard",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cz": "cz",
+    "release": "standard-version --no-verify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "standard-version": "^9.5.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog",
+      "types": {
+        "feat": {
+          "title": "feat",
+          "description": "New feature."
+        },
+        "wip": {
+          "title": "wip",
+          "description": "Work in progress."
+        },
+        "chore": {
+          "title": "chore",
+          "description": "Maintenance and chores."
+        }
+      }
+    }
+  }
+}
