@@ -5,7 +5,7 @@
 </script>
 
 <div
-  class="progress-bar bg-gray-950 transition-[width] dark:bg-gray-50"
+  class="progress-bar absolute bottom-0 bg-gray-950 transition-[width] dark:bg-gray-500"
   style="width: {progress}%"
 ></div>
 
