@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { DEFAULT_REFRESH_INTERVAL } from '$lib/GLOBALS';
   import Main from './(layouts)/Main.svelte';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
@@ -7,7 +8,7 @@
   import ProgressBar from '$lib/components/ProgressBar.svelte';
   import Barometer from 'svelte-weather/Barometer.svelte';
 
-  let refreshInterval = 300000;
+  let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
   let webSocketEstablished = false;
   let ws: WebSocket | null = null;
@@ -116,8 +117,6 @@
     >
   </div>
 
-  <ProgressBar {refreshInterval} {seconds} slot="countdown-bar" />
-
   <div class="grid grid-cols-3 gap-3 p-8">
     {#each items as { title, content: { small, large } }}
       <Card size="xl" class="relative">
@@ -147,3 +146,5 @@
     {/if}
   </div>
 </Main>
+
+<ProgressBar {refreshInterval} {seconds} slot="countdown-bar" />
