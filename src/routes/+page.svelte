@@ -5,7 +5,6 @@
   import { Card } from 'flowbite-svelte';
   import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
-  import Grid from '$lib/components/Grid.svelte';
 
   let refreshInterval = 300000;
   let seconds = 0;
@@ -118,18 +117,16 @@
 
   <ProgressBar {refreshInterval} {seconds} slot="countdown-bar" />
 
-  <Grid />
-
   <div class="grid grid-cols-3 gap-3 p-8">
     {#each items as { title, content: { small, large } }}
-      <Card size="fit">
+      <Card size="xl">
         <h2>{title}</h2>
         <h1 class="text-7xl">{large.value}</h1>
         <p>{small.value}</p>
       </Card>
     {/each}
     {#if weather}
-      <Card size="fit">
+      <Card size="xl">
         <h2>Lansdale</h2>
         <h1 class="text-7xl">{Math.ceil(weather.current)}</h1>
         <!-- <p>{weather[1].temperature}</p>
