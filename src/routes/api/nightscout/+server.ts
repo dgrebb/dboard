@@ -1,32 +1,35 @@
 import { json } from '@sveltejs/kit';
 import { SECRET_NIGHTSCOUT_TOKEN } from '$env/static/private';
+import { NIGHTSCOUT_API } from '$lib/GLOBALS';
 import type { RequestHandler } from './$types';
 
 export const GET = (async ({ url, locals }) => {
   if (locals.wss) {
-    locals.wss.clients.forEach(client => {
+    locals.wss.clients.forEach((client) => {
       if (client.readyState === 1) {
-        client.send(`Hello from the GET handler at ${new Date().toLocaleString()}`);
+        client.send(
+          `Hello from the GET handler at ${new Date().toLocaleString()}`
+        );
       }
     });
   }
 
-	// call server for data
-	const requestOptions = {
-		method: 'GET',
-		redirect: 'follow'
-	};
+  // call server for data
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
 
-	const [nightscout] = await Promise.all([
-		fetch(
-			`https://glu.7ub3s.net/api/v1/entries.json?count=1&token=${SECRET_NIGHTSCOUT_TOKEN}`,
-			requestOptions
-		)
-			.then((response) => response.json())
-			.catch((error) => console.error(error))
-	]);
+  const [nightscout] = await Promise.all([
+    fetch(
+      `${NIGHTSCOUT_API}/entries.json?count=1&token=${SECRET_NIGHTSCOUT_TOKEN}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .catch((error) => console.error(error)),
+  ]);
 
-	return json({
+  return json({
     success: true,
     nightscout: {
       items: [
@@ -35,17 +38,17 @@ export const GET = (async ({ url, locals }) => {
           content: {
             small: {
               value: 'mg/dl',
-              color: '#CC4522'
+              color: '#CC4522',
             },
             large: {
               value: nightscout[0]['sgv'],
-              color: '#A5371B'
-            }
-          }
-        }
-      ]
-    }
-	});
+              color: '#A5371B',
+            },
+          },
+        },
+      ],
+    },
+  });
 
-	return json({ success: true, message: 'Hello world from GET handler', url });
+  return json({ success: true, message: 'Hello world from GET handler', url });
 }) satisfies RequestHandler;

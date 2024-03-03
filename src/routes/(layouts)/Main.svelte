@@ -10,6 +10,7 @@
 </script>
 
 <main>
+	<slot name="countdown-bar" />
 	<header class="flex flex-row justify-between p-3">
 		<slot name="additional-controls" />
 		<DarkMode></DarkMode>
