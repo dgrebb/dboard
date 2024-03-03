@@ -1,13 +1,14 @@
 <script lang="ts">
+  import { DEFAULT_REFRESH_INTERVAL } from '$lib/GLOBALS';
   import Main from './(layouts)/Main.svelte';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
   import { Card } from 'flowbite-svelte';
   import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
-  import Grid from '$lib/components/Grid.svelte';
+  import CurrentWeather from '$lib/widgets/CurrentWeather.svelte';
 
-  let refreshInterval = 300000;
+  let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
   let webSocketEstablished = false;
   let ws: WebSocket | null = null;
@@ -49,18 +50,13 @@
     };
   }
 
-  interface Hour {
-    number?: number;
-    name?: string;
-    startTime?: string;
-    endTime?: string;
-    isDaytime?: boolean;
-    temperature: number;
+  interface CurrentWeather {
+    current: number;
   }
 
   // export let data;
   let items: Item[] = [];
-  let weather: Hour[] = [];
+  let weather: CurrentWeather[] = [];
 
   const logEvent = (str: string) => {
     log = [...log, str];
@@ -116,37 +112,22 @@
     >
   </div>
 
-  <ProgressBar {refreshInterval} {seconds} slot="countdown-bar" />
-
-  <Grid />
-
   <div class="grid grid-cols-3 gap-3 p-8">
     {#each items as { title, content: { small, large } }}
-      <Card size="fit">
-        <h2>{title}</h2>
-        <h1 class="text-7xl">{large.value}</h1>
-        <p>{small.value}</p>
+      <Card size="xl" class="relative">
+        <span class="self-end">🩸</span>
+        <h1 class="mt-auto justify-end text-9xl text-red-700">
+          {large.value}
+        </h1>
+        <p class="absolute bottom-4">{small.value}</p>
       </Card>
     {/each}
     {#if weather}
-      <Card size="fit">
-        <h2>Lansdale</h2>
-        <h1 class="text-7xl">{Math.ceil(weather.current)}</h1>
-        <!-- <p>{weather[1].temperature}</p>
-					<p>{weather[2].temperature}</p>
-					<p>{weather[3].temperature}</p>
-					<p>{weather[4].temperature}</p>
-				-->
-      </Card>
+      <CurrentWeather {weather} />
     {/if}
   </div>
-</Main>
 
-<style>
-  h1 {
-    color: red;
-  }
-  Main {
-    font-family: sans-serif;
-  }
-</style>
+  <div slot="countdown-bar">
+    <ProgressBar {refreshInterval} {seconds} />
+  </div>
+</Main>
