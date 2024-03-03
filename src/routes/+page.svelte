@@ -5,6 +5,7 @@
   import { Card } from 'flowbite-svelte';
   import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
+  import Barometer from 'svelte-weather/Barometer.svelte';
 
   let refreshInterval = 300000;
   let seconds = 0;
@@ -119,16 +120,24 @@
 
   <div class="grid grid-cols-3 gap-3 p-8">
     {#each items as { title, content: { small, large } }}
-      <Card size="xl">
-        <h2>{title}</h2>
-        <h1 class="text-7xl">{large.value}</h1>
-        <p>{small.value}</p>
+      <Card size="xl" class="relative">
+        <span class="self-end">🩸</span>
+        <h1 class="mt-auto justify-end text-9xl text-red-700">
+          {large.value}
+        </h1>
+        <p class="absolute bottom-4">{small.value}</p>
       </Card>
     {/each}
     {#if weather}
-      <Card size="xl">
+      <Card size="xl" class="relative">
+        <Barometer
+          size="50"
+          class="mb-3 self-end text-gray-500 dark:text-gray-400"
+        />
         <h2>Lansdale</h2>
-        <h1 class="text-7xl">{Math.ceil(weather.current)}</h1>
+        <h1 class="mt-auto justify-end text-9xl text-blue-500">
+          {Math.ceil(weather.current)}℉
+        </h1>
         <!-- <p>{weather[1].temperature}</p>
 					<p>{weather[2].temperature}</p>
 					<p>{weather[3].temperature}</p>
@@ -138,12 +147,3 @@
     {/if}
   </div>
 </Main>
-
-<style>
-  h1 {
-    color: red;
-  }
-  Main {
-    font-family: sans-serif;
-  }
-</style>
