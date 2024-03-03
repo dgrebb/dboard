@@ -6,7 +6,7 @@
   import { Card } from 'flowbite-svelte';
   import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
-  import Barometer from 'svelte-weather/Barometer.svelte';
+  import CurrentWeather from '$lib/widgets/CurrentWeather.svelte';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
@@ -50,18 +50,13 @@
     };
   }
 
-  interface Hour {
-    number?: number;
-    name?: string;
-    startTime?: string;
-    endTime?: string;
-    isDaytime?: boolean;
-    temperature: number;
+  interface CurrentWeather {
+    current: number;
   }
 
   // export let data;
   let items: Item[] = [];
-  let weather: Hour[] = [];
+  let weather: CurrentWeather[] = [];
 
   const logEvent = (str: string) => {
     log = [...log, str];
@@ -128,23 +123,11 @@
       </Card>
     {/each}
     {#if weather}
-      <Card size="xl" class="relative">
-        <Barometer
-          size="50"
-          class="mb-3 self-end text-gray-500 dark:text-gray-400"
-        />
-        <h2>Lansdale</h2>
-        <h1 class="mt-auto justify-end text-9xl text-blue-500">
-          {Math.ceil(weather.current)}℉
-        </h1>
-        <!-- <p>{weather[1].temperature}</p>
-					<p>{weather[2].temperature}</p>
-					<p>{weather[3].temperature}</p>
-					<p>{weather[4].temperature}</p>
-				-->
-      </Card>
+      <CurrentWeather {weather} />
     {/if}
   </div>
-</Main>
 
-<ProgressBar {refreshInterval} {seconds} slot="countdown-bar" />
+  <div slot="countdown-bar">
+    <ProgressBar {refreshInterval} {seconds} />
+  </div>
+</Main>
