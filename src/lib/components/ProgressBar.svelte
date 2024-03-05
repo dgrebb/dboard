@@ -13,6 +13,6 @@
   .progress-bar {
     transition-property: width;
     transition-duration: 2000ms;
-    height: 0.25rem;
+    height: 3px;
   }
 </style>
