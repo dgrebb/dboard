@@ -49,6 +49,7 @@
         color: string;
       };
     };
+    series: {};
   }
 
   interface CurrentWeather {
@@ -68,6 +69,7 @@
     const data = await res.json();
     const { nightscout } = data;
     items = nightscout.items;
+    console.log(items);
   };
 
   const weatherData = async () => {
@@ -114,9 +116,9 @@
   </div>
 
   <div class="grid grid-cols-3 gap-3 p-8">
-    {#each items as { title, content: { small, large } }}
+    {#each items as { title, content: { small, large }, series }}
       <Card size="xl" class="relative">
-        <BloodGlucose />
+        <BloodGlucose {series} />
         <span class="self-end">🩸</span>
         <h1 class="mt-auto justify-end text-9xl text-red-700">
           {large.value}
