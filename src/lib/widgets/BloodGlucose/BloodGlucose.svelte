@@ -3,7 +3,11 @@
   import { onMount } from 'svelte';
   import type { EChartOption } from 'echarts';
 
-  // Draw the chart
+  export let series: {};
+
+  function extractBGValues(data) {
+    return data.map((item) => item.sgv);
+  }
 
   onMount(() => {
     var chartDom = document.getElementById('main');
@@ -13,14 +17,36 @@
     option = {
       xAxis: {
         type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        axisLabel: {
+          show: false,
+        },
+        data: [
+          '55m',
+          '50m',
+          '45m',
+          '40m',
+          '35m',
+          '30m',
+          '25m',
+          '20m',
+          '15m',
+          '10m',
+          '5m',
+        ],
       },
       yAxis: {
+        max: '400',
         type: 'value',
+        axisLabel: {
+          show: false,
+        },
+      },
+      grid: {
+        show: false,
       },
       series: [
         {
-          data: [150, 230, 224, 218, 135, 147, 260],
+          data: extractBGValues(series).reverse(),
           type: 'line',
         },
       ],
