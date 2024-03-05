@@ -7,6 +7,7 @@
   import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
   import CurrentWeather from '$lib/widgets/CurrentWeather.svelte';
+  import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
@@ -115,6 +116,7 @@
   <div class="grid grid-cols-3 gap-3 p-8">
     {#each items as { title, content: { small, large } }}
       <Card size="xl" class="relative">
+        <BloodGlucose />
         <span class="self-end">🩸</span>
         <h1 class="mt-auto justify-end text-9xl text-red-700">
           {large.value}
