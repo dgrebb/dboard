@@ -6,7 +6,7 @@
   import { Card } from 'flowbite-svelte';
   import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
-  import CurrentWeather from '$lib/widgets/CurrentWeather.svelte';
+  import CurrentWeather from '$lib/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
@@ -69,7 +69,6 @@
     const data = await res.json();
     const { nightscout } = data;
     items = nightscout.items;
-    console.log(items);
   };
 
   const weatherData = async () => {
