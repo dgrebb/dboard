@@ -22,7 +22,7 @@ export const GET = (async ({ url, locals }) => {
 
   const [nightscout] = await Promise.all([
     fetch(
-      `${NIGHTSCOUT_API}/entries.json?count=12&token=${SECRET_NIGHTSCOUT_TOKEN}`,
+      `${NIGHTSCOUT_API}/entries.json?count=48&token=${SECRET_NIGHTSCOUT_TOKEN}`,
       requestOptions
     )
       .then((response) => response.json())
