@@ -1,28 +1,39 @@
-export default function fahrenheitToColorShade(tempF: number) {
-  // Define the temperature range (in Fahrenheit) where blue corresponds to lower temperatures and red to higher temperatures
-  const minTemp = -20;
-  const maxTemp = 110;
+export default function fahrenheitToColorShade(temperatureF: number): string {
+  // Convert Fahrenheit to Celsius for easier range handling
+  const temperatureC = ((temperatureF - 32) * 5) / 9;
 
-  // Define the corresponding RGBA values for blue and red
-  const blueRGBA = [0, 0, 255, 0.7]; // Blue at 50% opacity
-  const redRGBA = [255, 0, 0, 0.7]; // Red at 50% opacity
+  // Define temperature ranges (in Celsius)
+  const coldTemp = 0; // Freezing point of water
+  const mildTemp = 15; // Mild temperature
+  const hotTemp = 30; // Hot day
 
-  // Normalize the temperature to a value between 0 and 1 within the defined range
-  const normalizedTemp = (tempF - minTemp) / (maxTemp - minTemp);
+  // Define RGB colors
+  const coldColor = { r: 0, g: 137, b: 255 }; // Blue for cold
+  const mildColor = { r: 0, g: 255, b: 0 }; // Green for mild
+  const hotColor = { r: 255, g: 0, b: 0 }; // Red for hot
 
-  // Interpolate between blue and red based on the normalized temperature
-  const interpolatedRGBA = [
-    Math.round(
-      blueRGBA[0] * (1 - normalizedTemp) + redRGBA[0] * normalizedTemp
-    ),
-    Math.round(
-      blueRGBA[1] * (1 - normalizedTemp) + redRGBA[1] * normalizedTemp
-    ),
-    Math.round(
-      blueRGBA[2] * (1 - normalizedTemp) + redRGBA[2] * normalizedTemp
-    ),
-    blueRGBA[3], // Opacity remains constant at 50%
-  ];
+  // Calculate the ratio of the current temperature between the color ranges
+  let ratio: number;
+  let r: number, g: number, b: number;
 
-  return `rgba(${interpolatedRGBA.join(', ')})`;
+  if (temperatureC <= coldTemp) {
+    return `rgba(${coldColor.r}, ${coldColor.g}, ${coldColor.b}, 0.7)`;
+  } else if (temperatureC >= hotTemp) {
+    return `rgba(${hotColor.r}, ${hotColor.g}, ${hotColor.b}, 0.7)`;
+  } else if (temperatureC < mildTemp) {
+    // Calculate the ratio between cold and mild
+    ratio = (temperatureC - coldTemp) / (mildTemp - coldTemp);
+    r = coldColor.r + ratio * (mildColor.r - coldColor.r);
+    g = coldColor.g + ratio * (mildColor.g - coldColor.g);
+    b = coldColor.b + ratio * (mildColor.b - coldColor.b);
+  } else {
+    // Calculate the ratio between mild and hot
+    ratio = (temperatureC - mildTemp) / (hotTemp - mildTemp);
+    r = mildColor.r + ratio * (hotColor.r - mildColor.r);
+    g = mildColor.g + ratio * (hotColor.g - mildColor.g);
+    b = mildColor.b + ratio * (hotColor.b - mildColor.b);
+  }
+
+  // Return the RGBA color with 0.7 opacity
+  return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, 0.7)`;
 }

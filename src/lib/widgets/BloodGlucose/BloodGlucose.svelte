@@ -15,6 +15,13 @@
     var option: EChartOption;
 
     option = {
+      grid: {
+        left: '0',
+        right: '0',
+        top: 0,
+        bottom: 0,
+        show: false,
+      },
       xAxis: {
         type: 'category',
         axisLabel: {
@@ -22,14 +29,11 @@
         },
       },
       yAxis: {
-        max: '400',
+        max: '300',
         type: 'value',
         axisLabel: {
           show: false,
         },
-      },
-      grid: {
-        show: false,
       },
       series: [
         {
@@ -54,23 +58,25 @@
 
 <style>
   .graph-container {
-    height: 11rem;
+    height: 100%;
     width: 100%;
     z-index: 1;
     position: relative;
     flex-grow: 1;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     height: 100%;
   }
   .bg-graph {
     width: 100%;
-    min-height: 100%;
+    min-height: 200px;
+    box-sizing: border-box;
+    inset: 0;
     & canvas {
-      height: 100%;
-      width: 100%;
       padding: 0;
       margin: 0;
+      inset: 0;
+      position: absolute;
     }
   }
 </style>
