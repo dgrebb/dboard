@@ -116,10 +116,9 @@
 
   <div class="grid grid-cols-3 gap-3 p-8">
     {#each items as { title, content: { small, large }, series }}
-      <Card size="xl" class="relative">
+      <Card size="xl" class="dboard__card relative">
         <BloodGlucose {series} />
-        <span class="self-end">🩸</span>
-        <h1 class="mt-auto justify-end text-9xl text-red-700">
+        <h1 class="z-10 mt-auto justify-end text-9xl text-red-700">
           {large.value}
         </h1>
         <p class="absolute bottom-4">{small.value}</p>
