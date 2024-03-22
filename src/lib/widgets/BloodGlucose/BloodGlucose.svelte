@@ -33,7 +33,7 @@
         max = 200;
         break;
       case maxSeries < 190:
-        areaColor = '#c2bf0e';
+        areaColor = '#6c8246';
         max = 200;
         break;
       case maxSeries < 300:
@@ -54,20 +54,25 @@
         top: 0,
         bottom: 0,
         show: false,
+        containLabel: true,
       },
       xAxis: {
         type: 'category',
+        boundaryGap: false,
         show: false,
         axisLabel: {
           show: false,
+          inside: true,
         },
       },
       yAxis: {
         max,
         type: 'value',
         show: false,
+        boundaryGap: false,
         axisLabel: {
           show: false,
+          inside: true,
         },
       },
       series: [
