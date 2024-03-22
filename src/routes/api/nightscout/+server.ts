@@ -1,7 +1,8 @@
-import { json } from '@sveltejs/kit';
+import { json, type RequestOptions } from '@sveltejs/kit';
 import { SECRET_NIGHTSCOUT_TOKEN } from '$env/static/private';
 import { NIGHTSCOUT_API } from '$lib/GLOBALS';
 import type { RequestHandler } from './$types';
+import type { FetchOptions } from '$lib/types';
 
 export const GET = (async ({ url, locals }) => {
   if (locals.wss) {
@@ -15,7 +16,7 @@ export const GET = (async ({ url, locals }) => {
   }
 
   // call server for data
-  const requestOptions = {
+  const requestOptions: FetchOptions = {
     method: 'GET',
     redirect: 'follow',
   };

@@ -8,6 +8,7 @@
   import ProgressBar from '$lib/components/ProgressBar.svelte';
   import CurrentWeather from '$lib/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
+  import { fade } from 'svelte/transition';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
@@ -49,7 +50,9 @@
         color: string;
       };
     };
-    series: {};
+    series: {
+      sgv: number;
+    }[];
   }
 
   interface CurrentWeather {
@@ -115,15 +118,21 @@
   </div>
 
   <div class="grid grid-cols-3 gap-3 p-8">
-    {#each items as { title, content: { small, large }, series }}
-      <Card size="xl" class="dboard__card relative">
-        <BloodGlucose {series} />
-        <h1 class="z-10 mt-auto justify-end text-9xl text-red-700 mix-blend-plus-lighter">
-          {large.value}
-        </h1>
-        <p class="absolute bottom-4">{small.value}</p>
-      </Card>
-    {/each}
+    {#if items.length}
+      <div transition:fade class="card-container relative">
+        {#each items as { title, content: { small, large }, series }}
+          <Card size="xl" class="dboard__card relative">
+            <BloodGlucose {series} />
+            <h1
+              class="z-10 mt-auto justify-end text-9xl text-red-700 mix-blend-plus-lighter"
+            >
+              {large.value}
+            </h1>
+            <p class="absolute bottom-4">{small.value}</p>
+          </Card>
+        {/each}
+      </div>
+    {/if}
     {#if weather}
       <CurrentWeather {weather} />
     {/if}
