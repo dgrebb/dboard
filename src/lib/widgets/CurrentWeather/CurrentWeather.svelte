@@ -7,25 +7,22 @@
   import { onMount } from 'svelte';
   export let weather: {
     current: number;
-    weatherCode: number;
+    weatherCode: number[];
     isDay: boolean;
   };
 
   $: ({ current, weatherCode, isDay } = weather);
-
-  onMount(() => {
-    ({ current, weatherCode, isDay } = weather);
-  });
+  $: highlightColor = fahrenheitToColorShade(current);
 </script>
 
 {#if current}
   <div transition:fade class="card-container relative">
     <Card size="xl">
       <h2>Lansdale</h2>
-      <WeatherIcon {weatherCode} {isDay} />
+      <WeatherIcon {weatherCode} {isDay} color={highlightColor} />
       <h1
         class="mt-auto justify-end text-9xl"
-        style={`color: ${fahrenheitToColorShade(current)}`}
+        style={`color: ${highlightColor}`}
       >
         {Math.round(current)}<span class="text-gray-50">&deg;</span>
       </h1>
