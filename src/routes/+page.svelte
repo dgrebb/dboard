@@ -122,13 +122,14 @@
       <div transition:fade class="card-container relative">
         {#each items as { title, content: { small, large }, series }}
           <Card size="xl" class="dboard__card relative">
+            <h2>{small.value}</h2>
+
             <BloodGlucose {series} />
             <h1
               class="z-10 mt-auto justify-end text-9xl text-red-700 mix-blend-plus-lighter"
             >
               {large.value}
             </h1>
-            <p class="absolute bottom-4">{small.value}</p>
           </Card>
         {/each}
       </div>
