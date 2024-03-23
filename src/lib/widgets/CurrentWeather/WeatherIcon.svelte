@@ -32,7 +32,6 @@
 
   export let weatherCode: number[] = [];
   export let isDay: boolean = true;
-  export let color: string;
 
   $: iconType = weatherCode[0];
   let icon: Icon;
@@ -136,6 +135,7 @@
     position: absolute;
     right: -3.25rem;
     top: -4rem;
+    opacity: 0.7;
     svg {
       height: 100%;
       width: 100%;

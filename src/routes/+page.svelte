@@ -3,12 +3,12 @@
   import Main from './(layouts)/Main.svelte';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  import { Card } from 'flowbite-svelte';
   import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
   import CurrentWeather from '$lib/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
-  import { fade } from 'svelte/transition';
+
+  import type { ChartSeriesGlucose, DBoardItem } from '$lib/types';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
@@ -37,31 +37,9 @@
     });
   };
 
-  interface Item {
-    requestInterval: number;
-    title: string;
-    content: {
-      small: {
-        value: string;
-        color: string;
-      };
-      large: {
-        value: string;
-        color: string;
-      };
-    };
-    series: {
-      sgv: number;
-    }[];
-  }
-
-  interface CurrentWeather {
-    current: number;
-  }
-
   // export let data;
-  let items: Item[] = [];
-  let weather: CurrentWeather[] = [];
+  let items: DBoardItem[] = [];
+  let weather: CurrentWeather[] | boolean = false;
 
   const logEvent = (str: string) => {
     log = [...log, str];
@@ -118,22 +96,9 @@
   </div>
 
   <div class="grid grid-cols-3 gap-3 p-8">
-    {#if items.length}
-      <div transition:fade class="card-container relative">
-        {#each items as { title, content: { small, large }, series }}
-          <Card size="xl" class="dboard__card relative">
-            <h2>{small.value}</h2>
-
-            <BloodGlucose {series} />
-            <h1
-              class="z-10 mt-auto justify-end text-9xl text-red-700 mix-blend-plus-lighter"
-            >
-              {large.value}
-            </h1>
-          </Card>
-        {/each}
-      </div>
-    {/if}
+    {#each items as { title, content: { small: { value: label }, large: { value: mainDisplayValue } }, series: data }}
+      <BloodGlucose {data} {label} {mainDisplayValue} />
+    {/each}
     {#if weather}
       <CurrentWeather {weather} />
     {/if}
