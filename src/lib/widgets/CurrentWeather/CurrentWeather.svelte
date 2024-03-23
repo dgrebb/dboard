@@ -17,7 +17,7 @@
 
 {#if current}
   <div transition:fade class="card-container relative">
-    <Card size="xl">
+    <Card size="xl" class="dboard__card">
       <h2>Lansdale</h2>
       <WeatherIcon {weatherCode} {isDay} color={highlightColor} />
       <h1
