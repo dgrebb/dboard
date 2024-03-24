@@ -7,7 +7,7 @@ export type ChartSeriesGlucose = {
   sgv: number;
 };
 
-export interface DBoardItem {
+export type DBoardItem = {
   requestInterval: number;
   title: string;
   content: {
@@ -21,10 +21,13 @@ export interface DBoardItem {
     };
   };
   series: ChartSeriesGlucose[];
-}
+};
 
-export interface CurrentWeather {
-  current: number;
-  weatherCode: number[];
-  isDay: boolean;
-}
+export type CurrentWeather = {
+  time?: string;
+  interval?: number;
+  temperature_2m: number;
+  apparent_temperature?: number;
+  is_day?: number;
+  weather_code?: number;
+};

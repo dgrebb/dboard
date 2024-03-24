@@ -30,14 +30,15 @@
     color: string;
   };
 
-  export let weatherCode: number[] = [];
+  export let weatherCode: number = 0;
   export let isDay: boolean = true;
 
-  $: iconType = weatherCode[0];
+  $: iconType = weatherCode;
   let icon: Icon;
 
   const lightBlue = '#8882cf';
   const darkBlue = '#55508f';
+  const darkBlueGray = '#7347a8';
 
   const dayIconMap: IconMap = {
     0: {
@@ -54,7 +55,7 @@
     },
     3: {
       component: Cloudy,
-      color: '#fefefe',
+      color: '#62788d',
     },
     45: {
       component: DayFog,
@@ -85,23 +86,23 @@
     },
     1: {
       component: NightPartlyCloudy,
-      color: '#fe8763',
+      color: '#1e365c',
     },
     2: {
       component: NightCloudy,
-      color: '#fe8763',
+      color: darkBlueGray,
     },
     3: {
       component: NightCloudyHigh,
-      color: '#fe8763',
+      color: darkBlueGray,
     },
     45: {
       component: NightFog,
-      color: '#fe8763',
+      color: darkBlueGray,
     },
     48: {
       component: Fog,
-      color: '#fe8763',
+      color: darkBlueGray,
     },
     61: {
       component: NightShowers,
@@ -124,21 +125,8 @@
 
 <div class="big-icon-wow">
   {#if icon !== undefined}
-    <svelte:component this={icon.component} size="177" color={icon.color} />
+    <svelte:component this={icon.component} size="300" color={icon.color} />
   {:else}
     <p>{iconType}</p>
   {/if}
 </div>
-
-<style>
-  .big-icon-wow {
-    position: absolute;
-    right: -3.25rem;
-    top: -4rem;
-    opacity: 0.7;
-    svg {
-      height: 100%;
-      width: 100%;
-    }
-  }
-</style>
