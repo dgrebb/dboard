@@ -21,4 +21,4 @@
   <slot />
 </main>
 
-<slot name="footer">dboard</slot>
+<slot name="footer" />

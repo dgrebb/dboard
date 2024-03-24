@@ -39,7 +39,7 @@
 
   // export let data;
   let items: DBoardItem[] = [];
-  let weather: CurrentWeather[] | boolean = false;
+  let weather: CurrentWeather;
 
   const logEvent = (str: string) => {
     log = [...log, str];

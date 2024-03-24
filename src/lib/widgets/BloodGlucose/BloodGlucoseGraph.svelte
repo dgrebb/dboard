@@ -4,49 +4,15 @@
   import type { EChartOption } from 'echarts';
   import type { ChartSeriesGlucose } from '$lib/types';
 
-  export let data: ChartSeriesGlucose[] = [];
-
-  function extractBGValues(data: ChartSeriesGlucose[]) {
-    return data.map((item) => item.sgv);
-  }
+  export let data: number[] = [];
+  export let mainColor: string = '#fefefe';
+  export let areaColor: string = mainColor.toString();
+  let maxMeasurable: number = 400;
 
   onMount(() => {
     var chartDom = document.getElementById('main');
     var myChart = echarts.init(chartDom, 'dark');
     var option: EChartOption;
-    var BGSeries = extractBGValues(data).reverse();
-    var maxMeasurable = 400;
-    var maxSeries = Math.max(...BGSeries);
-    var max = 400;
-    var areaColor = '#fefefe';
-
-    switch (true) {
-      case maxSeries < 70:
-        areaColor = 'rgba(255, 0, 0, 0.5)';
-        max = 100;
-        break;
-      case maxSeries < 100:
-        max = 100;
-        areaColor = '#2a5c2c';
-        break;
-      case maxSeries < 160:
-        areaColor = '#2a5c2c';
-        max = 200;
-        break;
-      case maxSeries < 190:
-        areaColor = 'rgba(133, 156, 40, 0.5)';
-        max = 200;
-        break;
-      case maxSeries < 300:
-        areaColor = '#fff700';
-        max = 300;
-        break;
-
-      default:
-        max = 400;
-        areaColor = '#ff00f7';
-        break;
-    }
 
     option = {
       grid: {
@@ -67,7 +33,7 @@
         },
       },
       yAxis: {
-        max,
+        max: maxMeasurable,
         type: 'value',
         show: false,
         boundaryGap: false,
@@ -78,10 +44,10 @@
       },
       series: [
         {
-          data: BGSeries,
+          data,
           type: 'line',
           lineStyle: {
-            color: areaColor,
+            color: mainColor,
             opacity: 0.3,
           },
           itemStyle: {
@@ -90,7 +56,7 @@
           },
           areaStyle: {
             color: areaColor,
-            opacity: 0.2,
+            opacity: 0.3,
           },
         },
       ],
