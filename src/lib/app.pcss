@@ -9,6 +9,11 @@
 
 body {
   height: 100vh;
+  background: #0f0f0f;
+  background: linear-gradient(0deg, rgba(0, 0, 200, 0.2), rgba(0, 0, 200, 0));
+  html.dark & {
+    background: #08081c;
+  }
 }
 
 .card-container {
@@ -24,4 +29,40 @@ body {
 .dboard__card {
   min-height: 233px;
   overflow: hidden;
+  &--value-lg {
+    z-index: 10;
+  }
+}
+
+.big-icon-wow {
+  position: absolute;
+  left: 33%;
+  bottom: -3%;
+  z-index: 0;
+  opacity: 0.33;
+  animation: float 9s ease-in-out infinite;
+  svg {
+    path {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+  .big-icon-wow,
+  svg {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translatey(0px);
+  }
+  50% {
+    transform: translatey(-9px);
+  }
+  100% {
+    transform: translatey(0px);
+  }
 }

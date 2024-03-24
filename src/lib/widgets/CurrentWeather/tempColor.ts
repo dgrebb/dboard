@@ -17,9 +17,9 @@ export default function fahrenheitToColorShade(temperatureF: number): string {
   let r: number, g: number, b: number;
 
   if (temperatureC <= coldTemp) {
-    return `rgba(${coldColor.r}, ${coldColor.g}, ${coldColor.b}, 0.7)`;
+    return `rgba(${coldColor.r}, ${coldColor.g}, ${coldColor.b}, 1.0)`;
   } else if (temperatureC >= hotTemp) {
-    return `rgba(${hotColor.r}, ${hotColor.g}, ${hotColor.b}, 0.7)`;
+    return `rgba(${hotColor.r}, ${hotColor.g}, ${hotColor.b}, 1.0)`;
   } else if (temperatureC < mildTemp) {
     // Calculate the ratio between cold and mild
     ratio = (temperatureC - coldTemp) / (mildTemp - coldTemp);
@@ -35,5 +35,5 @@ export default function fahrenheitToColorShade(temperatureF: number): string {
   }
 
   // Return the RGBA color with 0.7 opacity
-  return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, 0.7)`;
+  return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, 1.0)`;
 }

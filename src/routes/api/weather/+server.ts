@@ -20,29 +20,18 @@ export const GET = (async ({ url, locals }) => {
     redirect: 'follow',
   };
 
-  // TODO: refactor for open-meto
-  // https://open-meteo.com/en/docs/#current=temperature_2m&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=1
   const [weather] = await Promise.all([
     fetch(
-      `${WEATHER_API}/forecast?${WEATHER_LAT_LONG}&current=temperature_2m&hourly=temperature_2m,is_day&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=1&daily=weather_code`,
+      `${WEATHER_API}/forecast?${WEATHER_LAT_LONG}&current=temperature_2m,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FNew_York`,
       requestOptions
     )
       .then((response) => response.json())
       .catch((error) => console.error(error)),
   ]);
 
-  const now: Date = new Date();
-  const currentHourDaytime: number =
-    await weather.hourly.is_day[now.getHours()];
-  const isDay: boolean = currentHourDaytime === 1 ? true : false;
-
   return json({
     success: true,
-    weather: {
-      current: weather.current.temperature_2m,
-      weatherCode: weather.daily.weather_code,
-      isDay,
-    },
+    weather: weather.current,
   });
 
   return json({ success: true, message: 'Hello world from GET handler', url });
