@@ -41,6 +41,10 @@ body {
   z-index: 0;
   opacity: 0.33;
   animation: float 9s ease-in-out infinite;
+  filter: saturate(10) brightness(75%);
+  html.dark & {
+    filter: brightness(150);
+  }
   svg {
     path {
       position: absolute;
