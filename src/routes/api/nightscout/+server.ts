@@ -3,6 +3,9 @@ import { SECRET_NIGHTSCOUT_TOKEN } from '$env/static/private';
 import { NIGHTSCOUT_API } from '$lib/GLOBALS';
 import type { RequestHandler } from './$types';
 import type { FetchOptions } from '$lib/types';
+import { glu } from '$lib/settings';
+
+const dataPoints = glu.hoursDisplayed * 12;
 
 export const GET = (async ({ url, locals }) => {
   if (locals.wss) {
@@ -23,7 +26,7 @@ export const GET = (async ({ url, locals }) => {
 
   const [nightscout] = await Promise.all([
     fetch(
-      `${NIGHTSCOUT_API}/entries.json?count=24&token=${SECRET_NIGHTSCOUT_TOKEN}`,
+      `${NIGHTSCOUT_API}/entries.json?count=${dataPoints}&token=${SECRET_NIGHTSCOUT_TOKEN}`,
       requestOptions
     )
       .then((response) => response.json())
