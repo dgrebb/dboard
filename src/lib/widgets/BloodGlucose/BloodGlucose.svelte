@@ -59,7 +59,7 @@
   style={`--mainColor: ${mainColor}`}
 >
   {#key loaded}
-    <Card size="xl" class="dboard__card relative">
+    <Card size="xl" class="dboard__card glu relative">
       <h2>{label}</h2>
 
       <BloodGlucoseGraph data={BGSeries} {mainColor} areaColor={mainColor} />

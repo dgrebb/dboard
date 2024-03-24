@@ -36,6 +36,8 @@
   $: iconType = weatherCode;
   let icon: Icon;
 
+  const lightYellowGray = '#fbf1de';
+  const paleYellow = '#e5e5e5';
   const lightBlue = '#8882cf';
   const darkBlue = '#55508f';
   const darkBlueGray = '#7347a8';
@@ -82,11 +84,11 @@
   const nightIconMap: IconMap = {
     0: {
       component: NightClear,
-      color: '#fe8763',
+      color: paleYellow,
     },
     1: {
       component: NightPartlyCloudy,
-      color: '#1e365c',
+      color: lightYellowGray,
     },
     2: {
       component: NightCloudy,
