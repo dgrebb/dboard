@@ -37,23 +37,27 @@
   let icon: Icon;
 
   const lightYellowGray = '#fbf1de';
+  const brightGreen = '#37cc37';
+  const brightYellow = '#ccc737';
+  const paleGreen = '#37cc7f';
   const paleYellow = '#e5e5e5';
   const lightBlue = '#8882cf';
   const darkBlue = '#55508f';
   const darkBlueGray = '#7347a8';
+  const paleBlueGreenGray = '#85aba0';
 
   const dayIconMap: IconMap = {
     0: {
       component: DaySunny,
-      color: '#fefefe',
+      color: brightYellow,
     },
     1: {
       component: DaySunnyOvercast,
-      color: '#fefefe',
+      color: paleGreen,
     },
     2: {
       component: DayCloudy,
-      color: '#fefefe',
+      color: paleBlueGreenGray,
     },
     3: {
       component: Cloudy,
@@ -61,11 +65,11 @@
     },
     45: {
       component: DayFog,
-      color: '#fefefe',
+      color: paleBlueGreenGray,
     },
     48: {
       component: Fog,
-      color: '#fefefe',
+      color: paleBlueGreenGray,
     },
     61: {
       component: DayShowers,
