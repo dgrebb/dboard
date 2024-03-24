@@ -6,6 +6,7 @@
 
   function refresh() {
     invalidateAll();
+    localStorage.removeItem('color-theme');
   }
 </script>
 
