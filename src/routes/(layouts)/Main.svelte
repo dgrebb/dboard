@@ -14,8 +14,12 @@
   <slot name="countdown-bar" />
   <header class="flex flex-row justify-between p-3">
     <slot name="additional-controls" />
-    <DarkMode></DarkMode>
-    <Button size="sm" color="light" on:click={() => refresh()}
+    <DarkMode class="mix-blend-difference" />
+    <Button
+      size="sm"
+      color="light"
+      on:click={() => refresh()}
+      class="border-opacity-0 bg-opacity-25 mix-blend-difference"
       ><RefreshOutline /></Button
     >
   </header>

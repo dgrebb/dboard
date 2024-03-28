@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DEFAULT_REFRESH_INTERVAL } from '$lib/GLOBALS';
+  import { DEFAULT_REFRESH_INTERVAL, LATITUDE, LONGITUDE } from '$lib/GLOBALS';
   import Main from './(layouts)/Main.svelte';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
@@ -7,6 +7,7 @@
   import ProgressBar from '$lib/components/ProgressBar.svelte';
   import CurrentWeather from '$lib/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
+  import updateBackgroundColorGradient from '$lib/background';
 
   import type { ChartSeriesGlucose, DBoardItem } from '$lib/types';
 
@@ -66,9 +67,11 @@
   onMount(async () => {
     nightscoutData();
     weatherData = await fetchWeatherData();
+    updateBackgroundColorGradient(LATITUDE, LONGITUDE);
     setInterval(async () => {
       nightscoutData();
       weatherData = await fetchWeatherData();
+      updateBackgroundColorGradient(LATITUDE, LONGITUDE);
       seconds = 0;
     }, refreshInterval);
 
@@ -82,15 +85,17 @@
   <div slot="additional-controls">
     <Button
       size="sm"
-      color="light"
       disabled={!webSocketEstablished}
+      color="dark"
+      class="border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
       on:click={closeSocket}><XCircleOutline /></Button
     >
 
     <Button
       size="sm"
-      color="light"
       disabled={webSocketEstablished}
+      color="dark"
+      class="border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
       on:click={() => establishWebSocket()}><ArrowUpDownOutline /></Button
     >
   </div>
