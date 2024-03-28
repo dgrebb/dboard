@@ -39,7 +39,7 @@
 
   // export let data;
   let items: DBoardItem[] = [];
-  let weather: CurrentWeather;
+  let weatherData: CurrentWeather;
 
   const logEvent = (str: string) => {
     log = [...log, str];
@@ -52,11 +52,11 @@
     items = nightscout.items;
   };
 
-  const weatherData = async () => {
+  const fetchWeatherData = async () => {
     const res = await fetch('/api/weather');
-    const { weather } = await res.json();
+    const { weatherData } = await res.json();
 
-    return weather;
+    return weatherData;
   };
 
   const closeSocket = () => {
@@ -65,10 +65,10 @@
 
   onMount(async () => {
     nightscoutData();
-    weather = await weatherData();
+    weatherData = await fetchWeatherData();
     setInterval(async () => {
       nightscoutData();
-      weather = await weatherData();
+      weatherData = await fetchWeatherData();
       seconds = 0;
     }, refreshInterval);
 
@@ -99,8 +99,8 @@
     {#each items as { title, content: { small: { value: label }, large: { value: mainDisplayValue } }, series: data }}
       <BloodGlucose {data} {label} {mainDisplayValue} />
     {/each}
-    {#if weather}
-      <CurrentWeather {weather} />
+    {#if weatherData}
+      <CurrentWeather {weatherData} />
     {/if}
   </div>
 
