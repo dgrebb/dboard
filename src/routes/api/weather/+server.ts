@@ -20,18 +20,16 @@ export const GET = (async ({ url, locals }) => {
     redirect: 'follow',
   };
 
-  const [weather] = await Promise.all([
-    fetch(
-      `${WEATHER_API}/forecast?${WEATHER_LAT_LONG}&current=temperature_2m,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FNew_York`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .catch((error) => console.error(error)),
-  ]);
+  const weather = await fetch(
+    `${WEATHER_API}/forecast?${WEATHER_LAT_LONG}&current=temperature_2m,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FNew_York`,
+    requestOptions
+  )
+    .then((response) => response.json())
+    .catch((error) => console.error(error));
 
   return json({
     success: true,
-    weather: weather.current,
+    weatherData: weather.current,
   });
 
   return json({ success: true, message: 'Hello world from GET handler', url });
