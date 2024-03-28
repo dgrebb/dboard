@@ -23,11 +23,23 @@ export type DBoardItem = {
   series: ChartSeriesGlucose[];
 };
 
-export type CurrentWeather = {
+export interface CurrentWeather {
   time?: string;
   interval?: number;
   temperature_2m: number;
   apparent_temperature?: number;
   is_day?: number;
   weather_code?: number;
+}
+
+export interface DailyWeather {
+  daily: {
+    sunrise: Date[];
+    sunset: Date[];
+  };
+}
+
+export type SolarData = {
+  sunrise: Date;
+  sunset: Date;
 };

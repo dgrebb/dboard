@@ -7,19 +7,39 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
 body {
-  height: 100vh;
-  background: #0f0f0f;
-  background: linear-gradient(0deg, rgba(0, 0, 200, 0.2), rgba(0, 0, 200, 0));
-  html.dark & {
-    background: #08081c;
+  min-height: 100vh;
+}
+
+body {
+  background: var(--bgColor);
+  transition-property: background;
+  transition-duration: 10s;
+  &:after {
+    transition-property: opacity;
+    inset: 0;
+    transition-duration: 60s;
+    opacity: 0;
+    content: '';
+    min-height: 100%;
+    position: absolute;
+    z-index: -1;
+    display: block;
+    background: linear-gradient(to bottom, var(--gradient), transparent);
+  }
+  &.ready:after {
+    opacity: 1;
   }
 }
 
 .card-container {
-  @apply shadow-xl;
+  @apply bg-orange-200 shadow-xl;
   overflow: hidden;
   border-radius: 0.5rem;
+  html.dark & {
+    @apply bg-blue-950;
+  }
   > div {
     display: flex;
     height: 100%;
@@ -40,9 +60,10 @@ body {
   bottom: -3%;
   z-index: 0;
   animation: float 9s ease-in-out infinite;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: hard-light;
   /* filter: saturate(10) brightness(75%); */
   html.dark & {
+    mix-blend-mode: soft-light;
     /* filter: brightness(150); */
   }
   svg {

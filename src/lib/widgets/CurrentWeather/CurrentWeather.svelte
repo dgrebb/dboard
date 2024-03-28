@@ -36,10 +36,10 @@
 </script>
 
 <div transition:fade class="card-container relative">
-  {#key weather}
+  {#key weatherCode}
     <Card
       size="xl"
-      class="dboard__card"
+      class="dboard__card border-none bg-transparent"
       style={`--text-color: ${highlightColor}`}
     >
       <h2>Lansdale</h2>
