@@ -7,7 +7,8 @@
   import { onMount } from 'svelte';
   import type { CurrentWeather } from '$lib/types';
 
-  export let weather: CurrentWeather;
+  export let weatherData: CurrentWeather;
+  $: weather = weatherData satisfies CurrentWeather;
 
   $: ({
     temperature_2m: current,
@@ -18,23 +19,24 @@
   $: isDay = day === 1;
 
   onMount(() => {
-    if (localStorage.getItem('color-theme')) return false;
     switch (isDay) {
       case true:
         document.documentElement.classList.toggle('light', true);
         document.documentElement.classList.toggle('dark', false);
+        localStorage.setItem('color-theme', 'light');
         break;
 
       default:
         document.documentElement.classList.toggle('light', false);
         document.documentElement.classList.toggle('dark', true);
+        localStorage.setItem('color-theme', 'dark');
         break;
     }
   });
 </script>
 
 <div transition:fade class="card-container relative">
-  {#key current}
+  {#key weather}
     <Card
       size="xl"
       class="dboard__card"
