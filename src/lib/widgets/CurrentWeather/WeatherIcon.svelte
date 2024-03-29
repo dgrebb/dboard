@@ -103,15 +103,15 @@
     },
     3: {
       component: NightCloudyHigh,
-      color: darkBlueGray,
+      color: paleBlueGreenGray,
     },
     45: {
       component: NightFog,
-      color: darkBlueGray,
+      color: paleBlueGreenGray,
     },
     48: {
       component: Fog,
-      color: darkBlueGray,
+      color: paleBlueGreenGray,
     },
     51: {
       component: NightSprinkle,

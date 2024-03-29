@@ -41,37 +41,44 @@ function calculateBackgroundColorGradient(
   return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 }
 
-function calculateBaseBackgroundColorGradient(
+async function calculateBaseBackgroundColorGradient(
   currentTime: number, // Time in milliseconds since midnight
   sunrise: number, // Time of sunrise in milliseconds since midnight
   sunset: number // Time of sunset in milliseconds since midnight
-): string {
+): Promise<string> {
   // Convert time values to percentages (0 to 1) relative to the day length
   const timePercentage: number = (currentTime - sunrise) / (sunset - sunrise);
-
   // Define sky colors for different times of the day
   const dawnColor: number[] = [255, 183, 94]; // Color at dawn (orange)
   const dayColor: number[] = [135, 206, 235]; // Color during the day (light blue)
   const duskColor: number[] = [255, 193, 193]; // Color at dusk (pink)
+  const nightColor: number[] = [17, 18, 14]; // Color at dusk (pink)
 
   let color: number[];
 
   if (timePercentage < 0.25) {
     // Dawn to morning transition
     color = interpolateBaseColor(dawnColor, dayColor, timePercentage / 0.25);
-  } else if (timePercentage < 0.75) {
+  } else if (timePercentage < 0.5) {
     // Morning to evening transition
     color = interpolateBaseColor(
       dayColor,
       dayColor,
       (timePercentage - 0.25) / 0.5
     );
-  } else {
-    // Evening to night transition
+  } else if (timePercentage < 0.75) {
+    // Morning to evening transition
     color = interpolateBaseColor(
       dayColor,
       duskColor,
-      (timePercentage - 0.75) / 0.25
+      (timePercentage - 0.5) / 0.5
+    );
+  } else {
+    // Evening to night transition
+    color = interpolateBaseColor(
+      duskColor,
+      nightColor,
+      (timePercentage - 0.75) / 0.5
     );
   }
 
@@ -138,6 +145,8 @@ export default async function updateBackgroundColorGradient(
   latitude: string,
   longitude: string
 ): Promise<void> {
+  const body = document.body;
+  let bgColor: string = body.style.getPropertyValue('--bgColor');
   const { sunrise, sunset } =
     (await fetchSunriseSunsetData(latitude, longitude)) || {};
   if (!sunrise || !sunset) return; // Exit if data fetching fails
@@ -150,14 +159,10 @@ export default async function updateBackgroundColorGradient(
     rise,
     set
   );
-  const bgColor: string = calculateBaseBackgroundColorGradient(
-    currentTime,
-    rise,
-    set
-  );
-  document.body.style.setProperty('--gradient', gradientColor);
-  document.body.style.setProperty('--bgColor', bgColor);
-  document.body.classList.toggle('ready', true);
+  bgColor = await calculateBaseBackgroundColorGradient(currentTime, rise, set);
+  body.style.setProperty('--gradient', gradientColor);
+  body.style.setProperty('--bgColor', bgColor);
+  body.classList.toggle('ready', true);
 }
 
 // Example usage: update background color gradient based on sunrise and sunset data for a given latitude and longitude
