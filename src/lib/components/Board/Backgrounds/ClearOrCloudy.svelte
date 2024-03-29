@@ -17,15 +17,15 @@
       'opacity3',
     ];
 
-    function getRandomArbitrary(min, max) {
+    function getRandomArbitrary(min: number, max: number) {
       return Math.floor(Math.random() * (max - min)) + min;
     }
 
     var estrela = '';
-    var qtdeEstrelas = 250;
-    var noite = document.querySelector('.constelacao');
-    var widthWindow = window.innerWidth;
-    var heightWindow = window.innerHeight;
+    var qtdeEstrelas = 2050;
+    var noite: HTMLElement | null = document.querySelector('.constelacao');
+    var widthWindow = window.innerWidth * 2;
+    var heightWindow = window.innerHeight * 2;
 
     for (var i = 0; i < qtdeEstrelas; i++) {
       estrela +=
@@ -44,7 +44,7 @@
         "px;'></span>";
     }
 
-    noite.innerHTML = estrela;
+    noite ? (noite.innerHTML = estrela) : null;
 
     //meteoros
 

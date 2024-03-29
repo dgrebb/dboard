@@ -1,7 +1,7 @@
 <script lang="ts">
   export let seconds: number;
   export let refreshInterval: number;
-  $: progress = seconds > 2 ? ((seconds * 1000) / refreshInterval) * 100 : 0;
+  $: progress = seconds > 2 ? ((seconds * 1000) / refreshInterval) * 50 : 0;
 </script>
 
 <div
