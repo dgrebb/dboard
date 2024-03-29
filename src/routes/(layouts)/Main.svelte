@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
   import { invalidateAll } from '$app/navigation';
   import '$lib/app.pcss';
+  import BackgroundFrame from '$lib/components/Board/BackgroundFrame.svelte';
+  import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
   import { Button, DarkMode } from 'flowbite-svelte';
   import { RefreshOutline } from 'flowbite-svelte-icons';
 
@@ -10,9 +12,10 @@
   }
 </script>
 
+<BackgroundFrame component={ClearOrCloudy} />
 <main>
   <slot name="countdown-bar" />
-  <header class="flex flex-row justify-between p-3">
+  <header class="flex flex-row justify-between p-3 opacity-50">
     <slot name="additional-controls" />
     <DarkMode class="mix-blend-difference" />
     <Button
