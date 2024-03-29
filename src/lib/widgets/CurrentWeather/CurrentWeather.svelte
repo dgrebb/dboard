@@ -36,7 +36,7 @@
 </script>
 
 <div transition:fade class="card-container relative">
-  {#key weatherCode}
+  {#key weather}
     <Card
       size="xl"
       class="dboard__card border-none bg-transparent"
