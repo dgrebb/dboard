@@ -8,7 +8,7 @@
   import CurrentWeather from '$lib/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
   import updateBackgroundColorGradient from '$lib/background';
-  import { time } from '$lib/store';
+  import { time, weather, solar } from '$lib/store';
 
   import type { ChartSeriesGlucose, DBoardItem } from '$lib/types';
 

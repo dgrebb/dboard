@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { WEATHER_API, WEATHER_LAT_LONG } from '$lib/GLOBALS';
 import type { RequestHandler } from './$types';
-import type { FetchOptions } from '$lib/types';
+import type { FetchOptions, WeatherData } from '$lib/types';
 
 export const GET = (async ({ url, locals }) => {
   if (locals.wss) {
@@ -20,8 +20,8 @@ export const GET = (async ({ url, locals }) => {
     redirect: 'follow',
   };
 
-  const weather = await fetch(
-    `${WEATHER_API}/forecast?${WEATHER_LAT_LONG}&current=temperature_2m,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FNew_York`,
+  const weather: WeatherData = await fetch(
+    `${WEATHER_API}/forecast?${WEATHER_LAT_LONG}&current=temperature_2m,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset&timezone=America%2FNew_York`,
     requestOptions
   )
     .then((response) => response.json())
@@ -30,6 +30,7 @@ export const GET = (async ({ url, locals }) => {
   return json({
     success: true,
     weatherData: weather.current,
+    solarData: weather.daily,
   });
 
   return json({ success: true, message: 'Hello world from GET handler', url });

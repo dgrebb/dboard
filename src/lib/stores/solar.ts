@@ -1,3 +1,6 @@
+import type { SolarData } from '$lib/types';
 import { writable, type Writable } from 'svelte/store';
 
-export const solar: Writable<string> = writable();
+const solar: Writable<SolarData> = writable();
+
+export default solar;
