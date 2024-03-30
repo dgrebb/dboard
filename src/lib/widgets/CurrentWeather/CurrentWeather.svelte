@@ -41,7 +41,9 @@
       class="dboard__card border-none bg-transparent"
       style={`--mainColor: ${highlightColor}`}
     >
-      <h2 class="text-[var(--mainColor)]">Lansdale</h2>
+      <h2 class="text-[var(--mainColor)] brightness-75 dark:saturate-200">
+        Lansdale
+      </h2>
       <WeatherIcon {weatherCode} {isDay} />
       <h1
         class="dboard__card--value-lg mt-auto justify-end text-9xl text-[var(--mainColor)] brightness-75 dark:saturate-200"

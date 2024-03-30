@@ -33,10 +33,13 @@ export interface CurrentWeather {
 }
 
 export interface DailyWeather {
-  daily: {
-    sunrise: Date[];
-    sunset: Date[];
-  };
+  sunrise: Date[];
+  sunset: Date[];
+}
+
+export interface WeatherData {
+  current: CurrentWeather;
+  daily: DailyWeather;
 }
 
 export type SolarData = {
