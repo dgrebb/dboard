@@ -8,9 +8,11 @@
   import CurrentWeather from '$lib/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
   import updateBackgroundColorGradient from '$lib/background';
-  import { time, weather, solar } from '$lib/store';
+  import time from '$lib/stores/time';
+  import weather from '$lib/stores/weather';
+  import solar from '$lib/stores/solar';
 
-  import type { ChartSeriesGlucose, DBoardItem } from '$lib/types';
+  import type { ChartSeriesGlucose, DBoardItem, WeatherData } from '$lib/types';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
@@ -39,7 +41,6 @@
     });
   };
 
-  // export let data;
   let items: DBoardItem[] = [];
   let weatherData: CurrentWeather;
 
@@ -56,9 +57,10 @@
 
   const fetchWeatherData = async () => {
     const res = await fetch('/api/weather');
-    const { weatherData } = await res.json();
+    const { weatherData, solarData } = await res.json();
 
-    return weatherData;
+    $weather = weatherData;
+    $solar = solarData;
   };
 
   const closeSocket = () => {
@@ -67,11 +69,11 @@
 
   onMount(async () => {
     nightscoutData();
-    weatherData = await fetchWeatherData();
+    fetchWeatherData();
     updateBackgroundColorGradient(LATITUDE, LONGITUDE);
     setInterval(async () => {
       nightscoutData();
-      weatherData = await fetchWeatherData();
+      fetchWeatherData();
       updateBackgroundColorGradient(LATITUDE, LONGITUDE);
       seconds = 0;
     }, refreshInterval);
@@ -107,8 +109,8 @@
     {#each items as { title, content: { small: { value: label }, large: { value: mainDisplayValue } }, series: data }}
       <BloodGlucose {data} {label} {mainDisplayValue} />
     {/each}
-    {#if weatherData}
-      <CurrentWeather {weatherData} />
+    {#if $weather}
+      <CurrentWeather />
     {/if}
   </div>
 

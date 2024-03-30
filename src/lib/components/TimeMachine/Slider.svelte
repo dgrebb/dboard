@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Range } from 'flowbite-svelte';
-  import { time } from '$lib/store';
+  import time from '$lib/stores/time';
   import { onDestroy } from 'svelte';
 
   let minutesPerDay = 24 * 60;
