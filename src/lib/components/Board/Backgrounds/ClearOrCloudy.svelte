@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { time } from '$lib/store';
 
   export let cloudLevel: number = 0;
 
@@ -47,6 +48,10 @@
     noite ? (noite.innerHTML = estrela) : null;
   }
 
+  const rise = 7 * 60;
+  $: beforeRise =
+    $time > 1200 || $time < 240 ? 0.9999 : -($time - 240 - rise) / rise;
+
   onMount(() => {
     init();
   });
@@ -55,7 +60,7 @@
 <!-- create by adriano.interaminense@gmail.com
 full screen for better viewing -->
 
-<div class="sky">
+<div class="sky" style={`opacity: ${beforeRise}`}>
   <div class="noite"></div>
 
   <div class="constelacao"></div>

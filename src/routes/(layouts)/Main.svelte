@@ -6,14 +6,13 @@
   import Slider from '$lib/components/TimeMachine/Slider.svelte';
   import { Button, DarkMode } from 'flowbite-svelte';
   import { RefreshOutline } from 'flowbite-svelte-icons';
+  import { time } from '$lib/store';
+  import { onDestroy } from 'svelte';
 
   const now = new Date();
   const hours = now.getHours();
   const minutes = now.getMinutes();
   const minutesToday = hours * 60 + minutes;
-
-  import { time } from '$lib/store';
-  import { onDestroy } from 'svelte';
 
   $time = minutesToday;
 

@@ -5,6 +5,7 @@
   justify-content: center;
   height: 120%;
   width: 150%;
+  transition: opacity 60s linear;
   * {
     box-sizing: content-box;
   }
