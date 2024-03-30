@@ -59,11 +59,8 @@
   style={`--mainColor: ${mainColor}`}
 >
   {#key loaded}
-    <Card
-      size="xl"
-      class="dboard__card glu relative border-none bg-transparent"
-    >
-      <h2>{label}</h2>
+    <div class="dboard__card glu relative border-none bg-transparent">
+      <h2 class="text-[var(--mainColor)]">{label}</h2>
 
       <BloodGlucoseGraph data={BGSeries} {mainColor} areaColor={mainColor} />
       <h1
@@ -71,7 +68,7 @@
       >
         {mainDisplayValue}
       </h1>
-    </Card>
+    </div>
   {/key}
 </div>
 

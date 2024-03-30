@@ -34,21 +34,22 @@ body {
 }
 
 .card-container {
-  @apply bg-orange-200 shadow-xl;
+  @apply bg-orange-200 bg-opacity-50 shadow-xl;
   overflow: hidden;
   border-radius: 0.5rem;
   html.dark & {
-    @apply bg-blue-950;
-  }
-  > div {
-    display: flex;
-    height: 100%;
+    @apply bg-blue-950 bg-opacity-50;
   }
 }
 
 .dboard__card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: 1rem;
   min-height: 233px;
   overflow: hidden;
+  background-color: transparent;
   &--value-lg {
     /* z-index: 10; */
   }
