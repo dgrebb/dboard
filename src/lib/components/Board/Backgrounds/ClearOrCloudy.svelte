@@ -53,9 +53,15 @@
     noite ? (noite.innerHTML = estrela) : null;
   }
 
+  // TODO: pull these actual times from the solar store
   const rise = 7 * 60;
+  const set = 20 * 60;
   $: twilightTransition =
-    $time > 1200 || $time < 240 ? 0.9999 : -($time - 240 - rise) / rise;
+    $time < 240 || $time > 2200
+      ? 0.9999
+      : $time > 1140
+        ? -($time - 240 - set) / set
+        : -($time - 240 - rise) / rise;
   onMount(() => {
     init();
   });
