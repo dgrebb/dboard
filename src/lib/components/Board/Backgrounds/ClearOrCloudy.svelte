@@ -45,25 +45,6 @@
     }
 
     noite ? (noite.innerHTML = estrela) : null;
-
-    //meteoros
-
-    var numeroAleatorio = 5000;
-
-    setTimeout(function () {
-      carregarMeteoro();
-    }, numeroAleatorio);
-
-    function carregarMeteoro() {
-      setTimeout(carregarMeteoro, numeroAleatorio);
-      numeroAleatorio = getRandomArbitrary(5000, 10000);
-      var meteoro =
-        "<div class='meteoro " + style[getRandomArbitrary(0, 4)] + "'></div>";
-      document.getElementsByClassName('chuvaMeteoro')[0].innerHTML = meteoro;
-      setTimeout(function () {
-        document.getElementsByClassName('chuvaMeteoro')[0].innerHTML = '';
-      }, 1000);
-    }
   }
 
   onMount(() => {
@@ -82,6 +63,4 @@ full screen for better viewing -->
   <div class="lua">
     <div class="textura"></div>
   </div>
-
-  <div class="chuvaMeteoro"></div>
 </div>
