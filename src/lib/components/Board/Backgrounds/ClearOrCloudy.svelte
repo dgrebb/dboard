@@ -1,8 +1,13 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { time } from '$lib/store';
+  import { onDestroy, onMount } from 'svelte';
+  import time from '$lib/stores/time';
+  import solar from '$lib/stores/solar';
 
   export let cloudLevel: number = 0;
+
+  const unsubscribe = solar.subscribe((value) => {
+    console.log('🚀 ~ solar:', value);
+  });
 
   function init() {
     //estrelas
@@ -54,6 +59,7 @@
   onMount(() => {
     init();
   });
+  onDestroy(unsubscribe);
 </script>
 
 <!-- create by adriano.interaminense@gmail.com

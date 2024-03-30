@@ -20,6 +20,8 @@
     NightRain,
     NightSprinkle,
     NightRainMix,
+    DaySprinkle,
+    DayRainMix,
   } from 'svelte-weather';
   import type { Fragment } from 'svelte/types/compiler/interfaces';
 
@@ -48,6 +50,7 @@
   const darkBlueGray = '#7347a8';
   const paleBlueGreenGray = '#85aba0';
   const moonSprinkle = 'rgb(162, 207, 234)';
+  const daySprinkle = 'rgb(104, 70, 240)';
 
   const dayIconMap: IconMap = {
     0: {
@@ -73,6 +76,18 @@
     48: {
       component: Fog,
       color: paleBlueGreenGray,
+    },
+    51: {
+      component: DaySprinkle,
+      color: daySprinkle,
+    },
+    52: {
+      component: DayRainMix,
+      color: daySprinkle,
+    },
+    53: {
+      component: DayShowers,
+      color: daySprinkle,
     },
     61: {
       component: DayShowers,

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ComponentType } from 'svelte';
   import './Backgrounds/styles.css';
-  import { time } from '$lib/store';
+  import time from '$lib/stores/time';
 
   export let component: ComponentType;
 </script>
