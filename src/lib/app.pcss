@@ -14,13 +14,13 @@ body {
 
 body {
   background: var(--bgColor);
-  /* transition-property: background; */
-  /* transition-duration: 10s; */
+  transition-property: background;
+  transition-duration: 10s;
   &:after {
-    /* transition-property: opacity; */
+    transition-property: opacity;
     inset: 0;
-    /* transition-duration: 60s; */
-    /* opacity: 0; */
+    transition-duration: 10s;
+    opacity: 0;
     content: '';
     min-height: 100%;
     position: absolute;
@@ -63,6 +63,11 @@ body {
   animation: float 9s ease-in-out infinite;
   mix-blend-mode: hard-light;
   /* filter: saturate(10) brightness(75%); */
+  transition: opacity 5s 5s linear;
+  opacity: 0;
+  body.ready & {
+    opacity: 1;
+  }
   html.dark & {
     mix-blend-mode: soft-light;
     /* filter: brightness(150); */

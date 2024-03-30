@@ -36,7 +36,7 @@
 </script>
 
 <div transition:fade class="card-container relative">
-  {#key weather}
+  {#if weather}
     <div
       class="dboard__card border-none bg-transparent"
       style={`--mainColor: ${highlightColor}`}
@@ -52,5 +52,5 @@
         >
       </h1>
     </div>
-  {/key}
+  {/if}
 </div>

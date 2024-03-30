@@ -15,7 +15,16 @@
   .time-machine {
     z-index: 1;
     position: absolute;
-    bottom: 10%;
+    bottom: 3%;
     width: 100%;
+    opacity: 0.1;
+    &:hover {
+      opacity: 0.5;
+    }
+    &:focus,
+    &:active,
+    &:focus-visible {
+      opacity: 0.77;
+    }
   }
 </style>
