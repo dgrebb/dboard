@@ -14,6 +14,8 @@
 <style>
   .time-machine {
     z-index: 1;
-    position: relative;
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
   }
 </style>
