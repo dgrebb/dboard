@@ -6,7 +6,7 @@
   import Slider from '$lib/components/TimeMachine/Slider.svelte';
   import { Button, DarkMode } from 'flowbite-svelte';
   import { RefreshOutline } from 'flowbite-svelte-icons';
-  import { time } from '$lib/store';
+  import time from '$lib/stores/time';
   import { onDestroy } from 'svelte';
 
   const now = new Date();

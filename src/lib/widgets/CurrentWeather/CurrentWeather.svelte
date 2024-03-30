@@ -6,15 +6,13 @@
   import WeatherIcon from './WeatherIcon.svelte';
   import { onMount } from 'svelte';
   import type { CurrentWeather } from '$lib/types';
-
-  export let weatherData: CurrentWeather;
-  $: weather = weatherData satisfies CurrentWeather;
+  import weather from '$lib/stores/weather';
 
   $: ({
     temperature_2m: current,
     weather_code: weatherCode,
     is_day: day,
-  } = weather);
+  } = $weather);
   $: highlightColor = fahrenheitToColorShade(current);
   $: isDay = day === 1;
 
