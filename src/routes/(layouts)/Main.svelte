@@ -15,10 +15,14 @@
   const minutesToday = hours * 60 + minutes;
 
   $time = minutesToday;
+  let hh: string = '00';
+  let mm: string = '00';
 
   let timeValue: number;
   const unsubscribe = time.subscribe((value) => {
     timeValue = value;
+    hh = Math.trunc(timeValue / 60).toString();
+    mm = (timeValue % 60).toString();
   });
 
   function refresh() {
@@ -33,9 +37,9 @@
   <slot name="countdown-bar" />
   <header class="flex flex-row justify-between p-3 opacity-50">
     <slot name="additional-controls" />
-    <DarkMode class="mix-blend-difference" />
+    <DarkMode class="grow mix-blend-difference" />
     <p class="timemachine__time">
-      {Math.trunc(timeValue / 60)}:{timeValue % 60}
+      {hh}:{mm}
     </p>
     <Button
       size="sm"
@@ -54,5 +58,10 @@
 <style>
   .timemachine__time {
     color: white;
+    flex-shrink: 0;
+    justify-content: end;
+    align-items: center;
+    display: flex;
+    padding-right: 0.5rem;
   }
 </style>
