@@ -8,6 +8,7 @@
   import CurrentWeather from '$lib/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
   import updateBackgroundColorGradient from '$lib/background';
+  import { time } from '$lib/store';
 
   import type { ChartSeriesGlucose, DBoardItem } from '$lib/types';
 
@@ -77,6 +78,8 @@
 
     setInterval(() => {
       seconds++;
+      let now = new Date();
+      $time = now.getHours() * 60 + now.getMinutes();
     }, 1000);
   });
 </script>
