@@ -58,10 +58,12 @@
   const set = 20 * 60;
   $: twilightTransition =
     $time < 240 || $time > 2200
-      ? 0.9999
-      : $time > 1140
-        ? -($time - 240 - set) / set
-        : -($time - 240 - rise) / rise;
+      ? 0.9999 // night
+      : $time > 540 && $time < 1140 // day
+        ? 0.0
+        : $time > 1140 // rising or setting sun
+          ? -($time - 240 - set) / set
+          : -($time - 240 - rise) / rise;
   onMount(() => {
     init();
   });
