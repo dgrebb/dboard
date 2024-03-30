@@ -9,7 +9,6 @@
 
 <div class="time-machine">
   <Range min="0" max={minutesPerDay} size="md" bind:value={$time} />
-  <p>Time: {timeOfDay}</p>
 </div>
 
 <style>
