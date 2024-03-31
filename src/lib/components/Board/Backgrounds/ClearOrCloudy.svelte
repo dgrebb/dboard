@@ -4,10 +4,7 @@
   import solar from '$lib/stores/solar';
 
   export let cloudLevel: number = 0;
-
-  const unsubscribe = solar.subscribe((value) => {
-    console.log('🚀 ~ solar:', value);
-  });
+  let twilightTransition: number;
 
   function init() {
     //estrelas
@@ -53,27 +50,33 @@
     noite ? (noite.innerHTML = estrela) : null;
   }
 
-  // TODO: pull these actual times from the solar store
-  const rise = 7 * 60;
-  const set = 20 * 60;
-  $: twilightTransition =
-    $time < 240 || $time > 2200
-      ? 0.9999 // night
-      : $time > 540 && $time < 1140 // day
-        ? 0.0
-        : $time > 1140 // rising or setting sun
-          ? -($time - 240 - set) / set
-          : -($time - 240 - rise) / rise;
   onMount(() => {
+    let riseMinutes = 7 * 60;
+    let setMinutes = 19 * 60;
+    const rise = new Date($solar?.sunrise[0]) || null;
+    const set = new Date($solar?.sunset[0]) || null;
+    if (rise && set) {
+      riseMinutes = rise.getHours() * 60 + rise.getMinutes();
+      console.log('🚀 ~ onMount ~ riseMinutes:', riseMinutes);
+      setMinutes = set.getHours() * 60 + set.getMinutes();
+      console.log('🚀 ~ onMount ~ setMinutes:', setMinutes);
+    }
+    twilightTransition =
+      $time < riseMinutes - 60 || $time > setMinutes + 30
+        ? 0.9999 // night
+        : $time > riseMinutes && $time < setMinutes // day
+          ? 0.0
+          : $time > 1140 // rising or setting sun
+            ? -($time + 60 - setMinutes) / setMinutes
+            : -($time - 30 - riseMinutes) / riseMinutes;
     init();
   });
-  onDestroy(unsubscribe);
 </script>
 
 <!-- create by adriano.interaminense@gmail.com
 full screen for better viewing -->
 
-<div class="sky" style={`opacity: ${twilightTransition}`}>
+<div class="sky" style={`opacity: ${twilightTransition * 10}`}>
   <div class="noite"></div>
 
   <div class="constelacao"></div>
