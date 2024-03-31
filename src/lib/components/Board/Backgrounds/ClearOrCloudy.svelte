@@ -55,14 +55,14 @@
   onMount(() => {
     let riseMinutes = 7 * 60;
     let setMinutes = 19 * 60;
-    const rise = new Date($solar?.sunrise[0]) || null;
-    const set = new Date($solar?.sunset[0]) || null;
+    const rise = new Date($solar?.sunrise[0]) || false;
+    const set = new Date($solar?.sunset[0]) || false;
     if (rise && set) {
       riseMinutes = rise.getHours() * 60 + rise.getMinutes();
-      console.log('🚀 ~ onMount ~ riseMinutes:', riseMinutes);
       setMinutes = set.getHours() * 60 + set.getMinutes();
-      console.log('🚀 ~ onMount ~ setMinutes:', setMinutes);
     }
+    console.log('🚀 ~ onMount ~ riseMinutes:', riseMinutes);
+    console.log('🚀 ~ onMount ~ setMinutes:', setMinutes);
     if ($weather) {
       cloudCover = $weather.cloud_cover;
     }
