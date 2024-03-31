@@ -32,17 +32,12 @@ export type CurrentWeather = {
   weather_code?: number;
 };
 
-export type DailyWeather = {
-  sunrise: Date[];
-  sunset: Date[];
-};
-
 export interface WeatherData {
   current: CurrentWeather;
-  daily: DailyWeather;
+  daily: SolarData;
 }
 
 export type SolarData = {
-  sunrise: Date;
-  sunset: Date;
+  sunrise: Date[];
+  sunset: Date[];
 };
