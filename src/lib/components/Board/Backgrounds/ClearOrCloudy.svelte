@@ -1,9 +1,11 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import time from '$lib/stores/time';
+  import weather from '$lib/stores/weather';
   import solar from '$lib/stores/solar';
+  import Clouds from './Clouds.svelte';
 
-  export let cloudLevel: number = 0;
+  export let cloudCover: number = 0;
   let twilightTransition: number;
 
   function init() {
@@ -61,6 +63,9 @@
       setMinutes = set.getHours() * 60 + set.getMinutes();
       console.log('🚀 ~ onMount ~ setMinutes:', setMinutes);
     }
+    if ($weather) {
+      cloudCover = $weather.cloud_cover;
+    }
     twilightTransition =
       $time < riseMinutes - 60 || $time > setMinutes + 30
         ? 0.9999 // night
@@ -76,9 +81,14 @@
 <!-- create by adriano.interaminense@gmail.com
 full screen for better viewing -->
 
-<div class="sky" style={`opacity: ${twilightTransition * 10}`}>
+<div
+  class="sky"
+  style={`opacity: ${twilightTransition * 10}; --cloudCoverPercent: ${cloudCover / 100}`}
+>
   <div class="noite"></div>
-
+  <div class="nuvem">
+    <Clouds />
+  </div>
   <div class="constelacao"></div>
 
   <div class="lua">

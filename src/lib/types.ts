@@ -30,6 +30,7 @@ export type CurrentWeather = {
   apparent_temperature?: number;
   is_day?: number;
   weather_code?: number;
+  cloud_cover: number;
 };
 
 export interface WeatherData {
