@@ -61,37 +61,40 @@
       riseMinutes = rise.getHours() * 60 + rise.getMinutes();
       setMinutes = set.getHours() * 60 + set.getMinutes();
     }
-    console.log('🚀 ~ onMount ~ riseMinutes:', riseMinutes);
-    console.log('🚀 ~ onMount ~ setMinutes:', setMinutes);
+    console.log('🚀 ~ onMount ~ riseMinutes:', rise, riseMinutes);
+    console.log('🚀 ~ onMount ~ setMinutes:', set, setMinutes);
     if ($weather) {
       cloudCover = $weather.cloud_cover;
     }
     twilightTransition =
       $time < riseMinutes - 60 || $time > setMinutes + 30
-        ? 0.9999 // night
-        : $time > riseMinutes && $time < setMinutes // day
+        ? 0.9999
+        : $time > riseMinutes && $time < setMinutes
           ? 0.0
-          : $time > 1140 // rising or setting sun
+          : $time > 1140
             ? -($time + 60 - setMinutes) / setMinutes
             : -($time - 30 - riseMinutes) / riseMinutes;
     init();
+    console.log('🚀 ~ onMount ~ twilightTransition:', twilightTransition);
   });
 </script>
 
 <!-- create by adriano.interaminense@gmail.com
 full screen for better viewing -->
 
-<div
-  class="sky"
-  style={`opacity: ${twilightTransition * 10}; --cloudCoverPercent: ${cloudCover / 100}`}
->
-  <div class="noite"></div>
-  <div class="nuvem">
-    <Clouds />
-  </div>
-  <div class="constelacao"></div>
+{#if typeof twilightTransition === 'number'}
+  <div
+    class="sky"
+    style={`opacity: ${twilightTransition * 10}; --cloudCoverPercent: ${cloudCover / 100}`}
+  >
+    <div class="noite"></div>
+    <div class="nuvem">
+      <Clouds />
+    </div>
+    <div class="constelacao"></div>
 
-  <div class="lua">
-    <div class="textura"></div>
+    <div class="lua hidden dark:visible">
+      <div class="textura"></div>
+    </div>
   </div>
-</div>
+{/if}
