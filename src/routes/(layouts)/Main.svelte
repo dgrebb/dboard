@@ -33,7 +33,7 @@
 </script>
 
 <BackgroundFrame component={ClearOrCloudy} />
-<main>
+<main class="dboard">
   <slot name="countdown-bar" />
   <header class="flex flex-row justify-between p-3 opacity-50">
     <slot name="additional-controls" />

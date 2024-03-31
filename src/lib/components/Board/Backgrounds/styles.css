@@ -3,8 +3,8 @@
   position: absolute;
   align-items: center;
   justify-content: center;
-  height: 120%;
-  width: 150%;
+  height: 100%;
+  width: 100%;
   /* transition: opacity 60s linear; */
   * {
     box-sizing: content-box;
@@ -23,9 +23,18 @@
   height: 100%;
   position: absolute;
   overflow: hidden;
+  z-index: 0;
+}
+
+.nuvem {
+  position: absolute;
+  opacity: var(--cloudCoverPercent);
+  inset: 0;
+  z-index: 4;
 }
 
 .constelacao {
+  z-index: 2;
   position: absolute;
   display: flex;
   top: auto;
@@ -102,6 +111,7 @@
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-duration: 10s;
+  z-index: 3;
 }
 
 .lua .textura {

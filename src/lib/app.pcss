@@ -42,16 +42,22 @@ body {
   }
 }
 
-.dboard__card {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  padding: 1rem;
-  min-height: 233px;
-  overflow: hidden;
-  background-color: transparent;
-  &--value-lg {
-    /* z-index: 10; */
+.dboard {
+  z-index: 10;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  &__card {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 1rem;
+    min-height: 233px;
+    overflow: hidden;
+    background-color: transparent;
+    &--value-lg {
+      /* z-index: 10; */
+    }
   }
 }
 
