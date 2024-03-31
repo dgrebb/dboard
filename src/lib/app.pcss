@@ -17,16 +17,19 @@ body {
   /* transition-property: background; */
   /* transition-duration: 10s; */
   &:after {
-    transition-property: opacity;
+    /* transition-property: opacity; */
     inset: 0;
-    transition-duration: 10s;
-    opacity: 0;
+    /* transition-duration: 10s; */
+    /* opacity: 0; */
     content: '';
     min-height: 100%;
     position: absolute;
     z-index: -1;
     display: block;
-    background: linear-gradient(to bottom, var(--gradient) 5%, transparent);
+    /* background: linear-gradient(to bottom, var(--gradient) 1%, transparent); */
+    html.dark & {
+      background: linear-gradient(to bottom, var(--gradient) 5%, transparent);
+    }
   }
   &.ready:after {
     opacity: 1;
@@ -104,11 +107,11 @@ body {
   }
 }
 
-.glu {
+/* .glu {
   .bg-value {
     filter: brightness(75%);
     html.dark & {
       filter: saturate(9);
     }
   }
-}
+} */
