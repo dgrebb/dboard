@@ -7,6 +7,8 @@
 
   export let cloudCover: number = 0;
   let twilightTransition: number;
+  let riseMinutes = 7 * 60;
+  let setMinutes = 19 * 60;
 
   function init() {
     //estrelas
@@ -52,30 +54,33 @@
     noite ? (noite.innerHTML = estrela) : null;
   }
 
+  $: console.log('🚀 ~ onMount ~ $solar:', $solar);
+  $: rise = new Date($solar?.sunrise[0]) || false;
+  $: set = new Date($solar?.sunset[0]) || false;
+  if (rise && set) {
+    riseMinutes = rise.getHours() * 60 + rise.getMinutes();
+    setMinutes = set.getHours() * 60 + set.getMinutes();
+  }
+  if ($weather) {
+    cloudCover = $weather.cloud_cover;
+  }
+
+  $: twilightTransition =
+    $time < riseMinutes - 60 || $time > setMinutes + 30
+      ? 0.9999
+      : $time > riseMinutes && $time < setMinutes
+        ? 0.0
+        : $time > 1140
+          ? -($time + 60 - setMinutes) / setMinutes
+          : -($time - 30 - riseMinutes) / riseMinutes;
+
+  // DEBUG
+  // console.log('🚀 ~ onMount ~ twilightTransition:', twilightTransition);
+  // console.log('🚀 ~ onMount ~ riseMinutes:', rise, riseMinutes);
+  // console.log('🚀 ~ onMount ~ setMinutes:', set, setMinutes);
+
   onMount(() => {
-    let riseMinutes = 7 * 60;
-    let setMinutes = 19 * 60;
-    const rise = new Date($solar?.sunrise[0]) || false;
-    const set = new Date($solar?.sunset[0]) || false;
-    if (rise && set) {
-      riseMinutes = rise.getHours() * 60 + rise.getMinutes();
-      setMinutes = set.getHours() * 60 + set.getMinutes();
-    }
-    console.log('🚀 ~ onMount ~ riseMinutes:', rise, riseMinutes);
-    console.log('🚀 ~ onMount ~ setMinutes:', set, setMinutes);
-    if ($weather) {
-      cloudCover = $weather.cloud_cover;
-    }
-    twilightTransition =
-      $time < riseMinutes - 60 || $time > setMinutes + 30
-        ? 0.9999
-        : $time > riseMinutes && $time < setMinutes
-          ? 0.0
-          : $time > 1140
-            ? -($time + 60 - setMinutes) / setMinutes
-            : -($time - 30 - riseMinutes) / riseMinutes;
     init();
-    console.log('🚀 ~ onMount ~ twilightTransition:', twilightTransition);
   });
 </script>
 
