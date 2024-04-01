@@ -48,7 +48,7 @@
           type: 'line',
           lineStyle: {
             color: mainColor,
-            opacity: 0.3,
+            opacity: 0.8,
           },
           itemStyle: {
             show: false,
@@ -56,7 +56,7 @@
           },
           areaStyle: {
             color: areaColor,
-            opacity: 0.3,
+            opacity: 0.5,
           },
         },
       ],
