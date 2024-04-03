@@ -29,7 +29,7 @@
     }
 
     var estrela = '';
-    var qtdeEstrelas = 2050;
+    var qtdeEstrelas = 250;
     var noite: HTMLElement | null = document.querySelector('.constelacao');
     var widthWindow = window.innerWidth * 2;
     var heightWindow = window.innerHeight * 2;

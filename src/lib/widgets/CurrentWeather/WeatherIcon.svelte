@@ -81,11 +81,11 @@
       component: DaySprinkle,
       color: daySprinkle,
     },
-    52: {
+    53: {
       component: DayRainMix,
       color: daySprinkle,
     },
-    53: {
+    55: {
       component: DayShowers,
       color: daySprinkle,
     },
@@ -132,11 +132,11 @@
       component: NightSprinkle,
       color: moonSprinkle,
     },
-    52: {
+    53: {
       component: NightRainMix,
       color: moonSprinkle,
     },
-    53: {
+    55: {
       component: NightRainMix,
       color: moonSprinkle,
     },

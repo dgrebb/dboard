@@ -5,6 +5,7 @@
   justify-content: center;
   height: 100%;
   width: 100%;
+  will-change: opacity;
   /* transition: opacity 60s linear; */
   * {
     box-sizing: content-box;
@@ -31,6 +32,7 @@
   opacity: var(--cloudCoverPercent);
   inset: 0;
   z-index: 4;
+  will-change: opacity;
 }
 
 .constelacao {
@@ -44,9 +46,12 @@
   height: 150%;
   transform-origin: center;
   animation: rotate 600s infinite linear;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
 }
 
 .estrela {
+  transform: translate3d(0, 0, 0);
   background-color: #fff;
   border-radius: 50%;
   position: absolute;

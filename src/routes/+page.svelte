@@ -7,6 +7,7 @@
   import ProgressBar from '$lib/components/ProgressBar.svelte';
   import CurrentWeather from '$lib/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
+  import CurrentMusic from '$lib/widgets/CurrentMusic/CurrentMusic.svelte';
   import updateBackgroundColorGradient from '$lib/background';
   import time from '$lib/stores/time';
   import weather from '$lib/stores/weather';
@@ -105,15 +106,27 @@
     >
   </div>
 
-  <div class="grid grid-cols-3 gap-3 p-8">
+  <div class="grid h-full grid-cols-2 justify-stretch gap-6 p-7 xl:grid-cols-3">
     {#each items as { title, content: { small: { value: label }, large: { value: mainDisplayValue } }, series: data }}
       <BloodGlucose {data} {label} {mainDisplayValue} />
     {/each}
     {#if $weather}
       <CurrentWeather />
     {/if}
+    <div class="card-container empty relative">
+      <div class="dboard__card"></div>
+    </div>
+    <div class="card-container empty relative">
+      <div class="dboard__card"></div>
+    </div>
+    <div class="card-container empty relative">
+      <div class="dboard__card"></div>
+    </div>
+    <div class="card-container empty relative">
+      <div class="dboard__card"></div>
+    </div>
+    <CurrentMusic />
   </div>
-
   <div slot="countdown-bar">
     <ProgressBar {refreshInterval} {seconds} />
   </div>
