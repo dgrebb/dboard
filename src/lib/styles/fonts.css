@@ -1,0 +1,18 @@
+@font-face {
+  src: url('/fonts/OpenSans-Light.ttf') format('ttf');
+  font-family: 'Open Sans Extra Light';
+  font-display: swap;
+}
+
+@font-face {
+  src: url('/fonts/OpenSans-Regular.ttf') format('ttf');
+  font-family: 'Open Sans';
+  font-display: swap;
+}
+
+:root {
+  --font-osxl: 'Open Sans Extra Light', sans-serif;
+  --font-os: 'Open Sans', sans-serif;
+  --font-osb: 'Open Sans Bold', sans-serif;
+  --font-osbl: 'Open Sans Black', sans-serif;
+}

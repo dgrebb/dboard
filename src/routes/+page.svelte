@@ -125,6 +125,9 @@
     <div class="card-container empty relative">
       <div class="dboard__card"></div>
     </div>
+    <div class="card-container empty relative">
+      <div class="dboard__card"></div>
+    </div>
     <CurrentMusic />
   </div>
   <div slot="countdown-bar">
