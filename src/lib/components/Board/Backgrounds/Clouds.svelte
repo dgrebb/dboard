@@ -4,7 +4,7 @@
   onMount(() => {});
 </script>
 
-<canvas id="canvas"></canvas>
+<!-- <canvas id="canvas"></canvas> -->
 
 <style>
   #canvas {
