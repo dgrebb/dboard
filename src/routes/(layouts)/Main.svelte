@@ -35,7 +35,7 @@
 <BackgroundFrame component={ClearOrCloudy} />
 <main class="dboard">
   <slot name="countdown-bar" />
-  <header class="flex flex-row justify-between p-3 opacity-50">
+  <!-- <header class="flex flex-row justify-between p-3 opacity-50">
     <slot name="additional-controls" />
     <DarkMode class="grow mix-blend-difference" />
     <p class="timemachine__time">
@@ -48,9 +48,9 @@
       class="border-opacity-0 bg-opacity-25 mix-blend-difference"
       ><RefreshOutline /></Button
     >
-  </header>
+  </header> -->
   <slot />
-  <Slider />
+  <!-- <Slider /> -->
 </main>
 
 <slot name="footer" />
