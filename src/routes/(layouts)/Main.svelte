@@ -8,6 +8,7 @@
   import { RefreshOutline } from 'flowbite-svelte-icons';
   import time from '$lib/stores/time';
   import { onDestroy } from 'svelte';
+  import ForegroundFrame from '$lib/components/Board/ForegroundFrame.svelte';
 
   const now = new Date();
   const hours = now.getHours();
@@ -32,6 +33,7 @@
   onDestroy(unsubscribe);
 </script>
 
+<ForegroundFrame />
 <BackgroundFrame component={ClearOrCloudy} />
 <main class="dboard">
   <slot name="countdown-bar" />
