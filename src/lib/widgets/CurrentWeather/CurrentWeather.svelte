@@ -16,21 +16,19 @@
   $: highlightColor = fahrenheitToColorShade(current);
   $: isDay = day === 1;
 
-  onMount(() => {
-    switch (isDay) {
-      case true:
-        document.documentElement.classList.toggle('light', true);
-        document.documentElement.classList.toggle('dark', false);
-        localStorage.setItem('color-theme', 'light');
-        break;
+  switch (isDay) {
+    case true:
+      document.documentElement.classList.toggle('light', true);
+      document.documentElement.classList.toggle('dark', false);
+      localStorage.setItem('color-theme', 'light');
+      break;
 
-      default:
-        document.documentElement.classList.toggle('light', false);
-        document.documentElement.classList.toggle('dark', true);
-        localStorage.setItem('color-theme', 'dark');
-        break;
-    }
-  });
+    default:
+      document.documentElement.classList.toggle('light', false);
+      document.documentElement.classList.toggle('dark', true);
+      localStorage.setItem('color-theme', 'dark');
+      break;
+  }
 </script>
 
 <div transition:fade class="card-container relative">
