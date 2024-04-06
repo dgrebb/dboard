@@ -45,15 +45,3 @@
     <img src={file} alt="" />
   {/key}
 </div>
-
-<style>
-  .current-music {
-    flex-grow: 1;
-    display: flex;
-    align-self: end;
-    justify-self: end;
-    img {
-      opacity: 0.77;
-    }
-  }
-</style>

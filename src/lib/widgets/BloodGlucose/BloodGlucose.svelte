@@ -55,7 +55,7 @@
 
 <div
   transition:fade
-  class="card-container relative"
+  class="dboard__grid__item relative"
   style={`--mainColor: ${mainColor}`}
 >
   {#key loaded}
