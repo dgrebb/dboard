@@ -16,23 +16,29 @@
   $: highlightColor = fahrenheitToColorShade(current);
   $: isDay = day === 1;
 
-  switch (isDay) {
-    case true:
-      document.documentElement.classList.toggle('light', true);
-      document.documentElement.classList.toggle('dark', false);
-      localStorage.setItem('color-theme', 'light');
-      break;
+  onMount(() => {
+    if (isDay !== undefined) {
+      switch (isDay) {
+        case true:
+          document.documentElement.classList.toggle('light', true);
+          document.documentElement.classList.toggle('dark', false);
+          localStorage.setItem('color-theme', 'light');
+          console.log(day, 'day');
+          break;
 
-    default:
-      document.documentElement.classList.toggle('light', false);
-      document.documentElement.classList.toggle('dark', true);
-      localStorage.setItem('color-theme', 'dark');
-      break;
-  }
+        default:
+          document.documentElement.classList.toggle('light', false);
+          document.documentElement.classList.toggle('dark', true);
+          localStorage.setItem('color-theme', 'dark');
+          console.log(day, 'night');
+          break;
+      }
+    }
+  });
 </script>
 
-<div transition:fade class="card-container relative">
-  {#if weather}
+<div transition:fade class="dboard__grid__item relative">
+  {#key weather}
     <div
       class="dboard__card border-none bg-transparent"
       style={`--mainColor: ${highlightColor}`}
@@ -50,5 +56,5 @@
         >
       </h1>
     </div>
-  {/if}
+  {/key}
 </div>
