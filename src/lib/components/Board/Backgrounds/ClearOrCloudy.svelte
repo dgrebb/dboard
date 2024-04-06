@@ -92,7 +92,7 @@ full screen for better viewing -->
     class="sky"
     style={`opacity: ${twilightTransition * 10}; --cloudCoverPercent: ${cloudCover / 100}`}
   >
-    <div class="noite"></div>
+    <div class="noite backdrop-blur-[100rem]"></div>
     <div class="nuvem">
       <Clouds />
     </div>

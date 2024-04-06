@@ -38,14 +38,15 @@ body {
   }
 }
 
-.card-container {
-  overflow: hidden;
-  border-radius: 0.5rem;
-  &:not(.empty) {
-    @apply bg-orange-200 bg-opacity-50 shadow-xl;
-    html.dark & {
-      @apply bg-blue-950 bg-opacity-50;
-    }
+.foreground {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: transparent;
+  opacity: 0.1;
+  z-index: 10;
+  html.dark & {
+    background-color: #c4c100;
   }
 }
 
@@ -54,6 +55,27 @@ body {
   position: relative;
   height: 100vh;
   width: 100vw;
+  padding: 1.5rem;
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    height: 100%;
+    @media screen and (min-width: 1280px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    &__item {
+      max-height: 333px;
+      overflow: hidden;
+      border-radius: 0.5rem;
+      &:not(.empty) {
+        @apply bg-orange-200 bg-opacity-50 shadow-xl;
+        html.dark & {
+          @apply bg-blue-950 bg-opacity-50;
+        }
+      }
+    }
+  }
   &__card {
     display: flex;
     height: 100%;
@@ -107,6 +129,22 @@ body {
   }
 }
 
+.current-music {
+  display: flex;
+  align-self: end;
+  justify-self: end;
+  grid-column: 1 / -1;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  img {
+    opacity: 0.77;
+    max-width: 504px;
+    @media screen and (min-width: 1280px) {
+      max-height: 300px;
+    }
+  }
+}
+
 @keyframes float {
   0% {
     transform: translatey(0px);
@@ -127,15 +165,3 @@ body {
     }
   }
 } */
-
-.foreground {
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  background-color: transparent;
-  opacity: 0.1;
-  z-index: 10;
-  html.dark & {
-    background-color: #c4c100;
-  }
-}

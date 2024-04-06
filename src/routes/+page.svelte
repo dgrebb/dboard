@@ -14,6 +14,7 @@
   import solar from '$lib/stores/solar';
 
   import type { ChartSeriesGlucose, DBoardItem, WeatherData } from '$lib/types';
+  import Controls from '$lib/components/Controls/Controls.svelte';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
@@ -88,46 +89,19 @@
 </script>
 
 <Main>
-  <div slot="additional-controls">
-    <Button
-      size="sm"
-      disabled={!webSocketEstablished}
-      color="dark"
-      class="border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
-      on:click={closeSocket}><XCircleOutline /></Button
-    >
+  <Controls
+    {webSocketEstablished}
+    on:closeSocket={closeSocket}
+    on:establishWebSocket={establishWebSocket}
+  />
 
-    <Button
-      size="sm"
-      disabled={webSocketEstablished}
-      color="dark"
-      class="border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
-      on:click={() => establishWebSocket()}><ArrowUpDownOutline /></Button
-    >
-  </div>
-
-  <div class="grid h-full grid-cols-2 justify-stretch gap-6 p-7 xl:grid-cols-3">
+  <div class="dboard__grid">
     {#each items as { title, content: { small: { value: label }, large: { value: mainDisplayValue } }, series: data }}
       <BloodGlucose {data} {label} {mainDisplayValue} />
     {/each}
     {#if $weather}
       <CurrentWeather />
     {/if}
-    <div class="card-container empty relative">
-      <div class="dboard__card"></div>
-    </div>
-    <div class="card-container empty relative">
-      <div class="dboard__card"></div>
-    </div>
-    <div class="card-container empty relative">
-      <div class="dboard__card"></div>
-    </div>
-    <div class="card-container empty relative">
-      <div class="dboard__card"></div>
-    </div>
-    <div class="card-container empty relative">
-      <div class="dboard__card"></div>
-    </div>
     <CurrentMusic />
   </div>
   <div slot="countdown-bar">
