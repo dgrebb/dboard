@@ -3,7 +3,8 @@
   import { fade } from 'svelte/transition';
 
   let file: string;
-  $: file = ''; // Reactive statement to recompute file when it changes
+  $: file = '';
+  $: modal = false;
 
   const refreshInterval = 5000; // Interval in milliseconds to check for updates
   let refreshTimer: NodeJS.Timeout; // Timer to periodically check for updates
@@ -14,9 +15,9 @@
     pollFile(); // Start polling for changes when the component mounts
   });
 
-  onDestroy(() => {
-    clearInterval(refreshTimer); // Clear the timer when the component is destroyed
-  });
+  function toggleModal() {
+    modal = !modal;
+  }
 
   async function pollFile() {
     try {
@@ -38,10 +39,32 @@
       refreshTimer = setTimeout(pollFile, refreshInterval); // Schedule the next poll
     }
   }
+
+  onDestroy(() => {
+    clearInterval(refreshTimer); // Clear the timer when the component is destroyed
+  });
 </script>
 
 <div class="current-music" transition:fade>
   {#key file}
-    <img src={file} alt="" />
+    <img src={file} alt="" on:click={toggleModal} />
   {/key}
 </div>
+
+{#if modal}
+  <div class="music-modal" transition:fade>
+    <img src={file} alt="" on:click={toggleModal} />
+  </div>
+{/if}
+
+<style>
+  .music-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+  }
+</style>
