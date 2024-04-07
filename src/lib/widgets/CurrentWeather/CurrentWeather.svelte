@@ -5,36 +5,14 @@
   import Barometer from 'svelte-weather/Barometer.svelte';
   import WeatherIcon from './WeatherIcon.svelte';
   import { onMount } from 'svelte';
-  import type { CurrentWeather } from '$lib/types';
   import weather from '$lib/stores/weather';
 
   $: ({
     temperature_2m: current,
     weather_code: weatherCode,
-    is_day: day,
+    is_day: isDay,
   } = $weather);
   $: highlightColor = fahrenheitToColorShade(current);
-  $: isDay = day === 1;
-
-  onMount(() => {
-    if (isDay !== undefined) {
-      switch (isDay) {
-        case true:
-          document.documentElement.classList.toggle('light', true);
-          document.documentElement.classList.toggle('dark', false);
-          localStorage.setItem('color-theme', 'light');
-          console.log(day, 'day');
-          break;
-
-        default:
-          document.documentElement.classList.toggle('light', false);
-          document.documentElement.classList.toggle('dark', true);
-          localStorage.setItem('color-theme', 'dark');
-          console.log(day, 'night');
-          break;
-      }
-    }
-  });
 </script>
 
 <div transition:fade class="dboard__grid__item relative">

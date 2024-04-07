@@ -98,7 +98,7 @@ full screen for better viewing -->
     </div>
     <div class="constelacao"></div>
 
-    <div class="lua hidden dark:visible">
+    <div class="lua">
       <div class="textura"></div>
     </div>
   </div>

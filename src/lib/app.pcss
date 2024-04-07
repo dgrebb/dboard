@@ -11,7 +11,8 @@
 html,
 body {
   min-height: 100vh;
-  font-family: var(--font-os) !important;
+  font-family: var(--font-nasa) !important;
+  /* cursor: hidden; */
 }
 
 body {
@@ -69,7 +70,7 @@ body {
       overflow: hidden;
       border-radius: 0.5rem;
       &:not(.empty) {
-        @apply bg-orange-200 bg-opacity-50 shadow-xl;
+        @apply bg-orange-200 bg-opacity-50;
         html.dark & {
           @apply bg-blue-950 bg-opacity-50;
         }
@@ -99,6 +100,7 @@ body {
   /* left: auto; */
   position: absolute;
   z-index: 0;
+  will-change: transform;
   animation: float 9s ease-in-out infinite;
   mix-blend-mode: hard-light;
   /* filter: saturate(10) brightness(75%); */
@@ -137,8 +139,17 @@ body {
   overflow: hidden;
   border-radius: 0.5rem;
   img {
-    opacity: 0.77;
+    cursor: pointer;
+    opacity: 0.5;
     max-width: 504px;
+    will-change: opacity;
+    transition: opacity 0.5s linear;
+    &:hover,
+    &:focus,
+    &active,
+    &:focus-visible {
+      opacity: 1;
+    }
     @media screen and (min-width: 1280px) {
       max-height: 300px;
     }
@@ -147,13 +158,13 @@ body {
 
 @keyframes float {
   0% {
-    transform: translatey(0px);
+    transform: trans(0px);
   }
   50% {
-    transform: translatey(-18px);
+    transform: translateY(-18px);
   }
   100% {
-    transform: translatey(0px);
+    transform: translateY(0px);
   }
 }
 

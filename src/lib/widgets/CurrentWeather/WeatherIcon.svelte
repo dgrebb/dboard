@@ -35,7 +35,7 @@
   };
 
   export let weatherCode: number = 0;
-  export let isDay: boolean = true;
+  export let isDay: number = 1;
 
   $: iconType = weatherCode;
   let icon: Icon;
@@ -155,7 +155,7 @@
   };
 
   onMount(() => {
-    icon = isDay ? dayIconMap[iconType] : nightIconMap[iconType];
+    icon = isDay === 1 ? dayIconMap[iconType] : nightIconMap[iconType];
   });
 </script>
 
