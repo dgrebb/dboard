@@ -1,18 +1,32 @@
 @font-face {
-  src: url('/fonts/OpenSans-Light.ttf') format('ttf');
-  font-family: 'Open Sans Extra Light';
+  src: url('/fonts/PublicSans-Bold.woff2') format('woff2');
+  font-family: 'Public Sans Bold';
   font-display: swap;
 }
 
 @font-face {
-  src: url('/fonts/OpenSans-Regular.ttf') format('ttf');
-  font-family: 'Open Sans';
+  src: url('/fonts/PublicSans-Regular.woff2') format('woff2');
+  font-family: 'Public Sans';
+  font-display: swap;
+}
+
+@font-face {
+  src: url('/fonts/uni-sans.heavy-caps-webfont.woff2') format('woff2');
+  font-family: 'Uni Sans';
+  font-display: swap;
+}
+
+@font-face {
+  src: url('/fonts/Nasalization-Regular.woff2') format('woff2');
+  font-family: 'Nasalization Regular';
   font-display: swap;
 }
 
 :root {
-  --font-osxl: 'Open Sans Extra Light', sans-serif;
-  --font-os: 'Open Sans', sans-serif;
-  --font-osb: 'Open Sans Bold', sans-serif;
-  --font-osbl: 'Open Sans Black', sans-serif;
+  --font-psxl: 'Public Sans Extra Light', sans-serif;
+  --font-ps: 'Public Sans', sans-serif;
+  --font-psb: 'Public Sans Bold', sans-serif;
+  --font-psbl: 'Public Sans Black', sans-serif;
+  --font-us: 'Uni Sans', sans-serif;
+  --font-nasa: 'Nasalization Regular', sans-serif;
 }

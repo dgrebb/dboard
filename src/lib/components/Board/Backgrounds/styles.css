@@ -117,6 +117,10 @@
   animation-iteration-count: infinite;
   animation-duration: 10s;
   z-index: 3;
+  display: none;
+  /* html.dark & {
+    display: block;
+  } */
 }
 
 .lua .textura {

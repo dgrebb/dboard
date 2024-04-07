@@ -13,7 +13,12 @@
   import weather from '$lib/stores/weather';
   import solar from '$lib/stores/solar';
 
-  import type { ChartSeriesGlucose, DBoardItem, WeatherData } from '$lib/types';
+  import type {
+    ChartSeriesGlucose,
+    CurrentWeatherType,
+    DBoardItem,
+    WeatherData,
+  } from '$lib/types';
   import Controls from '$lib/components/Controls/Controls.svelte';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
@@ -44,7 +49,7 @@
   };
 
   let items: DBoardItem[] = [];
-  let weatherData: CurrentWeather;
+  let weatherData: CurrentWeatherType;
 
   const logEvent = (str: string) => {
     log = [...log, str];
@@ -63,10 +68,39 @@
 
     $weather = weatherData;
     $solar = solarData;
+
+    nightDay(weatherData.is_day);
   };
 
   const closeSocket = () => {
     ws?.close();
+  };
+
+  export const nightDay = async (isDay) => {
+    if (isDay !== undefined) {
+      switch (isDay) {
+        case 1:
+          document.documentElement.classList.toggle('light', true);
+          document.documentElement.classList.toggle('dark', false);
+          localStorage.setItem('color-theme', 'light');
+          console.log(isDay, 'day');
+          break;
+
+        case 0:
+          document.documentElement.classList.toggle('light', false);
+          document.documentElement.classList.toggle('dark', true);
+          localStorage.setItem('color-theme', 'dark');
+          console.log(isDay, 'night');
+          break;
+
+        default:
+          document.documentElement.classList.toggle('light', false);
+          document.documentElement.classList.toggle('dark', true);
+          localStorage.setItem('color-theme', 'dark');
+          console.log(isDay, 'night');
+          break;
+      }
+    }
   };
 
   onMount(async () => {
