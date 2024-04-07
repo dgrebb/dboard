@@ -52,8 +52,14 @@
 </div>
 
 {#if modal}
-  <div class="music-modal" transition:fade>
-    <img src={file} alt="" on:click={toggleModal} />
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <div
+    class="music-modal"
+    transition:fade
+    on:click={toggleModal}
+    on:keydown={toggleModal}
+  >
+    <img src={file} alt="" />
   </div>
 {/if}
 
