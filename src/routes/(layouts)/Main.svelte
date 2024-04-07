@@ -30,6 +30,7 @@
     invalidateAll();
     localStorage.removeItem('color-theme');
   }
+
   onDestroy(unsubscribe);
 </script>
 
