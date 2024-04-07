@@ -5,9 +5,9 @@
   import { onMount } from 'svelte';
   import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
-  import CurrentWeather from '$lib/widgets/CurrentWeather/CurrentWeather.svelte';
-  import BloodGlucose from '$lib/widgets/BloodGlucose/BloodGlucose.svelte';
-  import CurrentMusic from '$lib/widgets/CurrentMusic/CurrentMusic.svelte';
+  import CurrentWeather from '$lib/components/widgets/CurrentWeather/CurrentWeather.svelte';
+  import BloodGlucose from '$lib/components/widgets/BloodGlucose/BloodGlucose.svelte';
+  import CurrentMusic from '$lib/components/widgets/CurrentMusic/CurrentMusic.svelte';
   import updateBackgroundColorGradient from '$lib/background';
   import time from '$lib/stores/time';
   import weather from '$lib/stores/weather';
