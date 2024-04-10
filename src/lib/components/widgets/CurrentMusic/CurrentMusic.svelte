@@ -3,6 +3,9 @@
   import { fade } from 'svelte/transition';
 
   let file: string;
+  let PUBLIC_MUSIC_TITLE: string,
+    PUBLIC_MUSIC_ARTIST: string,
+    PUBLIC_MUSIC_ALBUM: string;
   $: file = '';
   $: modal = false;
 
@@ -14,6 +17,8 @@
   onMount(() => {
     pollFile(); // Start polling for changes when the component mounts
   });
+
+  let MUSIC_TITLE, MUSIC_ARTIST, MUSIC_ALBUM;
 
   function toggleModal() {
     modal = !modal;
@@ -36,6 +41,8 @@
     } catch (error) {
       console.error('Error polling file:', error);
     } finally {
+      ({ PUBLIC_MUSIC_TITLE, PUBLIC_MUSIC_ARTIST, PUBLIC_MUSIC_ALBUM } =
+        await import('$env/static/public'));
       refreshTimer = setTimeout(pollFile, refreshInterval); // Schedule the next poll
     }
   }
@@ -45,32 +52,40 @@
   });
 </script>
 
-<div class="current-music" transition:fade>
-  {#key file}
-    <img src={file} alt="" on:click={toggleModal} />
-  {/key}
-</div>
+{#if !modal}
+  <div
+    class="current-music"
+    transition:fade
+    on:click={toggleModal}
+    on:keydown={toggleModal}
+    role="switch"
+    tabindex="0"
+    aria-checked="false"
+  >
+    <div class="current-music__info flex flex-col">
+      <h1>{PUBLIC_MUSIC_TITLE}</h1>
+      <h2>{PUBLIC_MUSIC_ARTIST}</h2>
+      <h3>{PUBLIC_MUSIC_ALBUM}</h3>
+    </div>
+    {#key file}
+      <img src={file} alt="{PUBLIC_MUSIC_ALBUM} Artwork" />
+    {/key}
+  </div>
+{/if}
 
 {#if modal}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
-    class="music-modal"
+    class="current-music__modal"
     transition:fade
     on:click={toggleModal}
     on:keydown={toggleModal}
   >
+    <div class="current-music__modal__info flex flex-col">
+      <h2>{PUBLIC_MUSIC_ARTIST}</h2>
+      <h1>{PUBLIC_MUSIC_TITLE}</h1>
+      <h3>{PUBLIC_MUSIC_ALBUM}</h3>
+    </div>
     <img src={file} alt="" />
   </div>
 {/if}
-
-<style>
-  .music-modal {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 40;
-  }
-</style>
