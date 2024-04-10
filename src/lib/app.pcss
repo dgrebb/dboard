@@ -12,7 +12,7 @@ html,
 body {
   min-height: 100vh;
   font-family: var(--font-nasa) !important;
-  /* cursor: hidden; */
+  /* cursor: none; */
 }
 
 body {
@@ -45,6 +45,7 @@ body {
   width: 100vw;
   background-color: transparent;
   opacity: 0.1;
+  pointer-events: none;
   z-index: 10;
   html.dark & {
     background-color: #c4c100;
@@ -131,19 +132,41 @@ body {
   }
 }
 
+.current-music,
+.current-music__modal {
+  h1,
+  h2,
+  h3 {
+    display: block;
+    color: white;
+    mix-blend-mode: difference;
+    opacity: 0.77;
+  }
+  h3 {
+    opacity: 0.5;
+  }
+}
+
 .current-music {
   display: flex;
   align-self: end;
-  justify-self: end;
   grid-column: 1 / -1;
   overflow: hidden;
   border-radius: 0.5rem;
+  &__info {
+    width: 100%;
+    text-align: right;
+    padding-right: 1.5rem;
+  }
   img {
+    align-self: end;
+    justify-self: end;
     cursor: pointer;
     opacity: 0.5;
     max-width: 504px;
     will-change: opacity;
     transition: opacity 0.5s linear;
+    position: relative;
     &:hover,
     &:focus,
     &active,
@@ -152,6 +175,28 @@ body {
     }
     @media screen and (min-width: 1280px) {
       max-height: 300px;
+    }
+  }
+
+  &__modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+    &__info {
+      display: flex;
+      flex-direction: row;
+      h1,
+      h2,
+      h3 {
+        display: inline;
+        padding: 0 1rem 1rem;
+        font-size: 1.5rem;
+      }
     }
   }
 }

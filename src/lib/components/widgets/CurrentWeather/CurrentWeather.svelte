@@ -13,9 +13,23 @@
     is_day: isDay,
   } = $weather);
   $: highlightColor = fahrenheitToColorShade(current);
+  $: touched = false;
+
+  function handleTouched() {
+    touched = !touched;
+  }
 </script>
 
-<div transition:fade class="dboard__grid__item relative">
+<div
+  on:click={handleTouched}
+  on:keydown={handleTouched}
+  tabindex="-1"
+  transition:fade
+  role="button"
+  class="dboard__grid__item relative border-4 transition-colors {touched
+    ? `border-blue-800`
+    : `border-transparent`}"
+>
   {#key weather}
     <div
       class="dboard__card border-none bg-transparent"
