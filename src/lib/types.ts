@@ -42,3 +42,9 @@ export type SolarData = {
   sunrise: Date[];
   sunset: Date[];
 };
+
+export type MusicData = {
+  album: string;
+  artist: string;
+  title: string;
+};
