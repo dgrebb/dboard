@@ -44,7 +44,7 @@ body {
   height: 100vh;
   width: 100vw;
   background-color: transparent;
-  opacity: 0.1;
+  opacity: 0.05;
   pointer-events: none;
   z-index: 10;
   html.dark & {
@@ -102,7 +102,7 @@ body {
   position: absolute;
   z-index: 0;
   will-change: transform;
-  animation: float 9s ease-in-out infinite;
+  /* animation: float 9s ease-in-out infinite; */
   mix-blend-mode: hard-light;
   /* filter: saturate(10) brightness(75%); */
   transition: opacity 5s 5s linear;
@@ -151,7 +151,6 @@ body {
   align-self: end;
   grid-column: 1 / -1;
   overflow: hidden;
-  border-radius: 0.5rem;
   &__info {
     width: 100%;
     text-align: right;
@@ -164,6 +163,7 @@ body {
     cursor: pointer;
     max-width: 504px;
     will-change: opacity;
+    border-radius: 0.5rem;
     transition: opacity 0.5s linear;
     position: relative;
     &:hover,
