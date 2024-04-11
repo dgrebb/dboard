@@ -146,16 +146,20 @@ body {
 }
 
 .current-music {
+  min-height: 300px;
   opacity: 0.77;
   display: flex;
+  align-items: flex-end;
   align-self: end;
   grid-column: 1 / -1;
   overflow: hidden;
+  justify-content: end;
   &__info {
     width: 100%;
     text-align: right;
-    padding-right: 1.5rem;
     filter: invert();
+    right: 22rem;
+    position: absolute;
   }
   img {
     align-self: end;
