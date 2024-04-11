@@ -138,8 +138,6 @@ body {
   h2,
   h3 {
     display: block;
-    color: white;
-    mix-blend-mode: difference;
     opacity: 0.5;
   }
   h2 {
@@ -148,6 +146,7 @@ body {
 }
 
 .current-music {
+  opacity: 0.77;
   display: flex;
   align-self: end;
   grid-column: 1 / -1;
@@ -157,12 +156,12 @@ body {
     width: 100%;
     text-align: right;
     padding-right: 1.5rem;
+    filter: invert();
   }
   img {
     align-self: end;
     justify-self: end;
     cursor: pointer;
-    opacity: 0.5;
     max-width: 504px;
     will-change: opacity;
     transition: opacity 0.5s linear;
@@ -187,20 +186,29 @@ body {
     align-items: center;
     background: rgba(0, 0, 0, 0.5);
     z-index: 40;
+    &__audio-animation,
     &__info {
       display: flex;
       flex-direction: row;
+    }
+    &__info {
       h1,
       h2,
       h3 {
+        color: white;
         display: inline;
-        padding: 0 1rem 1rem;
+        padding: 1rem 1rem 0;
         font-size: 1.5rem;
       }
     }
+    img {
+      @apply shadow-xl;
+    }
     &__audio-animation {
-      position: absolute;
-      bottom: -2rem;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      top: 3rem;
     }
   }
 }
