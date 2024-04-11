@@ -44,7 +44,7 @@
           const transition = function () {
             setTimeout(() => {
               reset();
-            }, 333);
+            }, 1000);
           };
 
           const reset = function () {
@@ -55,8 +55,7 @@
 
           setTimeout(() => {
             file = newFile;
-            newFile = '';
-            reset();
+            transition();
           }, 1000);
         }
       } else {
