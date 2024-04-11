@@ -54,7 +54,7 @@
     noite ? (noite.innerHTML = estrela) : null;
   }
 
-  $: console.log('🚀 ~ onMount ~ $solar:', $solar);
+  // $: console.log('🚀 ~ onMount ~ $solar:', $solar);
   $: rise = new Date($solar?.sunrise[0]) || false;
   $: set = new Date($solar?.sunset[0]) || false;
   if (rise && set) {
@@ -65,17 +65,17 @@
     cloudCover = $weather.cloud_cover;
   }
 
-  $: twilightTransition =
-    $time < riseMinutes - 60 || $time > setMinutes + 30
+  $: twilightOpacity =
+    $time < riseMinutes - 60 || $time > setMinutes + 120
       ? 0.9999
       : $time > riseMinutes && $time < setMinutes
         ? 0.0
         : $time > 1140
-          ? -($time + 60 - setMinutes) / setMinutes
+          ? ($time + 30 - setMinutes) / setMinutes
           : -($time - 30 - riseMinutes) / riseMinutes;
 
   // DEBUG
-  // console.log('🚀 ~ onMount ~ twilightTransition:', twilightTransition);
+  // console.log('🚀 ~ onMount ~ twilightOpacity:', twilightOpacity);
   // console.log('🚀 ~ onMount ~ riseMinutes:', rise, riseMinutes);
   // console.log('🚀 ~ onMount ~ setMinutes:', set, setMinutes);
 
@@ -87,10 +87,10 @@
 <!-- create by adriano.interaminense@gmail.com
 full screen for better viewing -->
 
-{#if typeof twilightTransition === 'number'}
+{#if typeof twilightOpacity === 'number'}
   <div
     class="sky"
-    style={`opacity: ${twilightTransition * 10}; --cloudCoverPercent: ${cloudCover / 100}`}
+    style={`opacity: ${twilightOpacity * 10}; --cloudCoverPercent: ${cloudCover / 100}`}
   >
     <div class="noite backdrop-blur-[100rem]"></div>
     <div class="nuvem">
