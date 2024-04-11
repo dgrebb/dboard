@@ -1,4 +1,4 @@
-<div class="current-music__modal__audio-animation">
+<div class="current-music__modal__audio-animation audio">
   <span></span>
   <span></span>
   <span></span>
@@ -6,23 +6,18 @@
 </div>
 
 <style>
-  html,
-  body {
-    height: 100%;
-    background: #dbdbdb;
-  }
   .audio {
     width: 40px;
     height: 40px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
     transform: translate(-50%, -50%);
+    left: 50%;
+    top: 3rem;
   }
   .audio span {
     width: 10px;
     height: 20px;
-    background: #3cabea;
+    background: white;
+    background-blend-mode: overlay;
     border-radius: 2px;
     position: absolute;
     bottom: 0;
