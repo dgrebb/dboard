@@ -2,7 +2,8 @@
   import AudioWave from '$lib/components/Animations/AudioWave.svelte';
   import type { MusicData } from '$lib/types';
   import { onMount, onDestroy } from 'svelte';
-  import { fade } from 'svelte/transition';
+  import { cubicIn, cubicInOut } from 'svelte/easing';
+  import { fade, blur } from 'svelte/transition';
 
   let file: string, title: string, album: string, artist: string;
   $: file = '/album_art.png';
@@ -22,8 +23,6 @@
     pollFile(); // Start polling for changes when the component mounts
   });
 
-  let MUSIC_TITLE, MUSIC_ARTIST, MUSIC_ALBUM;
-
   function toggleModal() {
     modal = !modal;
   }
@@ -38,25 +37,7 @@
           previousContent = currentContent; // Update the previous file content
           const music = await fetch('/api/music');
           ({ album, title, artist } = await music.json());
-          transitionImages = true;
-          newFile = `/album_art.png?_=${timestamp}`;
-
-          const transition = function () {
-            setTimeout(() => {
-              reset();
-            }, 1000);
-          };
-
-          const reset = function () {
-            setTimeout(() => {
-              transitionImages = false;
-            }, 1000);
-          };
-
-          setTimeout(() => {
-            file = newFile;
-            transition();
-          }, 1000);
+          file = `/album_art.png?_=${timestamp}`;
         }
       } else {
         file = ''; // Clear the file path if the file does not exist
@@ -75,38 +56,31 @@
 </script>
 
 {#if !modal}
-  <div class="current-music" transition:fade>
-    <div class="current-music__info flex flex-col">
-      <h1>{title}</h1>
-      <h2>{artist}</h2>
-      <h3>{album}</h3>
-    </div>
-    <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
-    <img
-      src={file}
-      alt="hi"
-      on:click={toggleModal}
-      on:keydown={toggleModal}
-      role="switch"
-      tabindex="0"
-      aria-checked="false"
-      class="transition-opacity {transitionImages
-        ? 'opacity-0'
-        : 'opacity-100'}"
-    />
-    <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
-    <img
-      src={newFile}
-      alt="hi"
-      on:click={toggleModal}
-      on:keydown={toggleModal}
-      role="switch"
-      tabindex="0"
-      aria-checked="false"
-      class="transition-opacity {transitionImages
-        ? 'opacity-100'
-        : 'opacity-0'}"
-    />
+  <div class="current-music">
+    {#key file}
+      <div
+        class="current-music__info flex flex-col"
+        transition:blur={{ amount: 10 }}
+      >
+        <h1>{title}</h1>
+        <h2>{artist}</h2>
+        <h3>{album}</h3>
+      </div>
+      <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
+      <img
+        src={file}
+        alt="{album} Artwork"
+        on:click={toggleModal}
+        on:keydown={toggleModal}
+        role="switch"
+        tabindex="0"
+        aria-checked="false"
+        class="transition-opacity {transitionImages
+          ? 'opacity-0'
+          : 'opacity-100'}"
+        transition:fade={{ duration: 500, easing: cubicInOut }}
+      />
+    {/key}
   </div>
 {/if}
 
@@ -118,12 +92,17 @@
     on:click={toggleModal}
     on:keydown={toggleModal}
   >
-    <img src={file} alt="" />
-    <div class="current-music__modal__info flex flex-col">
-      <h1>{title}</h1>
-      <h2>{artist}</h2>
-      <h3>{album}</h3>
-    </div>
+    {#key file}
+      <img src={file} alt="{album} Artwork" transition:fade />
+      <div
+        class="current-music__modal__info flex flex-col"
+        transition:blur={{ amount: 10 }}
+      >
+        <h1>{title}</h1>
+        <h2>{artist}</h2>
+        <h3>{album}</h3>
+      </div>
+    {/key}
     <AudioWave />
   </div>
 {/if}
