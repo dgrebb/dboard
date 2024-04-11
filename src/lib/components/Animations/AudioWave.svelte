@@ -10,8 +10,6 @@
     width: 40px;
     height: 40px;
     transform: translate(-50%, -50%);
-    left: 50%;
-    top: 3rem;
   }
   .audio span {
     width: 10px;
