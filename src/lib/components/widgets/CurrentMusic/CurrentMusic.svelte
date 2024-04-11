@@ -6,7 +6,7 @@
 
   let file: string, title: string, album: string, artist: string;
   $: file = '/album_art.png';
-  $: newFile = '';
+  $: newFile = '/album_art.png';
   $: modal = false;
   $: title = '';
   $: album = '';
@@ -39,18 +39,24 @@
           const music = await fetch('/api/music');
           ({ album, title, artist } = await music.json());
           transitionImages = true;
+          newFile = `/album_art.png?_=${timestamp}`;
+
+          const transition = function () {
+            setTimeout(() => {
+              reset();
+            }, 333);
+          };
 
           const reset = function () {
             setTimeout(() => {
-              file = newFile;
-              newFile = '';
               transitionImages = false;
             }, 1000);
           };
 
           setTimeout(() => {
+            file = newFile;
+            newFile = '';
             reset();
-            newFile = `/album_art.png?_=${timestamp}`;
           }, 1000);
         }
       } else {
@@ -76,38 +82,32 @@
       <h2>{artist}</h2>
       <h3>{album}</h3>
     </div>
-    {#key newFile}
-      {#if newFile.length < 1}
-        <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
-        <img
-          src={file}
-          alt="hi"
-          on:click={toggleModal}
-          on:keydown={toggleModal}
-          role="switch"
-          tabindex="0"
-          aria-checked="false"
-          class="transition-opacity {transitionImages
-            ? 'opacity-0'
-            : 'opacity-100'}"
-        />
-      {/if}
-      {#if newFile.length > 0}
-        <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
-        <img
-          src={newFile}
-          alt="hi"
-          on:click={toggleModal}
-          on:keydown={toggleModal}
-          role="switch"
-          tabindex="0"
-          aria-checked="false"
-          class="transition-opacity {transitionImages
-            ? 'opacity-100'
-            : 'opacity-0'}"
-        />
-      {/if}
-    {/key}
+    <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
+    <img
+      src={file}
+      alt="hi"
+      on:click={toggleModal}
+      on:keydown={toggleModal}
+      role="switch"
+      tabindex="0"
+      aria-checked="false"
+      class="transition-opacity {transitionImages
+        ? 'opacity-0'
+        : 'opacity-100'}"
+    />
+    <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
+    <img
+      src={newFile}
+      alt="hi"
+      on:click={toggleModal}
+      on:keydown={toggleModal}
+      role="switch"
+      tabindex="0"
+      aria-checked="false"
+      class="transition-opacity {transitionImages
+        ? 'opacity-100'
+        : 'opacity-0'}"
+    />
   </div>
 {/if}
 
