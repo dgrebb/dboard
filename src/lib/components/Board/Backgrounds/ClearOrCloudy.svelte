@@ -11,11 +11,10 @@
   let setMinutes = 19 * 60;
 
   function init() {
-    //estrelas
-
-    var style = ['style1', 'style2', 'style3', 'style4'];
-    var tam = ['tam1', 'tam1', 'tam1', 'tam2', 'tam3'];
-    var opacity = [
+    // Styles
+    const style = ['style1', 'style2', 'style3', 'style4'];
+    const tam = ['tam1', 'tam1', 'tam1', 'tam2', 'tam3'];
+    const opacity = [
       'opacity1',
       'opacity1',
       'opacity1',
@@ -24,34 +23,28 @@
       'opacity3',
     ];
 
-    function getRandomArbitrary(min: number, max: number) {
-      return Math.floor(Math.random() * (max - min)) + min;
+    // Utility to get random integer within range
+    const getRandomArbitrary = (min, max) =>
+      Math.floor(Math.random() * (max - min)) + min;
+
+    // Prepare stars
+    let starsHTML = '';
+    const qtdeEstrelas = 250;
+    const widthWindow = window.innerWidth * 2;
+    const heightWindow = window.innerHeight * 2;
+
+    for (let i = 0; i < qtdeEstrelas; i++) {
+      starsHTML += `<span class='estrela ${style[getRandomArbitrary(0, style.length)]} 
+      ${opacity[getRandomArbitrary(0, opacity.length)]} 
+      ${tam[getRandomArbitrary(0, tam.length)]}' 
+      style='animation-delay: .${getRandomArbitrary(0, 9)}s; 
+      left: ${getRandomArbitrary(0, widthWindow)}px; 
+      top: ${getRandomArbitrary(0, heightWindow)}px;'></span>`;
     }
 
-    var estrela = '';
-    var qtdeEstrelas = 250;
-    var noite: HTMLElement | null = document.querySelector('.constelacao');
-    var widthWindow = window.innerWidth * 2;
-    var heightWindow = window.innerHeight * 2;
-
-    for (var i = 0; i < qtdeEstrelas; i++) {
-      estrela +=
-        "<span class='estrela " +
-        style[getRandomArbitrary(0, 4)] +
-        ' ' +
-        opacity[getRandomArbitrary(0, 6)] +
-        ' ' +
-        tam[getRandomArbitrary(0, 5)] +
-        "' style='animation-delay: ." +
-        getRandomArbitrary(0, 9) +
-        's; left: ' +
-        getRandomArbitrary(0, widthWindow) +
-        'px; top: ' +
-        getRandomArbitrary(0, heightWindow) +
-        "px;'></span>";
-    }
-
-    noite ? (noite.innerHTML = estrela) : null;
+    // Append stars to the container
+    const nightSky = document.querySelector('.constelacao');
+    if (nightSky) nightSky.innerHTML = starsHTML;
   }
 
   // $: console.log('🚀 ~ onMount ~ $solar:', $solar);
