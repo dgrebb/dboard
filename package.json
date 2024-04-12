@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "vite dev --host --port 80",
+    "start": "sudo PORT=80 node build/index.js",
     "build": "vite build",
     "build.dev": "vite build --mode development",
-    "preview": "vite preview",
+    "preview": "vite preview --port 80",
     "test": "npm run test:integration && npm run test:unit",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -22,6 +23,7 @@
     "@sveltejs/adapter-auto": "^3.1.1",
     "@sveltejs/kit": "^2.5.2",
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
+    "@types/echarts": "^4.9.22",
     "@types/eslint": "^8.56.5",
     "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
@@ -29,6 +31,7 @@
     "autoprefixer": "^10.4.18",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
+    "echarts": "^5.5.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.35.1",
@@ -51,9 +54,7 @@
     "typescript": "^5.3.3",
     "vite": "^5.1.4",
     "vitest": "^1.3.1",
-    "ws": "^8.16.0",
-    "@types/echarts": "^4.9.22",
-    "echarts": "^5.5.0"
+    "ws": "^8.16.0"
   },
   "config": {
     "commitizen": {
@@ -78,5 +79,8 @@
       }
     }
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@sveltejs/adapter-node": "^5.0.1"
+  }
 }
