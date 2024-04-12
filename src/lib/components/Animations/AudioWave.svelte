@@ -10,18 +10,16 @@
     width: 40px;
     height: 40px;
     transform: translate(-50%, -50%);
+    position: relative; /* Ensure the absolute positioning of children is relative to this element */
   }
   .audio span {
     width: 10px;
-    height: 20px;
     background: white;
-    background-blend-mode: overlay;
     border-radius: 2px;
     position: absolute;
     bottom: 0;
-  }
-  .audio span:first-of-type {
-    margin-top: 0;
+    transform-origin: bottom;
+    will-change: transform; /* Optimized for GPU rendering */
   }
   .audio span:nth-child(1) {
     animation: animationTest 1.2s infinite ease-in-out;
@@ -40,14 +38,12 @@
     left: 36px;
   }
   @keyframes animationTest {
-    0% {
-      height: 2px;
+    0%,
+    100% {
+      transform: scaleY(0.1);
     }
     50% {
-      height: 20px;
-    }
-    100% {
-      height: 2px;
+      transform: scaleY(1);
     }
   }
 </style>
