@@ -77,5 +77,6 @@
 <style lang="postcss">
   .bg-value {
     color: var(--mainColor);
+    transition: color 30s ease-in;
   }
 </style>
