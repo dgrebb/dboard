@@ -138,6 +138,17 @@
     {/if}
     <CurrentMusic />
   </div>
+
+  <div class="dboard__grid">
+    {#each items as { title, content: { small: { value: label }, large: { value: mainDisplayValue } }, series: data }}
+      <BloodGlucose {data} {label} {mainDisplayValue} />
+    {/each}
+    {#if $weather}
+      <CurrentWeather />
+    {/if}
+    <CurrentMusic />
+  </div>
+
   <div slot="countdown-bar">
     <ProgressBar {refreshInterval} {seconds} />
   </div>
