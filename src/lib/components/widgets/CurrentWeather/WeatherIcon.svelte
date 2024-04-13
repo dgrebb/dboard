@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { P } from 'flowbite-svelte';
-  import { SvelteComponent, onMount, type ComponentType } from 'svelte';
+  import { onMount } from 'svelte';
+  import Icon from '@iconify/svelte';
+
   import {
     Cloudy,
     DayCloudy,
@@ -26,19 +27,20 @@
   import type { Fragment } from 'svelte/types/compiler/interfaces';
 
   interface IconMap {
-    [index: number]: Icon;
+    [index: number]: IconProps;
   }
 
-  type Icon = {
-    component: ComponentType;
+  type IconProps = {
+    icon: string;
     color: string;
   };
 
   export let weatherCode: number = 0;
+  console.log('🚀 ~ weatherCode:', weatherCode);
   export let isDay: number = 1;
 
   $: iconType = weatherCode;
-  let icon: Icon;
+  let icon: IconProps;
 
   const lightYellowGray = '#fbf1de';
   const brightGreen = '#37cc37';
@@ -54,102 +56,102 @@
 
   const dayIconMap: IconMap = {
     0: {
-      component: DaySunny,
+      icon: 'clear-day-fill',
       color: brightYellow,
     },
     1: {
-      component: DaySunnyOvercast,
+      icon: 'overcast-day-fill',
       color: paleGreen,
     },
     2: {
-      component: DayCloudy,
+      icon: 'partly-cloudy-day-fill',
       color: paleBlueGreenGray,
     },
     3: {
-      component: Cloudy,
+      icon: 'overcast-fill',
       color: '#62788d',
     },
     45: {
-      component: DayFog,
+      icon: 'fog-day-fill',
       color: paleBlueGreenGray,
     },
     48: {
-      component: Fog,
+      icon: 'fog-fill',
       color: paleBlueGreenGray,
     },
     51: {
-      component: DaySprinkle,
+      icon: 'overcast-day-drizzle-fill',
       color: daySprinkle,
     },
     53: {
-      component: DayRainMix,
+      icon: 'extreme-day-drizzle-fill',
       color: daySprinkle,
     },
     55: {
-      component: DayShowers,
+      icon: 'extreme-day-rain-fill',
       color: daySprinkle,
     },
     61: {
-      component: DayShowers,
+      icon: 'extreme-day-rain-fill',
       color: lightBlue,
     },
     63: {
-      component: DayRain,
+      icon: 'rain-fill',
       color: lightBlue,
     },
     65: {
-      component: Rain,
+      icon: 'extreme-rain-fill',
       color: lightBlue,
     },
   };
 
   const nightIconMap: IconMap = {
     0: {
-      component: NightClear,
+      icon: 'clear-night-fill',
       color: paleYellow,
     },
     1: {
-      component: NightPartlyCloudy,
+      icon: 'partly-cloudy-night-fill',
       color: lightYellowGray,
     },
     2: {
-      component: NightCloudy,
+      icon: 'overcast-night-fill',
       color: paleBlueGreenGray,
     },
     3: {
-      component: NightCloudyHigh,
+      icon: 'overcast-night-fill',
       color: paleBlueGreenGray,
     },
     45: {
-      component: NightFog,
+      icon: 'haze-night-fill',
       color: paleBlueGreenGray,
     },
     48: {
-      component: Fog,
+      icon: 'fog-night-fill',
       color: paleBlueGreenGray,
     },
     51: {
-      component: NightSprinkle,
+      icon: 'partly-cloudy-night-drizzle-fil',
       color: moonSprinkle,
     },
     53: {
-      component: NightRainMix,
+      icon: 'overcast-night-rain-fill',
       color: moonSprinkle,
     },
     55: {
-      component: NightRainMix,
+      icon: 'partly-cloudy-night-rain-fill',
       color: moonSprinkle,
     },
     61: {
-      component: NightShowers,
+      icon: 'extreme-night-rain-fill',
       color: darkBlue,
     },
     63: {
-      component: NightRain,
+      icon: 'extreme-night-rain-fill',
       color: darkBlue,
     },
     65: {
-      component: Rain,
+      icon: 'extreme-night-rain-fill',
       color: darkBlue,
     },
   };
@@ -161,8 +163,9 @@
 
 <div class="big-icon-wow">
   {#if icon !== undefined}
-    <svelte:component this={icon.component} size="300" color={icon.color} />
+    <Icon icon={`meteocons:` + icon.icon} color={icon.color} width={200} />
   {:else}
+    <Icon icon="meteocons:not-available-fill" width={200} />
     <p>{iconType}</p>
   {/if}
 </div>
