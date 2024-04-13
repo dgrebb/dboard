@@ -162,12 +162,12 @@ body {
   align-items: flex-end;
   align-self: end;
   grid-column: 1 / -1;
-  overflow: hidden;
   justify-content: end;
+  position: relative;
   &__info {
     width: 100%;
     text-align: right;
-    right: calc(504px + 3rem);
+    right: calc(504px + 1.5rem);
     position: absolute;
     font-size: 2rem;
     @media screen and (min-width: 1280px) {
@@ -236,6 +236,7 @@ body {
       display: flex;
       flex-direction: row;
       top: 3rem;
+      opacity: 0.77;
     }
   }
 }

@@ -1,49 +1,60 @@
 <div class="current-music__modal__audio-animation audio">
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
+  <div class="sound-icon disabled">
+    <div class="sound-wave">
+      <!-- Restoring original number of bars -->
+      <i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"
+      ></i>
+      <i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"
+      ></i>
+      <i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"
+      ></i>
+      <i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"
+      ></i>
+      <i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"
+      ></i>
+    </div>
+  </div>
 </div>
 
 <style>
-  .audio {
-    width: 40px;
-    height: 40px;
-    transform: translate(-50%, -50%);
-    position: relative; /* Ensure the absolute positioning of children is relative to this element */
+  .sound-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  .audio span {
-    width: 10px;
-    background: white;
-    border-radius: 2px;
-    position: absolute;
-    bottom: 0;
-    transform-origin: bottom;
-    will-change: transform; /* Optimized for GPU rendering */
+  .sound-wave {
+    width: 250px;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
-  .audio span:nth-child(1) {
-    animation: animationTest 1.2s infinite ease-in-out;
-    left: 0;
+  .bar {
+    display: block;
+    width: 3px;
+    height: 20px; /* Initial height set here */
+    border-radius: 3px;
+    margin-right: 1px;
+    background: var(--bgColor);
+    will-change: transform, opacity; /* Optimize for animations */
+    animation: sound linear infinite alternate;
   }
-  .audio span:nth-child(2) {
-    animation: animationTest 1.6s infinite ease-in-out;
-    left: 12px;
-  }
-  .audio span:nth-child(3) {
-    animation: animationTest 1.4s infinite ease-in-out;
-    left: 24px;
-  }
-  .audio span:nth-child(4) {
-    animation: animationTest 1s infinite ease-in-out;
-    left: 36px;
-  }
-  @keyframes animationTest {
+  @keyframes sound {
     0%,
     100% {
-      transform: scaleY(0.1);
+      transform: scaleY(0.2);
+      opacity: 0.33;
     }
     50% {
       transform: scaleY(1);
+      opacity: 1;
     }
+  }
+  /* Adjusting durations to vary the animation slightly per bar */
+  .bar:nth-child(odd) {
+    animation-duration: 0.6s;
+  }
+  .bar:nth-child(even) {
+    animation-duration: 0.8s;
   }
 </style>
