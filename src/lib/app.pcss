@@ -105,22 +105,20 @@ body {
   }
 }
 
+.current-weather {
+  &__wind-direction {
+    color: var(--highlightColor);
+  }
+}
+
 .big-icon-wow {
-  right: -3%;
-  top: -3%;
-  /* left: auto; */
   position: absolute;
   z-index: 0;
-  will-change: transform;
-  /* animation: float 9s ease-in-out infinite; */
   mix-blend-mode: hard-light;
-  /* filter: saturate(10) brightness(75%); */
   transition: opacity 5s 5s linear;
   opacity: 0;
-  @media screen(xl) {
-    left: 33%;
-    bottom: -3%;
-  }
+  right: 0;
+  top: 0;
   body.ready & {
     opacity: 1;
   }
