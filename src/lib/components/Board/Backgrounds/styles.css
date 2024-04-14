@@ -45,7 +45,7 @@
   width: 150%;
   height: 150%;
   transform-origin: center;
-  animation: rotate 600s infinite linear;
+  /* animation: rotate 600s infinite linear; */
   will-change: transform, opacity;
   transform: translate3d(0, 0, 0);
 }
