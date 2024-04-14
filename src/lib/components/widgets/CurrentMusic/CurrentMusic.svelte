@@ -57,7 +57,7 @@
 
 {#if !modal}
   <div class="current-music">
-    {#key file}
+    {#key title}
       <div
         class="current-music__info flex flex-col"
         transition:blur={{ amount: 10 }}
@@ -66,7 +66,9 @@
         <h2>{artist}</h2>
         <h3>{album}</h3>
       </div>
-      <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
+    {/key}
+    <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
+    {#key file}
       <img
         src={file}
         alt="{album} Artwork"
@@ -94,6 +96,8 @@
   >
     {#key file}
       <img src={file} alt="{album} Artwork" transition:fade />
+    {/key}
+    {#key title}
       <div
         class="current-music__modal__info flex flex-col"
         transition:blur={{ amount: 10 }}
