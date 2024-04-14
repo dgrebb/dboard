@@ -13,6 +13,7 @@ export type DBoardItem = {
   content: {
     small: {
       value: string;
+      direction: string;
       color: string;
     };
     large: {

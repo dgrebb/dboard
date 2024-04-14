@@ -20,6 +20,7 @@
     WeatherData,
   } from '$lib/types';
   import Controls from '$lib/components/Controls/Controls.svelte';
+  import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
@@ -130,8 +131,8 @@
   />
 
   <div class="dboard__grid">
-    {#each items as { title, content: { small: { value: label }, large: { value: mainDisplayValue } }, series: data }}
-      <BloodGlucose {data} {label} {mainDisplayValue} />
+    {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
+      <BloodGlucose {data} {label} {mainDisplayValue} {direction} />
     {/each}
     {#if $weather}
       <CurrentWeather />
@@ -140,13 +141,7 @@
   </div>
 
   <div class="dboard__grid">
-    {#each items as { title, content: { small: { value: label }, large: { value: mainDisplayValue } }, series: data }}
-      <BloodGlucose {data} {label} {mainDisplayValue} />
-    {/each}
-    {#if $weather}
-      <CurrentWeather />
-    {/if}
-    <CurrentMusic />
+    <OnOff />
   </div>
 
   <div slot="countdown-bar">
