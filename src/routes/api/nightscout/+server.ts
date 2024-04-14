@@ -42,6 +42,7 @@ export const GET = (async ({ url, locals }) => {
           content: {
             small: {
               value: 'mg/dl',
+              direction: nightscout[0]['direction'],
               color: '#CC4522',
             },
             large: {

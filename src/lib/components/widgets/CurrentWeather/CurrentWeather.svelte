@@ -2,10 +2,7 @@
   import Icon from '@iconify/svelte';
   import fahrenheitToColorShade from './tempColor';
   import { fade } from 'svelte/transition';
-  import { Card } from 'flowbite-svelte';
-  import Barometer from 'svelte-weather/Barometer.svelte';
   import WeatherIcon from './WeatherIcon.svelte';
-  import { onMount } from 'svelte';
   import weather from '$lib/stores/weather';
 
   $: ({
@@ -30,9 +27,7 @@
   tabindex="-1"
   transition:fade
   role="button"
-  class="dboard__grid__item current-weather relative border-4 transition-colors {touched
-    ? `border-blue-800`
-    : `border-transparent`}"
+  class="dboard__grid__item current-weather relative transition-colors"
 >
   {#key weather}
     <div
@@ -43,23 +38,25 @@
         Lansdale
         <Icon
           icon="ei:arrow-up"
-          class="current-weather__wind-direction inline-block mix-blend-darken"
+          class="current-weather__wind-direction inline-block mix-blend-darken brightness-50 dark:brightness-200"
           width={33}
-          style={`transform: rotate(${(windDirection + 180) % 360}deg); filter: brightness(33%)`}
+          style={`transform: rotate(${(windDirection + 180) % 360}deg);`}
           color={highlightColor}
         />
       </h2>
       <div class="current-weather__wind">
-        <p class="text-sm">
+        <p
+          class="text-sm text-[var(--mainColor)] brightness-50 dark:brightness-150"
+        >
           {windSpeed} ↝ {windGust}mph
         </p>
       </div>
       <WeatherIcon {weatherCode} {isDay} />
       <h1
-        class="dboard__card--value-lg mt-auto justify-end text-9xl text-[var(--mainColor)] brightness-75 dark:saturate-200"
+        class="dboard__card--value-lg mt-auto justify-end text-9xl text-[var(--mainColor)] brightness-50 dark:brightness-150 dark:saturate-200"
       >
         {Math.round(current)}<span
-          class="dboard__card__value-symbol text-[var(--mainColor)] brightness-150 dark:brightness-150"
+          class="dboard__card__value-symbol text-[var(--mainColor)] brightness-125 dark:brightness-150"
           >&deg;</span
         >
       </h1>
