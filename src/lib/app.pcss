@@ -119,13 +119,13 @@ body {
   position: absolute;
   z-index: 0;
   mix-blend-mode: hard-light;
-  transition: opacity 5s 5s linear;
   opacity: 0;
   right: 0;
   top: 0;
   will-change: transform;
+  animation: float 5s infinite;
   body.ready & {
-    opacity: 1;
+    opacity: 0.77;
   }
   html.dark & {
     mix-blend-mode: soft-light;
@@ -138,11 +138,14 @@ body {
       right: 0;
     }
   }
-  .big-icon-wow,
-  svg {
-    padding: 0;
-    margin: 0;
+  * {
+    overflow: visible;
   }
+}
+.big-icon-wow,
+.big-icon-wow svg {
+  padding: 0;
+  margin: 0;
 }
 
 .current-music,
@@ -192,7 +195,6 @@ body {
     justify-self: end;
     cursor: pointer;
     max-width: 504px;
-    will-change: opacity;
     border-radius: 0.5rem;
     transition: opacity 0.5s linear;
     position: absolute;
@@ -249,7 +251,7 @@ body {
     transform: trans(0px);
   }
   50% {
-    transform: translateY(-18px);
+    transform: translateY(-3px);
   }
   100% {
     transform: translateY(0px);

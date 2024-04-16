@@ -36,7 +36,6 @@
     border-radius: 3px;
     margin-right: 1px;
     background: var(--bgColor);
-    will-change: transform, opacity; /* Optimize for animations */
     animation: sound linear infinite alternate;
   }
   @keyframes sound {
