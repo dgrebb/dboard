@@ -18,6 +18,7 @@
   var max: number = Math.max(...BGSeries);
   let currentBG: number = Number(mainDisplayValue);
   $: directionIcon = 'iconamoon:cloud-download-light';
+  $: direction = direction;
 
   function extractBGValues(data: ChartSeriesGlucose[]) {
     return data.map((item) => item.sgv);
@@ -26,22 +27,30 @@
   onMount(() => {
     loaded = true;
 
-    switch (direction) {
-      case 'Up':
-        console.log('up');
-        directionIcon = 'ph:trend-up-light';
-        break;
-      case 'Flat':
-        console.log('up');
-        directionIcon = 'material-symbols-light:trending-flat';
-        break;
-      case 'Down':
-        console.log('up');
-        directionIcon = 'ph:trend-down-light';
-        break;
-      default:
-        console.log('error');
-        directionIcon = 'iconamoon:cloud-error-light';
+    if (direction) {
+      switch (direction) {
+        case 'Up':
+          console.log('up');
+          directionIcon = 'ph:trend-up-light';
+          break;
+        case 'FortyFiveUp':
+          console.log('up');
+          directionIcon = 'ph:trend-up-light';
+          break;
+        case 'Flat':
+          console.log('flat');
+          directionIcon = 'material-symbols-light:trending-flat';
+          break;
+        case 'Down':
+          console.log('down');
+          directionIcon = 'ph:trend-down-light';
+          break;
+        default:
+          console.log('error');
+          console.log('🩸 ~ GLU ~ direction not covered:', direction);
+          directionIcon = 'iconamoon:cloud-error-light';
+          break;
+      }
     }
 
     switch (true) {

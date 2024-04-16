@@ -33,6 +33,7 @@
   type IconProps = {
     icon: string;
     color: string;
+    name: string;
   };
 
   export let weatherCode: number = 0;
@@ -40,7 +41,9 @@
   export let isDay: number = 1;
 
   $: iconType = weatherCode;
-  let icon: IconProps;
+  $: icon = 'data-sunburst-24-filled';
+  $: color = '#85aba0';
+  $: name = 'Loading';
 
   const lightYellowGray = '#fbf1de';
   const brightGreen = '#37cc37';
@@ -56,114 +59,144 @@
 
   const dayIconMap: IconMap = {
     0: {
-      icon: 'clear-day-fill',
+      icon: 'fluent:weather-sunny-20-filled',
       color: brightYellow,
+      name: 'Clear',
     },
     1: {
-      icon: 'overcast-day-fill',
+      icon: 'material-symbols-light:partly-cloudy-day',
       color: paleGreen,
+      name: 'Mainly clear',
     },
     2: {
-      icon: 'partly-cloudy-day-fill',
+      icon: 'fluent:weather-partly-cloudy-day-20-filled',
       color: paleBlueGreenGray,
+      name: 'Partly Cloudy',
     },
     3: {
-      icon: 'overcast-fill',
+      icon: 'fluent:weather-cloudy-20-filled',
       color: '#62788d',
+      name: 'Overcast',
     },
     45: {
-      icon: 'fog-day-fill',
+      icon: 'fluent:weather-fog-20-filled',
       color: paleBlueGreenGray,
+      name: 'Fog',
     },
     48: {
-      icon: 'fog-fill',
+      icon: 'fluent:weather-fog-20-filled',
       color: paleBlueGreenGray,
+      name: 'Rime Fog',
     },
     51: {
-      icon: 'overcast-day-drizzle-fill',
+      icon: 'fluent:weather-drizzle-20-filled',
       color: daySprinkle,
+      name: 'Light Drizzle',
     },
     53: {
-      icon: 'extreme-day-drizzle-fill',
+      icon: 'fluent:weather-drizzle-20-filled',
       color: daySprinkle,
+      name: 'Moderate Drizzle',
     },
     55: {
-      icon: 'extreme-day-rain-fill',
+      icon: 'fluent:weather-drizzle-20-filled',
       color: daySprinkle,
+      name: 'Dense Drizzle',
     },
     61: {
-      icon: 'extreme-day-rain-fill',
+      icon: 'fluent:weather-rain-20-filled',
       color: lightBlue,
+      name: 'Light Rain',
     },
     63: {
-      icon: 'rain-fill',
+      icon: 'fluent:weather-rain-20-filled',
       color: lightBlue,
+      name: 'Rain',
     },
     65: {
-      icon: 'extreme-rain-fill',
+      icon: 'fluent:weather-rain-20-filled',
       color: lightBlue,
+      name: 'Heavy Rain',
     },
   };
 
   const nightIconMap: IconMap = {
     0: {
-      icon: 'clear-night-fill',
+      icon: 'fluent:weather-moon-20-filled',
       color: paleYellow,
+      name: 'Clear',
     },
     1: {
-      icon: 'partly-cloudy-night-fill',
+      icon: 'fluent:weather-partly-cloudy-night-20-filled',
       color: lightYellowGray,
+      name: 'Mainly clear',
     },
     2: {
-      icon: 'overcast-night-fill',
+      icon: 'fluent:weather-partly-cloudy-night-20-filled',
       color: paleBlueGreenGray,
+      name: 'Partly Cloudy',
     },
     3: {
-      icon: 'overcast-night-fill',
+      icon: 'fluent:weather-cloudy-20-filled',
       color: paleBlueGreenGray,
+      name: 'Overcast',
     },
     45: {
-      icon: 'haze-night-fill',
+      icon: 'fluent:weather-fog-20-filled',
       color: paleBlueGreenGray,
+      name: 'Fog',
     },
     48: {
-      icon: 'fog-night-fill',
+      icon: 'fluent:weather-fog-20-filled',
       color: paleBlueGreenGray,
+      name: 'Rime Fog',
     },
     51: {
-      icon: 'partly-cloudy-night-drizzle-fil',
+      icon: 'fluent:weather-drizzle-20-filled',
       color: moonSprinkle,
+      name: 'Light Drizzle',
     },
     53: {
-      icon: 'overcast-night-rain-fill',
+      icon: 'fluent:weather-drizzle-20-filled',
       color: moonSprinkle,
+      name: 'Moderate Drizzle',
     },
     55: {
-      icon: 'partly-cloudy-night-rain-fill',
+      icon: 'fluent:weather-drizzle-20-filled',
       color: moonSprinkle,
+      name: 'Dense Drizzle',
     },
     61: {
-      icon: 'extreme-night-rain-fill',
+      icon: 'fluent:weather-rain-20-filled',
       color: darkBlue,
+      name: 'Light Rain',
     },
     63: {
-      icon: 'extreme-night-rain-fill',
+      icon: 'fluent:weather-rain-20-filled',
       color: darkBlue,
+      name: 'Rain',
     },
     65: {
-      icon: 'extreme-night-rain-fill',
+      icon: 'fluent:weather-rain-20-filled',
       color: darkBlue,
+      name: 'Heavy Rain',
     },
   };
 
   onMount(() => {
-    icon = isDay === 1 ? dayIconMap[iconType] : nightIconMap[iconType];
+    icon =
+      isDay === 1 ? dayIconMap[iconType].icon : nightIconMap[iconType].icon;
+    color =
+      isDay === 1 ? dayIconMap[iconType].color : nightIconMap[iconType].color;
+    name =
+      isDay === 1 ? dayIconMap[iconType].name : nightIconMap[iconType].name;
   });
 </script>
 
-<div class="big-icon-wow">
+<div class="big-icon-wow right-0 flex flex-col items-end">
   {#if icon !== undefined}
-    <Icon icon={`meteocons:` + icon.icon} color={icon.color} width={200} />
+    <p class="absolute self-end p-3 text-slate-500">{name}</p>
+    <Icon {icon} {color} width={200} class="self-end" />
   {:else}
     <Icon icon="meteocons:not-available-fill" width={200} />
     <p>{iconType}</p>

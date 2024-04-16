@@ -132,7 +132,9 @@
 
   <div class="dboard__grid">
     {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
-      <BloodGlucose {data} {label} {mainDisplayValue} {direction} />
+      {#if direction}
+        <BloodGlucose {data} {label} {mainDisplayValue} {direction} />
+      {/if}
     {/each}
     {#if $weather}
       <CurrentWeather />
