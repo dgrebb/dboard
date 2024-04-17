@@ -18,15 +18,20 @@
     CurrentWeatherType,
     DBoardItem,
     WeatherData,
+    SeptaDataNextToArrive,
   } from '$lib/types';
   import Controls from '$lib/components/Controls/Controls.svelte';
   import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
+  import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
   let webSocketEstablished = false;
   let ws: WebSocket | null = null;
   let log: string[] = [];
+  let schedule: SeptaDataNextToArrive[];
+  $: schedule;
+  $: console.log('🚀 ~ schedule:', schedule);
 
   const establishWebSocket = () => {
     console.log('connecting', webSocketEstablished);
@@ -73,6 +78,14 @@
     nightDay(weatherData.is_day);
   };
 
+  const fetchSeptaNextToArrive = async () => {
+    const data = await fetch('/api/septa', { method: 'GET' })
+      .then((res) => res.json())
+      .catch((err) => console.error(err));
+    schedule = data.schedule;
+    console.log('🚀 ~ fetchSeptaNextToArrive ~ schedule:', schedule);
+  };
+
   const closeSocket = () => {
     ws?.close();
   };
@@ -108,9 +121,11 @@
     nightscoutData();
     fetchWeatherData();
     updateBackgroundColorGradient(LATITUDE, LONGITUDE);
+    fetchSeptaNextToArrive();
     setInterval(async () => {
       nightscoutData();
       fetchWeatherData();
+      fetchSeptaNextToArrive();
       updateBackgroundColorGradient(LATITUDE, LONGITUDE);
       seconds = 0;
     }, refreshInterval);
@@ -143,6 +158,7 @@
   </div>
 
   <div class="dboard__grid">
+    <SeptaNextToArrive {schedule} />
     <OnOff />
   </div>
 
