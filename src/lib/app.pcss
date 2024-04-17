@@ -48,6 +48,14 @@ body {
   }
 }
 
+.time {
+  position: absolute;
+  inset: 0.5rem;
+  width: 100%;
+  text-align: center;
+  color: var(--gradient);
+  filter: invert(1);
+}
 .dboard {
   display: grid;
   grid-auto-flow: column;
@@ -122,8 +130,6 @@ body {
   opacity: 0;
   right: 0;
   top: 0;
-  will-change: transform;
-  animation: float 5s infinite;
   body.ready & {
     opacity: 0.77;
   }
@@ -132,6 +138,8 @@ body {
     /* filter: brightness(150); */
   }
   svg {
+    will-change: transform;
+    animation: float 5s infinite;
     path {
       position: absolute;
       top: 0;
@@ -182,12 +190,9 @@ body {
     h1,
     h2,
     h3 {
-      filter: invert();
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--gradient);
+      filter: invert(1);
       transition: color 3s ease-in;
-      html.dark & {
-        color: rgba(0, 0, 0, 0.6);
-      }
     }
   }
   img {
@@ -251,7 +256,7 @@ body {
     transform: trans(0px);
   }
   50% {
-    transform: translateY(-3px);
+    transform: translateY(-6px);
   }
   100% {
     transform: translateY(0px);
