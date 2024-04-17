@@ -30,8 +30,20 @@ body {
       background: linear-gradient(to bottom, var(--gradient) 5%, transparent);
     }
   }
-  &.ready:after {
-    opacity: 1;
+  .dboard {
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 1s;
+    opacity: 0;
+  }
+  &.ready {
+    .dboard {
+      opacity: 1;
+    }
+
+    &:after {
+      opacity: 1;
+    }
   }
 }
 
@@ -64,7 +76,7 @@ body {
   position: relative;
   height: 100vh;
   column-gap: 1.5rem;
-  padding: 1.5rem 1.5rem 1.5rem 0;
+  padding: 2.5rem 1.5rem 1.5rem 0;
   scroll-snap-align: center;
   flex: none;
   box-sizing: border-box;
@@ -247,6 +259,16 @@ body {
       flex-direction: row;
       top: 3rem;
       opacity: 0.77;
+    }
+  }
+}
+
+.septa {
+  &__train {
+    color: var(--bgColor);
+    filter: invert(1);
+    dt {
+      opacity: 0.75;
     }
   }
 }
