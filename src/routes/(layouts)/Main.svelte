@@ -22,8 +22,10 @@
   let timeValue: number;
   const unsubscribe = time.subscribe((value) => {
     timeValue = value;
-    hh = Math.trunc(timeValue / 60).toString();
-    mm = (timeValue % 60).toString();
+    hh = Math.trunc(timeValue / 60)
+      .toString()
+      .padStart(2, '0');
+    mm = (timeValue % 60).toString().padStart(2, '0');
   });
 
   function refresh() {
@@ -36,6 +38,9 @@
 
 <ForegroundFrame />
 <BackgroundFrame component={ClearOrCloudy} />
+<p class="time">
+  {hh}:{mm}
+</p>
 <main class="dboard">
   <slot name="countdown-bar" />
   <!-- <header class="flex flex-row justify-between p-3 opacity-50">

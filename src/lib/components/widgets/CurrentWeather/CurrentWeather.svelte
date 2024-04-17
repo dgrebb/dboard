@@ -41,7 +41,7 @@
           <Icon
             icon="ei:arrow-up"
             class="current-weather__wind-direction inline-block mix-blend-darken brightness-50 dark:brightness-200"
-            width={33}
+            width={27}
             style={`transform: rotate(${(windDirection + 180) % 360}deg);`}
             color={highlightColor}
           />
