@@ -49,3 +49,12 @@ export type MusicData = {
   artist: string;
   title: string;
 };
+
+export type SeptaDataNextToArrive = {
+  orig_train: string;
+  orig_line: string;
+  orig_departure_time: string;
+  orig_arrival_time: string;
+  orig_delay: string;
+  isdirect: string;
+};
