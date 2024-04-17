@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
   import fahrenheitToColorShade from './tempColor';
-  import { fade } from 'svelte/transition';
+  import { fade, blur } from 'svelte/transition';
   import WeatherIcon from './WeatherIcon.svelte';
   import weather from '$lib/stores/weather';
 
@@ -15,7 +15,7 @@
   } = $weather);
   $: highlightColor = fahrenheitToColorShade(current);
   $: touched = false;
-  let unique = {};
+  let unique: {};
 
   function handleTouched() {
     unique = {};
@@ -27,7 +27,8 @@
     on:click={handleTouched}
     on:keydown={handleTouched}
     tabindex="-1"
-    transition:fade
+    out:blur={{ duration: 333 }}
+    in:blur={{ delay: 333, duration: 333 }}
     role="button"
     class="dboard__grid__item current-weather relative transition-colors"
   >
