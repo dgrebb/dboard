@@ -35,10 +35,10 @@
         const currentContent = await response.text();
         if (currentContent !== previousContent) {
           previousContent = currentContent; // Update the previous file content
-          const music = await fetch('/api/music');
-          ({ album, title, artist } = await music.json());
           file = `/album_art.png?_=${timestamp}`;
         }
+        const music = await fetch('/api/music');
+        ({ album, title, artist } = await music.json());
       } else {
         file = ''; // Clear the file path if the file does not exist
         previousContent = null; // Reset previous file content
@@ -57,32 +57,28 @@
 
 {#if !modal}
   <div class="current-music">
-    {#key title}
-      <div
-        class="current-music__info flex flex-col"
-        transition:blur={{ amount: 10 }}
-      >
-        <h1>{title}</h1>
-        <h2>{artist}</h2>
-        <h3>{album}</h3>
-      </div>
-    {/key}
+    <div
+      class="current-music__info flex flex-col"
+      transition:blur={{ amount: 10 }}
+    >
+      <h1>{title}</h1>
+      <h2>{artist}</h2>
+      <h3>{album}</h3>
+    </div>
     <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
-    {#key file}
-      <img
-        src={file}
-        alt="{album} Artwork"
-        on:click={toggleModal}
-        on:keydown={toggleModal}
-        role="switch"
-        tabindex="0"
-        aria-checked="false"
-        class="transition-opacity {transitionImages
-          ? 'opacity-0'
-          : 'opacity-100'}"
-        transition:fade={{ duration: 500, easing: cubicInOut }}
-      />
-    {/key}
+    <img
+      src={file}
+      alt="{album} Artwork"
+      on:click={toggleModal}
+      on:keydown={toggleModal}
+      role="switch"
+      tabindex="0"
+      aria-checked="false"
+      class="transition-opacity {transitionImages
+        ? 'opacity-0'
+        : 'opacity-100'}"
+      transition:fade={{ duration: 500, easing: cubicInOut }}
+    />
   </div>
 {/if}
 
@@ -94,19 +90,15 @@
     on:click={toggleModal}
     on:keydown={toggleModal}
   >
-    {#key file}
-      <img src={file} alt="{album} Artwork" transition:fade />
-    {/key}
-    {#key title}
-      <div
-        class="current-music__modal__info flex flex-col"
-        transition:blur={{ amount: 10 }}
-      >
-        <h1>{title}</h1>
-        <h2>{artist}</h2>
-        <h3>{album}</h3>
-      </div>
-    {/key}
+    <img src={file} alt="{album} Artwork" transition:fade />
+    <div
+      class="current-music__modal__info flex flex-col"
+      transition:blur={{ amount: 10 }}
+    >
+      <h1>{title}</h1>
+      <h2>{artist}</h2>
+      <h3>{album}</h3>
+    </div>
     <AudioWave />
   </div>
 {/if}
