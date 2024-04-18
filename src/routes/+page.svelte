@@ -23,6 +23,7 @@
   import Controls from '$lib/components/Controls/Controls.svelte';
   import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
   import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
+  import Restart from '$lib/components/Restart/Restart.svelte';
 
   let refreshInterval = DEFAULT_REFRESH_INTERVAL;
   let seconds = 0;
@@ -160,6 +161,7 @@
   <div class="dboard__grid">
     <SeptaNextToArrive {schedule} />
     <OnOff />
+    <Restart />
   </div>
 
   <div slot="countdown-bar">
