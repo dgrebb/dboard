@@ -12,7 +12,7 @@ body {
 }
 
 body {
-  --bgColor: black;
+  /* --bgColor: black; */
   background: var(--bgColor);
   transition-property: background;
   transition-duration: 10s;
@@ -26,6 +26,7 @@ body {
     position: absolute;
     z-index: -1;
     display: block;
+    pointer-events: none;
     /* background: linear-gradient(to bottom, var(--gradient) 1%, transparent); */
     html.dark & {
       background: linear-gradient(to bottom, var(--gradient) 5%, transparent);
@@ -35,7 +36,7 @@ body {
     opacity: 0;
     transition-property: opacity;
     transition-duration: 1s;
-    opacity: 0;
+    z-index: 9;
   }
   &.ready {
     .dboard {
@@ -78,14 +79,14 @@ body {
   height: 100vh;
   column-gap: 1.5rem;
   padding: 2.5rem 1.5rem 1.5rem 0;
-  scroll-snap-align: center;
-  flex: none;
   box-sizing: border-box;
-  overflow-x: scroll;
-  overflow-y: hidden;
   scrollbar-width: none;
+  overflow: auto;
+  scroll-snap-type: both mandatory;
+  overscroll-behavior-x: contain;
+  overflow-y: hidden;
   &__grid {
-    scroll-snap-type: x mandatory;
+    scroll-snap-align: center;
     display: grid;
     float: left;
     width: calc(100vw - 3rem);
