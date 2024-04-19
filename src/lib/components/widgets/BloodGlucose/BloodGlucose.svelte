@@ -30,23 +30,23 @@
     if (direction) {
       switch (direction) {
         case 'Up':
-          console.log('up');
+          // console.log('up');
           directionIcon = 'ph:trend-up-light';
           break;
         case 'FortyFiveUp':
-          console.log('up');
+          // console.log('up');
           directionIcon = 'ph:trend-up-light';
           break;
         case 'Flat':
-          console.log('flat');
+          // console.log('flat');
           directionIcon = 'material-symbols-light:trending-flat';
           break;
         case 'Down':
-          console.log('down');
+          // console.log('down');
           directionIcon = 'ph:trend-down-light';
           break;
         default:
-          console.log('error');
+          // console.log('error');
           console.log('🩸 ~ GLU ~ direction not covered:', direction);
           directionIcon = 'iconamoon:cloud-error-light';
           break;

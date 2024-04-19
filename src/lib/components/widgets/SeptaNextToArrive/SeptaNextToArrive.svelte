@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { SeptaDataNextToArrive } from '$lib/types';
   export let schedule: SeptaDataNextToArrive[];
-  console.log('🚀 ~ schedule:', schedule);
+  // console.log('🚀 ~ schedule:', schedule);
 </script>
 
 {#if schedule}

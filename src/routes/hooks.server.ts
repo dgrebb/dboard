@@ -7,7 +7,7 @@ import type { ExtendedGlobal } from '$lib/server/webSocketUtils';
 let wssInitialized = false;
 const startupWebsocketServer = () => {
   if (wssInitialized) return;
-  console.log('[wss:kit] setup');
+  // console.log('[wss:kit] setup');
   const wss = (globalThis as ExtendedGlobal)[GlobalThisWSS];
   if (wss !== undefined) {
     wss.on('connection', (ws, _request) => {
@@ -15,11 +15,13 @@ const startupWebsocketServer = () => {
       // const session = await getSessionFromCookie(request.headers.cookie || '');
       // if (!session) ws.close(1008, 'User not authenticated');
       // ws.userId = session.userId;
-      console.log(`[wss:kit] client connected (${ws.socketId})`);
-      ws.send(`Hello from SvelteKit ${new Date().toLocaleString()} (${ws.socketId})]`);
+      // console.log(`[wss:kit] client connected (${ws.socketId})`);
+      ws.send(
+        `Hello from SvelteKit ${new Date().toLocaleString()} (${ws.socketId})]`
+      );
 
       ws.on('close', () => {
-        console.log(`[wss:kit] client disconnected (${ws.socketId})`);
+        // console.log(`[wss:kit] client disconnected (${ws.socketId})`);
       });
     });
     wssInitialized = true;
@@ -36,7 +38,7 @@ export const handle = (async ({ event, resolve }) => {
     }
   }
   const response = await resolve(event, {
-		filterSerializedResponseHeaders: name => name === 'content-type',
-	});
+    filterSerializedResponseHeaders: (name) => name === 'content-type',
+  });
   return response;
 }) satisfies Handle;

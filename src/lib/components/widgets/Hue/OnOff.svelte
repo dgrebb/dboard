@@ -30,7 +30,6 @@
         .json()
         .then((result) => {
           group ? (groups[group].light.on = lightState) : false;
-          console.log(result);
         })
         .catch((e) => {
           console.error(e);
@@ -43,7 +42,6 @@
       method: 'GET',
       redirect: 'follow',
     };
-    console.log('🚀 ~ groups.forEach ~ groups:', groups);
     groups.forEach(async (group, i) => {
       const groupState = await fetch(
         `http://192.168.50.227/api/${username}/groups/${group.light.id}`,
