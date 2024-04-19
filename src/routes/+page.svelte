@@ -12,6 +12,7 @@
   import time from '$lib/stores/time';
   import weather from '$lib/stores/weather';
   import solar from '$lib/stores/solar';
+  import { pullToRefresh } from '$lib/actions/pullToRefresh';
 
   import type {
     ChartSeriesGlucose,
@@ -146,7 +147,7 @@
     on:establishWebSocket={establishWebSocket}
   />
 
-  <div class="dboard__grid">
+  <div class="dboard__grid" use:pullToRefresh>
     {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
       {#if direction}
         <BloodGlucose {data} {label} {mainDisplayValue} {direction} />
@@ -163,7 +164,7 @@
     <div class="dboard__grid__item control-widget">
       <div class="dboard__card">
         <OnOff />
-        <Restart />
+        <!-- <Restart /> -->
       </div>
     </div>
   </div>
