@@ -8,12 +8,11 @@
   // import lights from '$lib/stores/solar';
   import { hue } from '$lib/settings.js';
 
-  const { groups } = hue;
+  $: ({ groups } = hue);
 
-  $: on = false satisfies boolean;
-
-  function handleSwitch() {
-    const lightState = !on;
+  function lightSwitch(id: number) {
+    const group = groups.findIndex((group) => group.light.id === id);
+    const lightState = !groups[group].light.on;
     const headers = new Headers();
     const raw = `{"on":${lightState}}`;
     headers.append('Content-Type', 'text/plain');
@@ -24,13 +23,13 @@
       redirect: 'follow',
     };
     fetch(
-      `http://192.168.50.227/api/${username}/groups/${groups.chill.id}/action`,
+      `http://192.168.50.227/api/${username}/groups/${id}/action`,
       requestOptions
     ).then((response) =>
       response
         .json()
         .then((result) => {
-          on = lightState;
+          group ? (groups[group].light.on = lightState) : false;
           console.log(result);
         })
         .catch((e) => {
@@ -44,23 +43,34 @@
       method: 'GET',
       redirect: 'follow',
     };
-    const groupState = await fetch(
-      `http://192.168.50.227/api/${username}/groups/1`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => result)
-      .catch((error) => console.error(error));
-    on = groupState.action.on;
+    console.log('🚀 ~ groups.forEach ~ groups:', groups);
+    groups.forEach(async (group, i) => {
+      const groupState = await fetch(
+        `http://192.168.50.227/api/${username}/groups/${group.light.id}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => result)
+        .catch((error) => {
+          return console.error(error);
+        });
+      groups[i].light.on = groupState.state.any_on;
+    });
   });
 </script>
 
-{#key on}
-  <Button
-    type="button"
-    size="xl"
-    on:click={handleSwitch}
-    on:keydown={handleSwitch}
-    color={on ? 'dark' : 'yellow'}>Living room is {on ? 'on' : 'off'}</Button
-  >
+{#key groups}
+  {#each groups as { light: { name, id, on } }}
+    <Button
+      type="button"
+      size="xl"
+      on:click={() => {
+        lightSwitch(id);
+      }}
+      on:keydown={() => {
+        lightSwitch(id);
+      }}
+      color={on ? 'dark' : 'yellow'}>{name}</Button
+    >
+  {/each}
 {/key}
