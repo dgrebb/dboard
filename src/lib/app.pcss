@@ -12,6 +12,7 @@ body {
 }
 
 body {
+  --bgColor: black;
   background: var(--bgColor);
   transition-property: background;
   transition-duration: 10s;
@@ -98,12 +99,14 @@ body {
       max-height: 333px;
       overflow: hidden;
       border-radius: 0.5rem;
+      position: relative;
       &:not(.empty) {
         &:before {
           content: '';
-          opacity: 0.33;
+          opacity: 0.45;
           position: absolute;
           inset: 0;
+          z-index: -1;
           background-color: var(--gradient);
         }
       }
@@ -293,3 +296,22 @@ body {
     }
   }
 } */
+
+.control-widget {
+  button {
+    display: block;
+    width: auto;
+    display: flex;
+    opacity: 0.75;
+    will-change: opacity;
+    transition: opacity 0.5s linear;
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      opacity: 1;
+    }
+    &:not(:first-of-type) {
+      margin-top: 0.5rem;
+    }
+  }
+}
