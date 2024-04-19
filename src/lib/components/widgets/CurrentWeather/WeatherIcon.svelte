@@ -37,8 +37,9 @@
   };
 
   export let weatherCode: number = 0;
-  console.log('🚀 ~ weatherCode:', weatherCode);
   export let isDay: number = 1;
+
+  // console.log('🚀 ~ weatherCode:', weatherCode);
 
   $: iconType = weatherCode;
   $: icon = 'data-sunburst-24-filled';
