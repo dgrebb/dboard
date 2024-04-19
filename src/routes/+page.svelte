@@ -160,8 +160,12 @@
 
   <div class="dboard__grid">
     <SeptaNextToArrive {schedule} />
-    <OnOff />
-    <Restart />
+    <div class="dboard__grid__item control-widget">
+      <div class="dboard__card">
+        <OnOff />
+        <Restart />
+      </div>
+    </div>
   </div>
 
   <div slot="countdown-bar">
