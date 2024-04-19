@@ -5,30 +5,38 @@
 </script>
 
 {#if schedule}
-  {#each schedule as train}
-    <ul class="septa">
-      <li class="septa__train">
-        <dl>
-          <dt>Train</dt>
-          <dd>{train.orig_train}</dd>
-        </dl>
-        <dl>
-          <dt>Departing</dt>
-          <dd>{train.orig_departure_time}</dd>
-        </dl>
-        <dl>
-          <dt>Arriving</dt>
-          <dd>{train.orig_arrival_time}</dd>
-        </dl>
-        <dl>
-          <dt>Delay</dt>
-          <dd>{train.orig_delay}</dd>
-        </dl>
-      </li>
-    </ul>
-  {/each}
+  <div class="dboard__grid__item control-widget">
+    <div class="dboard__card">
+      <table class="septa">
+        {#each schedule as train}
+          <tr class="septa__train">
+            <td>{train.orig_departure_time}</td>
+            <td class="delay">
+              {train.orig_delay}
+            </td>
+            <td class="arrive">
+              {train.orig_arrival_time}
+            </td>
+          </tr>
+        {/each}
+      </table>
+    </div>
+  </div>
 {/if}
 
 <style>
-  /* your styles go here */
+  .septa {
+    width: 100%;
+    tr {
+      td {
+        &.delay {
+          flex-grow: 1;
+          text-align: center;
+        }
+        &.arrive {
+          text-align: right;
+        }
+      }
+    }
+  }
 </style>

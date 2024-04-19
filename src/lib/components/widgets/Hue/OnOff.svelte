@@ -56,9 +56,11 @@
 </script>
 
 {#key on}
-  <div tabindex="-1" transition:fade role="button">
-    <Button type="button" on:click={handleSwitch} on:keydown={handleSwitch}
-      >Living room is {on ? 'on' : 'off'}</Button
-    >
-  </div>
+  <Button
+    type="button"
+    size="xl"
+    on:click={handleSwitch}
+    on:keydown={handleSwitch}
+    color={on ? 'dark' : 'yellow'}>Living room is {on ? 'on' : 'off'}</Button
+  >
 {/key}
