@@ -33,18 +33,27 @@
           // console.log('up');
           directionIcon = 'ph:trend-up-light';
           break;
+
         case 'FortyFiveUp':
           // console.log('up');
-          directionIcon = 'ph:trend-up-light';
+          directionIcon = 'ph:arrow-bend-right-up-light';
           break;
+
         case 'Flat':
           // console.log('flat');
           directionIcon = 'material-symbols-light:trending-flat';
           break;
+
         case 'Down':
           // console.log('down');
           directionIcon = 'ph:trend-down-light';
           break;
+
+        case 'FortyFiveDown':
+          // console.log('up');
+          directionIcon = 'ph:arrow-bend-right-down-light';
+          break;
+
         default:
           // console.log('error');
           console.log('🩸 ~ GLU ~ direction not covered:', direction);
