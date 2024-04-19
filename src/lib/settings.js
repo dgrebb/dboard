@@ -6,8 +6,15 @@ export const hue = {
   groups: [
     {
       light: {
-        name: 'Chill',
-        id: 11,
+        name: 'Home',
+        id: 81,
+        on: false,
+      },
+    },
+    {
+      light: {
+        name: 'Front Door',
+        id: 7,
         on: false,
       },
     },
@@ -29,6 +36,13 @@ export const hue = {
       light: {
         name: 'Office',
         id: 3,
+        on: false,
+      },
+    },
+    {
+      light: {
+        name: 'Vinyl',
+        id: 10,
         on: false,
       },
     },

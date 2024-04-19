@@ -58,17 +58,19 @@
 </script>
 
 {#key groups}
-  {#each groups as { light: { name, id, on } }}
-    <Button
-      type="button"
-      size="xl"
-      on:click={() => {
-        lightSwitch(id);
-      }}
-      on:keydown={() => {
-        lightSwitch(id);
-      }}
-      color={on ? 'dark' : 'yellow'}>{name}</Button
-    >
-  {/each}
+  <div class="hue-button-container flex h-full flex-col overflow-y-scroll">
+    {#each groups as { light: { name, id, on } }}
+      <Button
+        type="button"
+        size="xl"
+        on:click={() => {
+          lightSwitch(id);
+        }}
+        on:keydown={() => {
+          lightSwitch(id);
+        }}
+        color={on ? 'yellow' : 'dark'}>{name}</Button
+      >
+    {/each}
+  </div>
 {/key}
