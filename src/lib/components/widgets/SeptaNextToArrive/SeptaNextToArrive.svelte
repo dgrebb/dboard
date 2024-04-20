@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { SeptaDataNextToArrive } from '$lib/types';
+  import Icon from '@iconify/svelte';
   export let schedule: SeptaDataNextToArrive[];
   // console.log('🚀 ~ schedule:', schedule);
 </script>
@@ -7,6 +8,12 @@
 {#if schedule}
   <div class="dboard__grid__item control-widget">
     <div class="dboard__card">
+      <Icon
+        icon="mynaui:train"
+        height={300}
+        color="red"
+        class="absolute right-[-6rem] top-[-3rem] opacity-65"
+      />
       <table class="septa">
         {#each schedule as train}
           <tr class="septa__train">
