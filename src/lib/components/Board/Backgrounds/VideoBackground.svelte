@@ -5,18 +5,18 @@
 
   type VideoStuff = {
     file: string;
-    backgroundColor: string;
   }[];
 
-  $: $weather = weather;
-
   $: ({ is_day: isDay, weatherCode } = $weather);
-  console.log('🚀 ~ $weather:', $weather);
+  $: console.log('🚀 ~ $weather:', $weather);
 
   const dayPlaylist = {
     clear: [
       {
-        file: '',
+        file: 'dandelions.mp4',
+      },
+      {
+        file: 'rain-window.mp4',
       },
     ],
   };
@@ -25,15 +25,12 @@
     clear: [
       {
         file: 'milky-way-mountains.mp4',
-        backgroundColor: '#866B66',
       },
       {
         file: 'stars-1.mp4',
-        backgroundColor: '#000000',
       },
       {
         file: 'tall-starry-island.mp4',
-        backgroundColor: '#1A2232',
       },
     ],
   };
@@ -48,7 +45,7 @@
   let timeouts: ReturnType<typeof setTimeout>[] = [];
 
   // Function to switch to the next video
-  function switchVideo(nextIndex: number) {
+  async function switchVideo(nextIndex: number) {
     // Clear any existing timeouts to prevent memory leaks and multiple triggers
     timeouts.forEach(clearTimeout);
     timeouts = [];
@@ -58,22 +55,24 @@
   }
 
   // Prepare video for playback and setup timing for cross-fade
-  function prepareVideo(index: number) {
+  async function prepareVideo(index: number) {
     const videoElement: HTMLVideoElement | null = document.querySelector(
       `#video${index}`
     );
+    const nextIndex = index === playlist.length ? 0 : index + 1;
     if (videoElement !== null) {
       videoElement.play().then(() => {
         const duration = videoElement.duration;
         const fadeOutTimeout = setTimeout(
           () => {
+            console.log('start fadeout after 3 second mark met');
             videoElement.style.opacity = '0';
           },
           (duration - fadeDuration) * 1000
         );
 
-        const switchTimeout = setTimeout(() => {
-          switchVideo((index + 1) % playlist.length);
+        const switchTimeout = setTimeout(async () => {
+          await switchVideo(nextIndex % playlist.length);
         }, duration * 1000);
 
         // Store timeouts to clear later if needed
@@ -87,9 +86,9 @@
   });
 </script>
 
-{#key weather}
-  {#each playlist as video, index}
-    <div class="bg-grey absolute inset-0">
+{#key $weather}
+  <div class="absolute inset-0 bg-black">
+    {#each playlist as video, index}
       <video
         playsinline
         src={`/video/${isDay === 1 ? 'day' : 'night'}/clear/${video.file}`}
@@ -102,6 +101,6 @@
         class:visible={index === currentVideo}
         id={`video${index}`}
       ></video>
-    </div>
-  {/each}
+    {/each}
+  </div>
 {/key}
