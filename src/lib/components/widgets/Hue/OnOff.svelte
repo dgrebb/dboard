@@ -11,8 +11,8 @@
   $: ({ groups } = hue);
 
   function lightSwitch(id: number) {
-    const group = groups.findIndex((group) => group.light.id === id);
-    const lightState = !groups[group].light.on;
+    const groupIndex = groups.findIndex((group) => group.light.id === id);
+    const lightState = !groups[groupIndex].light.on;
     const headers = new Headers();
     const raw = `{"on":${lightState}}`;
     headers.append('Content-Type', 'text/plain');
@@ -29,7 +29,10 @@
       response
         .json()
         .then((result) => {
-          group ? (groups[group].light.on = lightState) : false;
+          console.log('🚀 ~ .then ~ result:', result);
+          typeof groupIndex === 'number'
+            ? (groups[groupIndex].light.on = lightState)
+            : false;
         })
         .catch((e) => {
           console.error(e);

@@ -3,6 +3,7 @@
   import '$lib/app.pcss';
   import BackgroundFrame from '$lib/components/Board/BackgroundFrame.svelte';
   import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
+  import VideoBackground from '$lib/components/Board/Backgrounds/VideoBackground.svelte';
   import Slider from '$lib/components/TimeMachine/Slider.svelte';
   import { Button, DarkMode } from 'flowbite-svelte';
   import { RefreshOutline } from 'flowbite-svelte-icons';
