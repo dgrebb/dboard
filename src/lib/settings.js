@@ -13,8 +13,8 @@ export const hue = {
     },
     {
       light: {
-        name: 'Front Door',
-        id: 7,
+        name: 'Living Room',
+        id: 1,
         on: false,
       },
     },
@@ -43,6 +43,13 @@ export const hue = {
       light: {
         name: 'Vinyl',
         id: 10,
+        on: false,
+      },
+    },
+    {
+      light: {
+        name: 'Front Door',
+        id: 7,
         on: false,
       },
     },
