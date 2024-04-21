@@ -3,12 +3,13 @@ export const glu = {
 };
 
 export const hue = {
-  groups: [
+  actions: [
     {
       light: {
         name: 'Home',
         id: 81,
         on: false,
+        actionType: 'groups',
       },
     },
     {
@@ -16,6 +17,15 @@ export const hue = {
         name: 'Living Room',
         id: 1,
         on: false,
+        actionType: 'groups',
+      },
+    },
+    {
+      light: {
+        name: 'Trees',
+        id: 32,
+        on: false,
+        actionType: 'lights',
       },
     },
     {
@@ -23,6 +33,7 @@ export const hue = {
         name: 'Kitchen',
         id: 9,
         on: false,
+        actionType: 'groups',
       },
     },
     {
@@ -30,6 +41,7 @@ export const hue = {
         name: 'Bedroom',
         id: 2,
         on: false,
+        actionType: 'groups',
       },
     },
     {
@@ -37,6 +49,7 @@ export const hue = {
         name: 'Office',
         id: 3,
         on: false,
+        actionType: 'groups',
       },
     },
     {
@@ -44,6 +57,7 @@ export const hue = {
         name: 'Vinyl',
         id: 10,
         on: false,
+        actionType: 'groups',
       },
     },
     {
@@ -51,6 +65,7 @@ export const hue = {
         name: 'Front Door',
         id: 7,
         on: false,
+        actionType: 'groups',
       },
     },
   ],
