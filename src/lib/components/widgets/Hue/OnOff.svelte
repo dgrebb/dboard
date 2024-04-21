@@ -8,11 +8,16 @@
   // import lights from '$lib/stores/solar';
   import { hue } from '$lib/settings.js';
 
-  $: ({ groups } = hue);
+  $: ({ actions } = hue);
 
-  function lightSwitch(id: number) {
-    const groupIndex = groups.findIndex((group) => group.light.id === id);
-    const lightState = !groups[groupIndex].light.on;
+  enum ActionType {
+    lights = 'lights',
+    groups = 'groups',
+  }
+
+  function lightSwitch(actionType: ActionType, id: number) {
+    const actionIndex = actions.findIndex((action) => action.light.id === id);
+    const lightState = !actions[actionIndex].light.on;
     const headers = new Headers();
     const raw = `{"on":${lightState}}`;
     headers.append('Content-Type', 'text/plain');
@@ -23,15 +28,15 @@
       redirect: 'follow',
     };
     fetch(
-      `http://192.168.50.227/api/${username}/groups/${id}/action`,
+      `http://192.168.50.227/api/${username}/${actionType}/${id}/action`,
       requestOptions
     ).then((response) =>
       response
         .json()
         .then((result) => {
           console.log('🚀 ~ .then ~ result:', result);
-          typeof groupIndex === 'number'
-            ? (groups[groupIndex].light.on = lightState)
+          typeof actionIndex === 'number'
+            ? (actions[actionIndex].light.on = lightState)
             : false;
         })
         .catch((e) => {
@@ -45,9 +50,9 @@
       method: 'GET',
       redirect: 'follow',
     };
-    groups.forEach(async (group, i) => {
-      const groupState = await fetch(
-        `http://192.168.50.227/api/${username}/groups/${group.light.id}`,
+    actions.forEach(async (action, i) => {
+      const actionState = await fetch(
+        `http://192.168.50.227/api/${username}/${action.light.actionType}/${action.light.id}`,
         requestOptions
       )
         .then((response) => response.json())
@@ -55,22 +60,26 @@
         .catch((error) => {
           return console.error(error);
         });
-      groups[i].light.on = groupState.state.any_on;
+      console.log(actionState);
+      actions[i].light.on =
+        action.light.actionType === 'groups'
+          ? actionState.state.any_on
+          : actionState.state.on;
     });
   });
 </script>
 
-{#key groups}
+{#key actions}
   <div class="hue-button-container flex h-full flex-col overflow-y-scroll">
-    {#each groups as { light: { name, id, on } }}
+    {#each actions as { light: { name, id, on, actionType } }}
       <Button
         type="button"
         size="xl"
         on:click={() => {
-          lightSwitch(id);
+          lightSwitch(actionType, id);
         }}
         on:keydown={() => {
-          lightSwitch(id);
+          lightSwitch(actionType, id);
         }}
         color={on ? 'yellow' : 'dark'}>{name}</Button
       >
