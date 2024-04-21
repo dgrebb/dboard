@@ -19,6 +19,7 @@
     const actionIndex = actions.findIndex((action) => action.light.id === id);
     const lightState = !actions[actionIndex].light.on;
     const headers = new Headers();
+    const apiPath = actionType === 'groups' ? 'action' : 'state';
     const raw = `{"on":${lightState}}`;
     headers.append('Content-Type', 'text/plain');
     const requestOptions = {
@@ -28,7 +29,7 @@
       redirect: 'follow',
     };
     fetch(
-      `http://192.168.50.227/api/${username}/${actionType}/${id}/action`,
+      `http://192.168.50.227/api/${username}/${actionType}/${id}/${apiPath}`,
       requestOptions
     ).then((response) =>
       response
