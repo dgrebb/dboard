@@ -2,30 +2,6 @@
   import { onMount } from 'svelte';
   import Icon from '@iconify/svelte';
 
-  import {
-    Cloudy,
-    DayCloudy,
-    DaySunny,
-    DaySunnyOvercast,
-    NightClear,
-    NightPartlyCloudy,
-    NightCloudy,
-    NightCloudyHigh,
-    DayFog,
-    Fog,
-    NightFog,
-    DayShowers,
-    DayRain,
-    Rain,
-    NightShowers,
-    NightRain,
-    NightSprinkle,
-    NightRainMix,
-    DaySprinkle,
-    DayRainMix,
-  } from 'svelte-weather';
-  import type { Fragment } from 'svelte/types/compiler/interfaces';
-
   interface IconMap {
     [index: number]: IconProps;
   }
