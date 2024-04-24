@@ -1,9 +1,7 @@
 <script lang="ts">
   import { DEFAULT_REFRESH_INTERVAL, LATITUDE, LONGITUDE } from '$lib/GLOBALS';
   import Main from './(layouts)/Main.svelte';
-  import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
   import CurrentWeather from '$lib/components/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/components/widgets/BloodGlucose/BloodGlucose.svelte';

@@ -8,7 +8,7 @@
   }[];
 
   $: ({ is_day: isDay, weatherCode } = $weather);
-  $: console.log('🚀 ~ $weather:', $weather);
+  // $: console.log('🚀 ~ $weather:', $weather);
 
   const dayPlaylist = {
     clear: [
@@ -65,7 +65,7 @@
         const duration = videoElement.duration;
         const fadeOutTimeout = setTimeout(
           () => {
-            console.log('start fadeout after 3 second mark met');
+            // console.log('start fadeout after 3 second mark met');
             videoElement.style.opacity = '0';
           },
           (duration - fadeDuration) * 1000

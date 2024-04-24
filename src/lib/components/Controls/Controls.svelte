@@ -1,6 +1,9 @@
 <script lang="ts">
   import { Button } from 'flowbite-svelte';
-  import { ArrowUpDownOutline, XCircleOutline } from 'flowbite-svelte-icons';
+  import {
+    ArrowUpDownOutline,
+    CloseCircleOutline,
+  } from 'flowbite-svelte-icons';
   export let webSocketEstablished: boolean;
   import { createEventDispatcher } from 'svelte';
 
@@ -25,7 +28,7 @@
     disabled={!webSocketEstablished}
     color="dark"
     class="border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
-    on:click={closeSocket}><XCircleOutline /></Button
+    on:click={closeSocket}><CloseCircleOutline /></Button
   >
 
   <Button
