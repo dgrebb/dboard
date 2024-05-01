@@ -14,7 +14,6 @@
     is_day: isDay,
   } = $weather);
   $: highlightColor = fahrenheitToColorShade(current);
-  $: touched = false;
   let unique: {};
 
   function handleTouched() {
