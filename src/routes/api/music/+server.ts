@@ -2,8 +2,8 @@ import { json } from '@sveltejs/kit';
 
 import type { RequestHandler } from './$types';
 
-export const GET = (async ({ fetch, locals }) => {
-  const music = await fetch('/music.json');
+export const GET = (async ({ fetch, locals, url }) => {
+  const music = await fetch(`${url.origin}/music.json`);
   const response = JSON.parse(await music.text());
   if (locals.wss) {
     locals.wss.clients.forEach((client) => {
