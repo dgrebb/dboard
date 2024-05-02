@@ -6,7 +6,7 @@
   import weather from '$lib/stores/weather';
 
   $: ({
-    temperature_2m: current,
+    apparent_temperature: current,
     weather_code: weatherCode,
     wind_speed_10m: windSpeed,
     wind_direction_10m: windDirection,

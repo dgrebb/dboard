@@ -27,8 +27,7 @@ export type DBoardItem = {
 export type CurrentWeatherType = {
   time?: string;
   interval?: number;
-  temperature_2m: number;
-  apparent_temperature?: number;
+  apparent_temperature: number;
   is_day?: number;
   weather_code?: number;
   cloud_cover: number;
