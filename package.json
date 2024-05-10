@@ -81,6 +81,7 @@
   "type": "module",
   "dependencies": {
     "@sveltejs/adapter-node": "^5.0.1",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "svelte-grid": "^5.1.2"
   }
 }
