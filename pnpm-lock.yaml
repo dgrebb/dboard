@@ -14,6 +14,9 @@ importers:
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
+      svelte-grid:
+        specifier: ^5.1.2
+        version: 5.1.2
     devDependencies:
       '@iconify/svelte':
         specifier: ^3.1.6
@@ -2512,6 +2515,9 @@ packages:
     peerDependenciesMeta:
       svelte:
         optional: true
+
+  svelte-grid@5.1.2:
+    resolution: {integrity: sha512-Suwgb+L3LALhTyA7z4vn87UOJ+xBY6EeKa6MdWqDv/lZOtQgIZ21ry/I6txIn9IC0p8of4AiOXupkSMcZ+DEug==}
 
   svelte-hmr@0.16.0:
     resolution: {integrity: sha512-Gyc7cOS3VJzLlfj7wKS0ZnzDVdv3Pn2IuVeJPk9m2skfhcu5bq3wtIZyQGggr7/Iim5rH5cncyQft/kRLupcnA==}
@@ -5315,6 +5321,8 @@ snapshots:
       postcss-scss: 4.0.9(postcss@8.4.38)
     optionalDependencies:
       svelte: 4.2.15
+
+  svelte-grid@5.1.2: {}
 
   svelte-hmr@0.16.0(svelte@4.2.15):
     dependencies:
