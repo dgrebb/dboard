@@ -1,6 +1,14 @@
 <script lang="ts">
+  import { DEFAULT_REFRESH_INTERVAL, LATITUDE, LONGITUDE } from '$lib/GLOBALS';
+  import Main from '../(layouts)/Main.svelte';
   import Grid from 'svelte-grid';
   import gridHelp from 'svelte-grid/build/helper/index.mjs';
+  import { pullToRefresh } from '$lib/actions/pullToRefresh';
+  import ForegroundFrame from '$lib/components/Board/ForegroundFrame.svelte';
+  import BackgroundFrame from '$lib/components/Board/BackgroundFrame.svelte';
+  import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
+  import updateBackgroundColorGradient from '$lib/background';
+  import { onMount } from 'svelte';
 
   const COLS = 12;
 
@@ -30,7 +38,7 @@
     },
   ];
 
-  const cols = [[1200, 12]];
+  const cols = [[1080, 12]];
 
   function add() {
     let newItem = {
@@ -81,34 +89,54 @@
   };
 
   let adjustAfterRemove = false;
+
+  onMount(async () => {
+    updateBackgroundColorGradient(LATITUDE, LONGITUDE);
+  });
 </script>
 
-<button on:click={add}>Add (random size)</button>
-<button on:click={addAt}>Add random (x=0,y=0)</button>
-<label>
-  <input type="checkbox" bind:checked={adjustAfterRemove} />
-  Adjust elements after removing an item
-</label>
-
-<div class="demo-container">
-  <Grid bind:items rowHeight={100} let:item let:dataItem {cols}>
-    <div class="demo-widget">
-      <!-- svelte-ignore a11y-no-static-element-interactions -->
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <span
-        on:pointerdown={(e) => e.stopPropagation()}
-        on:click={() => remove(dataItem)}
-        class="remove"
-      >
-        ✕
-      </span>
-      <p>{dataItem.id}</p>
-    </div>
-  </Grid>
-</div>
+<ForegroundFrame />
+<BackgroundFrame component={ClearOrCloudy} />
+<main class="dboard">
+  <div class="grid-container">
+    <button on:click={add}>Add (random size)</button>
+    <button on:click={addAt}>Add random (x=0,y=0)</button>
+    <label>
+      <input type="checkbox" bind:checked={adjustAfterRemove} />
+      Adjust elements after removing an item
+    </label>
+    <Grid
+      bind:items
+      rowHeight={111}
+      let:item
+      let:dataItem
+      {cols}
+      gap={[11, 11]}
+    >
+      <div class="grid-widget">
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <span
+          on:pointerdown={(e) => e.stopPropagation()}
+          on:click={() => remove(dataItem)}
+          class="remove"
+        >
+          ✕
+        </span>
+        <div class="relative bg-transparent">
+          <h2>Smol label</h2>
+          <h1>big name</h1>
+        </div>
+      </div>
+    </Grid>
+  </div>
+</main>
 
 <style>
-  .demo-widget {
+  .dboard {
+    padding: 11px;
+  }
+  .grid-widget {
     background: #f1f1f1;
     height: 100%;
     width: 100%;
@@ -117,7 +145,7 @@
     align-items: center;
   }
 
-  .demo-container {
+  .grid-container {
     width: 100%;
   }
 
