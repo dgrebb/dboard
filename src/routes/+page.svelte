@@ -6,7 +6,7 @@
   import CurrentWeather from '$lib/components/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/components/widgets/BloodGlucose/BloodGlucose.svelte';
   import CurrentMusic from '$lib/components/widgets/CurrentMusic/CurrentMusic.svelte';
-  import updateBackgroundColorGradient from '$lib/background';
+  import updateBackgroundColorGradient from '$lib/layout/background';
   import time from '$lib/stores/time';
   import weather from '$lib/stores/weather';
   import solar from '$lib/stores/solar';
