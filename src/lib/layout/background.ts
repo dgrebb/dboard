@@ -1,5 +1,5 @@
-import { WEATHER_API } from './GLOBALS';
-import type { FetchOptions, SolarData } from './types';
+import { WEATHER_API } from '../GLOBALS';
+import type { FetchOptions, SolarData } from '../types';
 
 // Function to calculate the background color gradient based on current time, sunrise, and sunset
 function calculateBackgroundColorGradient(

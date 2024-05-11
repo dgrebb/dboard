@@ -7,7 +7,7 @@
   import ForegroundFrame from '$lib/components/Board/ForegroundFrame.svelte';
   import BackgroundFrame from '$lib/components/Board/BackgroundFrame.svelte';
   import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
-  import updateBackgroundColorGradient from '$lib/background';
+  import updateBackgroundColorGradient from '$lib/layout/background';
   import { onMount } from 'svelte';
 
   const COLS = 12;
