@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { DEFAULT_REFRESH_INTERVAL, LATITUDE, LONGITUDE } from '$lib/GLOBALS';
+  import {
+    DEFAULT_REFRESH_INTERVAL,
+    LATITUDE,
+    LONGITUDE,
+  } from '../../.config/GLOBALS';
   import Main from '../(layouts)/Main.svelte';
   import Grid from 'svelte-grid';
   import gridHelp from 'svelte-grid/build/helper/index.mjs';

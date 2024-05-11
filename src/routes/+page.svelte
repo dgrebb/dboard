@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { DEFAULT_REFRESH_INTERVAL, LATITUDE, LONGITUDE } from '$lib/GLOBALS';
+  import {
+    DEFAULT_REFRESH_INTERVAL,
+    LATITUDE,
+    LONGITUDE,
+  } from '../.config/GLOBALS';
   import Main from './(layouts)/Main.svelte';
   import { onMount } from 'svelte';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
