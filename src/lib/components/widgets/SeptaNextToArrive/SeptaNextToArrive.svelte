@@ -15,17 +15,19 @@
         class="absolute right-[-6rem] top-[-3rem] opacity-65"
       />
       <table class="septa">
-        {#each schedule as train}
-          <tr class="septa__train">
-            <td>{train.orig_departure_time}</td>
-            <td class="delay">
-              {train.orig_delay}
-            </td>
-            <td class="arrive">
-              {train.orig_arrival_time}
-            </td>
-          </tr>
-        {/each}
+        <tbody>
+          {#each schedule as train}
+            <tr class="septa__train">
+              <td>{train.orig_departure_time}</td>
+              <td class="delay">
+                {train.orig_delay}
+              </td>
+              <td class="arrive">
+                {train.orig_arrival_time}
+              </td>
+            </tr>
+          {/each}
+        </tbody>
       </table>
     </div>
   </div>
