@@ -6,7 +6,7 @@
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
   // import lights from '$lib/stores/solar';
-  import { hue } from '$lib/settings.js';
+  import { hue } from '../../../../.config/settings.js';
 
   $: ({ actions } = hue);
 
