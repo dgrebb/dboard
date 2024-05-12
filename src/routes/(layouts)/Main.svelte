@@ -63,14 +63,3 @@
 </main>
 
 <slot name="footer" />
-
-<style>
-  .timemachine__time {
-    color: white;
-    flex-shrink: 0;
-    justify-content: end;
-    align-items: center;
-    display: flex;
-    padding-right: 0.5rem;
-  }
-</style>
