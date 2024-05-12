@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { WEATHER_API, WEATHER_LAT_LONG } from '$lib/GLOBALS';
+import { WEATHER_API, WEATHER_LAT_LONG } from '$root/.config/GLOBALS';
 import type { RequestHandler } from './$types';
 import type { FetchOptions, WeatherData } from '$lib/types';
 
