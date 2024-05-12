@@ -11,6 +11,9 @@ const config = {
     }),
     alias: {
       $assets: 'static',
+      $root: 'src',
+      $components: 'src/lib/components',
+      $utils: 'src/utils',
     },
   },
 };
