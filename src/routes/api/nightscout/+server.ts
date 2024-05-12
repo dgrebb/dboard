@@ -1,9 +1,9 @@
 import { json, type RequestOptions } from '@sveltejs/kit';
 import { SECRET_NIGHTSCOUT_TOKEN } from '$env/static/private';
-import { NIGHTSCOUT_API } from '$lib/GLOBALS';
+import { NIGHTSCOUT_API } from '$root/.config/GLOBALS';
 import type { RequestHandler } from './$types';
 import type { FetchOptions } from '$lib/types';
-import { glu } from '$lib/settings';
+import { glu } from '$root/.config/settings';
 
 const dataPoints = glu.hoursDisplayed * 12;
 
