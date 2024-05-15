@@ -1,45 +1,25 @@
 <script lang="ts">
-  import createLocation from '$root/lib/stores/location.svelte';
+  import '$lib/styles/app.pcss';
+  import { LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
+  import updateBackgroundColorGradient from '$root/lib/layout/background';
+  import { DarkMode } from 'flowbite-svelte';
+  import createLocation from './location.svelte';
+  import { createCounter } from './location.svelte';
   import { onMount } from 'svelte';
   import { setTime } from './runedHelpers';
   import Component from './component.svelte';
   import { fade } from 'svelte/transition';
-
-  let mounted = false;
-
-  let { weather, time } = createLocation({
-    weather: { apparent_temperature: 44.4 },
-    time: {
-      seconds: 2354234,
-      is_day: 0,
-      sunrise: 23234234,
-      sunset: 2342,
-    },
-  });
-
-  const data = {
-    apparent_temperature: 50.23,
-  };
-
-  function handleSetWeather() {
-    weather = data;
-  }
+  import { weather } from '$root/lib/stores/weather.svelte';
 
   onMount(() => {
-    mounted = true;
-    let delay = 1000;
-    (async function clock() {
-      let now = new Date();
-      time = await setTime(now);
-      setTimeout(clock, delay);
-    })();
+    weather.loadWeather(LATITUDE, LONGITUDE);
   });
 </script>
 
-{#if mounted}
-  <div transition:fade>
-    <button on:click={handleSetWeather}>Set Weather</button>
-    <p>{weather.apparent_temperature}</p>
-    <Component {weather} {time} />
-  </div>
-{/if}
+<div>
+  <h1>Hello.</h1>
+  {#if weather.current}<h2>
+      The current temperature is: {weather.current.apparent_temperature}
+    </h2>{/if}
+  <Component />
+</div>
