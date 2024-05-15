@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import time from '$lib/stores/time';
-  import weather from '$lib/stores/weather';
+  import weather from '$root/lib/stores/weatherLeg';
   import solar from '$lib/stores/solar';
   import Clouds from './Clouds.svelte';
 
