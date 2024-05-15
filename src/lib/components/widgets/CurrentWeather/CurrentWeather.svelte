@@ -3,7 +3,7 @@
   import fahrenheitToColorShade from './tempColor';
   import { fade, blur } from 'svelte/transition';
   import WeatherIcon from './WeatherIcon.svelte';
-  import weather from '$lib/stores/weather';
+  import weather from '$root/lib/stores/weatherLeg';
 
   $: ({
     apparent_temperature: current,
