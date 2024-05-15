@@ -1,29 +1,19 @@
-// export function createWeatherInstance() {
-//   let weather = $state({});
-
-
-//   return {
-//     get weather() { return weather },
-//     update: (data) => weather = data
-//   }
-// }
-
 export type Weather = {
-  apparent_temperature: number,
-  weather_code?: number,
-  cloud_cover?: number,
-}
+  apparent_temperature: number;
+  weather_code?: number;
+  cloud_cover?: number;
+};
 
 export type Time = {
-  seconds: number,
-  is_day: number,
-  sunrise: number,
-  sunset: number,
-  hours?: number,
-  minutes?: number,
-  totalMinutes?: number,
-  totalSeconds?: number,
-}
+  seconds: number;
+  is_day: number;
+  sunrise: number;
+  sunset: number;
+  hours?: number;
+  minutes?: number;
+  totalMinutes?: number;
+  totalSeconds?: number;
+};
 
 interface Location {
   weather: Weather;
@@ -50,9 +40,24 @@ export default function createLocation(initial: Location) {
 
     get time() {
       return time;
-    }
+    },
   };
 }
+
+export const createCounter = function createCounter() {
+  let count = $state(0);
+
+  function increment() {
+    count += 1;
+  }
+
+  return {
+    get count() {
+      return count;
+    },
+    increment,
+  };
+};
 
 // TODO: createTime
 
