@@ -37,7 +37,7 @@
           previousContent = currentContent; // Update the previous file content
           file = `/album_art.png?_=${timestamp}`;
         }
-        const music = await fetch('/api/music');
+        const music = await fetch('/api/v1/music');
         ({ album, title, artist } = await music.json());
       } else {
         file = ''; // Clear the file path if the file does not exist
