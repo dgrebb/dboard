@@ -1,16 +1,16 @@
-<script lang="ts">
-  import type { Weather, Time } from '$lib/stores/location.svelte';
-  type Props = {
-    weather: Weather;
-    time: Time;
-  };
-  let { weather, time }: Props = $props();
+<script>
+  // @ts-nocheck
+  import { LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
+  import { weather } from '$lib/stores/weather.svelte';
 </script>
 
-<p>
-  {time.totalSeconds}
-  {time.hours?.toString().padStart(2, '0')}:{time.minutes
-    ?.toString()
-    .padStart(2, '0')}:{time.seconds}
-</p>
-<h1>its cold {weather.apparent_temperature}</h1>
+<div>
+  <h1>Get some Weather</h1>
+  <button onclick={(e) => weather.loadWeather(LATITUDE, LONGITUDE)}
+    >Do it.</button
+  >
+</div>
+
+<style>
+  /* your styles go here */
+</style>

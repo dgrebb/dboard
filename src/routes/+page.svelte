@@ -12,7 +12,7 @@
   import CurrentMusic from '$lib/components/widgets/CurrentMusic/CurrentMusic.svelte';
   import updateBackgroundColorGradient from '$lib/layout/background';
   import time from '$lib/stores/time';
-  import weather from '$lib/stores/weather';
+  import weather from '$root/lib/stores/weatherLeg';
   import solar from '$lib/stores/solar';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
 
@@ -66,14 +66,14 @@
   };
 
   const nightscoutData = async () => {
-    const res = await fetch('/api/nightscout');
+    const res = await fetch('/api/v1/nightscout');
     const data = await res.json();
     const { nightscout } = data;
     items = nightscout.items;
   };
 
   const fetchWeatherData = async () => {
-    const res = await fetch('/api/weather');
+    const res = await fetch('/api/v1/weather');
     const { weatherData, solarData } = await res.json();
 
     $weather = weatherData;
@@ -83,7 +83,7 @@
   };
 
   const fetchSeptaNextToArrive = async () => {
-    const data = await fetch('/api/septa', { method: 'GET' })
+    const data = await fetch('/api/v1/septa', { method: 'GET' })
       .then((res) => res.json())
       .catch((err) => console.error(err));
     schedule = data.schedule;
