@@ -39,6 +39,17 @@ export const createWeather = function createWeather() {
       });
   }
 
+  function setRefreshInterval(
+    time: number,
+    latitude: string,
+    longitude: string
+  ) {
+    setInterval(function () {
+      loadWeather(latitude, longitude);
+      console.log('refreshing weather baby');
+    }, time);
+  }
+
   return {
     get current() {
       return weather?.current || null;
@@ -47,6 +58,7 @@ export const createWeather = function createWeather() {
       return weather?.daily || null;
     },
     loadWeather,
+    setRefreshInterval,
   };
 };
 

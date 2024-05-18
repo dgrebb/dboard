@@ -30,7 +30,12 @@
         <h2>{daily.time[index]}</h2>
         {#if i.icon !== undefined}
           <p class="absolute self-end p-3 text-slate-500">{i.name}</p>
-          <Icon icon={i.icon} color={i.color} width={200} class="self-end" />
+          <Icon
+            icon={i.icon}
+            color={i.color}
+            width={200}
+            class="icon self-end"
+          />
         {:else}
           <Icon icon="meteocons:not-available-fill" width={200} />
           <p>{code}</p>
@@ -41,4 +46,13 @@
 </div>
 
 <style>
+  li,
+  h1,
+  h2 {
+    color: var(--bgColor);
+    filter: invert();
+  }
+  .icon {
+    filter: none !important;
+  }
 </style>

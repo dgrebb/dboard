@@ -10,12 +10,13 @@
   import Component from './component.svelte';
   import { fade } from 'svelte/transition';
   import { weather } from '$root/lib/stores/weather.svelte';
-  import Forecast from './Forecast.svelte';
+  import Forecast from '$lib/components/widgets/Weather/Forecast.svelte';
 
   let mounted = $state(false);
 
   onMount(() => {
     weather.loadWeather(LATITUDE, LONGITUDE);
+    weather.setRefreshInterval(300000, LATITUDE, LONGITUDE);
     updateBackgroundColorGradient(LATITUDE, LONGITUDE);
     mounted = true;
   });
@@ -26,10 +27,12 @@
 </script>
 
 {#if mounted}
-  <div>
+  <div class="runed">
     <h1>Hello.</h1>
     {#if weather.current}<h2>
-        The current temperature is: {weather.current.apparent_temperature}
+        The current temperature is: {Math.round(
+          Number(weather.current.apparent_temperature)
+        )}
       </h2>{/if}
     <Component />
     {#if weather.daily && weather.current}
@@ -37,3 +40,10 @@
     {/if}
   </div>
 {/if}
+
+<style>
+  .runed {
+    color: var(--bgColor);
+    filter: invert();
+  }
+</style>
