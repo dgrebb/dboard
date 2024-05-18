@@ -10,7 +10,8 @@ export type WeatherType = {
     isDay: number;
   };
   daily: {
-    [key: string]: string | boolean | number;
+    weather_code: string[];
+    time: string[];
   };
 };
 
@@ -24,7 +25,7 @@ export const createWeather = function createWeather() {
     };
     // console.log('🚀 ~ updateFrequency:', updateFrequency);
     await fetch(
-      `/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset&timezone=America%2FNew_York`,
+      `/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code&timezone=America%2FNew_York`,
       requestOptions
     )
       .then(function (res) {
@@ -41,6 +42,9 @@ export const createWeather = function createWeather() {
   return {
     get current() {
       return weather?.current || null;
+    },
+    get daily() {
+      return weather?.daily || null;
     },
     loadWeather,
   };

@@ -10,6 +10,7 @@
   import Component from './component.svelte';
   import { fade } from 'svelte/transition';
   import { weather } from '$root/lib/stores/weather.svelte';
+  import Forecast from './Forecast.svelte';
 
   let mounted = $state(false);
 
@@ -17,6 +18,10 @@
     weather.loadWeather(LATITUDE, LONGITUDE);
     updateBackgroundColorGradient(LATITUDE, LONGITUDE);
     mounted = true;
+  });
+
+  $effect(() => {
+    console.log(weather);
   });
 </script>
 
@@ -27,5 +32,8 @@
         The current temperature is: {weather.current.apparent_temperature}
       </h2>{/if}
     <Component />
+    {#if weather.daily && weather.current}
+      <Forecast daily={weather.daily} isDay={weather.current.isDay} />
+    {/if}
   </div>
 {/if}
