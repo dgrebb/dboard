@@ -1,8 +1,8 @@
 import type { FetchOptions } from '../types';
 
-export interface WeatherType {
+export type WeatherType = {
   current: {
-    feelsLike: string;
+    apparent_temperature: string;
     weatherCode: string;
     windSpeed: string;
     windDirection: string;
@@ -12,10 +12,10 @@ export interface WeatherType {
   daily: {
     [key: string]: string | boolean | number;
   };
-}
+};
 
 export const createWeather = function createWeather() {
-  let weather = $state({});
+  let weather: WeatherType | null = $state(null);
 
   async function loadWeather(latitude: string, longitude: string) {
     const requestOptions: FetchOptions = {
@@ -32,7 +32,6 @@ export const createWeather = function createWeather() {
       })
       .then((json) => {
         weather = json.weather;
-        console.log(weather.current);
       })
       .catch(function (err) {
         console.error(err);
@@ -41,7 +40,7 @@ export const createWeather = function createWeather() {
 
   return {
     get current() {
-      return weather.current;
+      return weather?.current || null;
     },
     loadWeather,
   };

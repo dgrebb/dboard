@@ -11,15 +11,21 @@
   import { fade } from 'svelte/transition';
   import { weather } from '$root/lib/stores/weather.svelte';
 
+  let mounted = $state(false);
+
   onMount(() => {
     weather.loadWeather(LATITUDE, LONGITUDE);
+    updateBackgroundColorGradient(LATITUDE, LONGITUDE);
+    mounted = true;
   });
 </script>
 
-<div>
-  <h1>Hello.</h1>
-  {#if weather.current}<h2>
-      The current temperature is: {weather.current.apparent_temperature}
-    </h2>{/if}
-  <Component />
-</div>
+{#if mounted}
+  <div>
+    <h1>Hello.</h1>
+    {#if weather.current}<h2>
+        The current temperature is: {weather.current.apparent_temperature}
+      </h2>{/if}
+    <Component />
+  </div>
+{/if}
