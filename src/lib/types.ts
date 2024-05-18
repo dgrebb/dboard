@@ -57,3 +57,13 @@ export type SeptaDataNextToArrive = {
   orig_delay: string;
   isdirect: string;
 };
+
+export type IconProps = {
+  icon: string;
+  color: string;
+  name: string;
+};
+
+export interface IconMap {
+  [index: number]: IconProps;
+}
