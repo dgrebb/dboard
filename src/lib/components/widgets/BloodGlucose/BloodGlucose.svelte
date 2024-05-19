@@ -56,7 +56,7 @@
 
         default:
           // console.log('error');
-          console.log('🩸 ~ GLU ~ direction not covered:', direction);
+          // console.log('🩸 ~ GLU ~ direction not covered:', direction);
           directionIcon = 'iconamoon:cloud-error-light';
           break;
       }
