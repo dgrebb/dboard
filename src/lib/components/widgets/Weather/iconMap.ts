@@ -73,6 +73,11 @@ export const dayIconMap: IconMap = {
     color: lightBlue,
     name: 'Heavy Rain',
   },
+  96: {
+    icon: 'fluent:weather-thunderstorm-20-filled',
+    color: darkBlueGray,
+    name: 'Thunderstorms',
+  },
 };
 
 export const nightIconMap: IconMap = {
@@ -135,6 +140,11 @@ export const nightIconMap: IconMap = {
     icon: 'fluent:weather-rain-20-filled',
     color: darkBlue,
     name: 'Heavy Rain',
+  },
+  96: {
+    icon: 'fluent:weather-thunderstorm-20-filled',
+    color: darkBlue,
+    name: 'Thunderstorms',
   },
 };
 
