@@ -7,7 +7,7 @@ export type WeatherType = {
     windSpeed: string;
     windDirection: string;
     windGusts: string;
-    isDay: number;
+    is_day: number;
   };
   daily: {
     weather_code: string[];

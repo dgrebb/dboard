@@ -1,15 +1,12 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import Icon from '@iconify/svelte';
-  import iconMap from '$components/widgets/Weather/iconMap';
   import type { WeatherType } from '$root/lib/stores';
   import mapWeatherIcon from '$components/widgets/Weather/iconMap';
   import { fade } from 'svelte/transition';
   type Props = {
     daily: WeatherType['daily'];
-    isDay: WeatherType['current']['isDay'];
   };
-  let { daily, isDay }: Props = $props();
+  let { daily }: Props = $props();
 
   type IconProps = {
     icon: string;
@@ -27,7 +24,7 @@
     <h1>Forecast</h1>
     <ul class="flex flex-row">
       {#each daily.weather_code as code, index}
-        {@const i = mapWeatherIcon(Number(code), isDay)}
+        {@const i = mapWeatherIcon(Number(code), 1)}
         <li class="">
           <h2>{daily.time[index]}</h2>
           {#if i.icon !== undefined}

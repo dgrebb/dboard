@@ -73,6 +73,21 @@ export const dayIconMap: IconMap = {
     color: lightBlue,
     name: 'Heavy Rain',
   },
+  80: {
+    icon: 'fluent:weather-rain-showers-day-20-filled',
+    color: lightBlue,
+    name: 'Light Showers',
+  },
+  81: {
+    icon: 'fluent:weather-rain-showers-day-20-filled',
+    color: lightBlue,
+    name: 'Moderate Showers',
+  },
+  82: {
+    icon: 'fluent:weather-rain-showers-day-20-filled',
+    color: lightBlue,
+    name: 'Violent Showers',
+  },
   96: {
     icon: 'fluent:weather-thunderstorm-20-filled',
     color: darkBlueGray,
@@ -140,6 +155,21 @@ export const nightIconMap: IconMap = {
     icon: 'fluent:weather-rain-20-filled',
     color: darkBlue,
     name: 'Heavy Rain',
+  },
+  80: {
+    icon: 'fluent:weather-rain-showers-night-20-filled',
+    color: lightBlue,
+    name: 'Light Showers',
+  },
+  81: {
+    icon: 'fluent:weather-rain-showers-night-20-filled',
+    color: lightBlue,
+    name: 'Moderate Showers',
+  },
+  82: {
+    icon: 'fluent:weather-rain-showers-night-20-filled',
+    color: lightBlue,
+    name: 'Violent Showers',
   },
   96: {
     icon: 'fluent:weather-thunderstorm-20-filled',
