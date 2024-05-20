@@ -33,7 +33,7 @@
       </h2>{/if}
     <Component />
     {#if weather.daily && weather.current}
-      <Forecast daily={weather.daily} isDay={weather.current.is_day} />
+      <Forecast daily={weather.daily} />
     {/if}
   </div>
 {/if}
