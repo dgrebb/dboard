@@ -5,18 +5,20 @@ import { counter } from '$root/routes/runes/location.svelte';
 
 export type WeatherType = {
   current: {
-    apparent_temperature: string;
-    weatherCode: string;
-    windSpeed: string;
-    windDirection: string;
-    windGusts: string;
+    apparent_temperature: number;
+    weather_code: number;
+    wind_speed_10m: number;
+    wind_direction_10m: number;
+    wind_gusts_10m: number;
     is_day: number;
   };
   daily: {
-    weather_code: string[];
-    time: string[];
     apparent_temperature_max: number[];
     apparent_temperature_min: number[];
+    sunrise: number[];
+    sunset: number[];
+    time: string[];
+    weather_code: string[];
   };
 };
 
