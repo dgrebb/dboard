@@ -23,6 +23,7 @@
   import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
   import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
   import Restart from '$lib/components/Restart/Restart.svelte';
+  import { nightDay } from '$root/lib/_helpers/nightDay';
 
   let refreshInterval = DEFAULT_TEMPO;
   let seconds = 0;
@@ -88,33 +89,6 @@
 
   const closeSocket = () => {
     ws?.close();
-  };
-
-  export const nightDay = async (isDay) => {
-    if (isDay !== undefined) {
-      switch (isDay) {
-        case 1:
-          document.documentElement.classList.toggle('light', true);
-          document.documentElement.classList.toggle('dark', false);
-          localStorage.setItem('color-theme', 'light');
-          // console.log(isDay, 'day');
-          break;
-
-        case 0:
-          document.documentElement.classList.toggle('light', false);
-          document.documentElement.classList.toggle('dark', true);
-          localStorage.setItem('color-theme', 'dark');
-          // console.log(isDay, 'night');
-          break;
-
-        default:
-          document.documentElement.classList.toggle('light', false);
-          document.documentElement.classList.toggle('dark', true);
-          localStorage.setItem('color-theme', 'dark');
-          // console.log(isDay, 'night');
-          break;
-      }
-    }
   };
 
   onMount(async () => {

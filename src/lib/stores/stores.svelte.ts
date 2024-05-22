@@ -1,4 +1,5 @@
 import type { FetchOptions } from '../types';
+import { nightDay } from '../_helpers/nightDay';
 import updateBackgroundColorGradient from '$root/lib/layout/background';
 import { counter } from '$root/routes/runes/location.svelte';
 
@@ -74,6 +75,7 @@ export const createBackground = function createBackground() {
   let tempoId: number | NodeJS.Timeout | null;
 
   function updateColor(latitude: string, longitude: string) {
+    nightDay(weather.current?.is_day);
     updateBackgroundColorGradient(latitude, longitude);
   }
 
@@ -82,7 +84,6 @@ export const createBackground = function createBackground() {
       clearInterval(tempoId);
     }
     tempoId = setInterval(function () {
-      console.log('backgroundcolorering');
       updateColor(latitude, longitude);
     }, time);
   }
