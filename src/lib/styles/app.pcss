@@ -102,13 +102,16 @@ body {
       border-radius: 0.5rem;
       position: relative;
       &:not(.empty) {
-        &:before {
-          content: '';
-          opacity: 0.45;
-          position: absolute;
-          inset: 0;
-          z-index: -1;
-          background-color: var(--gradient);
+        .dboard__card {
+          border-radius: 0.5rem;
+          &:after {
+            content: '';
+            opacity: 0.45;
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background-color: var(--gradient);
+          }
         }
       }
     }
