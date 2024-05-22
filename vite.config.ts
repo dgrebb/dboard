@@ -22,6 +22,9 @@ export default defineConfig({
       },
     },
   ],
+  build: {
+    sourcemap: true,
+  },
   resolve: {
     alias: {
       $lib: path.resolve('./src/lib'),
