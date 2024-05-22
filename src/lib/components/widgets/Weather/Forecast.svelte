@@ -29,6 +29,7 @@
         <li class="">
           <h2 class="text-lg">{dayOfWeek(daily.time[index])}</h2>
           <h3 class="text-sm">{daily.time[index]}</h3>
+          <h2>{Math.round(daily.apparent_temperature_max[index])}ºF</h2>
           {#if i.icon !== undefined}
             <p class="absolute self-end p-3 text-slate-500">{i.name}</p>
             <Icon
@@ -41,6 +42,7 @@
             <Icon icon="meteocons:not-available-fill" width={200} />
             <p>{code}</p>
           {/if}
+          <h2>{Math.round(daily.apparent_temperature_min[index])}ºF</h2>
         </li>
       {/each}
     </ul>
