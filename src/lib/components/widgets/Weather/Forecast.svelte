@@ -3,6 +3,7 @@
   import type { WeatherType } from '$root/lib/stores';
   import mapWeatherIcon from '$components/widgets/Weather/iconMap';
   import { fade } from 'svelte/transition';
+  import { dayOfWeek } from '$root/lib/_helpers/dayOfWeek';
   type Props = {
     daily: WeatherType['daily'];
   };
@@ -26,7 +27,8 @@
       {#each daily.weather_code as code, index}
         {@const i = mapWeatherIcon(Number(code), 1)}
         <li class="">
-          <h2>{daily.time[index]}</h2>
+          <h2 class="text-lg">{dayOfWeek(daily.time[index])}</h2>
+          <h3 class="text-sm">{daily.time[index]}</h3>
           {#if i.icon !== undefined}
             <p class="absolute self-end p-3 text-slate-500">{i.name}</p>
             <Icon
