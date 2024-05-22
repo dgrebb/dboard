@@ -18,7 +18,7 @@ export const conduct = async function conduct(
   weather.loadWeather(latitude, longitude);
   weather.setTempo(900000, latitude, longitude);
   background.updateColor(latitude, longitude);
-  background.setTempo(5000, latitude, longitude);
+  background.setTempo(900000, latitude, longitude);
   // TODO: loop over widgets and set up their API tempos
   // console.log('🎼 Conducting: ');
   // console.table(score);
