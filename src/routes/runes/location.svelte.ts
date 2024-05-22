@@ -44,11 +44,12 @@ export default function createLocation(initial: Location) {
   };
 }
 
-export const createCounter = function createCounter() {
+function createCounter() {
   let count = $state(0);
 
   function increment() {
     count += 1;
+    console.log('plus that shit');
   }
 
   return {
@@ -57,7 +58,9 @@ export const createCounter = function createCounter() {
     },
     increment,
   };
-};
+}
+
+export const counter = createCounter();
 
 // TODO: createTime
 
