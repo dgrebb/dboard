@@ -1,1 +1,2 @@
-export { WeatherType, createWeather, updateWeather } from './weather.svelte';
+export { weather, background } from './stores.svelte';
+export type { WeatherType } from './stores.svelte';
