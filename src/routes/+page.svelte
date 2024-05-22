@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    DEFAULT_REFRESH_INTERVAL,
-    LATITUDE,
-    LONGITUDE,
-  } from '../.config/GLOBALS';
+  import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '../.config/GLOBALS';
   import Main from './(layouts)/Main.svelte';
   import { onMount } from 'svelte';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
@@ -28,7 +24,7 @@
   import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
   import Restart from '$lib/components/Restart/Restart.svelte';
 
-  let refreshInterval = DEFAULT_REFRESH_INTERVAL;
+  let refreshInterval = DEFAULT_TEMPO;
   let seconds = 0;
   let webSocketEstablished = false;
   let ws: WebSocket | null = null;
