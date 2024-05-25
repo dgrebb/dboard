@@ -69,9 +69,9 @@ export interface IconMap {
 }
 
 export type LocationType = {
-  [key: string]: {
-    latitude: string;
-    longitude: string;
-    name: string;
-  };
+  latitude: string;
+  longitude: string;
+  name: string;
 };
+
+export type LocationsType = { [key: string]: LocationType }[];
