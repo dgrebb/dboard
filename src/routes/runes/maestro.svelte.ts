@@ -1,5 +1,5 @@
 import type { ComponentType } from 'svelte';
-import { weather, background } from '$root/lib/stores/stores.svelte';
+import { background, nightscout, weather } from '$root/lib/stores';
 
 export type OvertureType = {
   id: number;
@@ -19,6 +19,7 @@ export const conduct = async function conduct(
   weather.setTempo(900000, latitude, longitude);
   background.updateColor(latitude, longitude);
   background.setTempo(900000, latitude, longitude);
+  nightscout.loadNightscout();
   // TODO: loop over widgets and set up their API tempos
   // console.log('🎼 Conducting: ');
   // console.table(score);
