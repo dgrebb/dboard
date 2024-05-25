@@ -1,6 +1,4 @@
 import type { FetchOptions } from '../types';
-import { nightDay } from '../_helpers/nightDay';
-import updateBackgroundColorGradient from '$root/lib/layout/background';
 import { counter } from '$root/routes/runes/location.svelte';
 
 export type WeatherType = {
@@ -15,8 +13,8 @@ export type WeatherType = {
   daily: {
     apparent_temperature_max: number[];
     apparent_temperature_min: number[];
-    sunrise: number[];
-    sunset: number[];
+    sunrises: number[];
+    sunsets: number[];
     time: string[];
     weather_code: string[];
   };
@@ -74,28 +72,3 @@ export const createWeather = function createWeather() {
 };
 
 export const weather = createWeather();
-
-export const createBackground = function createBackground() {
-  let tempoId: number | NodeJS.Timeout | null;
-
-  function updateColor(latitude: string, longitude: string) {
-    nightDay(weather.current?.is_day);
-    updateBackgroundColorGradient(latitude, longitude);
-  }
-
-  function setTempo(time: number, latitude: string, longitude: string) {
-    if (tempoId) {
-      clearInterval(tempoId);
-    }
-    tempoId = setInterval(function () {
-      updateColor(latitude, longitude);
-    }, time);
-  }
-
-  return {
-    updateColor,
-    setTempo,
-  };
-};
-
-export const background = createBackground();

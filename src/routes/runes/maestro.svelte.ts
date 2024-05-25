@@ -1,5 +1,5 @@
 import type { ComponentType } from 'svelte';
-import { background, nightscout, weather } from '$root/lib/stores';
+import { background, nightscout, weather } from '$lib/stores';
 
 export type OvertureType = {
   id: number;
