@@ -1,3 +1,5 @@
+import type { LocationType } from '$root/lib/types';
+
 export const glu = {
   hoursDisplayed: 1, // in hours
 };
@@ -69,4 +71,17 @@ export const hue = {
       },
     },
   ],
+};
+
+export const locations: LocationType = {
+  home: {
+    latitude: '40.2415',
+    longitude: '-75.2838',
+    name: 'Lansdale, PA',
+  },
+  jamestown: {
+    latitude: '40.1155',
+    longitude: '105.3886',
+    name: 'Jamestown, CO',
+  },
 };
