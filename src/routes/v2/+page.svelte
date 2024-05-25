@@ -9,7 +9,12 @@
   import updateBackgroundColorGradient from '$lib/layout/background';
   import time from '$lib/stores/time';
   // import weather from '$root/lib/stores/weatherLeg';
-  import { weather, background } from '$root/lib/stores';
+  import {
+    background,
+    nightscout,
+    weather,
+    type WeatherType,
+  } from '$root/lib/stores';
   import solar from '$lib/stores/solar';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
 
