@@ -115,7 +115,7 @@
       {/if}
       {/each} -->
       {#if weather.current}
-        <CurrentWeather current={weather.current} />
+        <CurrentWeather />
       {/if}
       <!-- <CurrentMusic /> -->
     </div>
