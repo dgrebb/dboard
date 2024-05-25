@@ -67,3 +67,11 @@ export type IconProps = {
 export interface IconMap {
   [index: number]: IconProps;
 }
+
+export type LocationType = {
+  [key: string]: {
+    latitude: string;
+    longitude: string;
+    name: string;
+  };
+};
