@@ -114,43 +114,12 @@ function interpolateColor(
   return [r, g, b];
 }
 
-// Function to fetch sunrise and sunset data based on latitude and longitude
-async function fetchSunriseSunsetData(
-  latitude: string,
-  longitude: string
-): Promise<SolarData | null> {
-  const apiUrl: string = `${WEATHER_API}/forecast?latitude=${latitude}&longitude=${longitude}&daily=sunrise,sunset&forecast_days=1&timezone=America%2FNew_York`;
-
-  // call server for data
-  const requestOptions: FetchOptions = {
-    method: 'GET',
-    redirect: 'follow',
-  };
-
-  try {
-    const response: Response = await fetch(apiUrl, requestOptions);
-    const data = await response.json();
-    const sunrise = data?.daily.sunrise || null;
-    const sunset = data?.daily.sunset || null;
-    if (sunrise === null || sunset === null) throw Error;
-    return { sunrise: sunrise[0], sunset: sunset[0] };
-  } catch (error) {
-    console.error('Error fetching sunrise and sunset data:', error);
-    return null;
-  }
-}
-
 // Function to update background color gradient based on sunrise and sunset data
 export default async function updateBackgroundColorGradient(
-  latitude: string,
-  longitude: string
+  sunrise: string,
+  sunset: string
 ): Promise<void> {
   const body = document.body;
-  let bgColor: string = body.style.getPropertyValue('--bgColor');
-  const { sunrise, sunset } =
-    (await fetchSunriseSunsetData(latitude, longitude)) || {};
-  if (!sunrise || !sunset) return; // Exit if data fetching fails
-
   const rise = new Date(sunrise).getTime();
   const set = new Date(sunset).getTime();
   const currentTime: number = new Date().getTime();
@@ -159,6 +128,8 @@ export default async function updateBackgroundColorGradient(
     rise,
     set
   );
+  let bgColor: string = body.style.getPropertyValue('--bgColor');
+
   bgColor = await calculateBaseBackgroundColorGradient(currentTime, rise, set);
   body.style.setProperty('--gradient', gradientColor);
   body.style.setProperty('--bgColor', bgColor);
