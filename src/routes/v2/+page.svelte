@@ -19,6 +19,7 @@
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
 
   import { conduct } from '../runes/maestro.svelte';
+  import NewWidget from '$root/lib/components/v2/widgets/Composer/NewWidget.svelte';
 
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
@@ -123,6 +124,7 @@
         <CurrentWeather />
       {/if}
       <!-- <CurrentMusic /> -->
+      <NewWidget />
     </div>
 
     <div class="dboard__grid">
