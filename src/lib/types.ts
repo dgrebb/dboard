@@ -74,4 +74,6 @@ export type LocationType = {
   name: string;
 };
 
-export type LocationsType = { [key: string]: LocationType }[];
+export type LocationsType = { [key: string]: LocationType };
+
+export type LocationStore = LocationType & { key: string };
