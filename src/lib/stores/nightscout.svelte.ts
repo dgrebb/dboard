@@ -15,7 +15,7 @@ export const createNightscout = function createNightscout() {
       })
       .then((json) => {
         nightscout = json.nightscout.items.series;
-        console.log('🚀 ~ .then ~ json:', json);
+        // console.log('🚀 ~ .then ~ json:', json);
       })
       .catch(function (err) {
         console.error(err);
@@ -27,14 +27,14 @@ export const createNightscout = function createNightscout() {
       clearInterval(tempoId);
     }
     tempoId = setInterval(function () {
-      console.log('nightscouting');
+      // console.log('nightscouting');
       loadNightscout();
     }, time);
   }
 
   return {
     get data() {
-      console.log('🚀 ~ getdata ~ nightscout:', nightscout);
+      // console.log('🚀 ~ getdata ~ nightscout:', nightscout);
       return nightscout?.data | null;
     },
     get items() {

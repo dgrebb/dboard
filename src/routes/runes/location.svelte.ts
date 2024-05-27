@@ -49,7 +49,6 @@ function createCounter() {
 
   function increment() {
     count += 1;
-    console.log('plus that shit');
   }
 
   return {
