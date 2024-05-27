@@ -73,7 +73,7 @@ export const hue = {
   ],
 };
 
-export const locations: LocationTypes = {
+export const locations: LocationsType = {
   home: {
     latitude: '40.2415',
     longitude: '-75.2838',
