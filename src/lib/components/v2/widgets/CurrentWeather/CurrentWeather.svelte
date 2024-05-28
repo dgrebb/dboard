@@ -13,9 +13,11 @@
   let refreshed = $state(true);
   let mounted = $state(false);
   const { settings }: Props = $props();
-  const { name } = settings.location;
-  let weather = createWeather();
-  weather.loadWeather(settings.location);
+  const {
+    location,
+    location: { name },
+  } = settings;
+  let weather = createWeather(location);
   let current: WeatherType['current'] = $derived(weather.current);
   let daily: WeatherType['daily'] = $derived(weather.daily);
 
@@ -27,6 +29,7 @@
   function handleUp() {
     const fakeWeatherUpdateLocation = {
       primary: false,
+      timezone: 'America/Denver',
       latitude: 40.1155,
       longitude: 105.3886,
       name: 'Jamestown, CO',
@@ -41,14 +44,14 @@
   };
 
   onMount(async () => {
-    await weather.loadWeather(settings.location);
-    weather.setTempo(900000, settings.location);
+    await weather.loadWeather(location);
+    weather.setTempo(900000, location);
     mounted = true;
   });
 
   $effect(() => {
     if (
-      settings.location.primary === true &&
+      location.primary === true &&
       current !== undefined &&
       daily.sunrises !== undefined
     ) {

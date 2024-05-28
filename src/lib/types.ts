@@ -69,9 +69,11 @@ export interface IconMap {
 }
 
 export type LocationType = {
+  primary: boolean;
+  name: string;
+  timezone: string;
   latitude: number;
   longitude: number;
-  name: string;
 };
 
 export type LocationsType = { [key: string]: LocationType };

@@ -20,29 +20,29 @@ export type WeatherType = {
   };
 };
 
-export const createWeather = function createWeather() {
-  // const initial = getWeather(location, host);
-  let weather: WeatherType = $state({});
+export const createWeather = function createWeather(location: LocationType) {
+  const initial = getWeather(location);
+  let weather: WeatherType = $state(initial);
   let tempoId: number | NodeJS.Timeout | null;
 
   async function getWeather(
     location: LocationType,
     host: string = ''
   ): Promise<WeatherType> {
-    const { latitude, longitude } = location;
+    const { latitude, longitude, timezone } = location;
     const requestOptions: FetchOptions = {
       method: 'GET',
       redirect: 'follow',
     };
 
     const weatherData: WeatherType = await fetch(
-      `${host}/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code,apparent_temperature_max,apparent_temperature_min&timezone=America%2FNew_York`,
+      `${host}/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code,apparent_temperature_max,apparent_temperature_min&timezone=${timezone}`,
       requestOptions
     )
       .then(function (res) {
         return res.json();
       })
-      .then((json) => {
+      .then((json: { weather: WeatherType }) => {
         return json.weather;
       })
       .catch(function (err) {
@@ -56,13 +56,13 @@ export const createWeather = function createWeather() {
     location: LocationType,
     host: string = ''
   ): Promise<void> {
-    const { latitude, longitude } = location;
+    const { latitude, longitude, timezone } = location;
     const requestOptions: FetchOptions = {
       method: 'GET',
       redirect: 'follow',
     };
     await fetch(
-      `${host}/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code,apparent_temperature_max,apparent_temperature_min&timezone=America%2FNew_York`,
+      `${host}/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code,apparent_temperature_max,apparent_temperature_min&timezone=${timezone}`,
       requestOptions
     )
       .then(function (res) {
@@ -82,7 +82,6 @@ export const createWeather = function createWeather() {
     }
     tempoId = setInterval(function () {
       console.log('intervalling');
-      counter.increment();
       loadWeather(location);
     }, time);
   }
