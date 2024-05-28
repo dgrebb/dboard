@@ -69,8 +69,8 @@ export interface IconMap {
 }
 
 export type LocationType = {
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   name: string;
 };
 

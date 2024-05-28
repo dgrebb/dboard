@@ -1,4 +1,5 @@
 <script lang="ts">
+  import settings from '$root/.config/settings.json';
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
   import Main from '../(layouts)/Main.svelte';
   import { onMount } from 'svelte';
@@ -20,7 +21,7 @@
 
   import { conduct } from '../runes/maestro.svelte';
   import NewWidget from '$root/lib/components/v2/widgets/Composer/NewWidget.svelte';
-
+  import type { Widget } from '$root/.config/settings';
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
   let seconds = 0;
@@ -30,34 +31,7 @@
   // let schedule: SeptaDataNextToArrive[];
   let schedule = $state();
   // $: console.log('🚀 ~ schedule:', schedule);
-
-  const establishWebSocket = () => {
-    // console.log('connecting', webSocketEstablished);
-    if (webSocketEstablished) return;
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    ws = new WebSocket(`${protocol}//${window.location.host}/websocket`);
-    ws.addEventListener('open', (event) => {
-      webSocketEstablished = true;
-      // console.log('[websocket] connection open', event);
-      logEvent('[websocket] connection open');
-    });
-    ws.addEventListener('close', (event) => {
-      webSocketEstablished = false;
-      // console.log('[websocket] connection closed', event);
-      logEvent('[websocket] connection closed');
-    });
-    ws.addEventListener('message', (event) => {
-      // console.log('[websocket] message received', event);
-      logEvent(`[websocket] message received: ${event.data}`);
-    });
-  };
-
-  let items: DBoardItem[] = [];
   // let weatherData: CurrentWeatherType;
-
-  const logEvent = (str: string) => {
-    log = [...log, str];
-  };
 
   const nightscoutData = async () => {
     let items;
@@ -67,16 +41,6 @@
     items = nightscout.items;
   };
 
-  // const fetchWeatherData = async () => {
-  //   const res = await fetch('/api/v1/weather');
-  //   const { weatherData, solarData } = await res.json();
-
-  //   $weather = weatherData;
-  //   $solar = solarData;
-
-  //   nightDay(weatherData.is_day);
-  // };
-
   const fetchSeptaNextToArrive = async () => {
     const data = await fetch('/api/v1/septa', { method: 'GET' })
       .then((res) => res.json())
@@ -85,13 +49,11 @@
     // console.log('🚀 ~ fetchSeptaNextToArrive ~ schedule:', schedule);
   };
 
-  const closeSocket = () => {
-    ws?.close();
-  };
+  let widgets: Widget[] = settings.widgets;
+  let components: { [key: string]: any } = {};
 
   onMount(async () => {
-    await conduct(LATITUDE, LONGITUDE);
-    mounted = true;
+    // await conduct(LATITUDE, LONGITUDE);
 
     nightscoutData();
     // fetchWeatherData();
@@ -110,6 +72,17 @@
       let now = new Date();
       $time = now.getHours() * 60 + now.getMinutes();
     }, 1000);
+
+    for (const widget of widgets) {
+      if (!components[widget.type]) {
+        components[widget.type] = (
+          await import(
+            `$components/v2/widgets/${widget.type}/${widget.type}.svelte`
+          )
+        ).default;
+      }
+    }
+    mounted = true;
   });
 </script>
 
@@ -121,8 +94,10 @@
       <Nightscout {data} {label} {mainDisplayValue} {direction} />
       {/if}
       {/each} -->
-      {#if weather.current}
-        <CurrentWeather />
+      {#if widgets}
+        {#each widgets as { type, settings }}
+          <svelte:component this={components[type]} {settings} />
+        {/each}
       {/if}
       <!-- <CurrentMusic /> -->
       <NewWidget />
