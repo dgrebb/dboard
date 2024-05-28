@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import '$lib/styles/app.pcss';
   import { LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
   import { onMount } from 'svelte';
@@ -7,12 +7,14 @@
   import { fade } from 'svelte/transition';
   import Forecast from '$lib/components/widgets/Weather/Forecast.svelte';
   import { counter } from './location.svelte';
-  import { background, weather } from '$root/lib/stores';
+  import { background, createWeather } from '$root/lib/stores';
   import { conduct } from './maestro.svelte';
   let mounted = false;
+  let weather = $store({});
 
   onMount(async () => {
     await conduct(LATITUDE, LONGITUDE);
+    weather.load
     mounted = true;
   });
 </script>
@@ -38,4 +40,4 @@
     color: var(--bgColor);
     filter: invert();
   }
-</style>
+</style> -->

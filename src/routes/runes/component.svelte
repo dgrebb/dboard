@@ -1,7 +1,7 @@
 <script>
   // @ts-nocheck
   import { LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
-  import { weather } from '$root/lib/stores';
+  import { createWeather } from '$root/lib/stores';
   import { counter } from './location.svelte';
 </script>
 

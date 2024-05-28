@@ -9,13 +9,6 @@
   import CurrentMusic from '$components/v2/widgets/CurrentMusic/CurrentMusic.svelte';
   import updateBackgroundColorGradient from '$lib/layout/background';
   import time from '$lib/stores/time';
-  // import weather from '$root/lib/stores/weatherLeg';
-  import {
-    background,
-    nightscout,
-    weather,
-    type WeatherType,
-  } from '$root/lib/stores';
   import solar from '$lib/stores/solar';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
 

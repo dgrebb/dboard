@@ -1,6 +1,6 @@
 import { WEATHER_API } from '../../.config/GLOBALS';
 import { nightDay } from '../_helpers/nightDay';
-import { weather } from '$lib/stores';
+import { type WeatherType } from '$lib/stores';
 import type { FetchOptions, SolarData } from '../types';
 
 // Function to calculate the background color gradient based on current time, sunrise, and sunset
@@ -166,28 +166,41 @@ export default async function updateBackgroundColorGradient(
 }
 
 export const createBackground = function createBackground() {
-  let tempoId: number | NodeJS.Timeout | null;
+  // let tempoId: number | NodeJS.Timeout | null;
 
-  function updateColor() {
-    const sunrise = weather?.daily?.sunrises[0];
-    const sunset = weather?.daily?.sunsets[0];
-    nightDay(weather.current?.is_day);
+  function updateColor(
+    current: WeatherType['current'],
+    daily: WeatherType['daily']
+  ) {
+    const sunrise = daily?.sunrises[0];
+    const sunset = daily?.sunsets[0];
+    nightDay(current?.is_day);
     updateBackgroundColorGradient(sunrise, sunset);
   }
 
-  function setTempo(time: number) {
-    if (tempoId) {
-      clearInterval(tempoId);
-    }
-    tempoId = setInterval(function () {
-      updateColor();
-    }, time);
-  }
+  // function setTempo(time: number) {
+  //   if (tempoId) {
+  //     clearInterval(tempoId);
+  //   }
+  //   tempoId = setInterval(function () {
+  //     updateColor();
+  //   }, time);
+  // }
 
   return {
     updateColor,
-    setTempo,
+    // setTempo,
   };
 };
 
-export const background = createBackground();
+export const background = {
+  updateColor: function (
+    current: WeatherType['current'],
+    daily: WeatherType['daily']
+  ) {
+    const sunrise = daily?.sunrises[0];
+    const sunset = daily?.sunsets[0];
+    nightDay(current?.is_day);
+    updateBackgroundColorGradient(sunrise, sunset);
+  },
+};
