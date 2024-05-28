@@ -1,5 +1,5 @@
 import widgets from '$root/.config/settings.json';
-import type { LocationsType } from '$root/lib/types';
+import type { LocationType, LocationsType } from '$root/lib/types';
 import type { ComponentType } from 'svelte';
 
 export const glu = {
@@ -99,12 +99,7 @@ type WidgetType = {
 };
 
 export type CurrentWeatherSettings = {
-  location: {
-    primary: boolean;
-    latitude: number;
-    longitude: number;
-    name: string;
-  };
+  location: LocationType;
   tempo: number;
 };
 

@@ -6,6 +6,7 @@
         "location": {
           "primary": false,
           "name": "Lansdale, PA",
+          "timezone": "America/New_York",
           "latitude": 40.2415,
           "longitude": -75.2838
         },
@@ -17,8 +18,9 @@
       "settings": {
         "location": {
           "primary": true,
-          "latitude": 40.1155,
-          "longitude": 105.3886,
+          "timezone": "America/Denver",
+          "latitude": 40.08863,
+          "longitude": 105.36303,
           "name": "Jamestown, CO"
         },
         "tempo": 900000
