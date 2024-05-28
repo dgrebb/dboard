@@ -3,9 +3,9 @@
   import Main from '../(layouts)/Main.svelte';
   import { onMount } from 'svelte';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
-  import CurrentWeather from '$lib/components/v2/widgets/CurrentWeather/CurrentWeather.svelte';
-  import BloodGlucose from '$lib/components/widgets/BloodGlucose/BloodGlucose.svelte';
-  import CurrentMusic from '$lib/components/widgets/CurrentMusic/CurrentMusic.svelte';
+  import CurrentWeather from '$components/v2/widgets/CurrentWeather/CurrentWeather.svelte';
+  import Nightscout from '$components/v2/widgets/Nightscout/Nightscout.svelte';
+  import CurrentMusic from '$components/v2/widgets/CurrentMusic/CurrentMusic.svelte';
   import updateBackgroundColorGradient from '$lib/layout/background';
   import time from '$lib/stores/time';
   // import weather from '$root/lib/stores/weatherLeg';
@@ -60,6 +60,7 @@
   };
 
   const nightscoutData = async () => {
+    let items;
     const res = await fetch('/api/v1/nightscout');
     const data = await res.json();
     const { nightscout } = data;
@@ -117,7 +118,7 @@
     <div class="dboard__grid" use:pullToRefresh>
       <!-- {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
       {#if direction}
-      <BloodGlucose {data} {label} {mainDisplayValue} {direction} />
+      <Nightscout {data} {label} {mainDisplayValue} {direction} />
       {/if}
       {/each} -->
       {#if weather.current}

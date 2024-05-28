@@ -2,7 +2,7 @@
   import { fade } from 'svelte/transition';
   import { Card } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  import BloodGlucoseGraph from './BloodGlucoseGraph.svelte';
+  import NightscoutGraph from './NightscoutGraph.svelte';
   import type { ChartSeriesGlucose } from '$lib/types';
   import Icon from '@iconify/svelte';
 
@@ -111,7 +111,7 @@
         />
       </h2>
 
-      <BloodGlucoseGraph data={BGSeries} {mainColor} areaColor={mainColor} />
+      <NightscoutGraph data={BGSeries} {mainColor} areaColor={mainColor} />
       <h1
         class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight brightness-50 dark:brightness-200"
       >
