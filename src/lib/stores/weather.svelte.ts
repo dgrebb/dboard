@@ -1,5 +1,5 @@
 import type { FetchOptions, LocationType } from '../types';
-import { counter } from '$root/routes/runes/location.svelte';
+// import { counter } from '$root/routes/runes/location.svelte';
 
 export type WeatherType = {
   current: {
@@ -76,14 +76,14 @@ export const createWeather = function createWeather() {
       });
   }
 
-  function setTempo(time: number, latitude: number, longitude: number) {
+  function setTempo(time: number, location: LocationType) {
     if (tempoId) {
       clearInterval(tempoId);
     }
     tempoId = setInterval(function () {
       console.log('intervalling');
       counter.increment();
-      loadWeather(latitude, longitude);
+      loadWeather(location);
     }, time);
   }
 
@@ -100,4 +100,4 @@ export const createWeather = function createWeather() {
   };
 };
 
-export const weather = createWeather();
+// export const weather = createWeather();
