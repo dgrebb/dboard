@@ -1,4 +1,4 @@
-import type { FetchOptions } from '../types';
+import type { FetchOptions, LocationType } from '../types';
 import { counter } from '$root/routes/runes/location.svelte';
 
 export type WeatherType = {
@@ -21,14 +21,42 @@ export type WeatherType = {
 };
 
 export const createWeather = function createWeather() {
-  let weather: WeatherType | null = $state(null);
+  // const initial = getWeather(location, host);
+  let weather: WeatherType = $state({});
   let tempoId: number | NodeJS.Timeout | null;
 
+  async function getWeather(
+    location: LocationType,
+    host: string = ''
+  ): Promise<WeatherType> {
+    const { latitude, longitude } = location;
+    const requestOptions: FetchOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    const weatherData: WeatherType = await fetch(
+      `${host}/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code,apparent_temperature_max,apparent_temperature_min&timezone=America%2FNew_York`,
+      requestOptions
+    )
+      .then(function (res) {
+        return res.json();
+      })
+      .then((json) => {
+        return json.weather;
+      })
+      .catch(function (err) {
+        console.error(err);
+      });
+
+    return weatherData;
+  }
+
   async function loadWeather(
-    latitude: string,
-    longitude: string,
+    location: LocationType,
     host: string = ''
   ): Promise<void> {
+    const { latitude, longitude } = location;
     const requestOptions: FetchOptions = {
       method: 'GET',
       redirect: 'follow',
@@ -48,7 +76,7 @@ export const createWeather = function createWeather() {
       });
   }
 
-  function setTempo(time: number, latitude: string, longitude: string) {
+  function setTempo(time: number, latitude: number, longitude: number) {
     if (tempoId) {
       clearInterval(tempoId);
     }
@@ -61,11 +89,12 @@ export const createWeather = function createWeather() {
 
   return {
     get current() {
-      return weather?.current || null;
+      return weather.current;
     },
     get daily() {
-      return weather?.daily || null;
+      return weather.daily;
     },
+    getWeather,
     loadWeather,
     setTempo,
   };

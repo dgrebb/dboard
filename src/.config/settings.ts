@@ -1,4 +1,6 @@
+import widgets from '$root/.config/settings.json';
 import type { LocationsType } from '$root/lib/types';
+import type { ComponentType } from 'svelte';
 
 export const glu = {
   hoursDisplayed: 1, // in hours
@@ -85,3 +87,45 @@ export const locations: LocationsType = {
     name: 'Jamestown, CO',
   },
 };
+
+type SettingsType = {
+  widgets: WidgetType[];
+  overrideTheme?: 'dark' | 'light';
+};
+
+type WidgetType = {
+  type: string;
+  settings: CurrentWeatherSettings;
+};
+
+export type CurrentWeatherSettings = {
+  location: {
+    primary: boolean;
+    latitude: number;
+    longitude: number;
+    name: string;
+  };
+  tempo: number;
+};
+
+// types.d.ts
+export interface Location {
+  primary: boolean;
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface Settings {
+  location: Location;
+  tempo: number;
+}
+
+export interface Widget {
+  type: string;
+  settings: Settings;
+}
+
+export interface WidgetsConfig {
+  widgets: Widget[];
+}

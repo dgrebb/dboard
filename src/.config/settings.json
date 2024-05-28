@@ -1,0 +1,28 @@
+{
+  "widgets": [
+    {
+      "type": "CurrentWeather",
+      "settings": {
+        "location": {
+          "primary": true,
+          "name": "Lansdale, PA",
+          "latitude": 40.2415,
+          "longitude": -75.2838
+        },
+        "tempo": 900000
+      }
+    },
+    {
+      "type": "CurrentWeather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "latitude": 40.1155,
+          "longitude": 105.3886,
+          "name": "Jamestown, CO"
+        },
+        "tempo": 900000
+      }
+    }
+  ]
+}

@@ -3,38 +3,54 @@
   import fahrenheitToColorShade from './tempColor';
   import { fade, blur } from 'svelte/transition';
   import WeatherIcon from './WeatherIcon.svelte';
-  import { weather, type WeatherType } from '$root/lib/stores';
   import { onMount } from 'svelte';
-  import { LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
-  import { locations } from '$root/.config/settings';
+  import type { CurrentWeatherSettings } from '$root/.config/settings';
+  import {
+    createWeather,
+    type WeatherType,
+  } from '$root/lib/stores/weather.svelte';
 
-  let current = $state(weather.current);
   let highlightColor = fahrenheitToColorShade(77);
   let pushing = $state(false);
   let refreshed = $state(true);
+  let mounted = $state(false);
+  const { settings }: Props = $props();
+  const { name } = settings.location;
+  let weather = createWeather();
+  let current: WeatherType = $state(weather.current);
 
   function handlePushing() {
     pushing = true;
     refreshed = false;
   }
 
-  $effect(() => {
-    if (weather) {
-      current = weather.current;
-      refreshed = true;
-    }
+  function handleUp() {
+    const fakeWeatherUpdateLocation = {
+      primary: false,
+      latitude: 40.1155,
+      longitude: 105.3886,
+      name: 'Jamestown, CO',
+    };
+    pushing = false;
+
+    weather.loadWeather(fakeWeatherUpdateLocation);
+  }
+
+  type Props = {
+    settings: CurrentWeatherSettings;
+  };
+
+  onMount(async () => {
+    await weather.loadWeather(settings.location);
+    mounted = true;
   });
 
-  function handleUp() {
-    pushing = false;
-    weather.loadWeather(
-      locations.jamestown.latitude,
-      locations.jamestown.longitude
-    );
-  }
+  $effect(() => {
+    current = weather.current;
+  });
 </script>
 
-{#key weather}
+{#key mounted}
   <div
     onmousedown={handlePushing}
     onmouseup={handleUp}
@@ -48,13 +64,14 @@
         style={`--mainColor: ${highlightColor}`}
         class:pushing
         class:refreshed
+        transition:fade
       >
         <h2
           class="text-[var(--mainColor)] brightness-75 dark:saturate-200"
           out:blur={{ duration: 333 }}
           in:blur={{ delay: 333, duration: 333 }}
         >
-          Lansdale
+          {name}
           <Icon
             icon="ei:arrow-up"
             class="current-weather__wind-direction inline-block mix-blend-darken brightness-50 dark:brightness-200"
