@@ -5,10 +5,8 @@
   import WeatherIcon from './WeatherIcon.svelte';
   import { onMount } from 'svelte';
   import type { CurrentWeatherSettings } from '$root/.config/settings';
-  import {
-    createWeather,
-    type WeatherType,
-  } from '$root/lib/stores/weather.svelte';
+  import { createWeather, type WeatherType } from '$root/lib/stores';
+  import { background } from '$root/lib/stores';
 
   let highlightColor = fahrenheitToColorShade(77);
   let pushing = $state(false);
@@ -17,7 +15,9 @@
   const { settings }: Props = $props();
   const { name } = settings.location;
   let weather = createWeather();
-  let current: WeatherType = $state(weather.current);
+  weather.loadWeather(settings.location);
+  let current: WeatherType['current'] = $derived(weather.current);
+  let daily: WeatherType['daily'] = $derived(weather.daily);
 
   function handlePushing() {
     pushing = true;
@@ -42,11 +42,18 @@
 
   onMount(async () => {
     await weather.loadWeather(settings.location);
+    weather.setTempo(900000, settings.location);
     mounted = true;
   });
 
   $effect(() => {
-    current = weather.current;
+    if (
+      settings.location.primary === true &&
+      current !== undefined &&
+      daily.sunrises !== undefined
+    ) {
+      background.updateColor(current, daily);
+    }
   });
 </script>
 
