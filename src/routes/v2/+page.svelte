@@ -17,7 +17,7 @@
   import type { Widget } from '$root/.config/settings';
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
-  let seconds = 0;
+  let seconds = $state(0);
   // let webSocketEstablished = false;
   // let ws: WebSocket | null = null;
   // let log: string[] = [];
@@ -26,8 +26,8 @@
   // $: console.log('🚀 ~ schedule:', schedule);
   // let weatherData: CurrentWeatherType;
 
+  let items = $state();
   const nightscoutData = async () => {
-    let items;
     const res = await fetch('/api/v1/nightscout');
     const data = await res.json();
     const { nightscout } = data;
@@ -82,11 +82,11 @@
 {#if mounted}
   <Main>
     <div class="dboard__grid" use:pullToRefresh>
-      <!-- {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
-      {#if direction}
-      <Nightscout {data} {label} {mainDisplayValue} {direction} />
-      {/if}
-      {/each} -->
+      {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
+        {#if direction}
+          <Nightscout {data} {label} {mainDisplayValue} {direction} />
+        {/if}
+      {/each}
       {#if widgets}
         {#each widgets as { type, settings }}
           <svelte:component this={components[type]} {settings} />
