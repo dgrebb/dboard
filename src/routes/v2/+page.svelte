@@ -100,6 +100,11 @@
       <!-- <SeptaNextToArrive {schedule} /> -->
       <div class="dboard__grid__item control-widget">
         <div class="dboard__card">
+          <h1
+            class="flex h-full flex-col items-center justify-center text-9xl text-orange-500"
+          >
+            {seconds}
+          </h1>
           <!-- <OnOff /> -->
           <!-- <Restart /> -->
         </div>
