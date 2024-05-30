@@ -13,8 +13,8 @@ export type WeatherType = {
   daily: {
     apparent_temperature_max: number[];
     apparent_temperature_min: number[];
-    sunrises: number[];
-    sunsets: number[];
+    sunrise: number[];
+    sunset: number[];
     time: string[];
     weather_code: string[];
   };
@@ -91,11 +91,15 @@ export const createWeather = function createWeather() {
     get current() {
       if (typeof weather === 'object') {
         return weather.current;
+      } else {
+        return weather;
       }
     },
     get daily() {
       if (typeof weather === 'object') {
         return weather.daily;
+      } else {
+        return weather;
       }
     },
     getWeather,

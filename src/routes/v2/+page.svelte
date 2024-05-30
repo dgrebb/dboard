@@ -18,13 +18,7 @@
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
   let seconds = $state(0);
-  // let webSocketEstablished = false;
-  // let ws: WebSocket | null = null;
-  // let log: string[] = [];
-  // let schedule: SeptaDataNextToArrive[];
   let schedule = $state();
-  // $: console.log('🚀 ~ schedule:', schedule);
-  // let weatherData: CurrentWeatherType;
 
   let items = $state();
   const nightscoutData = async () => {
