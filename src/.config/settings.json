@@ -4,7 +4,7 @@
       "type": "CurrentWeather",
       "settings": {
         "location": {
-          "primary": false,
+          "primary": true,
           "name": "Lansdale, PA",
           "timezone": "America/New_York",
           "latitude": 40.2415,
@@ -17,7 +17,7 @@
       "type": "CurrentWeather",
       "settings": {
         "location": {
-          "primary": true,
+          "primary": false,
           "timezone": "America/Denver",
           "latitude": 40.10298,
           "longitude": -105.34346,
