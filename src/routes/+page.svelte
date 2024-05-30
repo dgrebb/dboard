@@ -75,6 +75,7 @@
 
     $weather = weatherData;
     $solar = solarData;
+    console.log('🚀 ~ fetchWeatherData ~ $solar:', $solar);
 
     nightDay(weatherData.is_day);
   };
@@ -92,15 +93,19 @@
   };
 
   onMount(async () => {
+    let sunrise = $solar.sunrise[0].toString();
+    let sunset = $solar.sunset[0].toString();
     nightscoutData();
     fetchWeatherData();
-    updateBackgroundColorGradient(LATITUDE, LONGITUDE);
+    updateBackgroundColorGradient(sunrise, sunset);
     fetchSeptaNextToArrive();
     setInterval(async () => {
+      let sunrise = $solar.sunrise[0].toString();
+      let sunset = $solar.sunset[0].toString();
       nightscoutData();
       fetchWeatherData();
       fetchSeptaNextToArrive();
-      updateBackgroundColorGradient(LATITUDE, LONGITUDE);
+      updateBackgroundColorGradient(sunrise, sunset);
       seconds = 0;
     }, refreshInterval);
 
