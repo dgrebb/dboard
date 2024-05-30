@@ -172,8 +172,8 @@ export const createBackground = function createBackground() {
     current: WeatherType['current'],
     daily: WeatherType['daily']
   ) {
-    const sunrise = daily?.sunrises[0];
-    const sunset = daily?.sunsets[0];
+    const sunrise = daily?.sunrise[0];
+    const sunset = daily?.sunset[0];
     nightDay(current?.is_day);
     updateBackgroundColorGradient(sunrise, sunset);
   }
@@ -198,8 +198,8 @@ export const background = {
     current: WeatherType['current'],
     daily: WeatherType['daily']
   ) {
-    const sunrise = daily?.sunrises[0];
-    const sunset = daily?.sunsets[0];
+    const sunrise = daily?.sunrise[0];
+    const sunset = daily?.sunset[0];
     nightDay(current?.is_day);
     updateBackgroundColorGradient(sunrise, sunset);
   },

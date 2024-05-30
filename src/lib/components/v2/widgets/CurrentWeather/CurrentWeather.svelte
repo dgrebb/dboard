@@ -18,8 +18,8 @@
     location: { name },
   } = settings;
   let weather = createWeather(location);
-  let current: WeatherType['current'] = $derived(weather.current);
-  let daily: WeatherType['daily'] = $derived(weather.daily);
+  let current: WeatherType['current'] | boolean = $derived(weather.current);
+  let daily: WeatherType['daily'] | boolean = $derived(weather.daily);
 
   function handlePushing() {
     pushing = true;
@@ -50,11 +50,14 @@
   });
 
   $effect(() => {
+    let daily = $state.snapshot(weather.daily);
+    let current = $state.snapshot(weather.current);
     if (
       location.primary === true &&
-      current !== undefined &&
-      daily.sunrises !== undefined
+      typeof daily === 'object' &&
+      typeof current === 'object'
     ) {
+      console.log('update ze bg');
       background.updateColor(current, daily);
     }
   });
