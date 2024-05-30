@@ -89,10 +89,14 @@ export const createWeather = function createWeather() {
 
   return {
     get current() {
-      return weather.current;
+      if (typeof weather === 'object') {
+        return weather.current;
+      }
     },
     get daily() {
-      return weather.daily;
+      if (typeof weather === 'object') {
+        return weather.daily;
+      }
     },
     getWeather,
     loadWeather,
