@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
   var url = "https://api.github.com/repos/mbostock/d3/stats/punch_card"
   var color = d3.scale.linear().range(['white', 'blue']);
   var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -58,4 +58,4 @@
       }
     </style>
   <script type='text/javascript' src='http://d3js.org/d3.v3.min.js'></script>
-</svelte:head>
+</svelte:head> -->

@@ -57,7 +57,6 @@
       typeof daily === 'object' &&
       typeof current === 'object'
     ) {
-      console.log('update ze bg');
       background.updateColor(current, daily);
     }
   });
