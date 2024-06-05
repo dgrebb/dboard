@@ -9,6 +9,7 @@
   import { createEventDispatcher } from 'svelte';
 
   $: open = false;
+  $: toggleable = false;
 
   const dispatch = createEventDispatcher();
 
@@ -18,6 +19,14 @@
 
   const establishWebSocket = () => {
     dispatch('establishWebSocket');
+  };
+
+  const enableToggle = function enableToggle() {
+    toggleable = true;
+  };
+
+  const disableToggle = function disableToggle() {
+    toggleable = false;
   };
 
   const toggleControls = function toggleControls() {
@@ -32,10 +41,14 @@
 <Button
   size="sm"
   color="light"
-  class="absolute right-0 top-0 border-opacity-0 bg-opacity-25 opacity-0 bg-blend-overlay mix-blend-difference transition-opacity hover:opacity-100 active:opacity-100"
-  onclick={toggleControls}>{open ? 'Hide' : 'Show'} Controls</Button
+  class="absolute right-3 top-3 border-opacity-0 bg-opacity-25 opacity-0 bg-blend-overlay mix-blend-difference transition-opacity hover:opacity-100 active:opacity-100 {open
+    ? 'opacity-100'
+    : 'opacity-0'}"
+  onclick={toggleControls}
+  on:hover={enableToggle}
+  on:blur={disableToggle}>{open ? 'Hide' : 'Show'} Controls</Button
 >
-<div class="absolute left-0 top-0 {open ? `visible` : `hidden`}">
+<div class="absolute left-3 top-3 {open ? `visible` : `hidden`}">
   <Button
     size="sm"
     disabled={!webSocketEstablished}
