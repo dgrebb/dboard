@@ -3,6 +3,7 @@
   import {
     ArrowUpDownOutline,
     CloseCircleOutline,
+    RefreshOutline,
   } from 'flowbite-svelte-icons';
   export let webSocketEstablished: boolean;
   import { createEventDispatcher } from 'svelte';
@@ -22,13 +23,17 @@
   const toggleControls = function toggleControls() {
     open = !open;
   };
+
+  const refreshDboard = function refreshDboard() {
+    location.reload();
+  };
 </script>
 
 <Button
   size="sm"
   color="light"
-  class="absolute right-0 top-0"
-  onclick={toggleControls}>Show Controls</Button
+  class="absolute right-0 top-0 border-opacity-0 bg-opacity-25 opacity-0 bg-blend-overlay mix-blend-difference transition-opacity hover:opacity-100 active:opacity-100"
+  onclick={toggleControls}>{open ? 'Hide' : 'Show'} Controls</Button
 >
 <div class="absolute left-0 top-0 {open ? `visible` : `hidden`}">
   <Button
@@ -45,5 +50,12 @@
     color="dark"
     class="border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
     on:click={establishWebSocket}><ArrowUpDownOutline /></Button
+  >
+
+  <Button
+    size="sm"
+    color="dark"
+    class="border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
+    on:click={refreshDboard}><RefreshOutline /></Button
   >
 </div>
