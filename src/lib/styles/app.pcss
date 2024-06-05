@@ -240,7 +240,9 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.5);
+    background: #686868;
+    background: radial-gradient(at right bottom, #686868, #1f1f1f);
+
     z-index: 40;
     &__audio-animation,
     &__info {
@@ -258,7 +260,13 @@ body {
       }
     }
     img {
-      @apply shadow-xl;
+      box-shadow:
+        0px 0px 0px 1px rgba(165, 165, 165, 0.04),
+        -9px 9px 9px -0.5px rgba(0, 0, 0, 0.04),
+        -18px 18px 18px -1.5px rgba(0, 0, 0, 0.08),
+        -37px 37px 37px -3px rgba(0, 0, 0, 0.16),
+        -75px 75px 75px -6px rgba(0, 0, 0, 0.24),
+        -150px 150px 150px -12px rgba(0, 0, 0, 0.48);
     }
     &__audio-animation {
       position: relative;
