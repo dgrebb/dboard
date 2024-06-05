@@ -35,22 +35,22 @@
   // $: console.log('🚀 ~ schedule:', schedule);
 
   const establishWebSocket = () => {
-    // console.log('connecting', webSocketEstablished);
+    console.log('connecting', webSocketEstablished);
     if (webSocketEstablished) return;
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     ws = new WebSocket(`${protocol}//${window.location.host}/websocket`);
     ws.addEventListener('open', (event) => {
       webSocketEstablished = true;
-      // console.log('[websocket] connection open', event);
+      console.log('[websocket] connection open', event);
       logEvent('[websocket] connection open');
     });
     ws.addEventListener('close', (event) => {
       webSocketEstablished = false;
-      // console.log('[websocket] connection closed', event);
+      console.log('[websocket] connection closed', event);
       logEvent('[websocket] connection closed');
     });
     ws.addEventListener('message', (event) => {
-      // console.log('[websocket] message received', event);
+      console.log('[websocket] message received', event);
       logEvent(`[websocket] message received: ${event.data}`);
     });
   };
@@ -131,7 +131,7 @@
       {/if}
     {/each}
     {#if $weather}
-      <CurrentWeather />
+      <CurrentWeather on:fetchWeatherData={fetchWeatherData} />
     {/if}
     <CurrentMusic />
   </div>

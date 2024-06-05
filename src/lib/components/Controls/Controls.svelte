@@ -7,7 +7,7 @@
   export let webSocketEstablished: boolean;
   import { createEventDispatcher } from 'svelte';
 
-  let open = false;
+  $: open = false;
 
   const dispatch = createEventDispatcher();
 
@@ -19,10 +19,18 @@
     dispatch('establishWebSocket');
   };
 
-  // your script goes here
+  const toggleControls = function toggleControls() {
+    open = !open;
+  };
 </script>
 
-<div class={open ? `visible` : `hidden`}>
+<Button
+  size="sm"
+  color="light"
+  class="absolute right-0 top-0"
+  onclick={toggleControls}>Show Controls</Button
+>
+<div class="absolute left-0 top-0 {open ? `visible` : `hidden`}">
   <Button
     size="sm"
     disabled={!webSocketEstablished}
