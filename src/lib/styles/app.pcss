@@ -242,8 +242,37 @@ body {
     align-items: center;
     background: #686868;
     background: radial-gradient(at right bottom, #686868, #1f1f1f);
-
     z-index: 40;
+
+    header {
+      height: 39%;
+      display: flex;
+      flex-direction: row;
+      h1 {
+        height: 100%;
+        padding: 0 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e0e0e0;
+        font-size: 12rem;
+        text-shadow:
+          1px 1px 0 #000,
+          -1px -1px 0 #000,
+          2px 2px 0 #000,
+          -2px -2px 0 #000,
+          3px 3px 0 #000,
+          -3px -3px 0 #000;
+        /* mix-blend-mode: hard-light; */
+        &.bg {
+          color: rgba(233, 33, 33, 0.83);
+        }
+      }
+    }
+
+    main {
+      height: 71%;
+    }
     &__audio-animation,
     &__info {
       display: flex;
