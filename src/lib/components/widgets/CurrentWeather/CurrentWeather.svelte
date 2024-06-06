@@ -4,9 +4,17 @@
   import { fade, blur } from 'svelte/transition';
   import WeatherIcon from './WeatherIcon.svelte';
   import weather from '$root/lib/stores/weatherLeg';
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
+  const fetchWeatherData = () => {
+    dispatch('fetchWeatherData');
+  };
 
   $: ({
-    apparent_temperature: current,
+    apparent_temperature: apparent,
+    temperature_2m: current,
     weather_code: weatherCode,
     wind_speed_10m: windSpeed,
     wind_direction_10m: windDirection,
@@ -18,6 +26,7 @@
 
   function handleTouched() {
     unique = {};
+    fetchWeatherData();
   }
 </script>
 

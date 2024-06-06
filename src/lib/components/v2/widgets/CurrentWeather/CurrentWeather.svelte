@@ -114,7 +114,7 @@
           out:blur={{ duration: 333 }}
           in:blur={{ delay: 333, duration: 333 }}
         >
-          {Math.round(current.apparent_temperature)}<span
+          {Math.round(current.temperature_2m)}<span
             class="dboard__card__value-symbol text-[var(--mainColor)] brightness-125 dark:brightness-150"
             >&deg;</span
           >
