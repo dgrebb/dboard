@@ -55,7 +55,7 @@
     });
   };
 
-  let items: DBoardItem[] = [];
+  $: items = [] satisfies DBoardItem[];
   let weatherData: CurrentWeatherType;
 
   const logEvent = (str: string) => {
@@ -133,7 +133,12 @@
     {#if $weather}
       <CurrentWeather on:fetchWeatherData={fetchWeatherData} />
     {/if}
-    <CurrentMusic />
+    {#if items[0]?.content?.large.value && $weather}
+      <CurrentMusic
+        headlineValue2={$weather.temperature_2m}
+        headlineValue1={items[0].content.large.value}
+      />
+    {/if}
   </div>
 
   <div class="dboard__grid">

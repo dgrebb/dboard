@@ -66,6 +66,7 @@
       <h3>{album}</h3>
     </div>
     <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
     <img
       src={file}
       alt="{album} Artwork"
@@ -89,16 +90,29 @@
     transition:fade
     on:click={toggleModal}
     on:keydown={toggleModal}
+    role="switch"
+    tabindex="-1"
+    aria-checked={modal}
   >
-    <img src={file} alt="{album} Artwork" transition:fade />
-    <div
-      class="current-music__modal__info flex flex-col"
-      transition:blur={{ amount: 10 }}
-    >
-      <h1>{title}</h1>
-      <h2>{artist}</h2>
-      <h3>{album}</h3>
-    </div>
-    <AudioWave />
+    <header>
+      <h1 class="current-music__modal__headline bg pb-3">
+        {headlineValue1}
+      </h1>
+      <h1 class="current-music__modal__headline text- pb-3">
+        {Math.round(headlineValue2)}ºF
+      </h1>
+    </header>
+    <main class="flex w-[77%] flex-col content-center items-center">
+      <img src={file} alt="{album} Artwork" transition:fade />
+      <div
+        class="current-music__modal__info flex flex-col"
+        transition:blur={{ amount: 10 }}
+      >
+        <h1>{title}</h1>
+        <h2>{artist}</h2>
+        <h3>{album}</h3>
+      </div>
+      <AudioWave />
+    </main>
   </div>
 {/if}
