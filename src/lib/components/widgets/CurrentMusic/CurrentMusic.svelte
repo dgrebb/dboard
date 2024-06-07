@@ -18,13 +18,12 @@
   let refreshTimer: NodeJS.Timeout; // Timer to periodically check for updates
   let previousContent: string | null = null; // Previous file content
   let timestamp = 0; // Initial timestamp value
+  $: webSocketEstablished = false;
 
-  onMount(() => {
-    pollFile(); // Start polling for changes when the component mounts
-  });
 
   function toggleModal() {
     modal = !modal;
+    localStorage.setItem('musicModal', modal.toString());
   }
 
   async function pollFile() {
@@ -49,6 +48,19 @@
       refreshTimer = setTimeout(pollFile, refreshInterval); // Schedule the next poll
     }
   }
+
+  onMount(async () => {
+    pollFile(); // Start polling for changes when the component mounts
+    let modalPreferences =
+      localStorage.getItem('musicModal') === 'true' || false;
+    modal = modalPreferences;
+    // if (!mounted) {
+    //   const music = await fetch('/api/v1/music');
+    //   ({ album, title, artist } = await music.json());
+    //   mounted = true;
+    // }
+    // establishWebSocket();
+  });
 
   onDestroy(() => {
     clearInterval(refreshTimer); // Clear the timer when the component is destroyed
@@ -95,10 +107,14 @@
     aria-checked={modal}
   >
     <header>
-      <h1 class="current-music__modal__headline bg pb-3">
-        {headlineValue1}
-      </h1>
-      <h1 class="current-music__modal__headline text- pb-3">
+      <div class="reading pb-3">
+        <h1 class="current-music__modal__headline bg">
+          {headlineValue1}
+        </h1>
+        <h2 class="text-md">{trend}</h2>
+        <h2 class="text-md">{difference}</h2>
+      </div>
+      <h1 class="current-music__modal__headline pb-3">
         {Math.round(headlineValue2)}ºF
       </h1>
     </header>
@@ -108,10 +124,11 @@
         class="current-music__modal__info flex flex-col"
         transition:blur={{ amount: 10 }}
       >
-        <h1>{title}</h1>
         <h2>{artist}</h2>
+        <h2>&bull;</h2>
         <h3>{album}</h3>
       </div>
+      <h1 class="text-3xl text-white">{title}</h1>
       <AudioWave />
     </main>
   </div>
