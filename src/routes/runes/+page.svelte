@@ -1,5 +1,5 @@
 <!-- <script lang="ts">
-  import '$lib/styles/app.pcss';
+  import '$lib/styles/styles.pcss';
   import { LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
   import { onMount } from 'svelte';
   import { setTime } from './runedHelpers';
