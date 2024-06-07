@@ -20,7 +20,7 @@
   let timestamp = 0; // Initial timestamp value
 
   onMount(() => {
-    pollFile(); // Start polling for changes when the component mounts
+    // pollFile(); // Start polling for changes when the component mounts
   });
 
   function toggleModal() {
@@ -37,8 +37,8 @@
           previousContent = currentContent; // Update the previous file content
           file = `/album_art.png?_=${timestamp}`;
         }
-        const music = await fetch('/api/v1/music');
-        ({ album, title, artist } = await music.json());
+        // const music = await fetch('/api/v1/music');
+        // ({ album, title, artist } = await music.json());
       } else {
         file = ''; // Clear the file path if the file does not exist
         previousContent = null; // Reset previous file content
