@@ -17,7 +17,7 @@
     location,
     location: { name },
   } = settings;
-  let weather = createWeather(location);
+  let weather = createWeather();
   let current: WeatherType['current'] | boolean = $derived(weather.current);
   let daily: WeatherType['daily'] | boolean = $derived(weather.daily);
 
