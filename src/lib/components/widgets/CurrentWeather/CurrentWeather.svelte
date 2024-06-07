@@ -12,7 +12,9 @@
     dispatch('fetchWeatherData');
   };
 
+  let unique: {};
   $: ({
+    success,
     apparent_temperature: apparent,
     temperature_2m: current,
     weather_code: weatherCode,
@@ -22,7 +24,6 @@
     is_day: isDay,
   } = $weather);
   $: highlightColor = fahrenheitToColorShade(current);
-  let unique: {};
 
   function handleTouched() {
     unique = {};
@@ -46,7 +47,7 @@
         style={`--mainColor: ${highlightColor}`}
       >
         <h2 class="text-[var(--mainColor)] brightness-75 dark:saturate-200">
-          Lansdale
+          {success ? 'Lansdale' : 'Failed calling OpenMeteo API'}
           <Icon
             icon="ei:arrow-up"
             class="current-weather__wind-direction inline-block mix-blend-darken brightness-50 dark:brightness-200"
