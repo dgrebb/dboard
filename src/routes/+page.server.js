@@ -10,7 +10,7 @@ export async function load() {
     redirect: 'follow',
   };
 
-  const [test] = await Promise.all([
+  const [readings] = await Promise.all([
     fetch(
       `https://glu.7ub3s.net/api/v1/entries.json?count=1&token=${SECRET_NIGHTSCOUT_TOKEN}`,
       requestOptions
@@ -29,7 +29,7 @@ export async function load() {
             color: '#CC4522',
           },
           large: {
-            value: test[0]['sgv'],
+            value: readings[0]['sgv'],
             color: '#A5371B',
           },
         },
