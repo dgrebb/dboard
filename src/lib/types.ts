@@ -1,3 +1,22 @@
+export type StreamType = {
+  // id: number;
+  title: string;
+  // path: string;
+  // upstreamAPIURL: string;
+  // upstreamAPIOptions: {
+  //   headers?: {
+  //     [key: string]: string;
+  //   };
+  //   method: string;
+  //   redirect?: string;
+  //   body?: string;
+  // };
+  // refreshInterval: number;
+  // values: string[];
+};
+
+export type StreamsType = StreamType[];
+
 export interface FetchOptions extends RequestInit {
   // You can add any custom options specific to your application
   customOption?: string;
@@ -11,13 +30,16 @@ export type DBoardItem = {
   requestInterval: number;
   title: string;
   content: {
+    trend: {
+      direction: string;
+    };
     small: {
       value: string;
       direction: string;
       color: string;
     };
     large: {
-      value: string;
+      value: string | number;
       color: string;
     };
   };
@@ -38,6 +60,7 @@ export type CurrentWeatherType = {
 };
 
 export interface WeatherData {
+  success: boolean;
   current: CurrentWeatherType;
   daily: SolarData;
 }
