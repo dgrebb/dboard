@@ -73,6 +73,10 @@
   });
 </script>
 
+<svelte:head>
+  <link rel="icon" href="/favicon2.ico" />
+</svelte:head>
+
 {#if mounted}
   <Main>
     <div class="dboard__grid" use:pullToRefresh>

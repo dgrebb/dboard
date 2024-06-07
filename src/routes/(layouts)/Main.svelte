@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invalidateAll } from '$app/navigation';
-  import '$lib/styles/app.pcss';
+  import '$lib/styles/styles.pcss';
   import BackgroundFrame from '$lib/components/Board/BackgroundFrame.svelte';
   import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
   import VideoBackground from '$lib/components/Board/Backgrounds/VideoBackground.svelte';
