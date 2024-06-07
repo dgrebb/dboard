@@ -49,6 +49,10 @@ export const GET = (async ({ url, locals }) => {
               value: nightscout[0]['sgv'],
               color: '#A5371B',
             },
+            trend: {
+              direction: nightscout[0]['direction'],
+              difference: Math.abs(nightscout[0]['sgv'] - nightscout[1]['sgv']),
+            },
           },
           series: nightscout,
         },
