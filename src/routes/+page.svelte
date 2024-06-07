@@ -31,7 +31,13 @@
   let ws: WebSocket | null = null;
   let log: string[] = [];
   let schedule: SeptaDataNextToArrive[];
+  let interval = false;
   $: schedule;
+  $: items = [] satisfies DBoardItem[];
+  let weatherData: CurrentWeatherType;
+  const logEvent = (str: string) => {
+    log = [...log, str];
+  };
   // $: console.log('🚀 ~ schedule:', schedule);
 
   const establishWebSocket = () => {
@@ -55,18 +61,12 @@
     });
   };
 
-  $: items = [] satisfies DBoardItem[];
-  let weatherData: CurrentWeatherType;
-
-  const logEvent = (str: string) => {
-    log = [...log, str];
-  };
-
   const nightscoutData = async () => {
     const res = await fetch('/api/v1/nightscout');
     const data = await res.json();
     const { nightscout } = data;
     items = nightscout.items;
+    // console.log('🚀 ~ nightscoutData ~ items:', items[0]);
   };
 
   const fetchWeatherData = async () => {
@@ -99,15 +99,19 @@
     let sunset = $solar.sunset[0].toString();
     updateBackgroundColorGradient(sunrise, sunset);
     fetchSeptaNextToArrive();
-    setInterval(async () => {
-      await nightscoutData();
-      await fetchWeatherData();
-      let sunrise = $solar.sunrise[0].toString();
-      let sunset = $solar.sunset[0].toString();
-      fetchSeptaNextToArrive();
-      updateBackgroundColorGradient(sunrise, sunset);
-      seconds = 0;
-    }, refreshInterval);
+    if (!interval) {
+      setInterval(async () => {
+        interval = true;
+        await nightscoutData();
+        // console.log('🚀 ~ items:', items);
+        // await fetchWeatherData();
+        let sunrise = $solar.sunrise[0].toString();
+        let sunset = $solar.sunset[0].toString();
+        fetchSeptaNextToArrive();
+        updateBackgroundColorGradient(sunrise, sunset);
+        seconds = 0;
+      }, 300000);
+    }
 
     setInterval(() => {
       seconds++;
@@ -134,10 +138,7 @@
       <CurrentWeather on:fetchWeatherData={fetchWeatherData} />
     {/if}
     {#if items[0]?.content?.large.value && $weather}
-      <CurrentMusic
-        headlineValue2={$weather.temperature_2m}
-        headlineValue1={items[0].content.large.value}
-      />
+      <CurrentMusic {items} />
     {/if}
   </div>
 
