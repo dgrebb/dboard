@@ -1,10 +1,17 @@
 <script lang="ts">
   import AudioWave from '$lib/components/Animations/AudioWave.svelte';
-  import type { MusicData } from '$lib/types';
+  import type { CurrentWeatherType, DBoardItem, MusicData } from '$lib/types';
+  import { uuidv4 } from '$root/lib/_helpers/uuidv4';
   import { onMount, onDestroy } from 'svelte';
   import { cubicIn, cubicInOut } from 'svelte/easing';
   import { fade, blur } from 'svelte/transition';
+  import weather from '$root/lib/stores/weatherLeg';
 
+  export let items: DBoardItem[];
+  $: headlineValue1 = items[0].content.large.value;
+  $: headlineValue2 = $weather.temperature_2m;
+  $: trend = items[0].content.trend.direction;
+  $: difference = items[0].series[0].sgv - items[0].series[1].sgv;
   let file: string, title: string, album: string, artist: string;
   $: file = '/album_art.png';
   $: newFile = '/album_art.png';
@@ -13,13 +20,35 @@
   $: album = '';
   $: artist = '';
   $: transitionImages = false;
-
+  $: mounted = false;
+  let ws: WebSocket | null = null;
+  const clientId = uuidv4();
   const refreshInterval = 5000; // Interval in milliseconds to check for updates
   let refreshTimer: NodeJS.Timeout; // Timer to periodically check for updates
   let previousContent: string | null = null; // Previous file content
   let timestamp = 0; // Initial timestamp value
   $: webSocketEstablished = false;
 
+  const establishWebSocket = () => {
+    console.log('connecting', webSocketEstablished);
+    if (webSocketEstablished) return;
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    ws = new WebSocket(
+      `${protocol}//${window.location.host}/websocket?id=${clientId}`
+    );
+    ws.addEventListener('open', (event) => {
+      webSocketEstablished = true;
+      console.log('[websocket] connection open', event);
+    });
+    ws.addEventListener('close', (event) => {
+      webSocketEstablished = false;
+      console.log('[websocket] connection closed', event);
+    });
+    ws.addEventListener('message', (event) => {
+      console.log('[websocket] message received', event);
+      ({ album, title, artist } = JSON.parse(event.data));
+    });
+  };
 
   function toggleModal() {
     modal = !modal;
@@ -107,16 +136,20 @@
     aria-checked={modal}
   >
     <header>
-      <div class="reading pb-3">
+      <div class="reading">
         <h1 class="current-music__modal__headline bg">
           {headlineValue1}
         </h1>
-        <h2 class="text-md">{trend}</h2>
-        <h2 class="text-md">{difference}</h2>
+        <h2 class="text-md">{trend} | {difference}</h2>
       </div>
-      <h1 class="current-music__modal__headline pb-3">
-        {Math.round(headlineValue2)}ºF
-      </h1>
+      <div class="reading">
+        <h1 class="current-music__modal__headline">
+          {typeof headlineValue2 === 'number'
+            ? Math.round(headlineValue2)
+            : headlineValue2}ºF
+        </h1>
+        <h2 class="text-md">&nbsp;</h2>
+      </div>
     </header>
     <main class="flex w-[77%] flex-col content-center items-center">
       <img src={file} alt="{album} Artwork" transition:fade />
