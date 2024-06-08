@@ -1,43 +1,78 @@
 <script lang="ts">
   import type { StreamsType } from '$lib/types';
+  import { generateID } from '$root/lib/_helpers/strings';
   import { streams } from '$root/lib/stores/streams.svelte';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
 
   let streamList: StreamsType = $state(streams.getAll);
   let newStreamTitle = $state('');
-  let result: string = $state('');
+  let result: {
+    [key: string]: string;
+  } = $state({});
+  let newStreamPath: string = $state('');
+  let newSteamInterval: number = $state(900000);
 
   // console.log(streams);
 
-  async function subscribe() {
-    const response = await fetch('/api/stream/sse');
+  async function subscribe(endpoint: string) {
+    const response = await fetch(`/api/stream/${endpoint}`);
+    // console.log('🚀 ~ subscribe ~ response:', response);
     const reader = response.body
       ? response.body.pipeThrough(new TextDecoderStream()).getReader()
       : false;
     while (true && reader) {
       const { value, done } = await reader.read();
       if (done) break;
-      result = value;
+      console.log('reading stream', `${endpoint}: ${value}`);
+      result = {
+        ...result,
+        [endpoint]: value,
+      };
+      // console.log('🚀 ~ subscribe ~ result:', result);
     }
   }
 
-  onMount(subscribe);
+  $effect(() => {
+    (async () => {
+      if (newStreamPath) {
+        await subscribe(newStreamPath);
+        console.log($state.snapshot(streams.getAll));
+      }
+    })();
+  });
+
+  async function handleAddStream() {
+    newStreamPath = await streams.addStream({
+      title: newStreamTitle,
+      interval: newSteamInterval * 60,
+    });
+    console.log('🚀 ~ handleAddStream ~ newStreamPath:', newStreamPath);
+  }
+
+  onMount(async function () {
+    await subscribe('streamOne');
+  });
 </script>
 
 <h1>Streams</h1>
-{#each streamList as { title }}
+{#each streamList as { title, id, path }}
   <h2>{title}</h2>
+  <h3>{id}</h3>
+  <h3>{path}</h3>
+  <h1>Events</h1>
+  {#if result[path]}
+    <pre>{result[path]}</pre>
+  {/if}
 {/each}
 <input type="text" placeholder="Stream Name" bind:value={newStreamTitle} />
-<Button onclick={() => streams.addStream({ title: newStreamTitle })}
-  >Add Stream</Button
->
-
-<h1>Events</h1>
-{#if result}
-  <pre>{result}</pre>
-{/if}
+<input
+  type="number"
+  min="5000"
+  placeholder="Refresh Interval"
+  bind:value={newSteamInterval}
+/>
+<Button onclick={handleAddStream}>Add Stream</Button>
 
 <style>
   /* your styles go here */
