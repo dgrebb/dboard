@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { StreamsType } from '$lib/types';
-  import { SSEStreams } from '$root/lib/stores/streams.svelte';
+  import { streams } from '$root/lib/stores/streams.svelte';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
 
-  let streams: StreamsType = $state(SSEStreams.getAll);
+  let streamList: StreamsType = $state(streams.getAll);
   let newStreamTitle = $state('');
   let result: string = $state('');
 
@@ -26,11 +26,11 @@
 </script>
 
 <h1>Streams</h1>
-{#each streams as { title }}
+{#each streamList as { title }}
   <h2>{title}</h2>
 {/each}
 <input type="text" placeholder="Stream Name" bind:value={newStreamTitle} />
-<Button onclick={() => SSEStreams.addStream({ title: newStreamTitle })}
+<Button onclick={() => streams.addStream({ title: newStreamTitle })}
   >Add Stream</Button
 >
 
