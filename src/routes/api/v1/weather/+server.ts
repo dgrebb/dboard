@@ -14,7 +14,7 @@ export const GET = (async ({ url, locals }) => {
     });
   }
 
-  // call server for data
+async function fetchWeather() {
   const requestOptions: FetchOptions = {
     method: 'GET',
     redirect: 'follow',
@@ -26,11 +26,65 @@ export const GET = (async ({ url, locals }) => {
     .then((response) => response.json())
     .catch((error) => console.error(error));
 
-  return json({
-    success: true,
-    weatherData: weather.current,
-    solarData: weather.daily,
-  });
+  return weather;
+}
 
-  return json({ success: true, message: 'Hello world from GET handler', url });
+export const GET = (async ({ url, locals }) => {
+  // call server for data
+  const weather = await fetchWeather();
+  // console.log('🚀 ~ GET ~ weather:', weather);
+  // setTempo(locals, 300000);
+
+  if (weather) {
+    return json({
+      success: true,
+      weatherData: weather.current,
+      solarData: weather.daily,
+    });
+  } else {
+    return json({
+      success: false,
+      weatherData: {
+        time: '2024-06-06T14:45',
+        interval: 900,
+        apparent_temperature: 3.33,
+        temperature_2m: 233,
+        wind_speed_10m: 11.7,
+        wind_direction_10m: 239,
+        wind_gusts_10m: 19.9,
+        cloud_cover: 100,
+        is_day: 1,
+        weather_code: 3,
+      },
+      solarData: {
+        time: [
+          '2024-06-06',
+          '2024-06-07',
+          '2024-06-08',
+          '2024-06-09',
+          '2024-06-10',
+          '2024-06-11',
+          '2024-06-12',
+        ],
+        sunrise: [
+          '2024-06-06T05:31',
+          '2024-06-07T05:31',
+          '2024-06-08T05:31',
+          '2024-06-09T05:31',
+          '2024-06-10T05:31',
+          '2024-06-11T05:31',
+          '2024-06-12T05:31',
+        ],
+        sunset: [
+          '2024-06-06T20:28',
+          '2024-06-07T20:28',
+          '2024-06-08T20:29',
+          '2024-06-09T20:29',
+          '2024-06-10T20:30',
+          '2024-06-11T20:30',
+          '2024-06-12T20:31',
+        ],
+      },
+    });
+  }
 }) satisfies RequestHandler;

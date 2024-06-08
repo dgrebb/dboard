@@ -14,7 +14,6 @@
 
   let unique: {};
   $: ({
-    success,
     apparent_temperature: apparent,
     temperature_2m: current,
     weather_code: weatherCode,
@@ -47,7 +46,7 @@
         style={`--mainColor: ${highlightColor}`}
       >
         <h2 class="text-[var(--mainColor)] brightness-75 dark:saturate-200">
-          {success ? 'Lansdale' : 'Failed calling OpenMeteo API'}
+          {current < 200 ? 'Lansdale' : 'Failed calling OpenMeteo API'}
           <Icon
             icon="ei:arrow-up"
             class="current-weather__wind-direction inline-block mix-blend-darken brightness-50 dark:brightness-200"
