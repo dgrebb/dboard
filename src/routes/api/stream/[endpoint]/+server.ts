@@ -7,7 +7,7 @@ export const GET = async () => {
   const readable = new ReadableStream({
     async start(controller) {
       for (let i = 0; i < 20; i++) {
-        controller.enqueue(encoder.encode('hello'));
+        controller.enqueue(encoder.encode(`hello ${i}`));
         await delay(1000);
       }
       controller.close();
