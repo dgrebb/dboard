@@ -1,7 +1,7 @@
 export type StreamType = {
-  // id: number;
+  id: string;
   title: string;
-  // path: string;
+  path: string;
   // upstreamAPIURL: string;
   // upstreamAPIOptions: {
   //   headers?: {
