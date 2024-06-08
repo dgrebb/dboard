@@ -1,7 +1,7 @@
 import type { StreamsType } from '../types';
 
 export const createStreams = function createStreams() {
-  const SSEStreams: StreamsType = $state([
+  const streams: StreamsType = $state([
     {
       title: 'Stream One',
     },
@@ -11,7 +11,7 @@ export const createStreams = function createStreams() {
   ]);
 
   function addStream(stream: { title: string }) {
-    SSEStreams.push(stream);
+    streams.push(stream);
   }
 
   function updateStream(streamId: string) {
@@ -20,11 +20,11 @@ export const createStreams = function createStreams() {
 
   return {
     get getAll() {
-      return SSEStreams;
+      return streams;
     },
     addStream,
     updateStream,
   };
 };
 
-export const SSEStreams = createStreams();
+export const streams = createStreams();
