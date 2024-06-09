@@ -5,42 +5,51 @@ export const createStreams = function createStreams() {
   const streams: StreamsType = $state([
     {
       id: 'stream_one',
-      title: 'Stream One',
+      name: 'Stream One',
       path: 'streamOne',
-      interval: 1000,
+      upstreamAPIURL: '',
+      refreshInterval: 1000,
     },
     {
       id: 'stream_two',
-      title: 'Stream Two',
+      name: 'Stream Two',
       path: 'streamTwo',
-      interval: 9000,
+      upstreamAPIURL: '',
+      refreshInterval: 9000,
     },
     {
       id: 'sse',
-      title: 'sse',
+      name: 'sse',
       path: 'sse',
-      interval: 120000,
+      upstreamAPIURL: '',
+      refreshInterval: 120000,
     },
   ]);
 
-  async function addStream(newStream: { title: string; interval: number }) {
-    const { title, interval } = newStream;
-    const id = generateID(title);
-    const path = toCamelCase(title);
+  async function addStream(newStream: {
+    name: string;
+    refreshInterval: number;
+    upstreamAPIURL: string;
+  }) {
+    const { name, refreshInterval, upstreamAPIURL } = newStream;
+    const id = generateID(name);
+    const path = toCamelCase(name);
     const stream = {
       ...newStream,
       id,
-      title,
+      name,
       path,
-      interval,
+      refreshInterval,
+      upstreamAPIURL,
     };
     streams.push(stream);
 
-    await fetch(`/api/stream/${path}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ endpoint: path, interval }),
-    });
+    // TODO: Refactor for GET with query params
+    // await fetch(`/api/stream/${path}`, {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ endpoint: path, refreshInterval }),
+    // });
     return path;
   }
 
