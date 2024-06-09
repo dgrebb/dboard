@@ -1,5 +1,9 @@
 import widgets from '$root/.config/settings.json';
-import type { LocationType, LocationsType } from '$root/lib/types';
+import type {
+  LocationType,
+  LocationsType,
+  TypeOfWidget,
+} from '$root/lib/types';
 import type { ComponentType } from 'svelte';
 
 export const glu = {
@@ -77,25 +81,25 @@ export const hue = {
 
 export const locations: LocationsType = {
   home: {
-    latitude: '40.2415',
-    longitude: '-75.2838',
+    timezone: 'America/New_York',
+    primary: true,
+    latitude: 40.2415,
+    longitude: -75.2838,
     name: 'Lansdale, PA',
   },
   jamestown: {
-    latitude: '40.1155',
-    longitude: '105.3886',
+    timezone: 'America/Denver',
+    primary: false,
+    latitude: 40.1155,
+    longitude: 105.3886,
     name: 'Jamestown, CO',
   },
 };
 
 type SettingsType = {
-  widgets: WidgetType[];
-  overrideTheme?: 'dark' | 'light';
-};
-
-type WidgetType = {
-  type: string;
-  settings: CurrentWeatherSettings;
+  location: Location;
+  tempo: number;
+  widgets: TypeOfWidget[];
 };
 
 export type CurrentWeatherSettings = {
@@ -109,18 +113,4 @@ export interface Location {
   name: string;
   latitude: number;
   longitude: number;
-}
-
-export interface Settings {
-  location: Location;
-  tempo: number;
-}
-
-export interface Widget {
-  type: string;
-  settings: Settings;
-}
-
-export interface WidgetsConfig {
-  widgets: Widget[];
 }
