@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 static/album*.png
 static/music.json
 static/video
+.vscode/*
