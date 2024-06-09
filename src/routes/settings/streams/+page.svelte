@@ -6,12 +6,13 @@
   import { onMount } from 'svelte';
 
   let streamList: StreamsType = $state(streams.getAll);
-  let newStreamTitle = $state('');
+  let newStreamName = $state('');
   let result: {
     [key: string]: string;
   } = $state({});
   let newStreamPath: string = $state('');
-  let newSteamInterval: number = $state(900000);
+  let newStreamInterval: number = $state(900000);
+  let newStreamAPIURL: string = $state('');
 
   // console.log(streams);
 
@@ -44,8 +45,9 @@
 
   async function handleAddStream() {
     newStreamPath = await streams.addStream({
-      title: newStreamTitle,
-      interval: newSteamInterval * 60,
+      name: newStreamName,
+      refreshInterval: newStreamInterval * 60,
+      upstreamAPIURL: newStreamAPIURL,
     });
     console.log('🚀 ~ handleAddStream ~ newStreamPath:', newStreamPath);
   }
@@ -56,8 +58,8 @@
 </script>
 
 <h1>Streams</h1>
-{#each streamList as { title, id, path }}
-  <h2>{title}</h2>
+{#each streamList as { name, id, path }}
+  <h2>{name}</h2>
   <h3>{id}</h3>
   <h3>{path}</h3>
   <h1>Events</h1>
@@ -65,12 +67,12 @@
     <pre>{result[path]}</pre>
   {/if}
 {/each}
-<input type="text" placeholder="Stream Name" bind:value={newStreamTitle} />
+<input type="text" placeholder="Stream Name" bind:value={newStreamName} />
 <input
   type="number"
   min="5000"
   placeholder="Refresh Interval"
-  bind:value={newSteamInterval}
+  bind:value={newStreamInterval}
 />
 <Button onclick={handleAddStream}>Add Stream</Button>
 
