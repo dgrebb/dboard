@@ -106,3 +106,37 @@ export type LocationType = {
 export type LocationsType = { [key: string]: LocationType };
 
 export type LocationStore = LocationType & { key: string };
+
+export enum TypeOfWidget {
+  NightScout = 'NightScout',
+  Weather = 'Weather',
+  Music = 'Music',
+}
+
+export enum WidgetDataType {
+  object,
+  NightScoutData,
+}
+
+export type WidgetData = {
+  type: string;
+  name: string;
+  stream: StreamType;
+  data: WidgetDataType;
+};
+
+export type NightScoutReading = {
+  _id: string;
+  sgv: number;
+  date: number;
+  dateString: string;
+  trend: number;
+  direction: string;
+  device: string;
+  type: string;
+  utcOffset: number;
+  sysTime: string;
+  mills: number;
+};
+
+export type NightScoutData = NightScoutReading[];
