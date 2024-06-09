@@ -1,8 +1,9 @@
 export type StreamType = {
   id: string;
-  title: string;
+  name: string;
   path: string;
-  // upstreamAPIURL: string;
+  upstreamAPIURL: string;
+  refreshInterval: number;
   // upstreamAPIOptions: {
   //   headers?: {
   //     [key: string]: string;
@@ -11,7 +12,6 @@ export type StreamType = {
   //   redirect?: string;
   //   body?: string;
   // };
-  // refreshInterval: number;
   // values: string[];
 };
 
