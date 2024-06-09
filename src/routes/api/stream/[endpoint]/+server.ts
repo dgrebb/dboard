@@ -1,24 +1,77 @@
+// TODO: Clean up logs
+import type { FetchOptions } from '$root/lib/types';
 import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const prerender = false;
+const requestOptions: FetchOptions = {
+  method: 'GET',
+  redirect: 'follow',
+};
 
-function delay(ms: number): Promise<void> {
-  return new Promise((res) => setTimeout(res, ms));
-}
+const fetchData = async function fetchData(upstreamAPIURL: string) {
+  const res = await fetch(upstreamAPIURL, requestOptions);
+  const data = await res.json();
 
-export const GET = (async ({ params }) => {
+  return data;
+};
+
+export const GET = (async ({ params, url }) => {
+  const upstreamAPIURL = url.searchParams.get('upstreamAPIURL') || '';
+  const refreshInterval = Number(url.searchParams.get('refreshInterval'));
   const { endpoint } = params;
+  // console.log('🚀 ~ start ~ Widget Name:', name);
+  // console.log('🚀 ~ start ~ endpoint:', endpoint);
+  // console.log('🚀 ~ GET ~ upstreamAPIURL:', upstreamAPIURL);
+
+  async function fetchAndEncodeData(upstreamAPIURL: string) {
+    const data = await fetchData(upstreamAPIURL);
+    // console.log('🚀 ~ fetchAndEncodeData ~ data:', data);
+    return JSON.stringify(data);
+  }
+
+  let encodedData: false | string = false;
+
+  // console.log(`Starting stream service for ${endpoint}`);
+
   try {
-    console.log('🚀 ~ GET ~ time to encode the stream:', endpoint);
+    // console.log('🚀 ~ GET ~ time to encode the stream:', endpoint);
     const encoder = new TextEncoder();
+    const URL = upstreamAPIURL;
+    let interval: NodeJS.Timeout;
     const readable = new ReadableStream({
       async start(controller) {
-        for (let i = 0; i < 20; i++) {
-          controller.enqueue(encoder.encode(`hello from ${endpoint} ${i}`));
-          await delay(1000);
-          // console.log('🚀 ~ start ~ endpoint:', endpoint);
-        }
-        controller.close();
+        let i = 0;
+        let previousEncodedData = encodedData;
+        encodedData = await fetchAndEncodeData(URL);
+        // Options for the stream message
+        let defaultMsg = `Successful response from ${endpoint}, but the data seems malformated.`;
+        controller.enqueue(
+          encoder.encode(encodedData ? encodedData : defaultMsg)
+        );
+        console.log('🚀 ~ start ~ initialData:', encodedData);
+
+        interval = setInterval(async () => {
+          // controller.enqueue(encoder.encode('i sent another message'));
+          i++;
+          if (URL !== '') {
+            encodedData = await fetchAndEncodeData(URL);
+          }
+
+          if (previousEncodedData !== encodedData) {
+            const a: string = defaultMsg;
+            const b: string | false = encodedData || false;
+            console.log('enquing and sending response to UI');
+            console.log('🚀 ~ start ~ additionalData:', encodedData);
+            previousEncodedData = encodedData;
+            controller.enqueue(encoder.encode(b ? b : a));
+          }
+          console.log(`Reloaded data for ${endpoint} ${i} times.`);
+        }, refreshInterval);
+        // controller.close();
+      },
+
+      async cancel() {
+        clearInterval(interval);
       },
     });
 
@@ -29,7 +82,7 @@ export const GET = (async ({ params }) => {
     });
   } catch {
     console.info(
-      'There is an incorrect match between stream path, id, title, or endpoint'
+      'There is an incorrect match between stream path, id, name, or endpoint'
     );
     return json({
       success: false,
