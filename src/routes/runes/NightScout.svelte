@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { WidgetType, createWidget } from '$lib/stores';
+  import { createWidget } from '$lib/stores';
   import { generateID, toCamelCase } from '$root/lib/_helpers/strings';
-  import type { ChartSeriesGlucose, NightScoutData } from '$root/lib/types';
-  import { onMount } from 'svelte';
+  import { TypeOfWidget, type NightScoutData } from '$root/lib/types';
+  import { onDestroy, onMount } from 'svelte';
+
   const name = 'NightScout';
   const id = generateID(name);
   const path = toCamelCase(name);
@@ -10,7 +11,7 @@
     'https://glu.7ub3s.net/api/v1/entries.json?count=5&token=${secrets.SECRET_NIGHTSCOUT_TOKEN}';
   const refreshInterval = 60000;
   const nightScoutWidget = createWidget(
-    WidgetType.NightScout,
+    TypeOfWidget.NightScout,
     name,
     id,
     path,
@@ -20,6 +21,8 @@
 
   let currentValue: string | number = $state('⬇');
 
+  let reader: ReadableStreamDefaultReader<string> | null = null;
+  let isReading = $state(true); // Flag to manage reading state
   async function subscribe(endpoint: string) {
     const encodedUpstreamAPIURL = encodeURIComponent(upstreamAPIURL);
     const response = await fetch(
@@ -31,12 +34,10 @@
       return;
     }
 
-    const reader = response.body
-      .pipeThrough(new TextDecoderStream())
-      .getReader();
+    reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
 
     try {
-      while (true) {
+      while (isReading) {
         const { value, done } = await reader.read();
         if (done) break;
         console.log('reading stream', `${endpoint}: ${value}`);
@@ -47,27 +48,24 @@
     } finally {
       reader.releaseLock();
     }
-
-    while (true && reader) {
-      const { value, done } = await reader.read();
-      const data = value ? JSON.parse(value) : false;
-      nightScoutWidget.setData(data);
-      if (done) {
-        console.log('Stream complete');
-        reader.cancel();
-        nightScoutWidget.setData(data);
-        return;
-      }
-    }
   }
 
   onMount(async function () {
+    isReading = true;
     await subscribe(path);
+  });
+
+  onDestroy(() => {
+    isReading = false;
+    if (reader) {
+      reader.cancel();
+      reader.releaseLock();
+      reader = null;
+    }
   });
 
   $effect(() => {
     const data: NightScoutData = $state.snapshot(nightScoutWidget.getData);
-    // console.log('also received an effect after updating data', data);
     if (data.length) {
       currentValue = data[0].sgv;
     }
