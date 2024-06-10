@@ -44,7 +44,9 @@
     console.log('connecting', webSocketEstablished);
     if (webSocketEstablished) return;
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    ws = new WebSocket(`${protocol}//${window.location.host}/websocket`);
+    ws = new WebSocket(
+      `${protocol}//${window.location.host}/websocket/weather`
+    );
     ws.addEventListener('open', (event) => {
       webSocketEstablished = true;
       console.log('[websocket] connection open', event);
@@ -58,6 +60,9 @@
     ws.addEventListener('message', (event) => {
       console.log('[websocket] message received', event);
       logEvent(`[websocket] message received: ${event.data}`);
+      const { weatherData, solarData } = JSON.parse(event.data);
+      $weather = weatherData;
+      $solar = solarData;
     });
   };
 
@@ -75,7 +80,7 @@
 
     $weather = weatherData;
     $solar = solarData;
-    // console.log('🚀 ~ fetchWeatherData ~ $solar:', $solar);
+    // console.log('🚀 ~ fetchWeatherData ~ $weather:', $weather);
 
     nightDay(weatherData.is_day);
   };

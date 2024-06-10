@@ -8,15 +8,15 @@ import { glu } from '$root/.config/settings';
 const dataPoints = glu.hoursDisplayed * 12;
 
 export const GET = (async ({ url, locals }) => {
-  if (locals.wss) {
-    locals.wss.clients.forEach((client) => {
-      if (client.readyState === 1) {
-        client.send(
-          `Hello from the GET handler at ${new Date().toLocaleString()}`
-        );
-      }
-    });
-  }
+  // if (locals.wss) {
+  //   locals.wss.clients.forEach((client) => {
+  //     if (client.readyState === 1) {
+  //       client.send(
+  //         `Hello from the GET handler at ${new Date().toLocaleString()}`
+  //       );
+  //     }
+  //   });
+  // }
 
   // call server for data
   const requestOptions: FetchOptions = {
