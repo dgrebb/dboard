@@ -3,16 +3,28 @@ import { WEATHER_API, WEATHER_LAT_LONG } from '$root/.config/GLOBALS';
 import type { RequestHandler } from './$types';
 import type { FetchOptions, WeatherData } from '$lib/types';
 
-export const GET = (async ({ url, locals }) => {
-  if (locals.wss) {
-    locals.wss.clients.forEach((client) => {
-      if (client.readyState === 1) {
-        client.send(
-          `Hello from the GET handler at ${new Date().toLocaleString()}`
-        );
-      }
-    });
-  }
+export const prerender = false;
+
+function setTempo(locals, time) {
+  setInterval(async function () {
+    const weather = await fetchWeather();
+
+    if (locals.wss) {
+      locals.wss.clients.forEach((client) => {
+        if (client.readyState === 1) {
+          // client.send(`Weather update — at ${new Date().toLocaleString()}`);
+          client.send(
+            JSON.stringify({
+              success: true,
+              weatherData: weather.current,
+              solarData: weather.daily,
+            })
+          );
+        }
+      });
+    }
+  }, time);
+}
 
 async function fetchWeather() {
   const requestOptions: FetchOptions = {

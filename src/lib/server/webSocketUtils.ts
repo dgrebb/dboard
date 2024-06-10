@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import type { Server, WebSocket as WebSocketBase } from 'ws';
 import type { IncomingMessage } from 'http';
 import type { Duplex } from 'stream';
+import { uuidv4 } from '../_helpers/uuidv4';
 
 export const GlobalThisWSS = Symbol.for('sveltekit.wss');
 
@@ -27,12 +28,13 @@ export const onHttpServerUpgrade = (
   head: Buffer
 ) => {
   const pathname = req.url ? parse(req.url).pathname : null;
-  if (pathname !== '/websocket') return;
+  if (!pathname?.includes('/websocket')) return;
 
   const wss = (globalThis as ExtendedGlobal)[GlobalThisWSS];
 
   wss.handleUpgrade(req, sock, head, (ws) => {
-    // console.log('[handleUpgrade] creating new connecttion');
+    console.log('[handleUpgrade] creating new connecttion');
+    ws.id = uuidv4();
     wss.emit('connection', ws, req);
   });
 };
@@ -46,10 +48,10 @@ export const createWSSGlobalInstance = () => {
 
   wss.on('connection', (ws) => {
     ws.socketId = nanoid();
-    // console.log(`[wss:global] client connected (${ws.socketId})`);
+    console.log(`[wss:global] client connected (${ws.socketId})`);
 
     ws.on('close', () => {
-      // console.log(`[wss:global] client disconnected (${ws.socketId})`);
+      console.log(`[wss:global] client disconnected (${ws.socketId})`);
     });
   });
 
