@@ -7,7 +7,7 @@
   const id = generateID(name);
   const path = toCamelCase(name);
   const upstreamAPIURL =
-    'https://glu.7ub3s.net/api/v1/entries.json?count=5&token=homenights-a4b02e8914a613eb';
+    'https://glu.7ub3s.net/api/v1/entries.json?count=5&token=${secrets.SECRET_NIGHTSCOUT_TOKEN}';
   const refreshInterval = 60000;
   const nightScoutWidget = createWidget(
     WidgetType.NightScout,
