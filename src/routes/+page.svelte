@@ -109,7 +109,7 @@
         interval = true;
         await nightscoutData();
         // console.log('🚀 ~ items:', items);
-        // await fetchWeatherData();
+        await fetchWeatherData();
         let sunrise = $solar.sunrise[0].toString();
         let sunset = $solar.sunset[0].toString();
         fetchSeptaNextToArrive();
