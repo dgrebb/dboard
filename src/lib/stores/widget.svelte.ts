@@ -1,5 +1,5 @@
 // TODO: Clean up logs
-import type { TypeOfWidget, WidgetData, WidgetDataType } from '../types';
+import type { ObjectOrArray, TypeOfWidget, WidgetData } from '../types';
 
 export const createWidget = function createWidget(
   type: TypeOfWidget,
@@ -22,7 +22,7 @@ export const createWidget = function createWidget(
     data: {},
   });
 
-  const setData = function setData(data: WidgetDataType) {
+  const setData = function setData(data: ObjectOrArray) {
     // console.log('🚀 ~ setData ~ data:', data);
     widgetStore = {
       ...widgetStore,
@@ -35,7 +35,7 @@ export const createWidget = function createWidget(
     get streamSettings() {
       return widgetStore.stream;
     },
-    get getData(): WidgetDataType {
+    get getData(): ObjectOrArray {
       return widgetStore.data;
     },
     setData,

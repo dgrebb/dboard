@@ -1,3 +1,5 @@
+export type ObjectOrArray = Record<string, unknown> | unknown[];
+
 export type StreamType = {
   id: string;
   name: string;
@@ -113,16 +115,11 @@ export enum TypeOfWidget {
   Music = 'Music',
 }
 
-export enum WidgetDataType {
-  object,
-  NightScoutData,
-}
-
 export type WidgetData = {
   type: string;
   name: string;
   stream: StreamType;
-  data: WidgetDataType;
+  data: ObjectOrArray;
 };
 
 export type NightScoutReading = {
