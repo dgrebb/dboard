@@ -1,6 +1,18 @@
 // TODO: Clean up logs
+
+import { SECRET_NIGHTSCOUT_TOKEN } from '$env/static/private';
 import type { FetchOptions } from '$root/lib/types';
 import { json, type RequestHandler } from '@sveltejs/kit';
+
+const secrets: { [key: string]: string } = {
+  SECRET_NIGHTSCOUT_TOKEN: SECRET_NIGHTSCOUT_TOKEN,
+};
+
+const resolveSecret = (template: string): string => {
+  return template.replace(/\$\{secrets\.([^\}]+)\}/g, (_, key) => {
+    return secrets[key] || '';
+  });
+};
 
 export const prerender = false;
 const requestOptions: FetchOptions = {
@@ -16,7 +28,11 @@ const fetchData = async function fetchData(upstreamAPIURL: string) {
 };
 
 export const GET = (async ({ params, url }) => {
-  const upstreamAPIURL = url.searchParams.get('upstreamAPIURL') || '';
+  const upstreamAPIURLTemplate = url.searchParams.get('upstreamAPIURL') || '';
+  const evaluatedUpstreamAPIURL = resolveSecret(
+    decodeURIComponent(upstreamAPIURLTemplate)
+  );
+  // console.log('🚀 ~ GET ~ evaluatedUpstreamAPIURL:', evaluatedUpstreamAPIURL);
   const refreshInterval = Number(url.searchParams.get('refreshInterval'));
   const { endpoint } = params;
   // console.log('🚀 ~ start ~ Widget Name:', name);
@@ -36,7 +52,8 @@ export const GET = (async ({ params, url }) => {
   try {
     // console.log('🚀 ~ GET ~ time to encode the stream:', endpoint);
     const encoder = new TextEncoder();
-    const URL = upstreamAPIURL;
+    const URL = evaluatedUpstreamAPIURL;
+    // console.log('🚀 ~ GET ~ URL:', URL);
     let interval: NodeJS.Timeout;
     const readable = new ReadableStream({
       async start(controller) {
@@ -44,7 +61,7 @@ export const GET = (async ({ params, url }) => {
         let previousEncodedData = encodedData;
         encodedData = await fetchAndEncodeData(URL);
         // Options for the stream message
-        let defaultMsg = `Successful response from ${endpoint}, but the data seems malformated.`;
+        let defaultMsg: string = `Successful response from ${endpoint}, but the data seems malformated.`;
         controller.enqueue(
           encoder.encode(encodedData ? encodedData : defaultMsg)
         );
