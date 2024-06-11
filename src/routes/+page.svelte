@@ -1,8 +1,6 @@
 <script lang="ts">
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '../.config/GLOBALS';
-  import Main from './(layouts)/Main.svelte';
   import { onMount } from 'svelte';
-  import ProgressBar from '$lib/components/ProgressBar.svelte';
   import CurrentWeather from '$lib/components/widgets/CurrentWeather/CurrentWeather.svelte';
   import BloodGlucose from '$lib/components/widgets/BloodGlucose/BloodGlucose.svelte';
   import CurrentMusic from '$lib/components/widgets/CurrentMusic/CurrentMusic.svelte';
@@ -10,7 +8,6 @@
   import time from '$lib/stores/time';
   import weather from '$root/lib/stores/weatherLeg';
   import solar from '$lib/stores/solar';
-  import { pullToRefresh } from '$lib/actions/pullToRefresh';
 
   import type {
     ChartSeriesGlucose,
@@ -19,11 +16,12 @@
     WeatherData,
     SeptaDataNextToArrive,
   } from '$lib/types';
-  import Controls from '$lib/components/Controls/Controls.svelte';
   import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
   import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
   import Restart from '$lib/components/Restart/Restart.svelte';
   import { nightDay } from '$root/lib/_helpers/nightDay';
+  import Board from './(layouts)/Board.svelte';
+  import App from './(layouts)/App.svelte';
 
   let refreshInterval = DEFAULT_TEMPO;
   let seconds = 0;
@@ -126,38 +124,30 @@
   });
 </script>
 
-<Main>
-  <Controls
-    {webSocketEstablished}
-    on:closeSocket={closeSocket}
-    on:establishWebSocket={establishWebSocket}
-  />
-
-  <div class="dboard__grid" use:pullToRefresh>
-    {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
-      {#if direction}
-        <BloodGlucose {data} {label} {mainDisplayValue} {direction} />
-      {/if}
-    {/each}
-    {#if $weather}
-      <CurrentWeather on:fetchWeatherData={fetchWeatherData} />
+<Board>
+  {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
+    {#if direction}
+      <BloodGlucose {data} {label} {mainDisplayValue} {direction} />
     {/if}
-    {#if items[0]?.content?.large.value && $weather}
-      <CurrentMusic {items} />
-    {/if}
-  </div>
+  {/each}
+  {#if $weather}
+    <CurrentWeather on:fetchWeatherData={fetchWeatherData} />
+  {/if}
+  {#if items[0]?.content?.large.value && $weather}
+    <CurrentMusic {items} />
+  {/if}
+</Board>
 
-  <div class="dboard__grid">
-    <SeptaNextToArrive {schedule} />
-    <div class="dboard__grid__item control-widget">
-      <div class="dboard__card">
-        <OnOff />
-        <!-- <Restart /> -->
-      </div>
+<Board>
+  <SeptaNextToArrive {schedule} />
+  <div class="dboard__grid__item control-widget">
+    <div class="dboard__card">
+      <OnOff />
+      <!-- <Restart /> -->
     </div>
   </div>
+</Board>
 
-  <div slot="countdown-bar">
+<!-- <div slot="countdown-bar">
     <ProgressBar {refreshInterval} {seconds} />
-  </div>
-</Main>
+  </div> -->

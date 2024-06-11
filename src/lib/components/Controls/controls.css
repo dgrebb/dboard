@@ -1,0 +1,23 @@
+.controls-toggle {
+  margin-left: auto;
+}
+.controls {
+  display: flex;
+  .control {
+    margin-right: 0.25rem;
+  }
+  .version-select {
+    /* position: absolute; */
+    top: 100%;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    a {
+      display: block;
+      padding: 0.25rem 0;
+      &:hover {
+        color: blue;
+      }
+    }
+  }
+}

@@ -12,7 +12,6 @@ body {
 }
 
 body {
-  /* --bgColor: black; */
   background: var(--bgColor);
   transition-property: background;
   transition-duration: 10s;
@@ -27,7 +26,6 @@ body {
     z-index: -1;
     display: block;
     pointer-events: none;
-    /* background: linear-gradient(to bottom, var(--gradient) 1%, transparent); */
     html.dark & {
       background: linear-gradient(to bottom, var(--gradient) 5%, transparent);
     }
@@ -47,6 +45,13 @@ body {
       opacity: 1;
     }
   }
+}
+
+.header {
+  display: flex;
+  z-index: 33;
+  position: absolute;
+  width: 100%;
 }
 
 .foreground {
@@ -70,15 +75,14 @@ body {
   color: var(--gradient);
   filter: invert(1);
 }
+
 .dboard {
   display: grid;
   grid-auto-flow: column;
-  /* grid-template-columns: repeat(3, 100vw); */
   z-index: 10;
   position: relative;
   height: 100vh;
-  column-gap: 1.5rem;
-  padding: 2.5rem 1.5rem 1.5rem 0;
+  gap: 1.5rem;
   box-sizing: border-box;
   scrollbar-width: none;
   overflow: auto;
@@ -86,18 +90,18 @@ body {
   overscroll-behavior-x: contain;
   overflow-y: hidden;
   &__grid {
+    gap: 1.5rem;
+    padding: 1.5rem;
     scroll-snap-align: center;
     display: grid;
-    float: left;
-    width: calc(100vw - 3rem);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-    height: 100%;
+    width: 100vw;
+    grid-template-columns: repeat(2, minmax(0, 3fr));
+    grid-template-rows: repeat(5, minmax(0, 1fr));
     @media screen and (min-width: 1280px) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
     &__item {
-      max-height: 333px;
+      max-height: 353px;
       overflow: hidden;
       border-radius: 0.5rem;
       position: relative;
@@ -114,6 +118,17 @@ body {
           }
         }
       }
+      &--bottom-right {
+        grid-column-start: span 2;
+        grid-row-start: span 5;
+        align-self: end;
+        justify-self: end;
+        align-items: end;
+        justify-items: end;
+      }
+      &.flowover {
+        overflow: visible;
+      }
     }
   }
   &__card {
@@ -124,12 +139,6 @@ body {
     min-height: 277px;
     overflow: hidden;
     background-color: transparent;
-    &--value-lg {
-      /* z-index: 10; */
-    }
-    * {
-      /* transition: color 30s ease-in; */
-    }
     @media screen and (min-width: 1080px) {
       min-height: 333px;
     }
@@ -154,7 +163,6 @@ body {
   }
   html.dark & {
     mix-blend-mode: soft-light;
-    /* filter: brightness(150); */
   }
   svg {
     will-change: transform;
@@ -189,23 +197,11 @@ body {
 }
 
 .current-music {
-  min-height: 300px;
-  opacity: 0.77;
   display: flex;
-  align-items: flex-end;
-  align-self: end;
-  grid-column: 1 / -1;
-  justify-content: end;
-  position: relative;
+  opacity: 0.77;
   &__info {
     width: 100%;
     text-align: right;
-    right: calc(504px + 1.5rem);
-    position: absolute;
-    font-size: 2rem;
-    @media screen and (min-width: 1280px) {
-      right: 22rem;
-    }
     h1,
     h2,
     h3 {
@@ -221,7 +217,6 @@ body {
     max-width: 504px;
     border-radius: 0.5rem;
     transition: opacity 0.5s linear;
-    position: absolute;
     &:hover,
     &:focus,
     &active,
@@ -269,7 +264,6 @@ body {
         line-height: 1.2;
       }
       h1 {
-        /* height: 100%; */
         color: #e0e0e0;
         font-size: 9rem;
         text-shadow:
@@ -357,15 +351,6 @@ body {
     transform: translateY(0px);
   }
 }
-
-/* .glu {
-  .bg-value {
-    filter: brightness(75%);
-    html.dark & {
-      filter: saturate(9);
-    }
-  }
-} */
 
 .control-widget {
   button {
