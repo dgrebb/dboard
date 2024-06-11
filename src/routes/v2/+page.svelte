@@ -1,16 +1,11 @@
 <script lang="ts">
   import settings from '$root/.config/settings.json';
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
-  import Main from '../(layouts)/Main.svelte';
+  import Board from '../(layouts)/Board.svelte';
   import { onMount } from 'svelte';
-  import ProgressBar from '$lib/components/ProgressBar.svelte';
-  import CurrentWeather from '$components/v2/widgets/CurrentWeather/CurrentWeather.svelte';
   import Nightscout from '$components/v2/widgets/Nightscout/Nightscout.svelte';
-  import CurrentMusic from '$components/v2/widgets/CurrentMusic/CurrentMusic.svelte';
   import updateBackgroundColorGradient from '$lib/layout/background';
   import time from '$lib/stores/time';
-  import solar from '$lib/stores/solar';
-  import { pullToRefresh } from '$lib/actions/pullToRefresh';
 
   import { conduct } from '../runes/maestro.svelte';
   import NewWidget from '$root/lib/components/v2/widgets/Composer/NewWidget.svelte';
@@ -78,39 +73,37 @@
 </svelte:head>
 
 {#if mounted}
-  <Main>
-    <div class="dboard__grid" use:pullToRefresh>
-      {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
-        {#if direction}
-          <Nightscout {data} {label} {mainDisplayValue} {direction} />
-        {/if}
-      {/each}
-      {#if widgets}
-        {#each widgets as { type, settings }}
-          <svelte:component this={components[type]} {settings} />
-        {/each}
+  <Board>
+    {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
+      {#if direction}
+        <Nightscout {data} {label} {mainDisplayValue} {direction} />
       {/if}
-      <!-- <CurrentMusic /> -->
-      <NewWidget />
-    </div>
+    {/each}
+    {#if widgets}
+      {#each widgets as { type, settings }}
+        <svelte:component this={components[type]} {settings} />
+      {/each}
+    {/if}
+    <!-- <CurrentMusic /> -->
+    <NewWidget />
+  </Board>
 
-    <div class="dboard__grid">
-      <!-- <SeptaNextToArrive {schedule} /> -->
-      <div class="dboard__grid__item control-widget">
-        <div class="dboard__card">
-          <h1
-            class="flex h-full flex-col items-center justify-center text-9xl text-orange-500"
-          >
-            {seconds}
-          </h1>
-          <!-- <OnOff /> -->
-          <!-- <Restart /> -->
-        </div>
+  <Board>
+    <!-- <SeptaNextToArrive {schedule} /> -->
+    <div class="dboard__grid__item control-widget relative">
+      <div class="dboard__card">
+        <h1
+          class="flex h-full flex-col items-center justify-center text-9xl text-orange-500"
+        >
+          {seconds}
+        </h1>
+        <!-- <OnOff /> -->
+        <!-- <Restart /> -->
       </div>
     </div>
+  </Board>
 
-    <div slot="countdown-bar">
+  <!-- <div slot="countdown-bar">
       <ProgressBar {refreshInterval} {seconds} />
-    </div>
-  </Main>
+    </div> -->
 {/if}

@@ -97,15 +97,17 @@
 </script>
 
 {#if !modal}
-  <div class="current-music">
-    <div
+  <div
+    class="dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
+  >
+    <!-- <div
       class="current-music__info flex flex-col"
       transition:blur={{ amount: 10 }}
     >
       <h1>{title}</h1>
       <h2>{artist}</h2>
       <h3>{album}</h3>
-    </div>
+    </div> -->
     <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
     <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
     <img

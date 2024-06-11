@@ -1,6 +1,6 @@
 <script lang="ts">
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '../../.config/GLOBALS';
-  import Main from '../(layouts)/Main.svelte';
+  import Main from '../(layouts)/Main.v1.svelte';
   import Grid from 'svelte-grid';
   import gridHelp from 'svelte-grid/build/helper/index.mjs';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
