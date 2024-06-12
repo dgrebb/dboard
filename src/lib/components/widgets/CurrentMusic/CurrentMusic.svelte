@@ -6,28 +6,31 @@
   import { cubicIn, cubicInOut } from 'svelte/easing';
   import { fade, blur } from 'svelte/transition';
   import weather from '$root/lib/stores/weatherLeg';
+  type Props = {
+    items: DBoardItem[];
+  };
 
-  export let items: DBoardItem[];
-  $: headlineValue1 = items[0].content.large.value;
-  $: headlineValue2 = $weather.temperature_2m;
-  $: trend = items[0].content.trend.direction;
-  $: difference = items[0].series[0].sgv - items[0].series[1].sgv;
-  let file: string, title: string, album: string, artist: string;
-  $: file = '/album_art.png';
-  $: newFile = '/album_art.png';
-  $: modal = false;
-  $: title = '';
-  $: album = '';
-  $: artist = '';
-  $: transitionImages = false;
-  $: mounted = false;
+  let { temperature_2m } = $weather ? $weather : 0;
+  let { items }: Props = $props();
+  let headlineValue1 = $state(items[0].content.large.value);
+  let headlineValue2 = $state(temperature_2m);
+  let trend = $state(items[0].content.trend.direction);
+  let difference = $state(items[0].series[0].sgv - items[0].series[1].sgv);
+  let file = $state('/album_art.png');
+  let newFile = $state('/album_art.png');
+  let modal = $state(false);
+  let title = $state('');
+  let album = $state('');
+  let artist = $state('');
+  let transitionImages = $state(false);
+  let mounted = $state(false);
   let ws: WebSocket | null = null;
   const clientId = uuidv4();
   const refreshInterval = 5000; // Interval in milliseconds to check for updates
   let refreshTimer: NodeJS.Timeout; // Timer to periodically check for updates
   let previousContent: string | null = null; // Previous file content
   let timestamp = 0; // Initial timestamp value
-  $: webSocketEstablished = false;
+  let webSocketEstablished = $state(false);
 
   const establishWebSocket = () => {
     console.log('connecting', webSocketEstablished);
@@ -96,7 +99,7 @@
   });
 </script>
 
-{#if !modal}
+{#if file && !modal}
   <div
     class="dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
   >
@@ -113,8 +116,8 @@
     <img
       src={file}
       alt="{album} Artwork"
-      on:click={toggleModal}
-      on:keydown={toggleModal}
+      onclick={toggleModal}
+      onkeydown={toggleModal}
       role="switch"
       tabindex="0"
       aria-checked="false"
@@ -126,13 +129,13 @@
   </div>
 {/if}
 
-{#if modal}
+{#if file && modal}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
     class="current-music__modal"
     transition:fade
-    on:click={toggleModal}
-    on:keydown={toggleModal}
+    onclick={toggleModal}
+    onkeydown={toggleModal}
     role="switch"
     tabindex="-1"
     aria-checked={modal}

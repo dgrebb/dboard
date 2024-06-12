@@ -1,3 +1,7 @@
+.controls-container {
+  position: relative;
+  z-index: 3;
+}
 .controls-toggle {
   margin-left: auto;
 }

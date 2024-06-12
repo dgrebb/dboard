@@ -6,21 +6,11 @@ export type StreamType = {
   path: string;
   upstreamAPIURL: string;
   refreshInterval: number;
-  // upstreamAPIOptions: {
-  //   headers?: {
-  //     [key: string]: string;
-  //   };
-  //   method: string;
-  //   redirect?: string;
-  //   body?: string;
-  // };
-  // values: string[];
 };
 
 export type StreamsType = StreamType[];
 
 export interface FetchOptions extends RequestInit {
-  // You can add any custom options specific to your application
   customOption?: string;
 }
 
@@ -78,7 +68,7 @@ export type MusicData = {
   title: string;
 };
 
-export type SeptaDataNextToArrive = {
+export type SteptaNextToArriveData = {
   orig_train: string;
   orig_line: string;
   orig_departure_time: string;
@@ -116,24 +106,28 @@ export enum TypeOfWidget {
 }
 
 export type WidgetData = {
-  type: string;
+  type: TypeOfWidget;
   name: string;
   stream: StreamType;
-  data: ObjectOrArray;
+  data: PossibleWidgetData | false;
 };
 
 export type NightScoutReading = {
   _id: string;
   sgv: number;
-  date: number;
-  dateString: string;
   trend: number;
   direction: string;
-  device: string;
-  type: string;
-  utcOffset: number;
-  sysTime: string;
-  mills: number;
 };
 
 export type NightScoutData = NightScoutReading[];
+
+export type PossibleWidgetData =
+  | NightScoutData
+  | CurrentWeatherType
+  | MusicData
+  | SteptaNextToArriveData;
+
+export type NightScoutWidget = {
+  type: 'NightScout';
+  data: NightScoutData;
+};
