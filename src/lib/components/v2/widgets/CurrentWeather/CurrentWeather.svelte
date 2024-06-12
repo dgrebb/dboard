@@ -62,31 +62,32 @@
   });
 </script>
 
-{#key mounted}
+{#if mounted}
   <div
     onmousedown={handlePushing}
     onmouseup={handleUp}
     tabindex="-1"
     role="button"
+    transition:fade
+    style={`--mainColor: ${highlightColor}`}
     class="dboard__grid__item push-to-refresh current-weather relative transition-colors"
   >
     {#if current}
       <div
         class="dboard__card border-none bg-transparent"
-        style={`--mainColor: ${highlightColor}`}
         class:pushing
         class:refreshed
         transition:fade
       >
         <h2
-          class="text-[var(--mainColor)] brightness-75 dark:saturate-200"
+          class="brightness-25 text-[var(--mainColor)] bg-blend-darken dark:saturate-200"
           out:blur={{ duration: 333 }}
           in:blur={{ delay: 333, duration: 333 }}
         >
           {name}
           <Icon
             icon="ei:arrow-up"
-            class="current-weather__wind-direction inline-block mix-blend-darken brightness-50 dark:brightness-200"
+            class="current-weather__wind-direction brightness-25 inline-block mix-blend-darken dark:brightness-200"
             width={27}
             style={`transform: rotate(${(current.wind_direction_10m + 222) % 360}deg);`}
             color={highlightColor}
@@ -98,7 +99,7 @@
           in:blur={{ delay: 333, duration: 333 }}
         >
           <p
-            class="text-sm text-[var(--mainColor)] brightness-50 dark:brightness-150"
+            class="brightness-25 text-sm text-[var(--mainColor)] dark:brightness-150"
           >
             {current.wind_speed_10m} ↝ {current.wind_gusts_10m}mph
           </p>
@@ -122,7 +123,7 @@
       </div>
     {/if}
   </div>
-{/key}
+{/if}
 
 <style>
   .push-to-refresh {

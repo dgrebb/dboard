@@ -78,7 +78,11 @@
 </script>
 
 <!-- Component Template -->
-<div use:clickOutside onoutsideclick={hideControls} class="flex h-1/3 w-full">
+<div
+  use:clickOutside
+  onoutsideclick={hideControls}
+  class="controls-container flex h-1/3 w-full"
+>
   <Button
     size="sm"
     color="light"
@@ -136,8 +140,8 @@
         {#if showVersions}
           <div class="version-select absolute bg-slate-400 text-purple-900">
             <h1>Versions</h1>
-            <a href="/">v1</a>
-            <a href="/v2">v2</a>
+            <a href="/">v2</a>
+            <a href="/v1">v1</a>
             <a href="/b">b</a>
           </div>
         {/if}

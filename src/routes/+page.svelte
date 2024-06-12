@@ -1,86 +1,25 @@
 <script lang="ts">
-  import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '../.config/GLOBALS';
-  import { onMount } from 'svelte';
-  import CurrentWeather from '$lib/components/widgets/CurrentWeather/CurrentWeather.svelte';
-  import BloodGlucose from '$lib/components/widgets/BloodGlucose/BloodGlucose.svelte';
-  import CurrentMusic from '$lib/components/widgets/CurrentMusic/CurrentMusic.svelte';
-  import updateBackgroundColorGradient from '$lib/layout/background';
-  import time from '$lib/stores/time';
-  import weather from '$root/lib/stores/weatherLeg';
-  import solar from '$lib/stores/solar';
-
-  import type {
-    ChartSeriesGlucose,
-    CurrentWeatherType,
-    DBoardItem,
-    WeatherData,
-    SeptaDataNextToArrive,
-  } from '$lib/types';
-  import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
-  import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
-  import Restart from '$lib/components/Restart/Restart.svelte';
-  import { nightDay } from '$root/lib/_helpers/nightDay';
+  import settings from '$root/.config/settings.json';
+  import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
   import Board from './(layouts)/Board.svelte';
-  import App from './(layouts)/App.svelte';
-
+  import { onMount } from 'svelte';
+  import time from '$lib/stores/time';
+  import NightScout from '$routes/runes/NightScout.svelte';
+  import CurrentMusic from '$components/widgets/CurrentMusic/CurrentMusic.svelte';
+  import type { DBoardItem } from '$root/lib/types';
+  import updateBackgroundColorGradient from '$root/lib/layout/background';
+  import NewWidget from '$components/v2/widgets/Composer/NewWidget.svelte';
+  let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
-  let seconds = 0;
-  let webSocketEstablished = false;
-  let ws: WebSocket | null = null;
-  let log: string[] = [];
-  let schedule: SeptaDataNextToArrive[];
-  let interval = false;
-  $: schedule;
-  $: items = [] satisfies DBoardItem[];
-  let weatherData: CurrentWeatherType;
-  const logEvent = (str: string) => {
-    log = [...log, str];
-  };
-  // $: console.log('🚀 ~ schedule:', schedule);
+  let seconds = $state(0);
+  let schedule = $state();
 
-  const establishWebSocket = () => {
-    console.log('connecting', webSocketEstablished);
-    if (webSocketEstablished) return;
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    ws = new WebSocket(
-      `${protocol}//${window.location.host}/websocket/weather`
-    );
-    ws.addEventListener('open', (event) => {
-      webSocketEstablished = true;
-      console.log('[websocket] connection open', event);
-      logEvent('[websocket] connection open');
-    });
-    ws.addEventListener('close', (event) => {
-      webSocketEstablished = false;
-      console.log('[websocket] connection closed', event);
-      logEvent('[websocket] connection closed');
-    });
-    ws.addEventListener('message', (event) => {
-      console.log('[websocket] message received', event);
-      logEvent(`[websocket] message received: ${event.data}`);
-      const { weatherData, solarData } = JSON.parse(event.data);
-      $weather = weatherData;
-      $solar = solarData;
-    });
-  };
-
+  let items: DBoardItem[] | undefined = $state();
   const nightscoutData = async () => {
     const res = await fetch('/api/v1/nightscout');
     const data = await res.json();
     const { nightscout } = data;
     items = nightscout.items;
-    // console.log('🚀 ~ nightscoutData ~ items:', items[0]);
-  };
-
-  const fetchWeatherData = async () => {
-    const res = await fetch('/api/v1/weather');
-    const { weatherData, solarData } = await res.json();
-
-    $weather = weatherData;
-    $solar = solarData;
-    // console.log('🚀 ~ fetchWeatherData ~ $weather:', $weather);
-
-    nightDay(weatherData.is_day);
   };
 
   const fetchSeptaNextToArrive = async () => {
@@ -91,63 +30,64 @@
     // console.log('🚀 ~ fetchSeptaNextToArrive ~ schedule:', schedule);
   };
 
-  const closeSocket = () => {
-    ws?.close();
-  };
+  let widgets = settings.widgets;
+  let components: { [key: string]: any } = {};
 
   onMount(async () => {
-    await nightscoutData();
-    await fetchWeatherData();
-    let sunrise = $solar.sunrise[0].toString();
-    let sunset = $solar.sunset[0].toString();
-    updateBackgroundColorGradient(sunrise, sunset);
+    nightscoutData();
+    updateBackgroundColorGradient(LATITUDE, LONGITUDE);
     fetchSeptaNextToArrive();
-    if (!interval) {
-      setInterval(async () => {
-        interval = true;
-        await nightscoutData();
-        // console.log('🚀 ~ items:', items);
-        await fetchWeatherData();
-        let sunrise = $solar.sunrise[0].toString();
-        let sunset = $solar.sunset[0].toString();
-        fetchSeptaNextToArrive();
-        updateBackgroundColorGradient(sunrise, sunset);
-        seconds = 0;
-      }, 300000);
-    }
+    setInterval(async () => {
+      nightscoutData();
+      fetchSeptaNextToArrive();
+      updateBackgroundColorGradient(LATITUDE, LONGITUDE);
+      seconds = 0;
+    }, refreshInterval);
 
     setInterval(() => {
       seconds++;
       let now = new Date();
       $time = now.getHours() * 60 + now.getMinutes();
     }, 1000);
+
+    for (const widget of widgets) {
+      if (!components[widget.type]) {
+        components[widget.type] = (
+          await import(
+            `$components/v2/widgets/${widget.type}/${widget.type}.svelte`
+          )
+        ).default;
+      }
+    }
+    mounted = true;
   });
 </script>
 
-<Board>
-  {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
-    {#if direction}
-      <BloodGlucose {data} {label} {mainDisplayValue} {direction} />
+<svelte:head>
+  <link rel="icon" href="/favicon2.ico" />
+</svelte:head>
+
+{#if mounted && items}
+  <Board>
+    <NightScout />
+    {#if widgets}
+      {#each widgets as { type, settings }}
+        <svelte:component this={components[type]} {settings} />
+      {/each}
     {/if}
-  {/each}
-  {#if $weather}
-    <CurrentWeather on:fetchWeatherData={fetchWeatherData} />
-  {/if}
-  {#if items[0]?.content?.large.value && $weather}
+    <NewWidget />
     <CurrentMusic {items} />
-  {/if}
-</Board>
+  </Board>
 
-<Board>
-  <SeptaNextToArrive {schedule} />
-  <div class="dboard__grid__item control-widget">
-    <div class="dboard__card">
-      <OnOff />
-      <!-- <Restart /> -->
+  <Board>
+    <div class="dboard__grid__item control-widget relative">
+      <div class="dboard__card">
+        <h1
+          class="flex h-full flex-col items-center justify-center text-9xl text-orange-500"
+        >
+          {seconds}
+        </h1>
+      </div>
     </div>
-  </div>
-</Board>
-
-<!-- <div slot="countdown-bar">
-    <ProgressBar {refreshInterval} {seconds} />
-  </div> -->
+  </Board>
+{/if}
