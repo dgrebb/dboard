@@ -1,0 +1,153 @@
+<script lang="ts">
+  import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '../../.config/GLOBALS';
+  import { onMount } from 'svelte';
+  import CurrentWeather from '$lib/components/widgets/CurrentWeather/CurrentWeather.svelte';
+  import BloodGlucose from '$lib/components/widgets/BloodGlucose/BloodGlucose.svelte';
+  import CurrentMusic from '$lib/components/widgets/CurrentMusic/CurrentMusic.svelte';
+  import updateBackgroundColorGradient from '$lib/layout/background';
+  import time from '$lib/stores/time';
+  import weather from '$root/lib/stores/weatherLeg';
+  import solar from '$lib/stores/solar';
+
+  import type {
+    ChartSeriesGlucose,
+    CurrentWeatherType,
+    DBoardItem,
+    WeatherData,
+    SeptaDataNextToArrive,
+  } from '$lib/types';
+  import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
+  import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
+  import Restart from '$lib/components/Restart/Restart.svelte';
+  import { nightDay } from '$root/lib/_helpers/nightDay';
+  import Board from '../(layouts)/Board.svelte';
+  import App from '../(layouts)/App.svelte';
+
+  let refreshInterval = DEFAULT_TEMPO;
+  let seconds = 0;
+  let webSocketEstablished = false;
+  let ws: WebSocket | null = null;
+  let log: string[] = [];
+  let schedule: SeptaDataNextToArrive[];
+  let interval = false;
+  $: schedule;
+  $: items = [] satisfies DBoardItem[];
+  let weatherData: CurrentWeatherType;
+  const logEvent = (str: string) => {
+    log = [...log, str];
+  };
+  // $: console.log('🚀 ~ schedule:', schedule);
+
+  const establishWebSocket = () => {
+    console.log('connecting', webSocketEstablished);
+    if (webSocketEstablished) return;
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    ws = new WebSocket(
+      `${protocol}//${window.location.host}/websocket/weather`
+    );
+    ws.addEventListener('open', (event) => {
+      webSocketEstablished = true;
+      console.log('[websocket] connection open', event);
+      logEvent('[websocket] connection open');
+    });
+    ws.addEventListener('close', (event) => {
+      webSocketEstablished = false;
+      console.log('[websocket] connection closed', event);
+      logEvent('[websocket] connection closed');
+    });
+    ws.addEventListener('message', (event) => {
+      console.log('[websocket] message received', event);
+      logEvent(`[websocket] message received: ${event.data}`);
+      const { weatherData, solarData } = JSON.parse(event.data);
+      $weather = weatherData;
+      $solar = solarData;
+    });
+  };
+
+  const nightscoutData = async () => {
+    const res = await fetch('/api/v1/nightscout');
+    const data = await res.json();
+    const { nightscout } = data;
+    items = nightscout.items;
+    // console.log('🚀 ~ nightscoutData ~ items:', items[0]);
+  };
+
+  const fetchWeatherData = async () => {
+    const res = await fetch('/api/v1/weather');
+    const { weatherData, solarData } = await res.json();
+
+    $weather = weatherData;
+    $solar = solarData;
+    // console.log('🚀 ~ fetchWeatherData ~ $weather:', $weather);
+
+    nightDay(weatherData.is_day);
+  };
+
+  const fetchSeptaNextToArrive = async () => {
+    const data = await fetch('/api/v1/septa', { method: 'GET' })
+      .then((res) => res.json())
+      .catch((err) => console.error(err));
+    schedule = data.schedule;
+    // console.log('🚀 ~ fetchSeptaNextToArrive ~ schedule:', schedule);
+  };
+
+  const closeSocket = () => {
+    ws?.close();
+  };
+
+  onMount(async () => {
+    await nightscoutData();
+    await fetchWeatherData();
+    let sunrise = $solar.sunrise[0].toString();
+    let sunset = $solar.sunset[0].toString();
+    updateBackgroundColorGradient(sunrise, sunset);
+    fetchSeptaNextToArrive();
+    if (!interval) {
+      setInterval(async () => {
+        interval = true;
+        await nightscoutData();
+        // console.log('🚀 ~ items:', items);
+        await fetchWeatherData();
+        let sunrise = $solar.sunrise[0].toString();
+        let sunset = $solar.sunset[0].toString();
+        fetchSeptaNextToArrive();
+        updateBackgroundColorGradient(sunrise, sunset);
+        seconds = 0;
+      }, 300000);
+    }
+
+    setInterval(() => {
+      seconds++;
+      let now = new Date();
+      $time = now.getHours() * 60 + now.getMinutes();
+    }, 1000);
+  });
+</script>
+
+<Board>
+  {#each items as { title, content: { small: { value: label, direction }, large: { value: mainDisplayValue } }, series: data }}
+    {#if direction}
+      <BloodGlucose {data} {label} {mainDisplayValue} {direction} />
+    {/if}
+  {/each}
+  {#if $weather}
+    <CurrentWeather on:fetchWeatherData={fetchWeatherData} />
+  {/if}
+  {#if items[0]?.content?.large.value && $weather}
+    <CurrentMusic {items} />
+  {/if}
+</Board>
+
+<Board>
+  <SeptaNextToArrive {schedule} />
+  <div class="dboard__grid__item control-widget">
+    <div class="dboard__card">
+      <OnOff />
+      <!-- <Restart /> -->
+    </div>
+  </div>
+</Board>
+
+<!-- <div slot="countdown-bar">
+    <ProgressBar {refreshInterval} {seconds} />
+  </div> -->

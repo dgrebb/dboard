@@ -1,5 +1,5 @@
-// TODO: Clean up logs
-import type { ObjectOrArray, TypeOfWidget, WidgetData } from '../types';
+// $lib/stores/widget.svelte.ts
+import type { PossibleWidgetData, TypeOfWidget, WidgetData } from '../types';
 
 export const createWidget = function createWidget(
   type: TypeOfWidget,
@@ -19,24 +19,28 @@ export const createWidget = function createWidget(
       upstreamAPIURL,
       refreshInterval,
     },
-    data: {},
+    data: false,
   });
 
-  const setData = function setData(data: ObjectOrArray) {
-    // console.log('🚀 ~ setData ~ data:', data);
+  const setData = function setData(data: PossibleWidgetData) {
     widgetStore = {
       ...widgetStore,
       data,
     };
-    // console.log('🚀 ~ setData ~ widget:', widgetStore.data);
   };
 
   return {
     get streamSettings() {
       return widgetStore.stream;
     },
-    get getData(): ObjectOrArray {
-      return widgetStore.data;
+    get getWidget(): WidgetData {
+      return widgetStore as WidgetData;
+    },
+    get getData(): PossibleWidgetData {
+      return widgetStore.data as PossibleWidgetData;
+    },
+    get type(): TypeOfWidget {
+      return widgetStore.type as TypeOfWidget;
     },
     setData,
   };

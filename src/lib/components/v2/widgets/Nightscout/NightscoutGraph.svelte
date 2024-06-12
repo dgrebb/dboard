@@ -3,10 +3,16 @@
   import { onMount } from 'svelte';
   import type { EChartOption } from 'echarts';
   import type { ChartSeriesGlucose } from '$lib/types';
+  import type { NightScoutData } from '$lib/types';
 
-  export let data: number[] = [];
-  export let mainColor: string = '#fefefe';
-  export let areaColor: string = mainColor.toString();
+  type Props = {
+    series: number[];
+    mainColor: string;
+    areaColor: string;
+  };
+
+  let { series, mainColor, areaColor }: Props = $props();
+  // console.log('🚀 ~ series:', series);
   let maxMeasurable: number = 400;
 
   onMount(() => {
@@ -44,7 +50,7 @@
       },
       series: [
         {
-          data,
+          data: series,
           type: 'line',
           lineStyle: {
             color: mainColor,

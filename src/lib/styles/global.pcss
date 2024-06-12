@@ -68,12 +68,12 @@ body {
 }
 
 .time {
-  position: absolute;
-  inset: 0.5rem;
   width: 100%;
+  position: absolute;
   text-align: center;
   color: var(--gradient);
   filter: invert(1);
+  z-index: 1;
 }
 
 .dboard {
@@ -96,12 +96,18 @@ body {
     display: grid;
     width: 100vw;
     grid-template-columns: repeat(2, minmax(0, 3fr));
-    grid-template-rows: repeat(5, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    @media screen and (min-height: 1200px) {
+      grid-template-rows: repeat(5, minmax(0, 1fr));
+    }
     @media screen and (min-width: 1280px) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
     &__item {
-      max-height: 353px;
+      max-height: 315px;
+      @media screen and (min-height: 1200px) {
+        max-height: 353px;
+      }
       overflow: hidden;
       border-radius: 0.5rem;
       position: relative;
@@ -119,8 +125,11 @@ body {
         }
       }
       &--bottom-right {
-        grid-column-start: span 2;
-        grid-row-start: span 5;
+        grid-column-start: 2;
+        grid-row-start: 3;
+        @media screen and (min-height: 1200px) {
+          grid-row-start: span 5;
+        }
         align-self: end;
         justify-self: end;
         align-items: end;
@@ -198,7 +207,10 @@ body {
 
 .current-music {
   display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
   opacity: 0.77;
+  height: 100%;
   &__info {
     width: 100%;
     text-align: right;
@@ -214,7 +226,10 @@ body {
     align-self: end;
     justify-self: end;
     cursor: pointer;
-    max-width: 504px;
+    max-height: 100%;
+    @media screen and (min-height: 1200px) {
+      max-height: 504px;
+    }
     border-radius: 0.5rem;
     transition: opacity 0.5s linear;
     &:hover,

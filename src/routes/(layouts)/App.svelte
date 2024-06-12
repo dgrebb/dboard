@@ -40,14 +40,14 @@
     on:closeSocket={closeSocket}
     on:establishWebSocket={establishWebSocket}
   /> -->
+  <p class="time">
+    {hh}:{mm}
+  </p>
   <Controls />
 </header>
 
 <ForegroundFrame />
 <BackgroundFrame component={ClearOrCloudy} />
-<p class="time">
-  {hh}:{mm}
-</p>
 
 <main use:pullToRefresh class="dboard">
   <slot><h1>There is no page here.</h1></slot>

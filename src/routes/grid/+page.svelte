@@ -1,6 +1,6 @@
 <script lang="ts">
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '../../.config/GLOBALS';
-  import Main from '../(layouts)/Main.v1.svelte';
+  // import Main from '../(layouts)/Main.v1.svelte';
   import Grid from 'svelte-grid';
   import gridHelp from 'svelte-grid/build/helper/index.mjs';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
@@ -97,6 +97,7 @@
 
 <ForegroundFrame />
 <BackgroundFrame component={ClearOrCloudy} />
+
 <main class="dboard">
   <div class="grid-container">
     <button on:click={add}>Add (random size)</button>

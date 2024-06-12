@@ -96,7 +96,7 @@ export const locations: LocationsType = {
   },
 };
 
-type SettingsType = {
+export type SettingsType = {
   location: Location;
   tempo: number;
   widgets: TypeOfWidget[];
