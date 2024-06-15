@@ -8,7 +8,7 @@
   import CurrentMusic from '$components/widgets/CurrentMusic/CurrentMusic.svelte';
   import type { DBoardItem } from '$root/lib/types';
   import updateBackgroundColorGradient from '$root/lib/layout/background';
-  import NewWidget from '$components/v2/widgets/Composer/NewWidget.svelte';
+  import NewWidget from '$components/Composer/NewWidget.svelte';
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
   let seconds = $state(0);
@@ -53,9 +53,7 @@
     for (const widget of widgets) {
       if (!components[widget.type]) {
         components[widget.type] = (
-          await import(
-            `$components/v2/widgets/${widget.type}/${widget.type}.svelte`
-          )
+          await import(`$widgets/${widget.type}/${widget.type}.svelte`)
         ).default;
       }
     }

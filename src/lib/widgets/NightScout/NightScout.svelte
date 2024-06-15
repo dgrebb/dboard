@@ -3,7 +3,7 @@
   import { generateID, toCamelCase } from '$root/lib/_helpers/strings';
   import { TypeOfWidget, type NightScoutData } from '$root/lib/types';
   import { onDestroy, onMount } from 'svelte';
-  import { fade } from 'svelte/transition';
+  import { fade, blur } from 'svelte/transition';
   import NightscoutGraph from '$root/lib/widgets/NightScout/NightscoutGraph.svelte';
   import Icon from '@iconify/svelte';
 
@@ -150,43 +150,47 @@
   }
 </script>
 
-{#if currentValue}
-  <div
-    transition:fade
-    class="dboard__grid__item relative transition-colors"
-    style={`--mainColor: ${colors.mainColor}`}
-  >
-    {#key directionIcon}
-      <div class="dboard__card glu relative border-none bg-transparent">
-        <h2
-          class="flex items-center text-[var(--mainColor)] brightness-50 dark:brightness-150"
-        >
-          {label}
-        </h2>
-        <h2 class="text-[var(--mainColor)]">
-          {change}
-          <Icon
-            icon={directionIcon}
-            height="32px"
-            color={colors.mainColor}
-            class="inline-flex align-middle brightness-50 dark:brightness-150"
-          />
-        </h2>
-
-        <NightscoutGraph
-          {series}
-          mainColor={colors.mainColor}
-          backgroundColor={colors.backgroundColor}
+<div
+  class="dboard__grid__item relative transition-colors"
+  style={`--mainColor: ${colors.mainColor}`}
+>
+  {#if currentValue}
+    <div
+      class="dboard__card glu relative border-none bg-opacity-10"
+      style={`background-color: var(--skyBaseColor)`}
+      transition:fade
+    >
+      <h2
+        class="flex items-center text-[var(--mainColor)] brightness-50 dark:brightness-150"
+      >
+        {label}
+      </h2>
+      <h2 class="text-[var(--mainColor)]">
+        {change}
+        <Icon
+          icon={directionIcon}
+          height="32px"
+          color={colors.mainColor}
+          class="inline-flex align-middle brightness-50 dark:brightness-150"
         />
+      </h2>
+
+      <NightscoutGraph
+        {series}
+        mainColor={colors.mainColor}
+        backgroundColor={colors.backgroundColor}
+      />
+      {#key currentValue}
         <h1
           class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight brightness-50 dark:brightness-200"
+          transition:blur
         >
           {currentValue}
         </h1>
-      </div>
-    {/key}
-  </div>
-{/if}
+      {/key}
+    </div>
+  {/if}
+</div>
 
 <style lang="postcss">
   .bg-value {

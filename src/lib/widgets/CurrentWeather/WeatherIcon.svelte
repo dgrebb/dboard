@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import Icon from '@iconify/svelte';
-  import mapWeatherIcon from '../Weather/iconMap';
+  import mapWeatherIcon from '../../components/v2/widgets/Weather/iconMap';
 
   type Props = {
     weatherCode: number;
