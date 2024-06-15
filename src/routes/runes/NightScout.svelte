@@ -26,15 +26,16 @@
     upstreamAPIURL,
     refreshInterval
   );
-  const data: NightScoutData = $state(nightScoutWidget.getData);
 
   let series = $state([0]);
+  let currentValue: number = $state(0);
+
+  // TODO: refactor with getters
   const maxMeasurable = 400;
   let loaded = $state(false);
   let mainColor: string = $state('green');
   let directionIcon = $state('iconamoon:cloud-download-light');
   let max: number = 450;
-  let currentValue: number = $state(0);
   let difference: number = $state(0);
   let change: number | string = $state(0);
   let lastValue: number = $state(0);
@@ -115,11 +116,11 @@
 
   $effect(() => {
     series = nightScoutWidget.getSeries();
+    currentValue = nightScoutWidget.getCurrent();
 
     // TODO: Refactor with $rune getters
     const SSEData: NightScoutData = $state.snapshot(nightScoutWidget.getData);
     if (Array.isArray(SSEData) && SSEData.length) {
-      currentValue = SSEData[0].sgv;
       currentValue = SSEData[0].sgv;
       lastValue = SSEData[1].sgv;
       difference = currentValue - lastValue;
