@@ -4,7 +4,7 @@
   import Board from './(layouts)/Board.svelte';
   import { onMount } from 'svelte';
   import time from '$lib/stores/time';
-  import NightScout from '$routes/runes/NightScout.svelte';
+  import NightScout from '$root/lib/widgets/NightScout/NightScout.svelte';
   import CurrentMusic from '$components/widgets/CurrentMusic/CurrentMusic.svelte';
   import type { DBoardItem } from '$root/lib/types';
   import updateBackgroundColorGradient from '$root/lib/layout/background';
