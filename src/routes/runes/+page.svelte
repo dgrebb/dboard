@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NightScout from './NightScout.svelte';
+  import NightScout from '../../lib/widgets/NightScout/NightScout.svelte';
 </script>
 
 <NightScout />

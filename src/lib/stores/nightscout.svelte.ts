@@ -19,38 +19,38 @@ function isNightScoutData(
   );
 }
 
-function getGraphSettings(currentBG: number, maxMeasurable: number) {
+function getColors(currentReading: number) {
   let mainColor: string;
-  let max: number;
+  let backgroundColor: string;
   switch (true) {
-    case currentBG < 70:
+    case currentReading < 70:
       mainColor = 'rgba(255, 0, 0, 0.5)';
-      max = 100;
+      backgroundColor = 'rgba(255, 0, 0, 0.5)';
       break;
-    case currentBG < 100:
+    case currentReading < 100:
       mainColor = '#2a5c2c';
-      max = 100;
+      backgroundColor = '#2a5c2c';
       break;
-    case currentBG < 160:
-      mainColor = '#2a5c2c';
-      max = 200;
+    case currentReading < 160:
+      mainColor = '#056e00';
+      backgroundColor = '#00d115';
       break;
-    case currentBG < 190:
-      mainColor = '#8cbf2e';
-      max = 200;
+    case currentReading < 190:
+      mainColor = '#2f7a00';
+      backgroundColor = '#62ff00';
       break;
-    case currentBG < 300:
-      mainColor = '#fff700';
-      max = 300;
+    case currentReading < 300:
+      mainColor = '#7b9600';
+      backgroundColor = '#fff700';
       break;
     default:
       mainColor = '#ff00f7';
-      max = maxMeasurable;
+      backgroundColor = '#ff00f7';
       break;
   }
   return {
     mainColor,
-    max,
+    backgroundColor,
   };
 }
 
@@ -100,6 +100,15 @@ export const createNightScoutWidget = function createWidget(
     return current;
   };
 
+  const getLast = function getLast() {
+    const data = widgetStore.data;
+    let last = 0;
+    if (isNightScoutData(data)) {
+      last = data[1].sgv;
+    }
+    return last;
+  };
+
   return {
     get streamSettings() {
       return widgetStore.stream;
@@ -115,7 +124,8 @@ export const createNightScoutWidget = function createWidget(
     },
     getSeries,
     getCurrent,
-    getGraphSettings,
+    getLast,
+    getColors,
     setData,
   };
 };

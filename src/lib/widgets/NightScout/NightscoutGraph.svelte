@@ -2,16 +2,14 @@
   import * as echarts from 'echarts';
   import { onMount } from 'svelte';
   import type { EChartOption } from 'echarts';
-  import type { ChartSeriesGlucose } from '$lib/types';
-  import type { NightScoutData } from '$lib/types';
 
   type Props = {
     series: number[];
     mainColor: string;
-    areaColor: string;
+    backgroundColor: string;
   };
 
-  let { series, mainColor, areaColor }: Props = $props();
+  let { series, mainColor, backgroundColor }: Props = $props();
   // console.log('🚀 ~ series:', series);
   let maxMeasurable: number = 400;
 
@@ -53,7 +51,7 @@
           data: series,
           type: 'line',
           lineStyle: {
-            color: mainColor,
+            color: backgroundColor,
             opacity: 0.8,
           },
           itemStyle: {
@@ -61,7 +59,7 @@
             opacity: 0,
           },
           areaStyle: {
-            color: areaColor,
+            color: backgroundColor,
             opacity: 0.5,
           },
         },
