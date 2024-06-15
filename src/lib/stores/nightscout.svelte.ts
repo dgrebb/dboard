@@ -1,4 +1,23 @@
-import type { NightScoutData, TypeOfWidget, WidgetData } from '../types';
+import type {
+  NightScoutData,
+  NightScoutReading,
+  TypeOfWidget,
+  WidgetData,
+} from '../types';
+
+function isNightScoutData(
+  data: WidgetData['data']
+): data is NightScoutReading[] {
+  return (
+    Array.isArray(data) &&
+    data.every(
+      (entry) =>
+        typeof entry === 'object' &&
+        'sgv' in entry &&
+        typeof entry.sgv === 'number'
+    )
+  );
+}
 
 function getGraphSettings(currentBG: number, maxMeasurable: number) {
   let mainColor: string;
@@ -72,6 +91,15 @@ export const createNightScoutWidget = function createWidget(
     return series;
   };
 
+  const getCurrent = function getCurrent() {
+    const data = widgetStore.data;
+    let current = 0;
+    if (isNightScoutData(data)) {
+      current = data[0].sgv;
+    }
+    return current;
+  };
+
   return {
     get streamSettings() {
       return widgetStore.stream;
@@ -86,6 +114,7 @@ export const createNightScoutWidget = function createWidget(
       return widgetStore.type as TypeOfWidget;
     },
     getSeries,
+    getCurrent,
     getGraphSettings,
     setData,
   };
