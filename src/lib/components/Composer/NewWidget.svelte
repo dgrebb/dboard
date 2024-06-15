@@ -1,5 +1,9 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
+
   let showWidgetTypeModal = $state(false);
+  let mounted = $state(false);
   const createNewWidget = function (type: string) {
     console.log('type of widget: ', type);
   };
@@ -7,35 +11,41 @@
     console.log('show modeal');
     showWidgetTypeModal = true;
   };
+
+  onMount(function () {
+    mounted = true;
+  });
 </script>
 
 <div
   class="dboard__grid__item push-to-refresh current-weather relative transition-colors"
 >
-  <div class="dboard__card border-none bg-transparent">
-    {#if !showWidgetTypeModal}
-      <button
-        class="flex h-full flex-col content-center justify-center text-9xl text-yellow-400 transition-colors hover:text-orange-800"
-        onclick={handleNewWidgetClick}>+</button
-      >
-    {/if}
-    {#if showWidgetTypeModal}
-      <div
-        class="widget-options absolute inset-0 flex flex-col justify-center bg-green-700 bg-opacity-55 text-red-300"
-      >
+  {#if mounted}
+    <div class="dboard__card border-none bg-transparent" transition:fade>
+      {#if !showWidgetTypeModal}
         <button
-          onclick={(e) => {
-            createNewWidget('weather');
-          }}>Weather</button
+          class="flex h-full flex-col content-center justify-center text-9xl text-yellow-400 transition-colors hover:text-orange-800"
+          onclick={handleNewWidgetClick}>+</button
         >
-        <button
-          onclick={(e) => {
-            createNewWidget('nightscout');
-          }}>Nightscout</button
+      {/if}
+      {#if showWidgetTypeModal}
+        <div
+          class="widget-options absolute inset-0 flex flex-col justify-center bg-green-700 bg-opacity-55 text-red-300"
         >
-      </div>
-    {/if}
-  </div>
+          <button
+            onclick={(e) => {
+              createNewWidget('weather');
+            }}>Weather</button
+          >
+          <button
+            onclick={(e) => {
+              createNewWidget('nightscout');
+            }}>Nightscout</button
+          >
+        </div>
+      {/if}
+    </div>
+  {/if}
 </div>
 
 <style>
