@@ -62,68 +62,69 @@
   });
 </script>
 
-{#if mounted}
-  <div
-    onmousedown={handlePushing}
-    onmouseup={handleUp}
-    tabindex="-1"
-    role="button"
-    transition:fade
-    style={`--mainColor: ${highlightColor}`}
-    class="dboard__grid__item push-to-refresh current-weather relative transition-colors"
-  >
-    {#if current}
-      <div
-        class="dboard__card border-none bg-transparent"
-        class:pushing
-        class:refreshed
-        transition:fade
+<div
+  onmousedown={handlePushing}
+  onmouseup={handleUp}
+  tabindex="-1"
+  role="button"
+  style={`--mainColor: ${highlightColor}`}
+  class="dboard__grid__item push-to-refresh current-weather relative"
+>
+  {#if current}
+    <div
+      class="dboard__card border-none bg-transparent"
+      class:pushing
+      class:refreshed
+      transition:fade
+    >
+      <h2
+        class="brightness-25 text-[var(--mainColor)] bg-blend-darken dark:saturate-200"
       >
-        <h2
-          class="brightness-25 text-[var(--mainColor)] bg-blend-darken dark:saturate-200"
-          out:blur={{ duration: 333 }}
-          in:blur={{ delay: 333, duration: 333 }}
-        >
-          {name}
-          <Icon
-            icon="ei:arrow-up"
-            class="current-weather__wind-direction brightness-25 inline-block mix-blend-darken dark:brightness-200"
-            width={27}
-            style={`transform: rotate(${(current.wind_direction_10m + 222) % 360}deg);`}
-            color={highlightColor}
-          />
-        </h2>
-        <div
-          class="current-weather__wind"
-          out:blur={{ duration: 333 }}
-          in:blur={{ delay: 333, duration: 333 }}
-        >
+        {name}
+        {#key current.wind_direction_10m}
+          <span transition:blur>
+            <Icon
+              icon="ei:arrow-up"
+              class="current-weather__wind-direction brightness-25 inline-block mix-blend-darken dark:brightness-200"
+              width={27}
+              style={`transform: rotate(${(current.wind_direction_10m + 222) % 360}deg);`}
+              color={highlightColor}
+            />
+          </span>
+        {/key}
+      </h2>
+      {#key current.wind_speed_10m}
+        <div class="current-weather__wind" transition:blur>
           <p
             class="brightness-25 text-sm text-[var(--mainColor)] dark:brightness-150"
           >
             {current.wind_speed_10m} ↝ {current.wind_gusts_10m}mph
           </p>
         </div>
-        {#key current.is_day}
+      {/key}
+
+      {#key current.weather_code}
+        <span transition:blur>
           <WeatherIcon
             weatherCode={current.weather_code}
             isDay={current.is_day}
           />
-        {/key}
+        </span>
+      {/key}
+      {#key current.temperature_2m}
         <h1
           class="dboard__card--value-lg mt-auto justify-end text-9xl text-[var(--mainColor)] brightness-50 dark:brightness-150 dark:saturate-200"
-          out:blur={{ duration: 333 }}
-          in:blur={{ delay: 333, duration: 333 }}
+          transition:blur
         >
           {Math.round(current.temperature_2m)}<span
             class="dboard__card__value-symbol text-[var(--mainColor)] brightness-125 dark:brightness-150"
             >&deg;</span
           >
         </h1>
-      </div>
-    {/if}
-  </div>
-{/if}
+      {/key}
+    </div>
+  {/if}
+</div>
 
 <style>
   .push-to-refresh {

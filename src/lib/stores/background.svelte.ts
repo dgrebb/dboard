@@ -160,7 +160,7 @@ export default async function updateBackgroundColorGradient(
     set
   );
   bgColor = await calculateBaseBackgroundColorGradient(currentTime, rise, set);
-  body.style.setProperty('--gradient', gradientColor);
+  body.style.setProperty('--skyBaseColor', gradientColor);
   body.style.setProperty('--bgColor', bgColor);
   body.classList.toggle('ready', true);
 }

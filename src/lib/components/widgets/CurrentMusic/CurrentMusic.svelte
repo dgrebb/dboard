@@ -99,10 +99,10 @@
   });
 </script>
 
-{#if file && !modal}
-  <div
-    class="dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
-  >
+<div
+  class="dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
+>
+  {#if file && !modal}
     <!-- <div
       class="current-music__info flex flex-col"
       transition:blur={{ amount: 10 }}
@@ -124,10 +124,10 @@
       class="transition-opacity {transitionImages
         ? 'opacity-0'
         : 'opacity-100'}"
-      transition:fade={{ duration: 500, easing: cubicInOut }}
+      transition:fade={{ easing: cubicInOut }}
     />
-  </div>
-{/if}
+  {/if}
+</div>
 
 {#if file && modal}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
