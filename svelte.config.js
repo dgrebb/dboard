@@ -18,6 +18,7 @@ const config = {
     alias: {
       $actions: 'src/lib/actions',
       $components: 'src/lib/components',
+      $widgets: 'src/lib/widgets',
       $layouts: 'src/routes/(layouts)',
       $routes: 'src/routes/',
       $utils: 'src/utils',
