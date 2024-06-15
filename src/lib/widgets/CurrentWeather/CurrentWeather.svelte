@@ -137,10 +137,10 @@
         transition: 333ms opacity cubic-bezier(0.175, 0.885, 0.32, 1.275);
         inset: 0;
         z-index: 10;
-        background-color: rgba(255, 255, 255, 0.8);
         opacity: 0.5;
       }
       &.pushing {
+        background-color: rgba(255, 255, 255, 0.8);
         transform: scale3d(0.77, 0.77, 0.77);
       }
       &.refreshed {
