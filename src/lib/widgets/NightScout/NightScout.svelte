@@ -4,7 +4,7 @@
   import { TypeOfWidget, type NightScoutData } from '$root/lib/types';
   import { onDestroy, onMount } from 'svelte';
   import { fade } from 'svelte/transition';
-  import NightscoutGraph from '$components/v2/widgets/Nightscout/NightscoutGraph.svelte';
+  import NightscoutGraph from '$root/lib/widgets/NightScout/NightscoutGraph.svelte';
   import Icon from '@iconify/svelte';
 
   let label = 'mg/dL';
@@ -27,23 +27,25 @@
     refreshInterval
   );
 
+  let loaded = $state(false);
   let series = $state([0]);
   let currentValue: number = $state(0);
+  let lastValue: number = $state(0);
+  let colors: { mainColor: string; backgroundColor: string } = $state({
+    mainColor: 'darkgreen',
+    backgroundColor: 'green',
+  });
 
   // TODO: refactor with getters
   const maxMeasurable = 400;
-  let loaded = $state(false);
-  let mainColor: string = $state('green');
   let directionIcon = $state('iconamoon:cloud-download-light');
-  let max: number = 450;
   let difference: number = $state(0);
   let change: number | string = $state(0);
-  let lastValue: number = $state(0);
   let direction: string = $state('Flat');
 
   let eventSource: EventSource | null = null;
 
-  function startSubscription() {
+  async function startSubscription() {
     if (eventSource) {
       eventSource.close();
     }
@@ -82,10 +84,9 @@
     }, resubscribeInterval);
   }
 
-  onMount(() => {
-    startSubscription();
+  onMount(async () => {
+    await startSubscription();
     loaded = true;
-
     window.addEventListener('beforeunload', handleWindowUnload);
   });
 
@@ -117,17 +118,17 @@
   $effect(() => {
     series = nightScoutWidget.getSeries();
     currentValue = nightScoutWidget.getCurrent();
+    lastValue = nightScoutWidget.getLast();
+    colors = nightScoutWidget.getColors(currentValue);
 
     // TODO: Refactor with $rune getters
     const SSEData: NightScoutData = $state.snapshot(nightScoutWidget.getData);
     if (Array.isArray(SSEData) && SSEData.length) {
-      currentValue = SSEData[0].sgv;
-      lastValue = SSEData[1].sgv;
       difference = currentValue - lastValue;
       change = difference > 0 ? `+${difference}` : difference;
       direction = SSEData[0].direction;
       directionIcon = getDirectionIcon(direction);
-      nightScoutWidget.getGraphSettings(currentValue, maxMeasurable);
+      // nightScoutWidget.getGraphSettings(currentValue, maxMeasurable);
     }
   });
 
@@ -153,7 +154,7 @@
   <div
     transition:fade
     class="dboard__grid__item relative transition-colors"
-    style={`--mainColor: ${mainColor}`}
+    style={`--mainColor: ${colors.mainColor}`}
   >
     {#key directionIcon}
       <div class="dboard__card glu relative border-none bg-transparent">
@@ -167,12 +168,16 @@
           <Icon
             icon={directionIcon}
             height="32px"
-            color={mainColor}
+            color={colors.mainColor}
             class="inline-flex align-middle brightness-50 dark:brightness-150"
           />
         </h2>
 
-        <NightscoutGraph {series} {mainColor} areaColor={mainColor} />
+        <NightscoutGraph
+          {series}
+          mainColor={colors.mainColor}
+          backgroundColor={colors.backgroundColor}
+        />
         <h1
           class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight brightness-50 dark:brightness-200"
         >
