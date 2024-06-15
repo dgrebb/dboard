@@ -1,13 +1,11 @@
 <script lang="ts">
-  import { createWidget } from '$lib/stores/widget.svelte';
+  import { createNightScoutWidget } from '$lib/stores/nightscout.svelte';
   import { generateID, toCamelCase } from '$root/lib/_helpers/strings';
   import { TypeOfWidget, type NightScoutData } from '$root/lib/types';
   import { onDestroy, onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import NightscoutGraph from '$components/v2/widgets/Nightscout/NightscoutGraph.svelte';
-  import type { ChartSeriesGlucose, PossibleWidgetData } from '$lib/types';
   import Icon from '@iconify/svelte';
-  import { extractBGValues } from '$root/lib/_helpers/extractBGValues';
 
   let label = 'mg/dL';
   const name = 'NightScout';
@@ -20,7 +18,7 @@
   let resubscribeTimeout: NodeJS.Timeout;
   let retryTimeout: NodeJS.Timeout;
   let retryCount = 0;
-  const nightScoutWidget = createWidget(
+  const nightScoutWidget = createNightScoutWidget(
     TypeOfWidget.NightScout,
     name,
     id,
@@ -30,7 +28,7 @@
   );
   const data: NightScoutData = $state(nightScoutWidget.getData);
 
-  let series: number[] = $state([]);
+  let series = $state([0]);
   const maxMeasurable = 400;
   let loaded = $state(false);
   let mainColor: string = $state('green');
@@ -83,10 +81,6 @@
     }, resubscribeInterval);
   }
 
-  const getMaxSGV = function getMaxSGV(series: number[]) {
-    return Math.max(...series);
-  };
-
   onMount(() => {
     startSubscription();
     loaded = true;
@@ -120,9 +114,10 @@
   });
 
   $effect(() => {
-    const SSEData: PossibleWidgetData = $state.snapshot(
-      nightScoutWidget.getData
-    );
+    series = nightScoutWidget.getSeries();
+
+    // TODO: Refactor with $rune getters
+    const SSEData: NightScoutData = $state.snapshot(nightScoutWidget.getData);
     if (Array.isArray(SSEData) && SSEData.length) {
       currentValue = SSEData[0].sgv;
       currentValue = SSEData[0].sgv;
@@ -130,9 +125,8 @@
       difference = currentValue - lastValue;
       change = difference > 0 ? `+${difference}` : difference;
       direction = SSEData[0].direction;
-      series = SSEData.map((entry) => entry.sgv);
       directionIcon = getDirectionIcon(direction);
-      setMainColor(currentValue);
+      nightScoutWidget.getGraphSettings(currentValue, maxMeasurable);
     }
   });
 
@@ -152,35 +146,6 @@
         return 'iconamoon:cloud-error-light';
     }
   }
-
-  function setMainColor(currentBG: number) {
-    switch (true) {
-      case currentBG < 70:
-        mainColor = 'rgba(255, 0, 0, 0.5)';
-        max = 100;
-        break;
-      case currentBG < 100:
-        mainColor = '#2a5c2c';
-        max = 100;
-        break;
-      case currentBG < 160:
-        mainColor = '#2a5c2c';
-        max = 200;
-        break;
-      case currentBG < 190:
-        mainColor = '#8cbf2e';
-        max = 200;
-        break;
-      case currentBG < 300:
-        mainColor = '#fff700';
-        max = 300;
-        break;
-      default:
-        mainColor = '#ff00f7';
-        max = maxMeasurable;
-        break;
-    }
-  }
 </script>
 
 {#if currentValue}
@@ -196,13 +161,13 @@
         >
           {label}
         </h2>
-        <h2>
-          {difference}
+        <h2 class="text-[var(--mainColor)]">
+          {change}
           <Icon
             icon={directionIcon}
             height="32px"
             color={mainColor}
-            class="ml-2 inline-flex align-middle brightness-50 dark:brightness-150"
+            class="inline-flex align-middle brightness-50 dark:brightness-150"
           />
         </h2>
 

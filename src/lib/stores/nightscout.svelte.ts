@@ -1,48 +1,92 @@
-import type { ChartSeriesGlucose, DBoardItem, FetchOptions } from '../types';
+import type { NightScoutData, TypeOfWidget, WidgetData } from '../types';
 
-export const createNightscout = function createNightscout() {
-  let nightscout = $state('butts');
-  let tempoId: number | NodeJS.Timeout | null;
+function getGraphSettings(currentBG: number, maxMeasurable: number) {
+  let mainColor: string;
+  let max: number;
+  switch (true) {
+    case currentBG < 70:
+      mainColor = 'rgba(255, 0, 0, 0.5)';
+      max = 100;
+      break;
+    case currentBG < 100:
+      mainColor = '#2a5c2c';
+      max = 100;
+      break;
+    case currentBG < 160:
+      mainColor = '#2a5c2c';
+      max = 200;
+      break;
+    case currentBG < 190:
+      mainColor = '#8cbf2e';
+      max = 200;
+      break;
+    case currentBG < 300:
+      mainColor = '#fff700';
+      max = 300;
+      break;
+    default:
+      mainColor = '#ff00f7';
+      max = maxMeasurable;
+      break;
+  }
+  return {
+    mainColor,
+    max,
+  };
+}
 
-  async function loadNightscout(): Promise<void> {
-    const requestOptions: FetchOptions = {
-      method: 'GET',
-      redirect: 'follow',
+export const createNightScoutWidget = function createWidget(
+  type: TypeOfWidget,
+  name: string,
+  id: string,
+  path: string,
+  upstreamAPIURL: string,
+  refreshInterval: number
+) {
+  let widgetStore: WidgetData = $state({
+    type,
+    name,
+    stream: {
+      name,
+      id,
+      path,
+      upstreamAPIURL,
+      refreshInterval,
+    },
+    data: false,
+  });
+
+  const setData = function setData(data: NightScoutData) {
+    widgetStore = {
+      ...widgetStore,
+      data,
     };
-    await fetch('/api/v1/nightscout', requestOptions)
-      .then(function (res) {
-        return res.json();
-      })
-      .then((json) => {
-        nightscout = json.nightscout.items.series;
-        console.log('🚀 ~ .then ~ json:', json);
-      })
-      .catch(function (err) {
-        console.error(err);
-      });
-  }
+  };
 
-  function setTempo(time: number) {
-    if (tempoId) {
-      clearInterval(tempoId);
+  const getSeries = function getSeries() {
+    const data = widgetStore.data;
+    let series: number[] = [];
+    if (Array.isArray(data) && data.length) {
+      series = data.map((reading) => reading.sgv);
     }
-    tempoId = setInterval(function () {
-      console.log('nightscouting');
-      loadNightscout();
-    }, time);
-  }
+    return series;
+  };
 
   return {
-    get data() {
-      console.log('🚀 ~ getdata ~ nightscout:', nightscout);
-      return nightscout?.data | null;
+    get streamSettings() {
+      return widgetStore.stream;
     },
-    get items() {
-      return nightscout?.items | null;
+    get getWidget(): WidgetData {
+      return widgetStore as WidgetData;
     },
-    loadNightscout,
-    setTempo,
+    get getData(): NightScoutData {
+      return widgetStore.data as NightScoutData;
+    },
+    get type(): TypeOfWidget {
+      return widgetStore.type as TypeOfWidget;
+    },
+    getSeries,
+    getGraphSettings,
+    setData,
   };
 };
-
-export const nightscout = createNightscout();
