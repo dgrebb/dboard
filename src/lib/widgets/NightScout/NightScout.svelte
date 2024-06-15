@@ -151,13 +151,12 @@
 </script>
 
 <div
-  class="dboard__grid__item relative transition-colors"
+  class="dboard__grid__item relative"
   style={`--mainColor: ${colors.mainColor}`}
 >
   {#if currentValue}
     <div
-      class="dboard__card glu relative border-none bg-opacity-10"
-      style={`background-color: var(--skyBaseColor)`}
+      class="dboard__card glu relative border-none bg-opacity-10 transition-colors"
       transition:fade
     >
       <h2
