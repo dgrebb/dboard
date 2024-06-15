@@ -109,25 +109,9 @@ body {
     }
     &__item {
       max-height: 315px;
-      overflow: hidden;
-      border-radius: 0.5rem;
       position: relative;
-      transition: colors 500ms ease-in-out;
       @media screen and (min-height: 1200px) {
         max-height: 353px;
-      }
-      &:not(.empty) {
-        .dboard__card {
-          border-radius: 0.5rem;
-          &:after {
-            content: '';
-            opacity: 0.45;
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-            background-color: var(--skyBaseColor);
-          }
-        }
       }
       &--bottom-right {
         grid-column-start: 2;
@@ -152,7 +136,17 @@ body {
     padding: 1rem;
     min-height: 277px;
     overflow: hidden;
-    background-color: var(--skyBaseColor);
+    border-radius: 0.5rem;
+    &:after {
+      border-radius: 0.5rem;
+      transition: colors 500ms ease-in-out;
+      content: '';
+      opacity: 0.45;
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-color: var(--skyBaseColor);
+    }
     @media screen and (min-width: 1080px) {
       min-height: 333px;
     }
