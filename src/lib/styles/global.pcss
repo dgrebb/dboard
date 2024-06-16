@@ -160,6 +160,11 @@ body {
   &__wind-direction {
     color: var(--highlightColor);
   }
+  .current-temperature {
+    & + .current-temperature {
+      display: none;
+    }
+  }
 }
 
 .big-icon-wow {

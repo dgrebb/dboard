@@ -82,7 +82,10 @@
       >
         {name}
         {#key current.wind_direction_10m}
-          <span transition:blur>
+          <span
+            in:blur={{ duration: 333, delay: 335 }}
+            out:blur={{ duration: 333, delay: 0 }}
+          >
             <Icon
               icon="ei:arrow-up"
               class="current-weather__wind-direction brightness-25 inline-block mix-blend-darken dark:brightness-200"
@@ -94,7 +97,11 @@
         {/key}
       </h2>
       {#key current.wind_speed_10m}
-        <div class="current-weather__wind" transition:blur>
+        <div
+          class="current-weather__wind"
+          in:blur={{ duration: 333, delay: 335 }}
+          out:blur={{ duration: 333, delay: 0 }}
+        >
           <p
             class="brightness-25 text-sm text-[var(--mainColor)] dark:brightness-150"
           >
@@ -104,7 +111,10 @@
       {/key}
 
       {#key current.weather_code}
-        <span transition:blur>
+        <span
+          in:blur={{ duration: 333, delay: 335 }}
+          out:blur={{ duration: 333, delay: 0 }}
+        >
           <WeatherIcon
             weatherCode={current.weather_code}
             isDay={current.is_day}
@@ -113,8 +123,9 @@
       {/key}
       {#key current.temperature_2m}
         <h1
-          class="dboard__card--value-lg mt-auto justify-end text-9xl text-[var(--mainColor)] brightness-50 dark:brightness-150 dark:saturate-200"
-          transition:blur
+          class="dboard__card--value-lg current-temperature mt-auto justify-end text-9xl text-[var(--mainColor)] brightness-50 dark:brightness-150 dark:saturate-200"
+          in:blur={{ duration: 333, delay: 335 }}
+          out:blur={{ duration: 333, delay: 0 }}
         >
           {Math.round(current.temperature_2m)}<span
             class="dboard__card__value-symbol text-[var(--mainColor)] brightness-125 dark:brightness-150"
