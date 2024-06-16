@@ -172,6 +172,7 @@
 <style lang="postcss">
   .bg-value {
     color: var(--mainColor);
+    mix-blend-mode: lighten;
     transition: color 3s ease-in;
   }
   .warning {
