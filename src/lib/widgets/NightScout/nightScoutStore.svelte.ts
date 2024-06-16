@@ -84,6 +84,15 @@ export const createNightScoutWidget = function createWidget(
     return series;
   };
 
+  const getChronologicalSeries = function getSeries() {
+    const data = widgetStore.data;
+    let series: number[] = [];
+    if (Array.isArray(data) && data.length) {
+      series = data.map((reading) => reading.sgv);
+    }
+    return series.reverse();
+  };
+
   const getCurrent = function getCurrent() {
     const data = widgetStore.data;
     let current = 0;
@@ -160,6 +169,7 @@ export const createNightScoutWidget = function createWidget(
       return widgetStore.type as TypeOfWidget;
     },
     getSeries,
+    getChronologicalSeries,
     getCurrent,
     getLast,
     getDifference,

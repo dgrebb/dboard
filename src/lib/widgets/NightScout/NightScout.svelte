@@ -110,7 +110,7 @@
   });
 
   $effect(() => {
-    series = nightScoutWidget.getSeries();
+    series = nightScoutWidget.getChronologicalSeries();
     currentValue = nightScoutWidget.getCurrent();
     difference = nightScoutWidget.getDifference();
     colors = nightScoutWidget.getColors(currentValue);
