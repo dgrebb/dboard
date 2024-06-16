@@ -109,6 +109,43 @@ export const createNightScoutWidget = function createWidget(
     return last;
   };
 
+  const getDirectionIcon = function getDirectionIcon(): string {
+    const data = widgetStore.data;
+    let icon = 'iconamoon:cloud-error-light';
+    if (isNightScoutData(data)) {
+      switch (data[0].direction) {
+        case 'Up':
+          icon = 'ph:trend-up-light';
+          break;
+        case 'FortyFiveUp':
+          icon = 'ph:arrow-bend-right-up-light';
+          break;
+        case 'Flat':
+          icon = 'material-symbols-light:trending-flat';
+          break;
+        case 'Down':
+          icon = 'ph:trend-down-light';
+          break;
+        case 'FortyFiveDown':
+          icon = 'ph:arrow-bend-right-down-light';
+          break;
+      }
+    }
+    return icon;
+  };
+
+  const getDifference = function getDifference() {
+    const data = widgetStore.data;
+    let difference = 0;
+
+    if (isNightScoutData(data)) {
+      const current = data[0].sgv;
+      const last = data[1].sgv;
+      difference = current - last;
+    }
+    return difference > 0 ? `+${difference}` : difference;
+  };
+
   return {
     get streamSettings() {
       return widgetStore.stream;
@@ -125,7 +162,9 @@ export const createNightScoutWidget = function createWidget(
     getSeries,
     getCurrent,
     getLast,
+    getDifference,
     getColors,
+    getDirectionIcon,
     setData,
   };
 };

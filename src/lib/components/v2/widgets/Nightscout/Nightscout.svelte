@@ -2,7 +2,7 @@
   import { fade } from 'svelte/transition';
   import { Card } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  import NightscoutGraph from '$widgets/NightScout/NightscoutGraph.svelte';
+  import NightscoutGraph from '$widgets/NightScout/NightScoutGraph.svelte';
   import type { ChartSeriesGlucose } from '$lib/types';
   import Icon from '@iconify/svelte';
 
