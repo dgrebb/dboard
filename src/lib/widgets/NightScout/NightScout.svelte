@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { createNightScoutWidget } from '$lib/stores/nightscout.svelte';
-  import { generateID, toCamelCase } from '$root/lib/_helpers/strings';
-  import { TypeOfWidget, type NightScoutData } from '$root/lib/types';
   import { onDestroy, onMount } from 'svelte';
   import { fade, blur } from 'svelte/transition';
-  import NightscoutGraph from '$widgets/NightScout/NightScoutGraph.svelte';
   import Icon from '@iconify/svelte';
+  import { TypeOfWidget } from '$root/lib/types';
+  import { generateID, toCamelCase } from '$root/lib/_helpers/strings';
+  import { createNightScoutWidget } from './nightScoutStore.svelte';
+  import NightscoutGraph from '$widgets/NightScout/NightScoutGraph.svelte';
 
   let loaded = $state(false);
   let label = 'mg/dL';

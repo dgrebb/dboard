@@ -3,7 +3,7 @@ import type {
   NightScoutReading,
   TypeOfWidget,
   WidgetData,
-} from '../types';
+} from '$lib/types';
 
 function isNightScoutData(
   data: WidgetData['data']
