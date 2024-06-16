@@ -4,15 +4,16 @@
   import { TypeOfWidget, type NightScoutData } from '$root/lib/types';
   import { onDestroy, onMount } from 'svelte';
   import { fade, blur } from 'svelte/transition';
-  import NightscoutGraph from '$root/lib/widgets/NightScout/NightscoutGraph.svelte';
+  import NightscoutGraph from '$widgets/NightScout/NightScoutGraph.svelte';
   import Icon from '@iconify/svelte';
 
+  let loaded = $state(false);
   let label = 'mg/dL';
   const name = 'NightScout';
   const id = generateID(name);
   const path = toCamelCase(name);
   const upstreamAPIURL =
-    'https://glu.7ub3s.net/api/v1/entries.json?count=5&token=${secrets.SECRET_NIGHTSCOUT_TOKEN}';
+    'https://glu.7ub3s.net/api/v1/entries.json?count=36&token=${secrets.SECRET_NIGHTSCOUT_TOKEN}';
   const refreshInterval = 60000;
   const resubscribeInterval = 3600000; // Resubscribe every hour
   let resubscribeTimeout: NodeJS.Timeout;
@@ -27,22 +28,15 @@
     refreshInterval
   );
 
-  let loaded = $state(false);
+  const maxMeasurable = 400;
   let series = $state([0]);
   let currentValue: number = $state(0);
-  let lastValue: number = $state(0);
+  let difference: string | number = $state(0);
   let colors: { mainColor: string; backgroundColor: string } = $state({
     mainColor: 'darkgreen',
     backgroundColor: 'green',
   });
-
-  // TODO: refactor with getters
-  const maxMeasurable = 400;
   let directionIcon = $state('iconamoon:cloud-download-light');
-  let difference: number = $state(0);
-  let change: number | string = $state(0);
-  let direction: string = $state('Flat');
-
   let eventSource: EventSource | null = null;
 
   async function startSubscription() {
@@ -118,36 +112,10 @@
   $effect(() => {
     series = nightScoutWidget.getSeries();
     currentValue = nightScoutWidget.getCurrent();
-    lastValue = nightScoutWidget.getLast();
+    difference = nightScoutWidget.getDifference();
     colors = nightScoutWidget.getColors(currentValue);
-
-    // TODO: Refactor with $rune getters
-    const SSEData: NightScoutData = $state.snapshot(nightScoutWidget.getData);
-    if (Array.isArray(SSEData) && SSEData.length) {
-      difference = currentValue - lastValue;
-      change = difference > 0 ? `+${difference}` : difference;
-      direction = SSEData[0].direction;
-      directionIcon = getDirectionIcon(direction);
-      // nightScoutWidget.getGraphSettings(currentValue, maxMeasurable);
-    }
+    directionIcon = nightScoutWidget.getDirectionIcon();
   });
-
-  function getDirectionIcon(direction: string): string {
-    switch (direction) {
-      case 'Up':
-        return 'ph:trend-up-light';
-      case 'FortyFiveUp':
-        return 'ph:arrow-bend-right-up-light';
-      case 'Flat':
-        return 'material-symbols-light:trending-flat';
-      case 'Down':
-        return 'ph:trend-down-light';
-      case 'FortyFiveDown':
-        return 'ph:arrow-bend-right-down-light';
-      default:
-        return 'iconamoon:cloud-error-light';
-    }
-  }
 </script>
 
 <div
@@ -164,7 +132,7 @@
         {label}
       </h2>
       <h2 class="text-[var(--mainColor)]">
-        {change}
+        {difference}
         <Icon
           icon={directionIcon}
           height="32px"
@@ -184,6 +152,7 @@
       {/if}
 
       <NightscoutGraph
+        {maxMeasurable}
         {series}
         mainColor={colors.mainColor}
         backgroundColor={colors.backgroundColor}
