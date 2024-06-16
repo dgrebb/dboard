@@ -119,19 +119,21 @@
 </script>
 
 <div
-  class="dboard__grid__item relative"
+  class="nightscout dboard__grid__item relative"
   class:shaking={currentValue < 75}
   style={`--mainColor: ${colors.mainColor}`}
 >
   {#if currentValue}
     <div
-      class="dboard__card glu relative border-none bg-opacity-10 transition-colors"
+      class="dboard__card relative border-none bg-opacity-10 transition-colors"
       transition:fade
     >
-      <h2 class="flex items-center text-[var(--mainColor)] dark:brightness-150">
+      <h2
+        class="z-20 flex items-center text-[var(--mainColor)] dark:brightness-150"
+      >
         {label}
       </h2>
-      <h2 class="text-[var(--mainColor)]">
+      <h2 class="z-20 text-[var(--mainColor)]">
         {difference}
         <Icon
           icon={directionIcon}
@@ -159,8 +161,9 @@
       />
       {#key currentValue}
         <h1
-          class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight dark:brightness-200"
-          transition:blur
+          class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight dark:mix-blend-lighten dark:brightness-200"
+          in:blur={{ duration: 333, delay: 335 }}
+          out:blur={{ duration: 333, delay: 0 }}
         >
           {currentValue}
         </h1>
@@ -172,8 +175,11 @@
 <style lang="postcss">
   .bg-value {
     color: var(--mainColor);
-    mix-blend-mode: lighten;
     transition: color 3s ease-in;
+    z-index: 10;
+    & + .bg-value {
+      display: none;
+    }
   }
   .warning {
     position: absolute;
