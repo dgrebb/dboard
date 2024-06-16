@@ -152,6 +152,7 @@
 
 <div
   class="dboard__grid__item relative"
+  class:shaking={currentValue < 75}
   style={`--mainColor: ${colors.mainColor}`}
 >
   {#if currentValue}
@@ -159,9 +160,7 @@
       class="dboard__card glu relative border-none bg-opacity-10 transition-colors"
       transition:fade
     >
-      <h2
-        class="flex items-center text-[var(--mainColor)] brightness-50 dark:brightness-150"
-      >
+      <h2 class="flex items-center text-[var(--mainColor)] dark:brightness-150">
         {label}
       </h2>
       <h2 class="text-[var(--mainColor)]">
@@ -170,9 +169,19 @@
           icon={directionIcon}
           height="32px"
           color={colors.mainColor}
-          class="inline-flex align-middle brightness-50 dark:brightness-150"
+          class="inline-flex align-middle dark:brightness-150"
         />
       </h2>
+
+      {#if currentValue < 80}
+        <div class="warning">
+          <Icon
+            icon="fluent:warning-24-regular"
+            height="96px"
+            class="inline-flex align-middle dark:brightness-150"
+          />
+        </div>
+      {/if}
 
       <NightscoutGraph
         {series}
@@ -181,7 +190,7 @@
       />
       {#key currentValue}
         <h1
-          class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight brightness-50 dark:brightness-200"
+          class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight dark:brightness-200"
           transition:blur
         >
           {currentValue}
@@ -194,6 +203,47 @@
 <style lang="postcss">
   .bg-value {
     color: var(--mainColor);
-    transition: color 30s ease-in;
+    transition: color 3s ease-in;
+  }
+  .warning {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    align-self: flex-end;
+    color: #ffffa8;
+    opacity: 0;
+    animation: fadeInOut 2s infinite;
+  }
+
+  .shaking {
+    animation: horizontal-shaking 0.15s infinite;
+  }
+
+  @keyframes fadeInOut {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes horizontal-shaking {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(5px);
+    }
+    50% {
+      transform: translateX(-5px);
+    }
+    75% {
+      transform: translateX(5px);
+    }
+    100% {
+      transform: translateX(0);
+    }
   }
 </style>
