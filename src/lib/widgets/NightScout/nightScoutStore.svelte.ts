@@ -75,13 +75,6 @@ export const createNightScoutWidget = function createWidget(
     data: false,
   });
 
-  const setData = function setData(data: NightScoutData) {
-    widgetStore = {
-      ...widgetStore,
-      data,
-    };
-  };
-
   const getSeries = function getSeries() {
     const data = widgetStore.data;
     let series: number[] = [];
@@ -144,6 +137,13 @@ export const createNightScoutWidget = function createWidget(
       difference = current - last;
     }
     return difference > 0 ? `+${difference}` : difference;
+  };
+
+  const setData = function setData(data: NightScoutData) {
+    widgetStore = {
+      ...widgetStore,
+      data,
+    };
   };
 
   return {

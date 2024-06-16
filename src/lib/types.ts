@@ -131,3 +131,24 @@ export type NightScoutWidget = {
   type: 'NightScout';
   data: NightScoutData;
 };
+
+export type HomeData = {
+  nowPlaying: NowPlayingData;
+  lights?: unknown;
+  weather?: CurrentWeatherType;
+  time?: {
+    milliseconds: 0;
+    hours: 0;
+    minutes: 0;
+    seconds: 0;
+    date: 0;
+  };
+};
+
+export type NowPlayingData = {
+  art: string;
+  album: string;
+  title: string;
+  artist: string;
+  favorite: boolean;
+};
