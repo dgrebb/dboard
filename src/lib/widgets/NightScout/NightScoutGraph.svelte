@@ -14,7 +14,7 @@
 
   let myChart: echarts.ECharts;
 
-  let option: EChartOption = $state({
+  let option: EChartOption = $derived({
     grid: {
       left: '0',
       right: '0',

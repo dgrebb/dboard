@@ -40,7 +40,7 @@ function getColors(currentReading: number) {
       backgroundColor = '#62ff00';
       break;
     case currentReading < 300:
-      mainColor = '#7b9600';
+      mainColor = '#4d4a09';
       backgroundColor = '#fff700';
       break;
     default:
