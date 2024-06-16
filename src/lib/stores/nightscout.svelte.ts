@@ -23,12 +23,12 @@ function getColors(currentReading: number) {
   let mainColor: string;
   let backgroundColor: string;
   switch (true) {
-    case currentReading < 70:
-      mainColor = 'rgba(255, 0, 0, 0.5)';
-      backgroundColor = 'rgba(255, 0, 0, 0.5)';
+    case currentReading < 80:
+      mainColor = '#ffa8ed';
+      backgroundColor = '#cc00c5';
       break;
     case currentReading < 100:
-      mainColor = '#2a5c2c';
+      mainColor = '#063608';
       backgroundColor = '#2a5c2c';
       break;
     case currentReading < 160:
@@ -44,8 +44,8 @@ function getColors(currentReading: number) {
       backgroundColor = '#fff700';
       break;
     default:
-      mainColor = '#ff00f7';
-      backgroundColor = '#ff00f7';
+      mainColor = '#e80000';
+      backgroundColor = '#5e0000';
       break;
   }
   return {
