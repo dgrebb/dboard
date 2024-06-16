@@ -7,11 +7,10 @@
     series: number[];
     mainColor: string;
     backgroundColor: string;
+    maxMeasurable: number;
   };
 
-  let { series, mainColor, backgroundColor }: Props = $props();
-  // console.log('🚀 ~ series:', series);
-  let maxMeasurable: number = 400;
+  let { maxMeasurable, series, mainColor, backgroundColor }: Props = $props();
 
   onMount(() => {
     var chartDom = document.getElementById('main');
