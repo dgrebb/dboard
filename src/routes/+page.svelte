@@ -4,11 +4,11 @@
   import Board from './(layouts)/Board.svelte';
   import { onMount } from 'svelte';
   import time from '$lib/stores/time';
-  import NightScout from '$root/lib/widgets/NightScout/NightScout.svelte';
   import CurrentMusic from '$components/widgets/CurrentMusic/CurrentMusic.svelte';
   import type { DBoardItem } from '$root/lib/types';
   import updateBackgroundColorGradient from '$root/lib/layout/background';
   import NewWidget from '$components/Composer/NewWidget.svelte';
+  import NightScout from '$widgets/NightScout/NightScout.svelte';
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
   let seconds = $state(0);
