@@ -9,6 +9,7 @@
   import updateBackgroundColorGradient from '$root/lib/layout/background';
   import NewWidget from '$components/Composer/NewWidget.svelte';
   import NightScout from '$widgets/NightScout/NightScout.svelte';
+  import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
   let seconds = $state(0);
@@ -73,6 +74,7 @@
         <svelte:component this={components[type]} {settings} />
       {/each}
     {/if}
+    <NowPlaying />
     <NewWidget />
     <CurrentMusic {items} />
   </Board>
