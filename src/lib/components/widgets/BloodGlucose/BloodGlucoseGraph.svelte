@@ -71,6 +71,7 @@
   });
 </script>
 
+<!-- svelte-ignore css_unused_selector -->
 <div class="graph-container">
   <div
     id="main"
