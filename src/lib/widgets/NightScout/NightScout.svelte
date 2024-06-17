@@ -129,17 +129,19 @@
       transition:fade
     >
       <h2
-        class="z-20 flex items-center text-[var(--mainColor)] dark:brightness-150"
+        class="z-20 flex items-center text-[var(--mainColor)] dark:mix-blend-lighten dark:brightness-200"
       >
         {label}
       </h2>
-      <h2 class="z-20 text-[var(--mainColor)]">
+      <h2
+        class="z-20 text-[var(--mainColor)] dark:mix-blend-lighten dark:brightness-200"
+      >
         {difference}
         <Icon
           icon={directionIcon}
           height="32px"
           color={colors.mainColor}
-          class="inline-flex align-middle dark:brightness-150"
+          class="inline-flex align-middle"
         />
       </h2>
 
@@ -148,7 +150,7 @@
           <Icon
             icon="fluent:warning-24-regular"
             height="96px"
-            class="inline-flex align-middle dark:brightness-150"
+            class="inline-flex align-middle"
           />
         </div>
       {/if}
@@ -161,7 +163,7 @@
       />
       {#key currentValue}
         <h1
-          class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight dark:mix-blend-lighten dark:brightness-200"
+          class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight"
           in:blur={{ duration: 333, delay: 335 }}
           out:blur={{ duration: 333, delay: 0 }}
         >
