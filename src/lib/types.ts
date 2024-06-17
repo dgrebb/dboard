@@ -150,5 +150,5 @@ export type NowPlayingData = {
   album: string;
   title: string;
   artist: string;
-  favorite: boolean;
+  favorite?: boolean;
 };
