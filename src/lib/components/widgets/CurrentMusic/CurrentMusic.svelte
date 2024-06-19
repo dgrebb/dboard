@@ -5,23 +5,25 @@
   import { onMount, onDestroy } from 'svelte';
   import { cubicIn, cubicInOut } from 'svelte/easing';
   import { fade, blur } from 'svelte/transition';
-  import weather from '$root/lib/stores/weatherLeg';
+  import { homeState } from '$root/lib/stores';
   type Props = {
     items: DBoardItem[];
   };
 
-  let { temperature_2m } = $weather ? $weather : 0;
+  const { setNowPlaying, getCurrentWeather } = homeState;
+  const weather = $state(getCurrentWeather());
+
   let { items }: Props = $props();
   let headlineValue1 = $state(items[0].content.large.value);
-  let headlineValue2 = $state(temperature_2m);
   let trend = $state(items[0].content.trend.direction);
   let difference = $state(items[0].series[0].sgv - items[0].series[1].sgv);
-  let file = $state('/album_art.png');
-  let newFile = $state('/album_art.png');
+  let art = $state('/album_art.png');
+  let newArt = $state('/album_art.png');
   let modal = $state(false);
   let title = $state('');
   let album = $state('');
   let artist = $state('');
+  let loved: boolean | string = $state(false);
   let transitionImages = $state(false);
   let mounted = $state(false);
   let ws: WebSocket | null = null;
@@ -49,7 +51,7 @@
     });
     ws.addEventListener('message', (event) => {
       console.log('[websocket] message received', event);
-      ({ album, title, artist } = JSON.parse(event.data));
+      ({ album, title, artist, loved } = JSON.parse(event.data));
     });
   };
 
@@ -66,12 +68,14 @@
         const currentContent = await response.text();
         if (currentContent !== previousContent) {
           previousContent = currentContent; // Update the previous file content
-          file = `/album_art.png?_=${timestamp}`;
+          art = `/album_art.png?_=${timestamp}`;
         }
         const music = await fetch('/api/v1/music');
-        ({ album, title, artist } = await music.json());
+        ({ album, title, artist, loved } = await music.json());
+        loved = loved === 'true';
+        setNowPlaying({ artist, title, art, album, loved });
       } else {
-        file = ''; // Clear the file path if the file does not exist
+        art = ''; // Clear the file path if the file does not exist
         previousContent = null; // Reset previous file content
       }
     } catch (error) {
@@ -102,7 +106,7 @@
 <div
   class="dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
 >
-  {#if file && !modal}
+  {#if art && !modal}
     <!-- <div
       class="current-music__info flex flex-col"
       transition:blur={{ amount: 10 }}
@@ -111,10 +115,9 @@
       <h2>{artist}</h2>
       <h3>{album}</h3>
     </div> -->
-    <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
     <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
     <img
-      src={file}
+      src={art}
       alt="{album} Artwork"
       onclick={toggleModal}
       onkeydown={toggleModal}
@@ -129,8 +132,8 @@
   {/if}
 </div>
 
-{#if file && modal}
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
+{#if art && modal}
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     class="current-music__modal"
     transition:fade
@@ -149,15 +152,15 @@
       </div>
       <div class="reading">
         <h1 class="current-music__modal__headline">
-          {typeof headlineValue2 === 'number'
-            ? Math.round(headlineValue2)
-            : headlineValue2}ºF
+          {typeof weather?.temperature_2m === 'number'
+            ? Math.round(weather?.temperature_2m)
+            : weather?.temperature_2m}ºF
         </h1>
         <h2 class="text-md">&nbsp;</h2>
       </div>
     </header>
     <main class="flex w-[77%] flex-col content-center items-center">
-      <img src={file} alt="{album} Artwork" transition:fade />
+      <img src={art} alt="{album} Artwork" transition:fade />
       <div
         class="current-music__modal__info flex flex-col"
         transition:blur={{ amount: 10 }}
