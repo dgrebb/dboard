@@ -1,4 +1,5 @@
 @import './fonts.css';
+@import './w-now-playing.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -370,18 +371,6 @@ body {
   }
 }
 
-@keyframes float {
-  0% {
-    transform: trans(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
 .control-widget {
   button {
     display: block;
@@ -417,4 +406,33 @@ video.player {
 
 video.visible {
   opacity: 1;
+}
+
+/* Animations */
+
+@keyframes float {
+  0% {
+    transform: trans(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes beat {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 9px rgba(213, 9, 60, 0.5);
+  }
+  50% {
+    transform: scale(1.077);
+    box-shadow: 0 0 15px rgba(213, 9, 60, 0.33);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 9px rgba(213, 9, 60, 0.5);
+  }
 }

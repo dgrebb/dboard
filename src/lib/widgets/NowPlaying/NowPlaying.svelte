@@ -10,7 +10,7 @@
   });
 </script>
 
-<div class="dboard__grid__item relative text-white">
+<div class="now-playing dboard__grid__item relative text-white">
   <h1 class="text-3xl">{weather?.current?.temperature_2m}</h1>
   <h1>{np.artist}</h1>
   <h1>{np.title}</h1>
@@ -20,7 +20,7 @@
         icon="emojione-monotone:heart-decoration"
         width={33}
         height={33}
-        class="absolute bottom-1 right-1 rounded-full bg-[rgba(255,33,33,0.5)]"
+        class="loved-heart absolute rounded-full bg-[rgba(255,33,33,0.5)]"
       />{/if}
     <img
       class="h-[200px]"
