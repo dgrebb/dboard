@@ -121,7 +121,7 @@ async function fetchSunriseSunsetData(
   latitude: string,
   longitude: string
 ): Promise<SolarData | null> {
-  const apiUrl: string = `${WEATHER_API}/forecast?latitude=${latitude}&longitude=${longitude}&daily=sunrise,sunset&forecast_days=1&timezone=America%2FNew_York`;
+  const apiUrl: string = `${WEATHER_API}/forecast?latitude=${latitude}&longitude=${longitude}&daily=sunrise,sunset,cloud_cover&forecast_days=1&timezone=America%2FNew_York`;
 
   // call server for data
   const requestOptions: FetchOptions = {
