@@ -1,13 +1,16 @@
-import type { HomeData, NowPlayingData } from '$lib/types';
+import type { HomeData, NowPlayingData, WeatherData } from '$lib/types';
 
 export const createHomeState = () => {
   let homeStore: HomeData = $state({
     nowPlaying: {
-      artist: 'jo',
-      title: 'mamo',
-      art: 'http://localhost/album_art.png',
-      album: 'iwhflagbherahsted',
-      favorite: true,
+      artist: '',
+      title: '',
+      art: '/album_art.png',
+      album: '',
+      loved: false,
+    },
+    weather: {
+      success: false,
     },
   });
 
@@ -18,17 +21,28 @@ export const createHomeState = () => {
     };
   };
 
-  const getNowPlaying = () => {
-    return homeStore.nowPlaying;
+  const setWeather = (weather: WeatherData) => {
+    homeStore = {
+      ...homeStore,
+      weather,
+    };
   };
 
   return {
     get nowPlaying() {
-      console.log('Getting the latest Track Information');
-      return 'Sing for me';
+      return homeStore.nowPlaying;
     },
     setNowPlaying,
-    getNowPlaying,
+    getNowPlaying: () => {
+      return homeStore.nowPlaying;
+    },
+    getWeather: () => {
+      return homeStore.weather;
+    },
+    getCurrentWeather: () => {
+      return homeStore.weather.current;
+    },
+    setWeather,
   };
 };
 
