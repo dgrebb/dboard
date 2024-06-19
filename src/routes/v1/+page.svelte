@@ -11,7 +11,7 @@
 
   import type {
     ChartSeriesGlucose,
-    CurrentWeatherType,
+    CurrentWeather,
     DBoardItem,
     WeatherData,
     SeptaDataNextToArrive,
@@ -32,7 +32,7 @@
   let interval = false;
   $: schedule;
   $: items = [] satisfies DBoardItem[];
-  let weatherData: CurrentWeatherType;
+  let weatherData: CurrentWeather;
   const logEvent = (str: string) => {
     log = [...log, str];
   };
