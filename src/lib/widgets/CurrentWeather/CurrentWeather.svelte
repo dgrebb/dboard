@@ -5,7 +5,7 @@
   import WeatherIcon from './WeatherIcon.svelte';
   import { onMount } from 'svelte';
   import type { CurrentWeatherSettings } from '$root/.config/settings';
-  import { createWeather, type WeatherType } from '$root/lib/stores';
+  import { createWeather, homeState, type WeatherType } from '$root/lib/stores';
   import { background } from '$root/lib/stores';
 
   let highlightColor = fahrenheitToColorShade(77);
@@ -46,6 +46,18 @@
   onMount(async () => {
     await weather.loadWeather(location);
     weather.setTempo(900000, location);
+    if (
+      location.primary === true &&
+      typeof daily === 'object' &&
+      typeof current === 'object'
+    ) {
+      background.updateColor(current, daily);
+      homeState.setWeather({
+        success: true,
+        current,
+        daily,
+      });
+    }
     mounted = true;
   });
 
@@ -58,6 +70,13 @@
       typeof current === 'object'
     ) {
       background.updateColor(current, daily);
+      return () => {
+        homeState.setWeather({
+          success: true,
+          current,
+          daily,
+        });
+      };
     }
   });
 </script>

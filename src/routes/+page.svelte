@@ -62,10 +62,6 @@
   });
 </script>
 
-<svelte:head>
-  <link rel="icon" href="/favicon2.ico" />
-</svelte:head>
-
 {#if mounted && items}
   <Board>
     <NightScout />
@@ -74,7 +70,7 @@
         <svelte:component this={components[type]} {settings} />
       {/each}
     {/if}
-    <!-- <NowPlaying /> -->
+    <NowPlaying />
     <NewWidget />
     <CurrentMusic {items} />
   </Board>
