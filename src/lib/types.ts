@@ -38,10 +38,10 @@ export type DBoardItem = {
   series: ChartSeriesGlucose[];
 };
 
-export type CurrentWeatherType = {
+export type CurrentWeather = {
   time?: string;
   interval?: number;
-  apparent_temperature: number;
+  apparent_temperature?: number;
   temperature_2m: number;
   is_day?: number;
   weather_code?: number;
@@ -51,10 +51,19 @@ export type CurrentWeatherType = {
   wind_gusts_10m: number;
 };
 
+export type DailyWeather = {
+  apparent_temperature_max: number[];
+  apparent_temperature_min: number[];
+  sunrise: number[];
+  sunset: number[];
+  time: string[];
+  weather_code: string[];
+};
+
 export interface WeatherData {
   success: boolean;
-  current: CurrentWeatherType;
-  daily: SolarData;
+  current?: CurrentWeather;
+  daily?: DailyWeather;
 }
 
 export type SolarData = {
@@ -123,7 +132,7 @@ export type NightScoutData = NightScoutReading[];
 
 export type PossibleWidgetData =
   | NightScoutData
-  | CurrentWeatherType
+  | CurrentWeather
   | MusicData
   | SteptaNextToArriveData;
 
@@ -135,7 +144,7 @@ export type NightScoutWidget = {
 export type HomeData = {
   nowPlaying: NowPlayingData;
   lights?: unknown;
-  weather?: CurrentWeatherType;
+  weather: WeatherData;
   time?: {
     milliseconds: 0;
     hours: 0;
@@ -150,5 +159,5 @@ export type NowPlayingData = {
   album: string;
   title: string;
   artist: string;
-  favorite?: boolean;
+  loved?: boolean;
 };
