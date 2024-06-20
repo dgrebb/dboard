@@ -174,6 +174,10 @@ export type HomeData = {
   };
 };
 
+export type HealthData = {
+  nightScout?: false | NightScoutData;
+};
+
 export type NowPlayingData = {
   art: string;
   album: string;
