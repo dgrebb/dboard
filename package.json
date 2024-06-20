@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "private": true,
   "scripts": {
-    "dev": "vite dev --host --port 80",
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 vite dev --host --port 80",
     "start": "sudo PORT=80 HOST=dgrebb.local node build/index.js",
     "build": "vite build",
     "build.dev": "vite build --mode development",
