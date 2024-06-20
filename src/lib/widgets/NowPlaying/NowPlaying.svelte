@@ -4,10 +4,17 @@
   import { generateID, toCamelCase } from '$lib/_helpers/strings';
   import {
     TypeOfWidget,
+    isNightScoutData,
     type NowPlayingData,
     type WeatherData,
   } from '$root/lib/types';
   import { onDestroy, onMount } from 'svelte';
+  import { fade, blur } from 'svelte/transition';
+  import { cubicInOut } from 'svelte/easing';
+  let weather = $derived(homeState.getCurrentWeather());
+  import { mapNightScoutDirectionIcon } from '$root/lib/_helpers/directionIconMap';
+  import Icon from '@iconify/svelte';
+  import { healthState } from '$root/lib/stores/health.svelte';
 
   let loaded = $state(false);
   const resubscribeInterval = 3600000; // Resubscribe every hour
@@ -21,6 +28,12 @@
   let artist = $state('');
   let loved = $state(false);
   let art = $state('/album_art.png');
+  let modal = $state(false);
+  let trend = $state(0);
+  let difference: string | number = $state('0');
+  let direction = 'Flat';
+  let directionIcon = $state(mapNightScoutDirectionIcon());
+  let currentValue = $state(0);
 
   async function startSubscription() {
     if (eventSource) {
@@ -31,7 +44,6 @@
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      // console.log('🚀 ~ startSubscription ~ data:', data);
       homeState.setNowPlaying(data);
       retryCount = 0; // Reset retry count on successful message
     };
@@ -72,8 +84,16 @@
     }
   }
 
+  function toggleModal() {
+    modal = !modal;
+    localStorage.setItem('musicModal', modal.toString());
+  }
+
   onMount(async () => {
     await startSubscription();
+    let modalPreferences =
+      localStorage.getItem('musicModal') === 'true' || false;
+    modal = modalPreferences;
     loaded = true;
     window.addEventListener('beforeunload', handleWindowUnload);
   });
@@ -91,25 +111,96 @@
   });
 
   $effect(() => {
-    ({ artist, album, title, loved, art } = homeState.getNowPlaying());
+    if (loaded) {
+      const currentData = healthState.getCurrentData() || false;
+      if (currentData !== false) {
+        directionIcon = healthState.getDirectionIcon();
+        ({ trend, direction, sgv: currentValue } = currentData);
+        difference = healthState.getDifference();
+      }
+      ({ artist, album, title, loved, art } = homeState.getNowPlaying());
+    }
   });
-
-  // let weather: WeatherData = $state(homeState.getWeather());
 </script>
 
-{#if np}
-  <div class="now-playing dboard__grid__item relative text-white">
-    <!-- <h1 class="text-3xl">{weather?.current?.temperature_2m}</h1> -->
-    <h1>{artist}</h1>
-    <h1>{title}</h1>
-    <h1>{album}</h1>
-    <div class="album-art relative inline-block">
+<div
+  class="now-playing dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
+>
+  {#if art && !modal}
+    <!-- <div
+      class="current-music__info flex flex-col"
+      transition:blur={{ amount: 10 }}
+    >
+      <h1>{title}</h1>
+      <h2>{artist}</h2>
+      <h3>{album}</h3>
+    </div> -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
+    <div class="album-art">
       <LovedHeart {loved} size={33} />
       <img
-        class="h-[200px]"
         src={art}
-        alt={`Artwork for the album ${album} by ${artist}`}
+        alt="{album} Artwork"
+        onclick={toggleModal}
+        onkeydown={toggleModal}
+        role="switch"
+        tabindex="0"
+        aria-checked="false"
+        transition:fade={{ easing: cubicInOut }}
       />
     </div>
+  {/if}
+</div>
+
+{#if modal}
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div
+    class="current-music__modal"
+    transition:fade
+    onclick={toggleModal}
+    onkeydown={toggleModal}
+    role="switch"
+    tabindex="-1"
+    aria-checked={modal}
+  >
+    <header>
+      <div class="reading">
+        <h1 class="current-music__modal__headline bg">
+          {currentValue}
+        </h1>
+        <h2 class="text-md">
+          {difference} |
+          <Icon
+            icon={directionIcon}
+            height="32px"
+            class="inline-flex align-middle"
+          />
+        </h2>
+      </div>
+      <div class="reading">
+        <h1 class="current-music__modal__headline">
+          {typeof weather?.temperature_2m === 'number'
+            ? Math.round(weather?.temperature_2m)
+            : weather?.temperature_2m}ºF
+        </h1>
+        <h2 class="text-md">&nbsp;</h2>
+      </div>
+    </header>
+    <main class="flex w-[77%] flex-col content-center items-center">
+      <div class="album-art">
+        <LovedHeart {loved} size={77} />
+        <img src={art} alt="{album} Artwork" transition:fade />
+      </div>
+      <div
+        class="current-music__modal__info flex"
+        transition:blur={{ amount: 10 }}
+      >
+        <h2>{artist}</h2>
+        <h2>&bull;</h2>
+        <h3>{album}</h3>
+      </div>
+      <h1 class="text-3xl text-white">{title}</h1>
+      <!-- <AudioWave /> -->
+    </main>
   </div>
 {/if}
