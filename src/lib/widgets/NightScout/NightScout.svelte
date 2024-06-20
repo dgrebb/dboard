@@ -6,6 +6,8 @@
   import { generateID, toCamelCase } from '$root/lib/_helpers/strings';
   import { createNightScoutWidget } from './nightScoutStore.svelte';
   import NightscoutGraph from '$widgets/NightScout/NightScoutGraph.svelte';
+  import { healthState } from '$root/lib/stores/health.svelte';
+  import Nightscout from '$root/lib/components/v2/widgets/Nightscout/Nightscout.svelte';
 
   let loaded = $state(false);
   let label = 'mg/dL';
@@ -52,6 +54,7 @@
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
       nightScoutWidget.setData(data);
+      healthState.setNightScout(data);
       retryCount = 0; // Reset retry count on successful message
     };
 
