@@ -56,7 +56,8 @@
   };
 
   // Function to hide controls
-  const hideControls = (): void => {
+  const hideControls = (e: Event): void => {
+    e.preventDefault();
     open = false;
     toggleable = false;
     showVersions = false;
@@ -79,8 +80,7 @@
 
 <!-- Component Template -->
 <div
-  use:clickOutside
-  onoutsideclick={hideControls}
+  use:clickOutside={(e: Event) => hideControls(e)}
   class="controls-container flex h-1/3 w-full"
 >
   <Button
