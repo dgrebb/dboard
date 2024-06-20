@@ -163,7 +163,7 @@
       />
       {#key currentValue}
         <h1
-          class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight"
+          class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight dark:brightness-200"
           in:blur={{ duration: 333, delay: 335 }}
           out:blur={{ duration: 333, delay: 0 }}
         >
@@ -179,9 +179,6 @@
     color: var(--mainColor);
     transition: color 3s ease-in;
     z-index: 10;
-    & + .bg-value {
-      display: none;
-    }
   }
   .warning {
     position: absolute;
