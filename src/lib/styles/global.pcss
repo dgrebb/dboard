@@ -1,5 +1,5 @@
 @import './fonts.css';
-@import './w-now-playing.css';
+@import '../widgets/NowPlaying/now-playing-widget.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -150,9 +150,6 @@ body {
       inset: 0;
       z-index: -1;
       background-color: var(--skyBaseColor);
-    }
-    @media screen and (min-width: 1080px) {
-      min-height: 333px;
     }
   }
 }

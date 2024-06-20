@@ -105,7 +105,7 @@
   });
 </script>
 
-<!-- <div
+<div
   class="dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
 >
   {#if art && !modal}
@@ -178,4 +178,4 @@
       <AudioWave />
     </main>
   </div>
-{/if} -->
+{/if}
