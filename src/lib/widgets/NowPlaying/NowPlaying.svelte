@@ -15,6 +15,8 @@
   import { mapNightScoutDirectionIcon } from '$root/lib/_helpers/directionIconMap';
   import Icon from '@iconify/svelte';
   import { healthState } from '$root/lib/stores/health.svelte';
+  import { Button } from 'flowbite-svelte';
+  import AudioControls from './AudioControls.svelte';
 
   let loaded = $state(false);
   const resubscribeInterval = 3600000; // Resubscribe every hour
@@ -135,6 +137,7 @@
       <h2>{artist}</h2>
       <h3>{album}</h3>
     </div> -->
+    <AudioControls />
     <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
     {#key art}
       <div
@@ -193,6 +196,7 @@
       </div>
     </header>
     <main class="flex w-[77%] flex-col content-center items-center">
+      <AudioControls />
       {#key art}
         <div class="album-art">
           <LovedHeart {loved} size={77} />
