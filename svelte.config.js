@@ -16,14 +16,14 @@ const config = {
       precompress: false,
     }),
     alias: {
+      $root: 'src',
+      $assets: 'static',
+      $utils: 'src/utils',
+      $routes: 'src/routes/',
       $actions: 'src/lib/actions',
       $components: 'src/lib/components',
       $widgets: 'src/lib/widgets',
       $layouts: 'src/routes/(layouts)',
-      $routes: 'src/routes/',
-      $utils: 'src/utils',
-      $assets: 'static',
-      $root: 'src',
     },
   },
 };
