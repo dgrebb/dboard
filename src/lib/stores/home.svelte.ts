@@ -5,7 +5,7 @@ export const createHomeState = () => {
     nowPlaying: {
       artist: '',
       title: '',
-      art: '/album_art.png',
+      art: 'http://localhost/album_art.png',
       album: '',
       loved: false,
     },
@@ -17,7 +17,10 @@ export const createHomeState = () => {
   const setNowPlaying = (nowPlaying: NowPlayingData) => {
     homeStore = {
       ...homeStore,
-      nowPlaying,
+      nowPlaying: {
+        ...homeStore.nowPlaying,
+        ...nowPlaying,
+      },
     };
   };
 
@@ -29,7 +32,7 @@ export const createHomeState = () => {
   };
 
   return {
-    get nowPlaying() {
+    nowPlaying: () => {
       return homeStore.nowPlaying;
     },
     setNowPlaying,

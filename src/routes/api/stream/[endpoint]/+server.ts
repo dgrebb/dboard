@@ -49,8 +49,8 @@ export const GET = (async ({ url }) => {
         const fetchDataAndEnqueue = async () => {
           try {
             const data = await fetchData(URL);
-            const eventData = `data: ${JSON.stringify(data)}\n\n`;
-            controller.enqueue(encoder.encode(eventData));
+            const stream = `data: ${JSON.stringify(data)}\n\n`;
+            controller.enqueue(encoder.encode(stream));
           } catch (error) {
             console.error('Error fetching or enqueuing data:', error);
           }

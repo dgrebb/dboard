@@ -63,7 +63,6 @@ export const createWeather = function createWeather() {
       clearInterval(tempoId);
     }
     tempoId = setInterval(function () {
-      console.log('intervalling');
       loadWeather(location);
     }, time);
   }
