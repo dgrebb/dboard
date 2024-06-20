@@ -136,19 +136,25 @@
       <h3>{album}</h3>
     </div> -->
     <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-    <div class="album-art">
-      <LovedHeart {loved} size={33} />
-      <img
-        src={art}
-        alt="{album} Artwork"
-        onclick={toggleModal}
-        onkeydown={toggleModal}
-        role="switch"
-        tabindex="0"
-        aria-checked="false"
-        transition:fade={{ easing: cubicInOut }}
-      />
-    </div>
+    {#key art}
+      <div
+        class="album-art"
+        out:fade={{ duration: 333 }}
+        in:fade={{ duration: 333, delay: 333 }}
+      >
+        <LovedHeart {loved} size={33} />
+        <img
+          src={art}
+          alt="{album} Artwork"
+          onclick={toggleModal}
+          onkeydown={toggleModal}
+          role="switch"
+          tabindex="0"
+          aria-checked="false"
+          transition:fade={{ easing: cubicInOut }}
+        />
+      </div>
+    {/key}
   {/if}
 </div>
 
@@ -187,10 +193,17 @@
       </div>
     </header>
     <main class="flex w-[77%] flex-col content-center items-center">
-      <div class="album-art">
-        <LovedHeart {loved} size={77} />
-        <img src={art} alt="{album} Artwork" transition:fade />
-      </div>
+      {#key art}
+        <div class="album-art">
+          <LovedHeart {loved} size={77} />
+          <img
+            src={art}
+            alt="{album} Artwork"
+            out:fade={{ duration: 333 }}
+            in:fade={{ duration: 333, delay: 333 }}
+          />
+        </div>
+      {/key}
       <div
         class="current-music__modal__info flex"
         transition:blur={{ amount: 10 }}
