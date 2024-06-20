@@ -74,8 +74,8 @@
         }
         const music = await fetch('/api/v1/music');
         ({ album, title, artist, loved } = await music.json());
-        loved = loved === 'true';
-        setNowPlaying({ artist, title, art, album, loved });
+        // loved = loved === 'true';
+        // setNowPlaying({ artist, title, art, album, loved });
       } else {
         art = ''; // Clear the file path if the file does not exist
         previousContent = null; // Reset previous file content
@@ -105,7 +105,7 @@
   });
 </script>
 
-<div
+<!-- <div
   class="dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
 >
   {#if art && !modal}
@@ -178,4 +178,4 @@
       <AudioWave />
     </main>
   </div>
-{/if}
+{/if} -->
