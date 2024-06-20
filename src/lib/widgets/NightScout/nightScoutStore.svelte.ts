@@ -1,23 +1,6 @@
-import type {
-  NightScoutData,
-  NightScoutReading,
-  TypeOfWidget,
-  WidgetData,
-} from '$lib/types';
-
-function isNightScoutData(
-  data: WidgetData['data']
-): data is NightScoutReading[] {
-  return (
-    Array.isArray(data) &&
-    data.every(
-      (entry) =>
-        typeof entry === 'object' &&
-        'sgv' in entry &&
-        typeof entry.sgv === 'number'
-    )
-  );
-}
+import type { NightScoutData, TypeOfWidget, WidgetData } from '$lib/types';
+import { isNightScoutData } from '$lib/types';
+import { mapNightScoutDirectionIcon } from '$lib/_helpers/directionIconMap';
 
 function getColors(currentReading: number) {
   let mainColor: string;
@@ -28,8 +11,8 @@ function getColors(currentReading: number) {
       backgroundColor = '#cc00c5';
       break;
     case currentReading < 100:
-      mainColor = '#063608';
-      backgroundColor = '#2a5c2c';
+      mainColor = '#495900';
+      backgroundColor = '#9eb04c';
       break;
     case currentReading < 160:
       mainColor = '#056e00';
@@ -115,23 +98,7 @@ export const createNightScoutWidget = function createWidget(
     const data = widgetStore.data;
     let icon = 'iconamoon:cloud-error-light';
     if (isNightScoutData(data)) {
-      switch (data[0].direction) {
-        case 'Up':
-          icon = 'ph:trend-up-light';
-          break;
-        case 'FortyFiveUp':
-          icon = 'ph:arrow-bend-right-up-light';
-          break;
-        case 'Flat':
-          icon = 'material-symbols-light:trending-flat';
-          break;
-        case 'Down':
-          icon = 'ph:trend-down-light';
-          break;
-        case 'FortyFiveDown':
-          icon = 'ph:arrow-bend-right-down-light';
-          break;
-      }
+      icon = mapNightScoutDirectionIcon(data);
     }
     return icon;
   };
