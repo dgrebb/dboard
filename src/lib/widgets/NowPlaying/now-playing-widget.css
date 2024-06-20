@@ -37,6 +37,13 @@
   }
 }
 
+.audio-controls {
+  position: absolute;
+  .current-music__modal & {
+    position: relative;
+  }
+}
+
 .current-music,
 .current-music__modal {
   h1,
