@@ -1,3 +1,8 @@
+export type Fetch = (
+  input: RequestInfo,
+  init?: RequestInit
+) => Promise<Response>;
+
 export type ObjectOrArray = Record<string, unknown> | unknown[];
 
 export type StreamType = {
@@ -110,6 +115,7 @@ export type LocationStore = LocationType & { key: string };
 
 export enum TypeOfWidget {
   NightScout = 'NightScout',
+  NowPlaying = 'NowPlaying',
   Weather = 'Weather',
   Music = 'Music',
 }
