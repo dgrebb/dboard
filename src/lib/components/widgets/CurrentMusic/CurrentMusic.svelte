@@ -6,6 +6,8 @@
   import { cubicIn, cubicInOut } from 'svelte/easing';
   import { fade, blur } from 'svelte/transition';
   import { homeState } from '$root/lib/stores';
+  import Icon from '@iconify/svelte';
+  import LovedHeart from '$components/Animations/LovedHeart.svelte';
   type Props = {
     items: DBoardItem[];
   };
@@ -23,7 +25,7 @@
   let title = $state('');
   let album = $state('');
   let artist = $state('');
-  let loved: boolean | string = $state(false);
+  let loved: boolean = $state(false);
   let transitionImages = $state(false);
   let mounted = $state(false);
   let ws: WebSocket | null = null;
@@ -160,7 +162,10 @@
       </div>
     </header>
     <main class="flex w-[77%] flex-col content-center items-center">
-      <img src={art} alt="{album} Artwork" transition:fade />
+      <div class="album-art">
+        <LovedHeart {loved} size={77} />
+        <img src={art} alt="{album} Artwork" transition:fade />
+      </div>
       <div
         class="current-music__modal__info flex flex-col"
         transition:blur={{ amount: 10 }}
