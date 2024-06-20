@@ -69,8 +69,8 @@
         <svelte:component this={components[type]} {settings} />
       {/each}
     {/if}
-    <NowPlaying />
     <NewWidget />
+    <NowPlaying />
   </Board>
 
   <Board>
