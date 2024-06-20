@@ -1,7 +1,8 @@
 <script lang="ts">
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
   import { createWidget, homeState } from '$lib/stores';
-  import { generateID, toCamelCase } from '$lib/_helpers/strings';
+
+  import { clickOutside } from '$lib/actions/clickOutside';
   import {
     TypeOfWidget,
     isNightScoutData,
@@ -86,8 +87,15 @@
     }
   }
 
-  function toggleModal() {
+  function toggleModal(event: Event, state: boolean | undefined = undefined) {
+    event.preventDefault();
     modal = !modal;
+    localStorage.setItem('musicModal', modal.toString());
+  }
+
+  function hideModal(event: Event) {
+    event.preventDefault();
+    modal = false;
     localStorage.setItem('musicModal', modal.toString());
   }
 
@@ -149,8 +157,8 @@
         <img
           src={art}
           alt="{album} Artwork"
-          onclick={toggleModal}
-          onkeydown={toggleModal}
+          onclick={(e) => toggleModal(e, true)}
+          onkeydown={(e) => toggleModal(e, true)}
           role="switch"
           tabindex="0"
           aria-checked="false"
@@ -166,8 +174,6 @@
   <div
     class="current-music__modal"
     transition:fade
-    onclick={toggleModal}
-    onkeydown={toggleModal}
     role="switch"
     tabindex="-1"
     aria-checked={modal}
@@ -205,6 +211,9 @@
             alt="{album} Artwork"
             out:fade={{ duration: 333 }}
             in:fade={{ duration: 333, delay: 333 }}
+            use:clickOutside={(e) => {
+              hideModal(e);
+            }}
           />
         </div>
       {/key}

@@ -1,30 +1,31 @@
-/**
- * An action that detects clicks outside of the given DOM node and dispatches a custom `outsideclick` event.
- *
- * @param {HTMLElement} node - The DOM node to detect outside clicks on.
- * @returns {Object} An object with a destroy method to remove the event listener.
- */
-export function clickOutside(node: HTMLElement): { destroy(): void } {
-  /**
-   * Handles click events and dispatches the `outsideclick` event if the click occurred outside the node.
-   *
-   * @param {MouseEvent} event - The click event.
-   */
-  function handleClick(event: MouseEvent): void {
-    if (!node.contains(event.target as Node)) {
-      node.dispatchEvent(new CustomEvent('outsideclick'));
-    }
-  }
+export function clickOutside(node: Node, callback: (node: Event) => void) {
+  return outside(node, 'click', callback);
+}
 
-  // Add the click event listener to the window
-  window.addEventListener('click', handleClick);
+export function tapOutside(node: Node, callback: (node: Event) => void) {
+  return outside(node, 'mousedown', callback);
+}
+
+function outside(
+  node: Node,
+  listener: string,
+  callback: (node: Event) => void
+) {
+  const handleClick = (event: Event) => {
+    if (
+      node &&
+      !node.contains(event.target as Node) &&
+      !event.defaultPrevented
+    ) {
+      callback(event);
+    }
+  };
+
+  document.addEventListener(listener, handleClick);
 
   return {
-    /**
-     * Removes the click event listener from the window.
-     */
     destroy() {
-      window.removeEventListener('click', handleClick);
+      document.removeEventListener(listener, handleClick);
     },
   };
 }
