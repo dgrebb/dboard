@@ -39,7 +39,10 @@ export const GET = async (event: RequestEvent | LoadEvent) => {
           try {
             const timestamp = Date.now();
             const data = await fetchData(fetch);
-            if (data && current?.title !== data.title) {
+            if (
+              (data && current?.title !== data.title) ||
+              current?.loved !== data.loved
+            ) {
               const nowPlaying: NowPlayingData = {
                 ...data,
                 art: `/album_art.png?ts=${timestamp}`,
