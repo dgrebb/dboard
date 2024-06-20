@@ -24,7 +24,8 @@
   .loved-heart {
     display: flex;
     will-change: transform;
-    animation: beat 1s 5;
+    animation: beat 15s infinite;
+    transition: box-shadow 333ms ease-out;
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 0 9px rgba(213, 9, 33, 0.5);
     height: auto;
@@ -49,6 +50,9 @@
   }
   .album-art {
     position: relative;
+    & + .album-art {
+      display: none;
+    }
   }
   .loved-heart {
     bottom: 0.5rem;
