@@ -1,4 +1,5 @@
 <script>
+  import LovedHeart from '$components/Animations/LovedHeart.svelte';
   import { homeState } from '$lib/stores';
   import Icon from '@iconify/svelte';
 
@@ -16,12 +17,7 @@
   <h1>{np.title}</h1>
   <h1>{np.album}</h1>
   <div class="album-art relative inline-block">
-    {#if np.loved === true}<Icon
-        icon="emojione-monotone:heart-decoration"
-        width={33}
-        height={33}
-        class="loved-heart absolute rounded-full bg-[rgba(255,33,33,0.5)]"
-      />{/if}
+    <LovedHeart loved={np.loved} size={33} />
     <img
       class="h-[200px]"
       src={np.art}
@@ -29,7 +25,3 @@
     />
   </div>
 </div>
-
-<style>
-  /* your styles go here */
-</style>
