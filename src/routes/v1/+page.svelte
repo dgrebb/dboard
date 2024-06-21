@@ -17,7 +17,7 @@
     SteptaNextToArriveData,
   } from '$lib/types';
   import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
-  import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
+  import SeptaNextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
   import { nightDay } from '$utils/nightDay';
   import Board from '../(layouts)/Board.svelte';
 

@@ -136,6 +136,31 @@ export type SteptaNextToArriveData = {
   isdirect: string;
 };
 
+const steptaNextToArriveDataKeys: (keyof SteptaNextToArriveData)[] = [
+  'orig_train',
+  'orig_line',
+  'orig_departure_time',
+  'orig_arrival_time',
+  'orig_delay',
+  'isdirect',
+];
+
+export function isSteptaNextToArriveDataArray(
+  arr: unknown[]
+): arr is SteptaNextToArriveData[] {
+  return (
+    Array.isArray(arr) &&
+    arr.every(
+      (obj) =>
+        typeof obj === 'object' &&
+        obj !== null &&
+        steptaNextToArriveDataKeys.every(
+          (key) => typeof obj[key as keyof typeof obj] === 'string'
+        )
+    )
+  );
+}
+
 /**
  * Type representing icon properties.
  */
