@@ -1,10 +1,25 @@
+// types.ts
+
+/**
+ * A custom fetch function type.
+ *
+ * @param input - The resource that you wish to fetch.
+ * @param init - An options object containing settings like method, headers, etc.
+ * @returns A promise that resolves with a Response object.
+ */
 export type Fetch = (
   input: RequestInfo,
   init?: RequestInit
 ) => Promise<Response>;
 
+/**
+ * A type representing an object or an array.
+ */
 export type ObjectOrArray = Record<string, unknown> | unknown[];
 
+/**
+ * Type representing a stream configuration.
+ */
 export type StreamType = {
   id: string;
   name: string;
@@ -13,16 +28,28 @@ export type StreamType = {
   refreshInterval: number;
 };
 
+/**
+ * Type representing an array of stream configurations.
+ */
 export type StreamsType = StreamType[];
 
+/**
+ * Extended fetch options including custom options.
+ */
 export interface FetchOptions extends RequestInit {
   customOption?: string;
 }
 
+/**
+ * Type representing a glucose data point in a chart series.
+ */
 export type ChartSeriesGlucose = {
   sgv: number;
 };
 
+/**
+ * Type representing a dashboard item.
+ */
 export type DBoardItem = {
   requestInterval: number;
   title: string;
@@ -43,7 +70,10 @@ export type DBoardItem = {
   series: ChartSeriesGlucose[];
 };
 
-export type CurrentWeather = {
+/**
+ * Type representing current weather data.
+ */
+export type CurrentWeatherData = {
   time?: string;
   interval?: number;
   apparent_temperature?: number;
@@ -56,6 +86,9 @@ export type CurrentWeather = {
   wind_gusts_10m: number;
 };
 
+/**
+ * Type representing daily weather data.
+ */
 export type DailyWeather = {
   apparent_temperature_max: number[];
   apparent_temperature_min: number[];
@@ -65,23 +98,35 @@ export type DailyWeather = {
   weather_code: string[];
 };
 
+/**
+ * Interface representing weather data response.
+ */
 export interface WeatherData {
   success: boolean;
-  current?: CurrentWeather;
+  current?: CurrentWeatherData;
   daily?: DailyWeather;
 }
 
+/**
+ * Type representing solar data with sunrise and sunset times.
+ */
 export type SolarData = {
   sunrise: Date[];
   sunset: Date[];
 };
 
+/**
+ * Type representing music data.
+ */
 export type MusicData = {
   album: string;
   artist: string;
   title: string;
 };
 
+/**
+ * Type representing SEPTA next-to-arrive data.
+ */
 export type SteptaNextToArriveData = {
   orig_train: string;
   orig_line: string;
@@ -91,28 +136,46 @@ export type SteptaNextToArriveData = {
   isdirect: string;
 };
 
+/**
+ * Type representing icon properties.
+ */
 export type IconProps = {
   icon: string;
   color: string;
   name: string;
 };
 
+/**
+ * Interface representing a map of icon properties indexed by number.
+ */
 export interface IconMap {
   [index: number]: IconProps;
 }
 
-export type LocationType = {
-  primary: boolean;
+/**
+ * Type representing location data.
+ */
+export type LocationData = {
+  primary?: boolean;
   name: string;
   timezone: string;
   latitude: number;
   longitude: number;
 };
 
-export type LocationsType = { [key: string]: LocationType };
+/**
+ * Type representing a collection of location data indexed by string keys.
+ */
+export type LocationsType = { [key: string]: LocationData };
 
-export type LocationStore = LocationType & { key: string };
+/**
+ * Type representing a location store which includes a key.
+ */
+export type LocationStore = LocationData & { key: string };
 
+/**
+ * Enum representing the types of widgets available.
+ */
 export enum TypeOfWidget {
   NightScout = 'NightScout',
   NowPlaying = 'NowPlaying',
@@ -120,6 +183,9 @@ export enum TypeOfWidget {
   Music = 'Music',
 }
 
+/**
+ * Type representing widget data.
+ */
 export type WidgetData = {
   type: TypeOfWidget;
   name: string;
@@ -127,6 +193,9 @@ export type WidgetData = {
   data: PossibleWidgetData | false;
 };
 
+/**
+ * Type representing a NightScout reading.
+ */
 export type NightScoutReading = {
   _id: string;
   sgv: number;
@@ -134,8 +203,17 @@ export type NightScoutReading = {
   direction: string;
 };
 
+/**
+ * Type representing an array of NightScout readings.
+ */
 export type NightScoutData = NightScoutReading[];
 
+/**
+ * Type guard function to check if data is NightScoutData.
+ *
+ * @param data - The data to check.
+ * @returns A boolean indicating whether the data is NightScoutData.
+ */
 export const isNightScoutData = (
   data: WidgetData['data']
 ): data is NightScoutReading[] => {
@@ -150,18 +228,28 @@ export const isNightScoutData = (
   );
 };
 
+/**
+ * Type representing possible widget data options.
+ */
 export type PossibleWidgetData =
   | NightScoutData
-  | CurrentWeather
+  | CurrentWeatherData
   | MusicData
   | SteptaNextToArriveData;
 
+/**
+ * Type representing a NightScout widget.
+ */
 export type NightScoutWidget = {
   type: 'NightScout';
   data: NightScoutData;
 };
 
+/**
+ * Type representing home data.
+ */
 export type HomeData = {
+  location: LocationData;
   nowPlaying: NowPlayingData;
   lights?: unknown;
   weather: WeatherData;
@@ -174,10 +262,16 @@ export type HomeData = {
   };
 };
 
+/**
+ * Type representing health data.
+ */
 export type HealthData = {
   nightScout?: false | NightScoutData;
 };
 
+/**
+ * Type representing now playing data.
+ */
 export type NowPlayingData = {
   art: string;
   album: string;

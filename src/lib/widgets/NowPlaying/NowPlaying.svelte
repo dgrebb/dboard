@@ -21,22 +21,22 @@
 
   let loaded = $state(false);
   const resubscribeInterval = 3600000; // Resubscribe every hour
+  let weather = $derived(homeState.currentWeather());
   let resubscribeTimeout: NodeJS.Timeout;
   let retryTimeout: NodeJS.Timeout;
   let retryCount = 0;
   let eventSource: EventSource | null = null;
-  let np: NowPlayingData = homeState.getNowPlaying();
   let title = $state('');
   let album = $state('');
   let artist = $state('');
   let loved = $state(false);
   let art = $state('/album_art.png');
   let modal = $state(false);
-  let trend = $state(0);
   let difference: string | number = $state('0');
   let direction = $state('Flat');
   let directionIcon = $state(mapNightScoutDirectionIcon());
   let currentValue = $state(0);
+  let locationName: string = $derived(homeState.locationName());
 
   async function startSubscription() {
     if (eventSource) {
@@ -179,27 +179,36 @@
     aria-checked={modal}
   >
     <header>
-      <div class="reading">
-        <h1 class="current-music__modal__headline bg">
-          {currentValue}
-        </h1>
-        <h2 class="text-md">
-          {difference} | {direction}
-          <Icon
-            icon={directionIcon}
-            height="32px"
-            class="inline-flex align-middle"
-          />
-        </h2>
-      </div>
-      <div class="reading">
-        <h1 class="current-music__modal__headline">
-          {typeof weather?.temperature_2m === 'number'
-            ? Math.round(weather?.temperature_2m)
-            : weather?.temperature_2m}ºF
-        </h1>
-        <h2 class="text-md">&nbsp;</h2>
-      </div>
+      {#key typeof weather?.temperature_2m === 'number' && currentValue !== 0}
+        <div class="reading" in:fade>
+          <h1 class="current-music__modal__headline bg">
+            {currentValue}
+          </h1>
+          <h2 class="text-md">
+            {difference} | {direction}
+            <Icon
+              icon={directionIcon}
+              height="32px"
+              class="inline-flex align-middle"
+            />
+          </h2>
+        </div>
+        <div class="reading" in:fade>
+          <h1 class="current-music__modal__headline">
+            {typeof weather?.temperature_2m === 'number'
+              ? Math.round(weather?.temperature_2m)
+              : weather?.temperature_2m}ºF
+          </h1>
+          <h2 class="text-md">
+            {locationName}
+            <Icon
+              icon="ion:location-sharp"
+              height="32px"
+              class="inline-flex align-middle"
+            />
+          </h2>
+        </div>
+      {/key}
     </header>
     <main class="flex w-[77%] flex-col content-center items-center">
       {#key art}
