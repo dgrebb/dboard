@@ -9,7 +9,6 @@ html,
 body {
   min-height: 100vh;
   font-family: var(--font-nasa) !important;
-  /* cursor: none; */
   scrollbar-width: none;
 }
 
@@ -17,17 +16,18 @@ body {
   background: var(--bgColor);
   transition-property: background;
   transition-duration: 10s;
+
   &:after {
-    transition-property: opacity;
+    content: '';
+    position: absolute;
     inset: 0;
+    min-height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    transition-property: opacity;
     transition-duration: 10s;
     opacity: 0;
-    content: '';
-    min-height: 100%;
-    position: absolute;
-    z-index: -1;
-    display: block;
-    pointer-events: none;
+
     html.dark & {
       background: linear-gradient(
         to bottom,
@@ -36,12 +36,14 @@ body {
       );
     }
   }
+
   .dboard {
     opacity: 0;
     transition-property: opacity;
     transition-duration: 1s;
     z-index: 9;
   }
+
   &.ready {
     .dboard {
       opacity: 1;
@@ -55,9 +57,9 @@ body {
 
 .header {
   display: flex;
-  z-index: 33;
   position: absolute;
   width: 100%;
+  z-index: 33;
 }
 
 .foreground {
@@ -68,6 +70,7 @@ body {
   opacity: 0.05;
   pointer-events: none;
   z-index: 10;
+
   html.dark & {
     background-color: #c4c100;
   }
@@ -85,7 +88,6 @@ body {
 .dboard {
   display: grid;
   grid-auto-flow: column;
-  z-index: 10;
   position: relative;
   height: 100vh;
   gap: 1.5rem;
@@ -94,63 +96,86 @@ body {
   overflow: auto;
   scroll-snap-type: both mandatory;
   overscroll-behavior-x: contain;
-  overflow-y: hidden;
+  z-index: 10;
+
+  @media screen and (min-width: 480px) {
+    gap: 2.5rem;
+    overflow-y: hidden;
+  }
+
   &__grid {
+    display: grid;
+    width: 100vw;
     gap: 1.5rem;
     padding: 1.5rem;
     scroll-snap-align: center;
-    display: grid;
-    width: 100vw;
-    grid-template-columns: repeat(2, minmax(0, 3fr));
-    grid-template-rows: repeat(3, minmax(0, 1fr));
+
+    @media screen and (min-width: 480px) {
+      gap: 2.5rem;
+      padding: 2.5rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+    }
+
     @media screen and (min-height: 1200px) {
       grid-template-rows: repeat(5, minmax(0, 1fr));
     }
+
     @media screen and (min-width: 1280px) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+
     &__item {
       max-height: 315px;
       position: relative;
+
       @media screen and (min-height: 1200px) {
         max-height: 353px;
       }
+
       &--bottom-right {
-        grid-column-start: 2;
-        grid-row-start: 3;
+        align-self: end;
+        justify-self: end;
+
+        @media screen and (min-width: 480px) {
+          grid-column-start: auto;
+          grid-row-start: auto;
+        }
+
         @media screen and (min-height: 1200px) {
           grid-row-start: span 5;
         }
+
         @media screen and (min-width: 1280px) {
           grid-column-start: span 3;
         }
-        align-self: end;
-        justify-self: end;
-        align-items: end;
-        justify-items: end;
       }
+
       &.flowover {
         overflow: visible;
       }
     }
   }
+
   &__card {
     display: flex;
-    height: 100%;
     flex-direction: column;
+    height: 100%;
     padding: 1rem;
     min-height: 277px;
     overflow: hidden;
     border-radius: 0.5rem;
+    position: relative;
+
     &:after {
-      border-radius: 0.5rem;
-      transition: colors 500ms ease-in-out;
       content: '';
-      opacity: 0.45;
       position: absolute;
       inset: 0;
       z-index: -1;
       background-color: var(--skyBaseColor);
+      border-radius: 0.5rem;
+      opacity: 0.45;
+      transition: colors 500ms ease-in-out;
     }
   }
 }
@@ -159,6 +184,7 @@ body {
   &__wind-direction {
     color: var(--highlightColor);
   }
+
   .current-temperature {
     & + .current-temperature {
       display: none;
@@ -173,29 +199,35 @@ body {
   opacity: 0;
   right: 0;
   top: 0;
+
   body.ready & {
     opacity: 0.77;
   }
+
   html.dark & {
     mix-blend-mode: soft-light;
   }
+
   svg {
     will-change: transform;
     animation: float 5s infinite;
+
     path {
       position: absolute;
       top: 0;
       right: 0;
     }
   }
+
   * {
     overflow: visible;
   }
-}
-.big-icon-wow,
-.big-icon-wow svg {
-  padding: 0;
-  margin: 0;
+
+  &,
+  svg {
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .nightscout {
@@ -210,6 +242,7 @@ body {
   &__train {
     color: var(--bgColor);
     filter: invert(1);
+
     dt {
       opacity: 0.75;
     }
@@ -218,21 +251,22 @@ body {
 
 .control-widget {
   button {
-    display: block;
-    width: auto;
     display: flex;
+    width: auto;
     opacity: 0.75;
-    will-change: opacity;
     transition: opacity 0.5s linear;
+
     &:hover,
     &:focus,
     &:focus-visible {
       opacity: 1;
     }
+
     &:not(:first-of-type) {
       margin-top: 0.5rem;
     }
   }
+
   .hue-button-container {
     scrollbar-width: none;
   }
@@ -257,7 +291,7 @@ video.visible {
 
 @keyframes float {
   0% {
-    transform: trans(0px);
+    transform: translateY(0px);
   }
   50% {
     transform: translateY(-6px);
