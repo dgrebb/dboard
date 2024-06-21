@@ -1,4 +1,4 @@
-import { mapNightScoutDirectionIcon } from '../_helpers/directionIconMap';
+import { mapNightScoutDirectionIcon } from '$utils/nightscout';
 import {
   type HealthData,
   type NightScoutData,

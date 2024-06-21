@@ -3,7 +3,7 @@
   import type { WeatherType } from '$root/lib/stores';
   import mapWeatherIcon from '$components/widgets/Weather/iconMap';
   import { fade } from 'svelte/transition';
-  import { dayOfWeek } from '$root/lib/_helpers/dayOfWeek';
+  import { dayOfWeek } from '$root/lib/utils/dayOfWeek
   type Props = {
     daily: WeatherType['daily'];
   };

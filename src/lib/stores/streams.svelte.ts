@@ -1,4 +1,4 @@
-import { generateID, toCamelCase } from '../_helpers/strings';
+import { generateID, toCamelCase } from '$utils/strings';
 import type { StreamsType } from '../types';
 
 export const createStreams = function createStreams() {

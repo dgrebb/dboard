@@ -1,5 +1,5 @@
 import { WEATHER_API } from '../../.config/GLOBALS';
-import { nightDay } from '../_helpers/nightDay';
+import { nightDay } from '../utils/nightDay';
 import { type WeatherType } from '$lib/stores';
 import type { FetchOptions, SolarData } from '../types';
 

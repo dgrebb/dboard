@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { StreamsType } from '$lib/types';
-  import { generateID } from '$root/lib/_helpers/strings';
+  import { generateID } from '$utils/strings';
   import { streams } from '$root/lib/stores/streams.svelte';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';

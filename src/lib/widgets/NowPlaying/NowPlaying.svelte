@@ -13,7 +13,7 @@
   import { fade, blur } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
   let weather = $derived(homeState.getCurrentWeather());
-  import { mapNightScoutDirectionIcon } from '$root/lib/_helpers/directionIconMap';
+  import { mapNightScoutDirectionIcon } from '$utils/nightscout';
   import Icon from '@iconify/svelte';
   import { healthState } from '$root/lib/stores/health.svelte';
   import { Button } from 'flowbite-svelte';
@@ -34,7 +34,7 @@
   let modal = $state(false);
   let trend = $state(0);
   let difference: string | number = $state('0');
-  let direction = 'Flat';
+  let direction = $state('Flat');
   let directionIcon = $state(mapNightScoutDirectionIcon());
   let currentValue = $state(0);
 
@@ -145,7 +145,7 @@
       <h2>{artist}</h2>
       <h3>{album}</h3>
     </div> -->
-    <AudioControls />
+    <!-- <AudioControls /> -->
     <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
     {#key art}
       <div
@@ -184,7 +184,7 @@
           {currentValue}
         </h1>
         <h2 class="text-md">
-          {difference} |
+          {difference} | {direction}
           <Icon
             icon={directionIcon}
             height="32px"
@@ -202,7 +202,6 @@
       </div>
     </header>
     <main class="flex w-[77%] flex-col content-center items-center">
-      <AudioControls />
       {#key art}
         <div class="album-art">
           <LovedHeart {loved} size={77} />
@@ -211,12 +210,12 @@
             alt="{album} Artwork"
             out:fade={{ duration: 333 }}
             in:fade={{ duration: 333, delay: 333 }}
-            use:clickOutside={(e) => {
-              hideModal(e);
-            }}
+            onclick={(e) => toggleModal(e, false)}
+            onkeydown={(e) => toggleModal(e, false)}
           />
         </div>
       {/key}
+      <AudioControls />
       <div
         class="current-music__modal__info flex"
         transition:blur={{ amount: 10 }}
