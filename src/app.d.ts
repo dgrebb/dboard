@@ -11,9 +11,3 @@ declare global {
 }
 
 export {};
-
-namespace svelteHTML {
-  interface HTMLAttributes<T> {
-    onoutclick?: () => boolean;
-  }
-}
