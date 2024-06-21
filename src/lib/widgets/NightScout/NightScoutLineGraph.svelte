@@ -71,7 +71,7 @@
     }
 
     const chartDom = renderPoint as HTMLDivElement | HTMLCanvasElement;
-    const nightScoutGraph = echarts.init(chartDom, 'dark');
+    nightScoutGraph = echarts.init(chartDom, 'dark');
 
     option && nightScoutGraph.setOption(option);
 

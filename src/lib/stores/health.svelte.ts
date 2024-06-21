@@ -5,7 +5,7 @@ import {
   type NightScoutReading,
 } from '../types';
 
-const createHealthStore = () => {
+export const createHealthStore = () => {
   let healthStore: HealthData = $state({
     nightScout: false,
   });
