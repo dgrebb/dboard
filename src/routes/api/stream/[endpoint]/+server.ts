@@ -41,6 +41,7 @@ export const GET = (async ({ url }) => {
   try {
     const URL = evaluatedUpstreamAPIURL;
     let interval: NodeJS.Timeout;
+    let controllerClosed = false;
 
     const readable = new ReadableStream({
       async start(controller) {
@@ -48,6 +49,7 @@ export const GET = (async ({ url }) => {
 
         const fetchDataAndEnqueue = async () => {
           try {
+            if (controllerClosed) return;
             const data = await fetchData(URL);
             const stream = `data: ${JSON.stringify(data)}\n\n`;
             controller.enqueue(encoder.encode(stream));
@@ -63,6 +65,7 @@ export const GET = (async ({ url }) => {
         }
       },
       async cancel() {
+        controllerClosed = true;
         clearInterval(interval);
       },
     });
