@@ -1,26 +1,17 @@
 <script lang="ts">
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
-  import { createWidget, homeState } from '$lib/stores';
-
-  import { clickOutside } from '$lib/actions/clickOutside';
-  import {
-    TypeOfWidget,
-    isNightScoutData,
-    type NowPlayingData,
-    type WeatherData,
-  } from '$root/lib/types';
-  import { onDestroy, onMount } from 'svelte';
-  import { fade, blur } from 'svelte/transition';
-  import { cubicInOut } from 'svelte/easing';
-  let weather = $derived(homeState.getCurrentWeather());
+  import { healthState, homeState } from '$lib/stores';
   import { mapNightScoutDirectionIcon } from '$utils/nightscout';
   import Icon from '@iconify/svelte';
-  import { healthState } from '$root/lib/stores/health.svelte';
-  import { Button } from 'flowbite-svelte';
+  import { onDestroy, onMount } from 'svelte';
+  import { cubicInOut } from 'svelte/easing';
+  import { blur, fade } from 'svelte/transition';
   import AudioControls from './AudioControls.svelte';
 
-  let loaded = $state(false);
   const resubscribeInterval = 3600000; // Resubscribe every hour
+
+  let mounted = $state(false);
+  let loaded = $state(false);
   let weather = $derived(homeState.currentWeather());
   let resubscribeTimeout: NodeJS.Timeout;
   let retryTimeout: NodeJS.Timeout;
@@ -87,7 +78,7 @@
     }
   }
 
-  function toggleModal(event: Event, state: boolean | undefined = undefined) {
+  function toggleModal(event: Event) {
     event.preventDefault();
     modal = !modal;
     localStorage.setItem('musicModal', modal.toString());
@@ -104,8 +95,8 @@
     let modalPreferences =
       localStorage.getItem('musicModal') === 'true' || false;
     modal = modalPreferences;
-    loaded = true;
     window.addEventListener('beforeunload', handleWindowUnload);
+    mounted = true;
   });
 
   onDestroy(() => {
@@ -121,47 +112,40 @@
   });
 
   $effect(() => {
-    if (loaded) {
+    if (mounted) {
       const currentData = healthState.getCurrentData() || false;
       if (currentData !== false) {
         directionIcon = healthState.getDirectionIcon();
-        ({ trend, direction, sgv: currentValue } = currentData);
+        ({ direction, sgv: currentValue } = currentData);
         difference = healthState.getDifference();
       }
-      ({ artist, album, title, loved, art } = homeState.getNowPlaying());
+      ({ artist, album, title, loved, art } = homeState.nowPlaying());
     }
+    return () => {
+      loaded = true;
+    };
   });
 </script>
 
 <div
   class="now-playing dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
 >
-  {#if art && !modal}
-    <!-- <div
-      class="current-music__info flex flex-col"
-      transition:blur={{ amount: 10 }}
-    >
-      <h1>{title}</h1>
-      <h2>{artist}</h2>
-      <h3>{album}</h3>
-    </div> -->
-    <!-- <AudioControls /> -->
-    <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-    {#key art}
+  {#if mounted && loaded}
+    {#key art && loaded}
       <div
         class="album-art"
         out:fade={{ duration: 333 }}
         in:fade={{ duration: 333, delay: 333 }}
+        onclick={(e) => toggleModal(e)}
+        onkeydown={(e) => toggleModal(e)}
+        tabindex="-1"
+        role="switch"
+        aria-checked={modal}
       >
         <LovedHeart {loved} size={33} />
         <img
           src={art}
           alt="{album} Artwork"
-          onclick={(e) => toggleModal(e, true)}
-          onkeydown={(e) => toggleModal(e, true)}
-          role="switch"
-          tabindex="0"
-          aria-checked="false"
           transition:fade={{ easing: cubicInOut }}
         />
       </div>
@@ -177,6 +161,8 @@
     role="switch"
     tabindex="-1"
     aria-checked={modal}
+    onclick={(e) => toggleModal(e)}
+    onkeydown={(e) => toggleModal(e)}
   >
     <header>
       {#key typeof weather?.temperature_2m === 'number' && currentValue !== 0}
@@ -210,31 +196,31 @@
         </div>
       {/key}
     </header>
-    <main class="flex w-[77%] flex-col content-center items-center">
-      {#key art}
-        <div class="album-art">
+    <main class="items-between flex w-[77%] flex-col md:flex-row">
+      <div class="album-art flex pt-3 md:flex-col md:items-start">
+        {#key art}
           <LovedHeart {loved} size={77} />
           <img
             src={art}
             alt="{album} Artwork"
-            out:fade={{ duration: 333 }}
-            in:fade={{ duration: 333, delay: 333 }}
-            onclick={(e) => toggleModal(e, false)}
-            onkeydown={(e) => toggleModal(e, false)}
+            out:blur={{ duration: 150 }}
+            in:blur={{ duration: 333 }}
           />
-        </div>
-      {/key}
-      <AudioControls />
-      <div
-        class="current-music__modal__info flex"
-        transition:blur={{ amount: 10 }}
-      >
-        <h2>{artist}</h2>
-        <h2>&bull;</h2>
-        <h3>{album}</h3>
+        {/key}
       </div>
-      <h1 class="text-3xl text-white">{title}</h1>
-      <!-- <AudioWave /> -->
+      <AudioControls
+        classes="audio-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
+      />
     </main>
+    <footer
+      class="current-music__modal__info block text-center text-lg"
+      transition:blur={{ amount: 10 }}
+    >
+      <h2 class="text-fuchsia-200">{title}</h2>
+      <h2 class="hidden text-fuchsia-200 md:visible">&bull;</h2>
+      <h3 class="text-fuchsia-200">{album}</h3>
+      <h1 class="justify-center text-3xl text-white">{artist}</h1>
+    </footer>
+    <!-- <AudioWave /> -->
   </div>
 {/if}
