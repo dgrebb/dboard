@@ -1,8 +1,10 @@
 <script lang="ts">
   import type { SteptaNextToArriveData } from '$lib/types';
   import Icon from '@iconify/svelte';
-  export let schedule: SteptaNextToArriveData[];
-  // console.log('🚀 ~ schedule:', schedule);
+  type Props = {
+    schedule: SteptaNextToArriveData[];
+  };
+  let { schedule }: Props = $props();
 </script>
 
 {#if schedule}
