@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import type { Server, WebSocket as WebSocketBase } from 'ws';
 import type { IncomingMessage } from 'http';
 import type { Duplex } from 'stream';
-import { uuidv4 } from '../_helpers/uuidv4';
+import { uuidv4 } from '../utils/uuidv4';
 
 export const GlobalThisWSS = Symbol.for('sveltekit.wss');
 

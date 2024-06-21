@@ -12,7 +12,7 @@
 
   let { maxMeasurable, series, mainColor, backgroundColor }: Props = $props();
 
-  let myChart: echarts.ECharts;
+  let nightScoutGraph: echarts.ECharts;
 
   let option: EChartOption = $derived({
     grid: {
@@ -64,18 +64,24 @@
   });
 
   onMount(() => {
-    var chartDom = document.getElementById('main');
-    myChart = echarts.init(chartDom, 'dark');
+    const renderPoint = document.getElementById('main');
 
-    option && myChart.setOption(option);
+    if (!renderPoint) {
+      throw new Error('Render point not found');
+    }
+
+    const chartDom = renderPoint as HTMLDivElement | HTMLCanvasElement;
+    const nightScoutGraph = echarts.init(chartDom, 'dark');
+
+    option && nightScoutGraph.setOption(option);
 
     window.addEventListener('resize', function () {
-      myChart.resize();
+      nightScoutGraph.resize();
     });
   });
 
   $effect(() => {
-    myChart.setOption(option);
+    nightScoutGraph.setOption(option);
   });
 </script>
 
@@ -87,30 +93,3 @@
     style="width: 100%; height: 100%; min-height: 100%;"
   ></div>
 </div>
-
-<style>
-  .graph-container {
-    width: 100%;
-    z-index: 1;
-    position: absolute;
-    height: 100%;
-    min-height: 100%;
-    inset: 0;
-  }
-  .bg-graph {
-    width: 100%;
-    min-height: 100%;
-    height: 100%;
-    position: absolute;
-    box-sizing: border-box;
-    inset: 0;
-    & canvas {
-      padding: 0;
-      margin: 0;
-      inset: 0;
-      position: absolute;
-      min-height: 100%;
-      height: 100%;
-    }
-  }
-</style>

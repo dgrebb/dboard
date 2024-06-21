@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { fade } from 'svelte/transition';
-  import { Card } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  import NightscoutGraph from '$widgets/NightScout/NightScoutGraph.svelte';
-  import type { ChartSeriesGlucose } from '$lib/types';
+  import { fade } from 'svelte/transition';
   import Icon from '@iconify/svelte';
+  import type { ChartSeriesGlucose } from '$lib/types';
+  import NightScoutLineGraph from '$widgets/NightScout/NightScoutLineGraph.svelte';
+  import { extractBGValues } from '$utils/nightscout';
 
   export let label: string | boolean = false;
   export let mainDisplayValue: number | string | boolean = false;
@@ -19,10 +19,6 @@
   let currentBG: number = Number(mainDisplayValue);
   $: directionIcon = 'iconamoon:cloud-download-light';
   $: direction = direction;
-
-  function extractBGValues(data: ChartSeriesGlucose[]) {
-    return data.map((item) => item.sgv);
-  }
 
   onMount(() => {
     loaded = true;
@@ -111,7 +107,12 @@
         />
       </h2>
 
-      <NightscoutGraph data={BGSeries} {mainColor} areaColor={mainColor} />
+      <NightScoutLineGraph
+        series={BGSeries}
+        {mainColor}
+        backgroundColor={mainColor}
+        {maxMeasurable}
+      />
       <h1
         class="dboard__card--value-lg bg-value z-10 mt-auto justify-end text-9xl tracking-tight brightness-50 dark:brightness-200"
       >
