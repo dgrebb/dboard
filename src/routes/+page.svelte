@@ -11,16 +11,16 @@
   import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
-  let seconds = $state(0);
+  // let seconds = $state(0);
   let schedule = $state();
 
-  let items: DBoardItem[] | undefined = $state();
-  const nightscoutData = async () => {
-    const res = await fetch('/api/v1/nightscout');
-    const data = await res.json();
-    const { nightscout } = data;
-    items = nightscout.items;
-  };
+  // let items: DBoardItem[] | undefined = $state();
+  // const nightscoutData = async () => {
+  //   const res = await fetch('/api/v1/nightscout');
+  //   const data = await res.json();
+  //   const { nightscout } = data;
+  //   items = nightscout.items;
+  // };
 
   const fetchSeptaNextToArrive = async () => {
     const data = await fetch('/api/v1/septa', { method: 'GET' })
@@ -34,18 +34,18 @@
   let components: { [key: string]: any } = {};
 
   onMount(async () => {
-    nightscoutData();
+    // nightscoutData();
     updateBackgroundColorGradient(LATITUDE, LONGITUDE);
     fetchSeptaNextToArrive();
     setInterval(async () => {
-      nightscoutData();
+      // nightscoutData();
       fetchSeptaNextToArrive();
       updateBackgroundColorGradient(LATITUDE, LONGITUDE);
-      seconds = 0;
+      // seconds = 0;
     }, refreshInterval);
 
     setInterval(() => {
-      seconds++;
+      // seconds++;
       let now = new Date();
       $time = now.getHours() * 60 + now.getMinutes();
     }, 1000);
@@ -61,7 +61,7 @@
   });
 </script>
 
-{#if mounted && items}
+{#if mounted}
   <Board>
     <NightScout />
     {#if widgets}
@@ -73,7 +73,7 @@
     <NowPlaying />
   </Board>
 
-  <Board>
+  <!-- <Board>
     <div class="dboard__grid__item control-widget relative">
       <div class="dboard__card">
         <h1
@@ -83,5 +83,5 @@
         </h1>
       </div>
     </div>
-  </Board>
+  </Board> -->
 {/if}
