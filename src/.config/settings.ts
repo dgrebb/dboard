@@ -1,6 +1,6 @@
 import widgets from '$root/.config/settings.json';
 import type {
-  LocationType,
+  LocationData,
   LocationsType,
   TypeOfWidget,
 } from '$root/lib/types';
@@ -103,7 +103,7 @@ export type SettingsType = {
 };
 
 export type CurrentWeatherSettings = {
-  location: LocationType;
+  location: LocationData;
   tempo: number;
 };
 

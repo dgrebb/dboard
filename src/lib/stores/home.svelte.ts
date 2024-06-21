@@ -1,7 +1,19 @@
-import type { HomeData, NowPlayingData, WeatherData } from '$lib/types';
+import type {
+  HomeData,
+  LocationData,
+  NowPlayingData,
+  WeatherData,
+} from '$lib/types';
 
-export const createHomeState = () => {
+export const createHomeStore = () => {
   let homeStore: HomeData = $state({
+    location: {
+      primary: true,
+      name: 'Home',
+      timezone: 'America/New_York',
+      latitude: 0,
+      longitude: 0,
+    },
     nowPlaying: {
       artist: '',
       title: '',
@@ -14,39 +26,47 @@ export const createHomeState = () => {
     },
   });
 
-  const setNowPlaying = (nowPlaying: NowPlayingData) => {
-    homeStore = {
-      ...homeStore,
-      nowPlaying: {
-        ...homeStore.nowPlaying,
-        ...nowPlaying,
-      },
-    };
-  };
-
-  const setWeather = (weather: WeatherData) => {
-    homeStore = {
-      ...homeStore,
-      weather,
-    };
-  };
-
   return {
     nowPlaying: () => {
       return homeStore.nowPlaying;
     },
-    setNowPlaying,
-    getNowPlaying: () => {
-      return homeStore.nowPlaying;
-    },
-    getWeather: () => {
+
+    weather: () => {
       return homeStore.weather;
     },
-    getCurrentWeather: () => {
+
+    currentWeather: () => {
       return homeStore.weather.current;
     },
-    setWeather,
+
+    locationName: () => {
+      return homeStore.location.name;
+    },
+
+    setLocation: (location: LocationData) => {
+      homeStore = {
+        ...homeStore,
+        location,
+      };
+    },
+
+    setNowPlaying: (nowPlaying: NowPlayingData) => {
+      homeStore = {
+        ...homeStore,
+        nowPlaying: {
+          ...homeStore.nowPlaying,
+          ...nowPlaying,
+        },
+      };
+    },
+
+    setWeather: (weather: WeatherData) => {
+      homeStore = {
+        ...homeStore,
+        weather,
+      };
+    },
   };
 };
 
-export const homeState = createHomeState();
+export const homeState = createHomeStore();
