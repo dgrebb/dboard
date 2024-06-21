@@ -1,4 +1,4 @@
-import type { WeatherData, FetchOptions, LocationType } from '../types';
+import type { WeatherData, FetchOptions, LocationData } from '../types';
 // import { counter } from '$root/routes/runes/location.svelte';
 
 export const createWeather = function createWeather() {
@@ -6,7 +6,7 @@ export const createWeather = function createWeather() {
   let tempoId: number | NodeJS.Timeout | null;
 
   async function getWeather(
-    location: LocationType,
+    location: LocationData,
     host: string = ''
   ): Promise<WeatherData | void> {
     const { latitude, longitude, timezone } = location;
@@ -35,7 +35,7 @@ export const createWeather = function createWeather() {
   }
 
   async function loadWeather(
-    location: LocationType,
+    location: LocationData,
     host: string = ''
   ): Promise<void> {
     const { latitude, longitude, timezone } = location;
@@ -58,7 +58,7 @@ export const createWeather = function createWeather() {
       });
   }
 
-  function setTempo(time: number, location: LocationType) {
+  function setTempo(time: number, location: LocationData) {
     if (tempoId) {
       clearInterval(tempoId);
     }

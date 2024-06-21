@@ -51,6 +51,7 @@
       typeof daily === 'object' &&
       typeof current === 'object'
     ) {
+      homeState.setLocation(location);
       background.updateColor(current, daily);
       homeState.setWeather({
         success: true,
