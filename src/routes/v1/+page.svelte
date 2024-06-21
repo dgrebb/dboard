@@ -11,24 +11,22 @@
 
   import type {
     ChartSeriesGlucose,
-    CurrentWeather,
+    CurrentWeatherData,
     DBoardItem,
     WeatherData,
-    SeptaDataNextToArrive,
+    SteptaNextToArriveData,
   } from '$lib/types';
   import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
   import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
-  import Restart from '$lib/components/Restart/Restart.svelte';
-  import { nightDay } from '$root/lib/utils/nightDay
+  import { nightDay } from '$utils/nightDay';
   import Board from '../(layouts)/Board.svelte';
-  import App from '../(layouts)/App.svelte';
 
   let refreshInterval = DEFAULT_TEMPO;
   let seconds = 0;
   let webSocketEstablished = false;
   let ws: WebSocket | null = null;
   let log: string[] = [];
-  let schedule: SeptaDataNextToArrive[];
+  let schedule: SteptaNextToArriveData[];
   let interval = false;
   $: schedule;
   $: items = [] satisfies DBoardItem[];

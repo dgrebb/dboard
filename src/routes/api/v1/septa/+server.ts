@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import type { FetchOptions, SeptaDataNextToArrive } from '$lib/types';
+import type { FetchOptions, SteptaNextToArriveData } from '$lib/types';
 
 export const GET = (async ({ url }) => {
   const headers = new Headers();
@@ -12,7 +12,7 @@ export const GET = (async ({ url }) => {
     redirect: 'follow',
   };
 
-  const schedule: SeptaDataNextToArrive = await fetch(
+  const schedule: SteptaNextToArriveData = await fetch(
     'https://www3.septa.org/api/NextToArrive/index.php?req1=Pennbrook&req2=Suburban%20Station&req3=5',
     requestOptions
   )
