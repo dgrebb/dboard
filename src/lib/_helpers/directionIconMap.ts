@@ -6,6 +6,9 @@ export const mapNightScoutDirectionIcon = (
   let icon = 'iconamoon:cloud-error-light';
   if (isNightScoutData(data)) {
     switch (data[0].direction) {
+      case 'SingleUp':
+        icon = 'ph:arrow-up-right-light';
+        break;
       case 'Up':
         icon = 'ph:trend-up-light';
         break;
