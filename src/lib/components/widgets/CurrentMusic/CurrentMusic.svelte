@@ -1,19 +1,18 @@
 <script lang="ts">
-  import AudioWave from '$lib/components/Animations/AudioWave.svelte';
-  import type { CurrentWeather, DBoardItem, MusicData } from '$lib/types';
-  import { uuidv4 } from '$root/lib/utils/uuidv4
-  import { onMount, onDestroy } from 'svelte';
-  import { cubicIn, cubicInOut } from 'svelte/easing';
-  import { fade, blur } from 'svelte/transition';
-  import { homeState } from '$root/lib/stores';
-  import Icon from '@iconify/svelte';
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
+  import AudioWave from '$lib/components/Animations/AudioWave.svelte';
+  import type { DBoardItem } from '$lib/types';
+  import { homeState } from '$root/lib/stores';
+  import { uuidv4 } from '$utils/uuidv4';
+  import { onDestroy, onMount } from 'svelte';
+  import { cubicInOut } from 'svelte/easing';
+  import { blur, fade } from 'svelte/transition';
   type Props = {
     items: DBoardItem[];
   };
 
-  const { setNowPlaying, getCurrentWeather } = homeState;
-  const weather = $state(getCurrentWeather());
+  const { setNowPlaying, currentWeather } = homeState;
+  const weather = $state(currentWeather());
 
   let { items }: Props = $props();
   let headlineValue1 = $state(items[0].content.large.value);

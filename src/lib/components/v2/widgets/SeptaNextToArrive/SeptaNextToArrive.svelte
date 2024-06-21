@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { SeptaDataNextToArrive } from '$lib/types';
+  import type { SteptaNextToArriveData } from '$lib/types';
   import Icon from '@iconify/svelte';
-  export let schedule: SeptaDataNextToArrive[];
+  export let schedule: SteptaNextToArriveData[];
   // console.log('🚀 ~ schedule:', schedule);
 </script>
 
