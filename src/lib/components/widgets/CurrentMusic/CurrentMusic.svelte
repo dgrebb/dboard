@@ -1,7 +1,7 @@
 <script lang="ts">
   import AudioWave from '$lib/components/Animations/AudioWave.svelte';
   import type { CurrentWeather, DBoardItem, MusicData } from '$lib/types';
-  import { uuidv4 } from '$root/lib/_helpers/uuidv4';
+  import { uuidv4 } from '$root/lib/utils/uuidv4
   import { onMount, onDestroy } from 'svelte';
   import { cubicIn, cubicInOut } from 'svelte/easing';
   import { fade, blur } from 'svelte/transition';

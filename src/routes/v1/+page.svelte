@@ -19,7 +19,7 @@
   import OnOff from '$lib/components/widgets/Hue/OnOff.svelte';
   import SeptaNextToArrive from '$lib/components/widgets/SeptaNextToArrive/SeptaNextToArrive.svelte';
   import Restart from '$lib/components/Restart/Restart.svelte';
-  import { nightDay } from '$root/lib/_helpers/nightDay';
+  import { nightDay } from '$root/lib/utils/nightDay
   import Board from '../(layouts)/Board.svelte';
   import App from '../(layouts)/App.svelte';
 

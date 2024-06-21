@@ -3,11 +3,10 @@
   import { fade, blur } from 'svelte/transition';
   import Icon from '@iconify/svelte';
   import { TypeOfWidget } from '$root/lib/types';
-  import { generateID, toCamelCase } from '$root/lib/_helpers/strings';
+  import { generateID, toCamelCase } from '$utils/strings';
   import { createNightScoutWidget } from './nightScoutStore.svelte';
-  import NightscoutGraph from '$widgets/NightScout/NightScoutGraph.svelte';
+  import NightscoutLineGraph from '$root/lib/widgets/NightScout/NightScoutLineGraph.svelte';
   import { healthState } from '$root/lib/stores/health.svelte';
-  import Nightscout from '$root/lib/components/v2/widgets/Nightscout/Nightscout.svelte';
 
   let loaded = $state(false);
   let label = 'mg/dL';
@@ -18,8 +17,8 @@
     'https://glu.7ub3s.net/api/v1/entries.json?count=36&token=${secrets.SECRET_NIGHTSCOUT_TOKEN}';
   const refreshInterval = 60000;
   const resubscribeInterval = 3600000; // Resubscribe every hour
-  let resubscribeTimeout: NodeJS.Timeout;
-  let retryTimeout: NodeJS.Timeout;
+  let resubscribeTimeout: number;
+  let retryTimeout: number;
   let retryCount = 0;
   const nightScoutWidget = createNightScoutWidget(
     TypeOfWidget.NightScout,
@@ -67,16 +66,16 @@
       if (retryTimeout) {
         clearTimeout(retryTimeout);
       }
-      retryTimeout = setTimeout(() => {
+      retryTimeout = window.setTimeout(() => {
         startSubscription();
-      }, retryDelay);
+      }, retryDelay) as unknown as number;
     };
 
     // Set up periodic resubscription
     if (resubscribeTimeout) {
       clearInterval(resubscribeTimeout);
     }
-    resubscribeTimeout = setInterval(() => {
+    resubscribeTimeout = window.setInterval(() => {
       startSubscription();
     }, resubscribeInterval);
   }
@@ -116,7 +115,7 @@
     series = nightScoutWidget.getChronologicalSeries();
     currentValue = nightScoutWidget.getCurrent();
     difference = nightScoutWidget.getDifference();
-    colors = nightScoutWidget.getColors(currentValue);
+    colors = nightScoutWidget.getColors();
     directionIcon = nightScoutWidget.getDirectionIcon();
   });
 </script>
@@ -158,7 +157,7 @@
         </div>
       {/if}
 
-      <NightscoutGraph
+      <NightscoutLineGraph
         {maxMeasurable}
         {series}
         mainColor={colors.mainColor}

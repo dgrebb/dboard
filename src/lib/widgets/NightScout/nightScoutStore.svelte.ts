@@ -1,41 +1,7 @@
 import type { NightScoutData, TypeOfWidget, WidgetData } from '$lib/types';
 import { isNightScoutData } from '$lib/types';
-import { mapNightScoutDirectionIcon } from '$lib/_helpers/directionIconMap';
-
-function getColors(currentReading: number) {
-  let mainColor: string;
-  let backgroundColor: string;
-  switch (true) {
-    case currentReading < 80:
-      mainColor = '#ffa8ed';
-      backgroundColor = '#cc00c5';
-      break;
-    case currentReading < 100:
-      mainColor = '#495900';
-      backgroundColor = '#9eb04c';
-      break;
-    case currentReading < 160:
-      mainColor = '#056e00';
-      backgroundColor = '#00d115';
-      break;
-    case currentReading < 190:
-      mainColor = '#2f7a00';
-      backgroundColor = '#62ff00';
-      break;
-    case currentReading < 300:
-      mainColor = '#4d4a09';
-      backgroundColor = '#fff700';
-      break;
-    default:
-      mainColor = '#e80000';
-      backgroundColor = '#5e0000';
-      break;
-  }
-  return {
-    mainColor,
-    backgroundColor,
-  };
-}
+import { mapNightScoutDirectionIcon } from '$utils/nightscout';
+import { mapNightScoutColors } from '$utils/nightscout';
 
 export const createNightScoutWidget = function createWidget(
   type: TypeOfWidget,
@@ -57,6 +23,15 @@ export const createNightScoutWidget = function createWidget(
     },
     data: false,
   });
+
+  const getColors = () => {
+    const data = widgetStore.data;
+    let value = 0;
+    if (isNightScoutData(data)) {
+      value = data[0].sgv;
+    }
+    return mapNightScoutColors(value);
+  };
 
   const getSeries = function getSeries() {
     const data = widgetStore.data;
