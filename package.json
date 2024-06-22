@@ -26,18 +26,23 @@
     "@sveltejs/adapter-node": "^5.2.0",
     "@sveltejs/kit": "^2.5.17",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
+    "@types/cors": "^2.8.17",
     "@types/echarts": "^4.9.22",
     "@types/eslint": "^8.56.10",
     "@types/ws": "^8.5.10",
+    "@types/xmldom": "^0.1.34",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "autoprefixer": "^10.4.19",
     "commitizen": "^4.3.0",
+    "cors": "^2.8.5",
     "cz-conventional-changelog": "^3.3.0",
+    "dotenv": "^16.4.5",
     "echarts": "^5.5.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.40.0",
+    "fast-average-color": "^9.4.0",
     "flowbite": "^2.3.0",
     "flowbite-svelte": "^0.46.4",
     "flowbite-svelte-icons": "^1.6.1",
@@ -57,7 +62,8 @@
     "typescript": "^5.4.5",
     "vite": "^5.3.1",
     "vitest": "^1.6.0",
-    "ws": "^8.17.1"
+    "ws": "^8.17.1",
+    "xmldom": "^0.6.0"
   },
   "config": {
     "commitizen": {
