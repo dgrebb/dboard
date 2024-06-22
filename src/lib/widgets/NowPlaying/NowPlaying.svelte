@@ -22,13 +22,14 @@
   let artist = $state('');
   let loved = $state(false);
   let art = $state('/album_art.png');
-  let albumGradient = $derived(homeState.albumGradient());
+  let { previousGradient, nextGradient } = $derived(homeState.albumGradients());
   let modal = $state(false);
   let difference: string | number = $state('0');
   let direction = $state('Flat');
   let directionIcon = $state(mapNightScoutDirectionIcon());
   let currentValue = $state(0);
   let locationName: string = $derived(homeState.locationName());
+  let transition: boolean = $state(false);
 
   async function startSubscription() {
     if (eventSource) {
@@ -122,10 +123,15 @@
           difference = healthState.getDifference();
         }
         ({ artist, album, title, loved, art } = homeState.nowPlaying());
+        transition = true;
       })();
     }
     return () => {
       loaded = true;
+      let delay = 5000;
+      setTimeout(() => {
+        transition = false;
+      }, delay);
     };
   });
 </script>
@@ -160,13 +166,14 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     class="current-music__modal"
+    class:transition
     transition:fade
     role="switch"
     tabindex="-1"
     aria-checked={modal}
     onclick={(e) => toggleModal(e)}
     onkeydown={(e) => toggleModal(e)}
-    style="--albumGradient: {albumGradient};"
+    style="--nextGradient: {nextGradient}; --previousGradient: {previousGradient};"
   >
     <header>
       {#key typeof weather?.temperature_2m === 'number' && currentValue !== 0}
