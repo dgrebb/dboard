@@ -37,5 +37,9 @@ export const handle = (async ({ event, resolve }) => {
   const response = await resolve(event, {
     filterSerializedResponseHeaders: (name) => name === 'content-type',
   });
-  return response;
+  try {
+    return response;
+  } catch (e) {
+    console.error('Error encountered in server hooks.', e);
+  }
 }) satisfies Handle;
