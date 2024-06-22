@@ -5,6 +5,13 @@ import type {
   WeatherData,
 } from '$lib/types';
 
+import { createGradientFromImage } from '$utils/colorThief';
+
+const createGradient = async (image: string): Promise<string> => {
+  const gradient = await createGradientFromImage(image);
+  return gradient;
+};
+
 export const createHomeStore = () => {
   let homeStore: HomeData = $state({
     location: {
@@ -17,7 +24,7 @@ export const createHomeStore = () => {
     nowPlaying: {
       artist: '',
       title: '',
-      art: 'http://localhost/album_art.png',
+      art: '',
       album: '',
       loved: false,
     },
@@ -29,6 +36,17 @@ export const createHomeStore = () => {
   return {
     nowPlaying: () => {
       return homeStore.nowPlaying;
+    },
+
+    nowPlayingArt: () => {
+      return homeStore.nowPlaying.art;
+    },
+
+    albumGradient: () => {
+      const art = homeStore.nowPlaying.art;
+      if (art === '') return '';
+      const albumGradient = createGradient(homeStore.nowPlaying.art);
+      return albumGradient;
     },
 
     weather: () => {
