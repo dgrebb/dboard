@@ -21,10 +21,8 @@
   let album = $state('');
   let artist = $state('');
   let loved = $state(false);
-  let art = $state('');
-  let albumGradient = $state(
-    'background: radial-gradient(at right top, #686868, #1f1f1f)'
-  );
+  let art = $state('/album_art.png');
+  let albumGradient = $derived(homeState.albumGradient());
   let modal = $state(false);
   let difference: string | number = $state('0');
   let direction = $state('Flat');
@@ -124,7 +122,6 @@
           difference = healthState.getDifference();
         }
         ({ artist, album, title, loved, art } = homeState.nowPlaying());
-        albumGradient = await homeState.albumGradient();
       })();
     }
     return () => {

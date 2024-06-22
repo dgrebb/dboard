@@ -7,9 +7,12 @@ import type {
 
 import { createGradientFromImage } from '$utils/colorThief';
 
-const createGradient = async (image: string): Promise<string> => {
-  const gradient = await createGradientFromImage(image);
-  return gradient;
+const createGradient = async (image: string): Promise<string | boolean> => {
+  let albumGradient: string | boolean = false;
+  await createGradientFromImage(image)
+    .then((gradient) => (albumGradient = gradient))
+    .catch((error) => console.error(error));
+  return albumGradient;
 };
 
 export const createHomeStore = () => {
@@ -25,6 +28,7 @@ export const createHomeStore = () => {
       artist: '',
       title: '',
       art: '',
+      gradient: 'radial-gradient(at right top, #686868, #1f1f1f)',
       album: '',
       loved: false,
     },
@@ -42,11 +46,8 @@ export const createHomeStore = () => {
       return homeStore.nowPlaying.art;
     },
 
-    albumGradient: () => {
-      const art = homeStore.nowPlaying.art;
-      if (art === '') return '';
-      const albumGradient = createGradient(homeStore.nowPlaying.art);
-      return albumGradient;
+    albumGradient: (): string => {
+      return homeStore.nowPlaying.gradient;
     },
 
     weather: () => {
@@ -68,7 +69,9 @@ export const createHomeStore = () => {
       };
     },
 
-    setNowPlaying: (nowPlaying: NowPlayingData) => {
+    setNowPlaying: async (nowPlaying: NowPlayingData) => {
+      const gradient = await createGradient(homeStore.nowPlaying.art);
+      if (typeof gradient === 'string') nowPlaying.gradient = gradient;
       homeStore = {
         ...homeStore,
         nowPlaying: {
