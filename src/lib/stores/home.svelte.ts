@@ -9,9 +9,11 @@ import { createGradientFromImage } from '$utils/colorThief';
 
 const createGradient = async (image: string): Promise<string | boolean> => {
   let albumGradient: string | boolean = false;
-  await createGradientFromImage(image)
-    .then((gradient) => (albumGradient = gradient))
-    .catch((error) => console.error(error));
+  if (image !== '') {
+    await createGradientFromImage(image)
+      .then((gradient) => (albumGradient = gradient))
+      .catch((error) => console.error(error));
+  }
   return albumGradient;
 };
 
@@ -70,7 +72,7 @@ export const createHomeStore = () => {
     },
 
     setNowPlaying: async (nowPlaying: NowPlayingData) => {
-      const gradient = await createGradient(homeStore.nowPlaying.art);
+      const gradient = await createGradient(nowPlaying.art);
       if (typeof gradient === 'string') nowPlaying.gradient = gradient;
       homeStore = {
         ...homeStore,
