@@ -21,7 +21,10 @@
   let album = $state('');
   let artist = $state('');
   let loved = $state(false);
-  let art = $state('/album_art.png');
+  let art = $state('');
+  let albumGradient = $state(
+    'background: radial-gradient(at right top, #686868, #1f1f1f)'
+  );
   let modal = $state(false);
   let difference: string | number = $state('0');
   let direction = $state('Flat');
@@ -113,13 +116,16 @@
 
   $effect(() => {
     if (mounted) {
-      const currentData = healthState.getCurrentData() || false;
-      if (currentData !== false) {
-        directionIcon = healthState.getDirectionIcon();
-        ({ direction, sgv: currentValue } = currentData);
-        difference = healthState.getDifference();
-      }
-      ({ artist, album, title, loved, art } = homeState.nowPlaying());
+      (async () => {
+        const currentData = healthState.getCurrentData() || false;
+        if (currentData !== false) {
+          directionIcon = healthState.getDirectionIcon();
+          ({ direction, sgv: currentValue } = currentData);
+          difference = healthState.getDifference();
+        }
+        ({ artist, album, title, loved, art } = homeState.nowPlaying());
+        albumGradient = await homeState.albumGradient();
+      })();
     }
     return () => {
       loaded = true;
@@ -163,6 +169,7 @@
     aria-checked={modal}
     onclick={(e) => toggleModal(e)}
     onkeydown={(e) => toggleModal(e)}
+    style="--albumGradient: {albumGradient};"
   >
     <header>
       {#key typeof weather?.temperature_2m === 'number' && currentValue !== 0}
