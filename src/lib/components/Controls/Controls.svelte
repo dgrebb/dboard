@@ -86,7 +86,7 @@
   <Button
     size="sm"
     color="light"
-    class={`controls-toggle w-full self-end border-opacity-0 bg-opacity-25 opacity-0 bg-blend-overlay mix-blend-difference transition-opacity hover:opacity-100 active:opacity-100 ${
+    class={`controls-toggle w-full self-end border-opacity-0 bg-opacity-25 opacity-0 bg-blend-overlay mix-blend-difference transition-opacity focus:opacity-100 active:opacity-100 ${
       open ? 'w-auto opacity-100' : 'w-full opacity-0'
     }`}
     on:click={toggleControls}

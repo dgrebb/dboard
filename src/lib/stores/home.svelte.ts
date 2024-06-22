@@ -5,12 +5,12 @@ import type {
   WeatherData,
 } from '$lib/types';
 
-import { createGradientFromImage } from '$utils/colorThief';
+import { colorThief } from '$utils/colorThief';
 
 const createGradient = async (image: string): Promise<string | boolean> => {
   let albumGradient: string | boolean = false;
   if (image !== '') {
-    await createGradientFromImage(image)
+    await colorThief(image)
       .then((gradient) => (albumGradient = gradient))
       .catch((error) => console.error(error));
   }
