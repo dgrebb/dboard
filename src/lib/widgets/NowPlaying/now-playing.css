@@ -103,7 +103,7 @@
   .album-art {
     position: relative;
     img + img {
-      position: absolute;
+      display: none;
     }
   }
   .loved-heart {
@@ -298,6 +298,9 @@
       color: white; /* Default to white */
       mix-blend-mode: difference;
       z-index: 1;
+      & + footer {
+        display: none;
+      }
       &::before {
         content: '';
         position: absolute;
