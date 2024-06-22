@@ -215,7 +215,7 @@
             src={art}
             alt="{album} Artwork"
             out:blur={{ duration: 150 }}
-            in:blur={{ duration: 333 }}
+            in:blur={{ duration: 333, delay: 150 }}
           />
         {/key}
       </div>
@@ -223,15 +223,18 @@
         classes="audio-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
       />
     </main>
-    <footer
-      class="current-music__modal__info block text-center text-lg"
-      transition:blur={{ amount: 10 }}
-    >
-      <h2 class="text-fuchsia-200">{title}</h2>
-      <h2 class="hidden text-fuchsia-200 md:visible">&bull;</h2>
-      <h3 class="text-fuchsia-200">{album}</h3>
-      <h1 class="justify-center text-3xl text-white">{artist}</h1>
-    </footer>
+    {#key art}
+      <footer
+        class="current-music__modal__info block text-center text-lg"
+        out:blur={{ duration: 150 }}
+        in:blur={{ duration: 333, delay: 150 }}
+      >
+        <h2 class="text-fuchsia-200">{title}</h2>
+        <h2 class="hidden text-fuchsia-200 md:visible">&bull;</h2>
+        <h3 class="text-fuchsia-200">{album}</h3>
+        <h1 class="justify-center text-3xl text-white">{artist}</h1>
+      </footer>
+    {/key}
     <!-- <AudioWave /> -->
   </div>
 {/if}
