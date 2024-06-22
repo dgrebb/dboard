@@ -20,7 +20,7 @@
    */
   const sendCommand = async (event: MouseEvent, command: string) => {
     event.stopPropagation();
-    await fetch(`/api/control/music/${command}`);
+    await fetch(`/api/control/music/${command}`, { method: 'POST' });
   };
 
   onMount(() => {

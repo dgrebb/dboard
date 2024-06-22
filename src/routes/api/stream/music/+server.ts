@@ -1,4 +1,5 @@
 import type { Fetch, FetchOptions, NowPlayingData } from '$root/lib/types';
+// import { fetchMediaInfo } from '$utils/wiim';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import type { LoadEvent } from '@sveltejs/kit';
 
@@ -30,6 +31,7 @@ export const GET = async (event: RequestEvent | LoadEvent) => {
 
   try {
     let interval: NodeJS.Timeout;
+    let controllerClosed = false;
 
     const readable = new ReadableStream({
       async start(controller) {
@@ -37,6 +39,9 @@ export const GET = async (event: RequestEvent | LoadEvent) => {
 
         const fetchDataAndEnqueue = async (fetch: Fetch) => {
           try {
+            if (controllerClosed) return;
+            // TODO: Refactor with WiiM API in `$lib/utils/wiim.ts`
+            // fetchMediaInfo(fetch);
             const timestamp = Date.now();
             const data = await fetchData(fetch);
             if (
@@ -47,7 +52,7 @@ export const GET = async (event: RequestEvent | LoadEvent) => {
                 ...data,
               };
               if (data && current?.album !== data.album)
-                nowPlaying.art = `/album_art.png?ts=${timestamp}`;
+                nowPlaying.art = `/data/AirplayArtWorkData.png?ts=${timestamp}`;
               current = nowPlaying;
               const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
               controller.enqueue(encoder.encode(stream));
@@ -66,6 +71,7 @@ export const GET = async (event: RequestEvent | LoadEvent) => {
         }
       },
       async cancel() {
+        controllerClosed = true;
         clearInterval(interval);
       },
     });
