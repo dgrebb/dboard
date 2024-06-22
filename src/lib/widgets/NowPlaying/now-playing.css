@@ -150,7 +150,13 @@
     }
   }
 
+  &__modal,
+  &__modal::before,
+  &__modal::after {
+    filter: saturate(1.2);
+  }
   &__modal {
+    height: 100vh;
     position: fixed;
     inset: 0;
     display: flex;
@@ -197,10 +203,9 @@
     header,
     footer {
       display: flex;
-      /* height: 25%; */
+      /* mix-blend-mode: difference; */
     }
     main {
-      /* height: 50%; */
       align-items: center;
       @media screen and (min-width: 1900px) {
         width: 100%;
@@ -233,6 +238,9 @@
       align-content: center;
       width: 100%;
       padding: 0 0.25rem;
+      @media screen and (min-width: 1024px) {
+        display: none;
+      }
       .reading {
         flex-grow: 1;
         /* width: 50%; */
@@ -284,8 +292,29 @@
     footer {
       padding: 2rem 1rem;
       flex-direction: column;
+      position: relative;
+      font-weight: bold;
+      text-align: center;
+      color: white; /* Default to white */
+      mix-blend-mode: difference;
+      z-index: 1;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        z-index: -1;
+      }
       h1 {
         width: 100%;
+        font-size: 2rem;
+      }
+      h2,
+      h3 {
+        font-size: 1.5rem;
       }
       h1,
       h2,
@@ -293,6 +322,7 @@
         display: block;
         padding: 0.25rem;
         text-wrap: balance;
+        opacity: 1;
         @media screen and (min-width: 600px) {
           padding: 1rem 1rem 0;
           display: inline;
@@ -300,6 +330,16 @@
       }
       h2.hidden {
         display: none;
+      }
+
+      @media screen and (min-width: 1900px) {
+        h1 {
+          font-size: 3rem;
+        }
+        h2,
+        h3 {
+          font-size: 2rem;
+        }
       }
     }
 
