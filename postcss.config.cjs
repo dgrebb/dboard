@@ -1,13 +1,10 @@
-const tailwindcss = require('tailwindcss');
-const nesting = require('tailwindcss/nesting');
-// const autoprefixer = require('autoprefixer');
-
 const config = {
   plugins: [
-    //Some plugins, like tailwindcss/nesting, need to run before Tailwind,
-    //But others, like autoprefixer, need to run after,
-    nesting(),
-    tailwindcss(), //Some plugins, like tailwindcss/nesting, need to run before Tailwind, tailwindcss(), //But others, like autoprefixer, need to run after, autoprefixer, autoprefixer
+    require('postcss-mixins'), // Process mixins first
+    require('tailwindcss/nesting'), // Then handle nesting
+    require('tailwindcss'), // TailwindCSS should be processed after nesting
+    require('postcss-color-function'), // Then color functions
+    require('autoprefixer'), // Finally, add vendor prefixes
   ],
 };
 
