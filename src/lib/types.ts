@@ -298,7 +298,9 @@ export type HealthData = {
  * Type representing now playing data.
  */
 export type NowPlayingData = {
+  status?: string;
   art: string;
+  gradient: string;
   album: string;
   title: string;
   artist: string;
