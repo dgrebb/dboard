@@ -300,7 +300,8 @@ export type HealthData = {
 export type NowPlayingData = {
   status?: string;
   art: string;
-  gradient: string;
+  previousGradient: string;
+  nextGradient: string;
   album: string;
   title: string;
   artist: string;

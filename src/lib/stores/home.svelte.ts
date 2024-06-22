@@ -30,7 +30,8 @@ export const createHomeStore = () => {
       artist: '',
       title: '',
       art: '',
-      gradient: 'radial-gradient(at right top, #686868, #1f1f1f)',
+      previousGradient: 'radial-gradient(at right top, darkblue, #1f1f1f)',
+      nextGradient: 'radial-gradient(at right top, #686868, #1f1f1f)',
       album: '',
       loved: false,
     },
@@ -48,8 +49,11 @@ export const createHomeStore = () => {
       return homeStore.nowPlaying.art;
     },
 
-    albumGradient: (): string => {
-      return homeStore.nowPlaying.gradient;
+    albumGradients: (): { [key: string]: string } => {
+      return {
+        previousGradient: homeStore.nowPlaying.previousGradient,
+        nextGradient: homeStore.nowPlaying.nextGradient,
+      };
     },
 
     weather: () => {
@@ -73,7 +77,8 @@ export const createHomeStore = () => {
 
     setNowPlaying: async (nowPlaying: NowPlayingData) => {
       const gradient = await createGradient(nowPlaying.art);
-      if (typeof gradient === 'string') nowPlaying.gradient = gradient;
+      const delay = 3333;
+      if (typeof gradient === 'string') nowPlaying.nextGradient = gradient;
       homeStore = {
         ...homeStore,
         nowPlaying: {
@@ -81,6 +86,10 @@ export const createHomeStore = () => {
           ...nowPlaying,
         },
       };
+      setTimeout(() => {
+        homeStore.nowPlaying.previousGradient =
+          homeStore.nowPlaying.nextGradient;
+      }, delay);
     },
 
     setWeather: (weather: WeatherData) => {
