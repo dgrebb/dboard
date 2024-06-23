@@ -22,7 +22,8 @@
   let artist = $state('');
   let loved = $state(false);
   let art = $state('/album_art.png');
-  let { previousGradient, nextGradient } = $state(homeState.albumGradients());
+  let gradient = $state(homeState.nowPlayingGradient());
+  let previousGradient = $state(gradient);
   let modal = $state(false);
   let difference: string | number = $state('0');
   let direction = $state('Flat');
@@ -116,13 +117,17 @@
   $effect(() => {
     if (mounted) {
       const currentHealthData = healthState.getCurrentData() || false;
+      const delay = 3333;
       if (currentHealthData !== false) {
         directionIcon = healthState.getDirectionIcon();
         ({ direction, sgv: currentValue } = currentHealthData);
         difference = healthState.getDifference();
       }
-      ({ artist, album, title, loved, art, nextGradient, previousGradient } =
-        homeState.nowPlaying());
+      ({ artist, album, title, loved, art, gradient } = homeState.nowPlaying());
+
+      setTimeout(async () => {
+        previousGradient = gradient;
+      }, delay);
       transition = true;
     }
     return () => {
@@ -172,7 +177,7 @@
     aria-checked={modal}
     onclick={(e) => toggleModal(e)}
     onkeydown={(e) => toggleModal(e)}
-    style="--nextGradient: {nextGradient}; --previousGradient: {previousGradient};"
+    style="--nextGradient: {gradient}; --previousGradient: {previousGradient};"
   >
     <header>
       {#key typeof weather?.temperature_2m === 'number' && currentValue !== 0}
