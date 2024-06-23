@@ -23,7 +23,9 @@
   let loved = $state(false);
   let art = $state('/album_art.png');
   let gradient = $state(homeState.nowPlayingGradient());
-  let previousGradient = $state(gradient);
+  let previousGradient = $state(
+    'linear-gradient(45deg, rgba(230, 219, 216, 255), rgba(189, 196, 189, 255), rgba(200, 197, 204, 255), rgba(192, 197, 191, 255), rgba(209, 222, 202, 255))'
+  );
   let modal = $state(false);
   let difference: string | number = $state('0');
   let direction = $state('Flat');
@@ -140,6 +142,8 @@
   });
 </script>
 
+<!-- svelte-ignore state_referenced_locally -->
+<!-- svelte-ignore state_referenced_locally -->
 <div
   class="now-playing dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
 >
