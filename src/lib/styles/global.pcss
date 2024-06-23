@@ -5,6 +5,17 @@
 @import '../widgets/NowPlaying/now-playing.css';
 @import '../widgets/NightScout/nightscout.css';
 
+/* PWA Safe Area Padding */
+html {
+  min-height: calc(100% + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 html,
 body {
   min-height: 100vh;
