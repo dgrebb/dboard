@@ -22,7 +22,7 @@
   let artist = $state('');
   let loved = $state(false);
   let art = $state('/album_art.png');
-  let { previousGradient, nextGradient } = $derived(homeState.albumGradients());
+  let { previousGradient, nextGradient } = $state(homeState.albumGradients());
   let modal = $state(false);
   let difference: string | number = $state('0');
   let direction = $state('Flat');
@@ -115,16 +115,15 @@
 
   $effect(() => {
     if (mounted) {
-      (async () => {
-        const currentData = healthState.getCurrentData() || false;
-        if (currentData !== false) {
-          directionIcon = healthState.getDirectionIcon();
-          ({ direction, sgv: currentValue } = currentData);
-          difference = healthState.getDifference();
-        }
-        ({ artist, album, title, loved, art } = homeState.nowPlaying());
-        transition = true;
-      })();
+      const currentHealthData = healthState.getCurrentData() || false;
+      if (currentHealthData !== false) {
+        directionIcon = healthState.getDirectionIcon();
+        ({ direction, sgv: currentValue } = currentHealthData);
+        difference = healthState.getDifference();
+      }
+      ({ artist, album, title, loved, art, nextGradient, previousGradient } =
+        homeState.nowPlaying());
+      transition = true;
     }
     return () => {
       loaded = true;

@@ -109,6 +109,14 @@ body {
   overscroll-behavior-x: contain;
   z-index: 10;
 
+  /* TODO: Explore layers and opacity between album gradient and dboard background
+  Look into perf implications - use the opacity below */
+  /* &:has(.current-music__modal) {
+    .dboard__grid__item {
+      opacity: 0;
+    }
+  } */
+
   @media screen and (min-width: 480px) {
     gap: 2.5rem;
     overflow-y: hidden;
