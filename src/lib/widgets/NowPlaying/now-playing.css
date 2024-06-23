@@ -49,6 +49,9 @@
     }
     @media screen and (min-width: 1900px) {
       display: none;
+      flex-direction: column;
+      position: relative;
+      inset: auto;
     }
   }
   button {
@@ -186,6 +189,9 @@
       }
     }
     @media screen and (min-width: 1900px) {
+      flex-direction: column;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right)
+        env(safe-area-inset-bottom) env(safe-area-inset-left);
       cursor: none;
     }
 
@@ -270,12 +276,13 @@
     }
 
     header {
-      flex-direction: row;
-      align-content: center;
-      width: 100%;
-      padding: 0 0.25rem;
-      @media screen and (min-width: 1000px) and (max-height: 1919px) {
-        display: none;
+      display: none;
+      @media screen and (min-height: 1200px) {
+        flex-direction: row;
+        align-content: center;
+        width: 100%;
+        padding: 0 0.25rem;
+        display: flex;
         height: 0;
       }
       .reading {
