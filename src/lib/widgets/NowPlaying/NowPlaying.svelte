@@ -38,9 +38,9 @@
 
     eventSource = new EventSource(`/api/stream/music`);
 
-    eventSource.onmessage = (event) => {
+    eventSource.onmessage = async (event) => {
       const data = JSON.parse(event.data);
-      homeState.setNowPlaying(data);
+      await homeState.setNowPlaying(data);
       retryCount = 0; // Reset retry count on successful message
     };
 

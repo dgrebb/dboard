@@ -50,9 +50,11 @@ export const GET = async (event: RequestEvent | LoadEvent) => {
             ) {
               const nowPlaying: NowPlayingData = {
                 ...data,
+                art:
+                  data && current?.album !== data.album
+                    ? `/data/AirplayArtWorkData.png?ts=${timestamp}`
+                    : '/data/AirplayArtWorkData.png',
               };
-              if (data && current?.album !== data.album)
-                nowPlaying.art = `/data/AirplayArtWorkData.png?ts=${timestamp}`;
               current = nowPlaying;
               const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
               controller.enqueue(encoder.encode(stream));
