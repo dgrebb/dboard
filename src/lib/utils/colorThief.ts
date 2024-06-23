@@ -1,6 +1,12 @@
 import { FastAverageColor } from 'fast-average-color';
 
-export const colorThief = async (imageSrc: string): Promise<string> => {
+export const colorThief = async (
+  imageSrc: string
+): Promise<string | boolean> => {
+  if (imageSrc === undefined) {
+    console.log(imageSrc, `can't find the image`);
+    return false;
+  }
   const fac = new FastAverageColor();
   const img = new Image();
   img.crossOrigin = 'Anonymous';

@@ -29,7 +29,7 @@ export const createHomeStore = () => {
     nowPlaying: {
       artist: '',
       title: '',
-      art: '',
+      art: '/data/AirplayArtWorkData.png',
       previousGradient: 'radial-gradient(at right top, darkblue, #1f1f1f)',
       nextGradient: 'radial-gradient(at right top, #686868, #1f1f1f)',
       album: '',
@@ -76,8 +76,8 @@ export const createHomeStore = () => {
     },
 
     setNowPlaying: async (nowPlaying: NowPlayingData) => {
-      const gradient = await createGradient(nowPlaying.art);
       const delay = 3333;
+      const gradient = await createGradient(nowPlaying.art);
       if (typeof gradient === 'string') nowPlaying.nextGradient = gradient;
       homeStore = {
         ...homeStore,
@@ -86,7 +86,7 @@ export const createHomeStore = () => {
           ...nowPlaying,
         },
       };
-      setTimeout(() => {
+      setTimeout(async () => {
         homeStore.nowPlaying.previousGradient =
           homeStore.nowPlaying.nextGradient;
       }, delay);
