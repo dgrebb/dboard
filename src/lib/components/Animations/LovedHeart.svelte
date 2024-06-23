@@ -6,6 +6,8 @@
     size: number;
   };
 
+  let { loved, size = 33 }: Props = $props();
+
   function bounceIn(node: Node, { delay = 0, duration = 400 } = {}) {
     return {
       delay,
@@ -33,8 +35,6 @@
       },
     };
   }
-
-  let { loved, size = 33 }: Props = $props();
 </script>
 
 {#if loved}
