@@ -5,17 +5,6 @@ import type {
   WeatherData,
 } from '$lib/types';
 
-import { colorThief } from '$utils/colorThief';
-
-const createGradient = async (image: string): Promise<string | false> => {
-  if (typeof image !== 'string') return false;
-  let albumGradient: string | boolean = false;
-  await colorThief(image)
-    .then((gradient) => (albumGradient = gradient))
-    .catch((error) => console.error(error));
-  return albumGradient;
-};
-
 export const createHomeStore = () => {
   let homeStore: HomeData = $state({
     location: {
@@ -29,8 +18,7 @@ export const createHomeStore = () => {
       artist: '',
       title: '',
       art: '/data/AirplayArtWorkData.png',
-      previousGradient: 'radial-gradient(at right top, darkblue, #1f1f1f)',
-      nextGradient: 'radial-gradient(at right top, #686868, #1f1f1f)',
+      gradient: 'radial-gradient(at right top, darkblue, #1f1f1f)',
       album: '',
       loved: false,
     },
@@ -48,11 +36,8 @@ export const createHomeStore = () => {
       return homeStore.nowPlaying.art;
     },
 
-    albumGradients: (): { [key: string]: string } => {
-      return {
-        previousGradient: homeStore.nowPlaying.previousGradient,
-        nextGradient: homeStore.nowPlaying.nextGradient,
-      };
+    nowPlayingGradient: (): string => {
+      return homeStore.nowPlaying.gradient;
     },
 
     weather: () => {
@@ -75,21 +60,14 @@ export const createHomeStore = () => {
     },
 
     setNowPlaying: async (nowPlaying: NowPlayingData) => {
-      const delay = 3333;
-      const stolenColors = await createGradient(nowPlaying.art);
-      const gradient = stolenColors || nowPlaying.previousGradient;
       const state = {
         ...homeStore,
         nowPlaying: {
           ...homeStore.nowPlaying,
           ...nowPlaying,
-          ...(typeof gradient === 'string' ? { nextGradient: gradient } : {}),
         },
       };
       homeStore = state;
-      setTimeout(async () => {
-        homeStore.nowPlaying.previousGradient = gradient;
-      }, delay);
     },
 
     setWeather: (weather: WeatherData) => {
