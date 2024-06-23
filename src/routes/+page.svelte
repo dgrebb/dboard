@@ -50,6 +50,10 @@
   });
 </script>
 
+<svelte:head>
+  <title>dboard</title>
+</svelte:head>
+
 {#if mounted}
   <Board>
     <NightScout />
