@@ -1,4 +1,6 @@
 import { FastAverageColor } from 'fast-average-color';
+import { createCanvas, loadImage } from 'canvas';
+import { PUBLIC_HOST_URL } from '$env/static/public';
 
 // Simple seeded random number generator
 const seedRandom = () => {
@@ -26,72 +28,63 @@ const randomizeColor = (color, random) => {
 export const colorThief = async (
   imageSrc: string
 ): Promise<string | boolean> => {
-  if (imageSrc === undefined) {
+  if (!imageSrc) {
     console.log(imageSrc, `can't find the image`);
     return false;
   }
+
   const fac = new FastAverageColor();
-  const img = new Image();
-  img.crossOrigin = 'Anonymous';
 
-  return new Promise<string>((resolve, reject) => {
-    img.onload = async () => {
-      try {
-        const colors: string[] = [];
-        const sections = 5; // Number of sections to divide the image into
+  try {
+    const img = await loadImage(`${PUBLIC_HOST_URL}${imageSrc}`);
+    const colors: string[] = [];
+    const sections = 5; // Number of sections to divide the image into
 
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+    const canvas = createCanvas(img.width, img.height);
+    const ctx = canvas.getContext('2d');
 
-        if (!ctx) {
-          reject(new Error('Failed to create canvas context'));
-          return;
-        }
+    if (!ctx) {
+      throw new Error('Failed to create canvas context');
+    }
 
-        const width = img.width / sections;
-        const height = img.height / sections;
+    const width = img.width / sections;
+    const height = img.height / sections;
 
-        // Extract the timestamp from the imageSrc and use it as the seed for the random number generator
-        const random = seedRandom();
+    // Use the current time as the seed for the random number generator
+    const random = seedRandom();
 
-        for (let i = 0; i < sections; i++) {
-          // Draw a section of the image on the canvas
-          canvas.width = width;
-          canvas.height = height;
-          ctx.drawImage(
-            img,
-            i * width,
-            0,
-            width,
-            img.height,
-            0,
-            0,
-            width,
-            img.height
-          );
+    for (let i = 0; i < sections; i++) {
+      // Draw a section of the image on the canvas
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(
+        img,
+        i * width,
+        0,
+        width,
+        img.height,
+        0,
+        0,
+        width,
+        img.height
+      );
 
-          // Get the dominant color of the section
-          const color = await fac.getColorAsync(canvas);
-          const randomizedColor = randomizeColor(color.value, random);
-          colors.push(randomizedColor);
-        }
+      // Get the dominant color of the section
+      const imageData = ctx.getImageData(0, 0, width, img.height);
+      const color = fac.getColorFromArray4(imageData.data);
+      const randomizedColor = randomizeColor(color, random);
+      colors.push(randomizedColor);
+    }
 
-        // Create a gradient string using the captured and randomized colors
-        const gradient = `linear-gradient(45deg, ${colors.join(', ')})`;
-        resolve(gradient);
-      } catch (error) {
-        reject(error);
-      } finally {
-        fac.destroy();
-      }
-    };
-
-    img.onerror = () => {
-      reject(new Error('Failed to load image'));
-    };
-
-    img.src = imageSrc;
-  });
+    // Create a gradient string using the captured and randomized colors
+    const gradient = `linear-gradient(45deg, ${colors.join(', ')})`;
+    return gradient;
+  } catch (error) {
+    console.error(error);
+    return false;
+  } finally {
+    fac.destroy();
+  }
 };
 
 // Usage example:

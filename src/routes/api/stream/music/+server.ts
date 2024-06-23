@@ -2,6 +2,8 @@ import type { Fetch, FetchOptions, NowPlayingData } from '$root/lib/types';
 // import { fetchMediaInfo } from '$utils/wiim';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import type { LoadEvent } from '@sveltejs/kit';
+import { colorThief } from '$utils/colorThief';
+import { homeState } from '$root/lib/stores';
 
 export const prerender = false;
 
@@ -10,6 +12,15 @@ const refreshInterval = 5000;
 const requestOptions: FetchOptions = {
   method: 'GET',
   redirect: 'follow',
+};
+
+const createGradient = async (image: string): Promise<string | false> => {
+  if (typeof image !== 'string') return false;
+  let albumGradient: string | boolean = false;
+  await colorThief(image)
+    .then((gradient) => (albumGradient = gradient))
+    .catch((error) => console.error(error));
+  return albumGradient;
 };
 
 const fetchData = async (fetch: Fetch): Promise<NowPlayingData> => {
@@ -26,8 +37,8 @@ const fetchData = async (fetch: Fetch): Promise<NowPlayingData> => {
 };
 
 export const GET = async (event: RequestEvent | LoadEvent) => {
+  let previousState: NowPlayingData = homeState.nowPlaying();
   const fetch = event.fetch as Fetch;
-  let current: NowPlayingData;
 
   try {
     let interval: NodeJS.Timeout;
@@ -42,17 +53,25 @@ export const GET = async (event: RequestEvent | LoadEvent) => {
             if (controllerClosed) return;
             // TODO: Refactor with WiiM API in `$lib/utils/wiim.ts`
             // fetchMediaInfo(fetch);
-            const timestamp = Date.now();
             const data = await fetchData(fetch);
             if (
-              (data && current?.title !== data.title) ||
-              current?.loved !== data.loved
+              (data && previousState?.title !== data.title) ||
+              previousState?.loved !== data.loved
             ) {
+              const timestamp = Date.now();
+              let art: string =
+                previousState.art || '/data/AirplayArtWorkData.png';
+              if (previousState.album !== data.album) {
+                art = `/data/AirplayArtWorkData.png?ts=${timestamp}`;
+              }
+              const gradient = await createGradient(art);
               const nowPlaying: NowPlayingData = {
+                ...previousState,
                 ...data,
-                art: `/data/AirplayArtWorkData.png?ts=${timestamp}`,
+                art,
+                ...(typeof gradient === 'string' ? { gradient } : {}),
               };
-              current = nowPlaying;
+              previousState = nowPlaying;
               const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
               controller.enqueue(encoder.encode(stream));
             }
