@@ -7,13 +7,12 @@ import type {
 
 import { colorThief } from '$utils/colorThief';
 
-const createGradient = async (image: string): Promise<string | boolean> => {
+const createGradient = async (image: string): Promise<string | false> => {
+  if (typeof image !== 'string') return false;
   let albumGradient: string | boolean = false;
-  if (image !== '') {
-    await colorThief(image)
-      .then((gradient) => (albumGradient = gradient))
-      .catch((error) => console.error(error));
-  }
+  await colorThief(image)
+    .then((gradient) => (albumGradient = gradient))
+    .catch((error) => console.error(error));
   return albumGradient;
 };
 
@@ -77,18 +76,19 @@ export const createHomeStore = () => {
 
     setNowPlaying: async (nowPlaying: NowPlayingData) => {
       const delay = 3333;
-      const gradient = await createGradient(nowPlaying.art);
-      if (typeof gradient === 'string') nowPlaying.nextGradient = gradient;
-      homeStore = {
+      const stolenColors = await createGradient(nowPlaying.art);
+      const gradient = stolenColors || nowPlaying.previousGradient;
+      const state = {
         ...homeStore,
         nowPlaying: {
           ...homeStore.nowPlaying,
           ...nowPlaying,
+          ...(typeof gradient === 'string' ? { nextGradient: gradient } : {}),
         },
       };
+      homeStore = state;
       setTimeout(async () => {
-        homeStore.nowPlaying.previousGradient =
-          homeStore.nowPlaying.nextGradient;
+        homeStore.nowPlaying.previousGradient = gradient;
       }, delay);
     },
 

@@ -171,8 +171,10 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    background: var(--previousGradient);
     z-index: 40;
+    /* TODO: Explore layers and opacity between album gradient and dboard background */
+    /* Look into perf implications - remove below background */
+    background: var(--previousGradient);
 
     @media screen and (min-width: 1000px) and (max-height: 1919px) {
       flex-direction: row;
@@ -199,6 +201,9 @@
       background: var(--previousGradient);
       z-index: -1;
       opacity: 1;
+      /* TODO: Explore layers and opacity between album gradient and dboard background */
+      /* Look into perf implications - use the opacity below */
+      /* opacity: 0.67; */
     }
     &::after {
       background: var(--nextGradient);
@@ -207,11 +212,15 @@
     }
 
     &.transition {
+      background: var(--previousGradient);
       &::before {
         opacity: 0;
       }
       &::after {
         opacity: 1;
+        /* TODO: Explore layers and opacity between album gradient and dboard background */
+        /* Look into perf implications - use the opacity below */
+        /* opacity: 0.67; */
       }
     }
 
