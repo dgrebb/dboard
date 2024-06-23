@@ -2,6 +2,7 @@ import path from 'path';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
 import dotenv from 'dotenv';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 import {
   createWSSGlobalInstance,
   onHttpServerUpgrade,
@@ -12,10 +13,16 @@ dotenv.config();
 
 const SECRET_AUDIO_CONTROL_IP_ADDRESS =
   process.env.SECRET_AUDIO_CONTROL_IP_ADDRESS;
+const oneYearInSeconds = 60 * 60 * 24 * 365;
 
 export default defineConfig({
   plugins: [
     sveltekit(),
+    basicSsl({
+      name: 'dboard',
+      domains: ['*.dboard.*'],
+      certDir: '.devServer/cert',
+    }),
     {
       name: 'integratedWebsocketServer',
       configureServer(server) {
@@ -29,6 +36,9 @@ export default defineConfig({
     },
   ],
   server: {
+    headers: {
+      'Strict-Transport-Security': `max-age=${oneYearInSeconds}`,
+    },
     proxy: {
       '/data': {
         target: `https://${SECRET_AUDIO_CONTROL_IP_ADDRESS}`, // The base URL of the target server
