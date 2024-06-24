@@ -24,9 +24,9 @@
   let art = $state('/album_art.png');
   let gradient = $state(homeState.nowPlayingGradient());
   let previousGradient = $state(
-    'linear-gradient(45deg, rgba(230, 219, 216, 255), rgba(189, 196, 189, 255), rgba(200, 197, 204, 255), rgba(192, 197, 191, 255), rgba(209, 222, 202, 255))'
+    'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0)); --previousGradient: linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
   );
-  let modal = $state(false);
+  let modal = $state(localStorage.getItem('musicModal') === 'true' || false);
   let difference: string | number = $state('0');
   let direction = $state('Flat');
   let directionIcon = $state(mapNightScoutDirectionIcon());
@@ -89,17 +89,8 @@
     localStorage.setItem('musicModal', modal.toString());
   }
 
-  function hideModal(event: Event) {
-    event.preventDefault();
-    modal = false;
-    localStorage.setItem('musicModal', modal.toString());
-  }
-
   onMount(async () => {
     await startSubscription();
-    let modalPreferences =
-      localStorage.getItem('musicModal') === 'true' || false;
-    modal = modalPreferences;
     window.addEventListener('beforeunload', handleWindowUnload);
     mounted = true;
   });
@@ -125,7 +116,7 @@
         ({ direction, sgv: currentValue } = currentHealthData);
         difference = healthState.getDifference();
       }
-      ({ artist, album, title, loved, art, gradient } = homeState.nowPlaying());
+      ({ artist, album, title, loved, gradient } = homeState.nowPlaying());
 
       setTimeout(async () => {
         previousGradient = gradient;
@@ -135,6 +126,7 @@
     return () => {
       loaded = true;
       let delay = 5000;
+      art = homeState.nowPlayingArt();
       setTimeout(() => {
         transition = false;
       }, delay);
@@ -142,28 +134,26 @@
   });
 </script>
 
-<!-- svelte-ignore state_referenced_locally -->
-<!-- svelte-ignore state_referenced_locally -->
 <div
   class="now-playing dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
 >
   {#if mounted && loaded}
-    {#key art && loaded}
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    {#key art}
       <div
         class="album-art"
         out:fade={{ duration: 333 }}
         in:fade={{ duration: 333, delay: 333 }}
-        onclick={(e) => toggleModal(e)}
-        onkeydown={(e) => toggleModal(e)}
-        tabindex="-1"
-        role="switch"
-        aria-checked={modal}
       >
         <LovedHeart {loved} size={33} />
+        <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
         <img
           src={art}
           alt="{album} Artwork"
-          transition:fade={{ easing: cubicInOut }}
+          onclick={(e) => toggleModal(e)}
+          tabindex="-1"
+          role="switch"
+          aria-checked={modal}
         />
       </div>
     {/key}
@@ -176,11 +166,6 @@
     class="current-music__modal"
     class:transition
     transition:fade
-    role="switch"
-    tabindex="-1"
-    aria-checked={modal}
-    onclick={(e) => toggleModal(e)}
-    onkeydown={(e) => toggleModal(e)}
     style="--nextGradient: {gradient}; --previousGradient: {previousGradient};"
   >
     <header>
@@ -216,7 +201,14 @@
       {/key}
     </header>
     <main class="items-between flex w-[77%] flex-col md:flex-row">
-      <div class="album-art flex pt-3 md:flex-col md:items-start">
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
+      <div
+        class="album-art flex pt-3 md:flex-col md:items-start"
+        role="switch"
+        tabindex="-1"
+        aria-checked={modal}
+        onclick={(e) => toggleModal(e)}
+      >
         {#key art}
           <LovedHeart {loved} size={77} />
           <img
