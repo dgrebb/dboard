@@ -29,14 +29,21 @@ export const colorThief = async (
   imageSrc: string
 ): Promise<string | boolean> => {
   if (!imageSrc) {
-    console.log(imageSrc, `can't find the image`);
+    console.log(
+      imageSrc,
+      `Image source is missing. Gradient cannot be processed.`
+    );
     return false;
   }
+
+  const imageUrl = imageSrc.includes('http')
+    ? imageSrc
+    : `${PUBLIC_HOST_URL}${imageSrc}`;
 
   const fac = new FastAverageColor();
 
   try {
-    const img = await loadImage(`${PUBLIC_HOST_URL}${imageSrc}`);
+    const img = await loadImage(imageUrl);
     const colors: string[] = [];
     const sections = 5; // Number of sections to divide the image into
 
