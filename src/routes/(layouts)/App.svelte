@@ -5,8 +5,10 @@
   import Controls from '$root/lib/components/Controls/Controls.svelte';
   import { invalidateAll } from '$app/navigation';
   import time from '$lib/stores/time';
-  import { onDestroy } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
+  import { browser } from '$app/environment';
+  import type { CheckboxEvents } from 'flowbite-svelte/Checkbox.svelte';
 
   const now = new Date();
   const hours = now.getHours();
@@ -14,10 +16,12 @@
   const minutesToday = hours * 60 + minutes;
 
   $time = minutesToday;
-  let hh: string = '00';
-  let mm: string = '00';
-
+  let hh: string = $state('00');
+  let mm: string = $state('00');
   let timeValue: number;
+  // TODO: Integrations for Kiosk Pro
+  // let idleTimer = $state(true);
+
   const unsubscribe = time.subscribe((value) => {
     timeValue = value;
     hh = Math.trunc(timeValue / 60)
@@ -31,6 +35,20 @@
     localStorage.removeItem('color-theme');
   }
 
+  // const KioskShouldDisableIdleTimer = () => {
+  //   var shouldSkipAction = 'YES';
+  //   if (idleTimer) {
+  //     shouldSkipAction = 'NO';
+  //   }
+  //   return shouldSkipAction;
+  // };
+
+  // const toggleIdleTimer = (e: CheckboxEvents) => {
+  //   iz dleTimer = !idleTimer;
+  //   setTimeout(() => (e.target.checked = idleTimer), 0);
+  //   KioskShouldDisableIdleTimer();
+  // };
+
   onDestroy(unsubscribe);
 </script>
 
@@ -41,7 +59,7 @@
     on:establishWebSocket={establishWebSocket}
   /> -->
   <p class="time">
-    {hh}:{mm}
+    {hh}:{mm} |
   </p>
   <Controls />
 </header>
@@ -52,3 +70,21 @@
 <main use:pullToRefresh class="dboard">
   <slot><h1>There is no page here.</h1></slot>
 </main>
+
+<!-- <footer class="absolute bottom-0 z-30 w-full text-center">
+  <input
+    name="idle-timer"
+    id="idle-timer"
+    type="checkbox"
+    checked={idleTimer}
+    onclick={(e) => toggleIdleTimer(e)}
+    class="h-9 w-9 text-blue-700"
+  />
+  <label for="idle-timer"
+    >Idle Timer: {#if idleTimer}on{:else}off{/if}.</label
+  >
+</footer>
+
+{#if browser}
+  <script src="/kiosk_functions.js"></script>
+{/if} -->
