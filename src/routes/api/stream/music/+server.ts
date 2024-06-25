@@ -54,16 +54,11 @@ export const GET = async (event: RequestEvent | LoadEvent) => {
             if (controllerClosed) return;
             // TODO: Refactor with WiiM API in `$lib/utils/wiim.ts`
             const data = await fetchMediaInfo(fetch);
-            console.log('🚀 ~ fetchDataAndEnqueue ~ data:', data);
             // const data = await fetchData(fetch);
             if (data.totalTime && data.relativeTimePosition) {
               refreshInterval =
                 timeStringToMilliseconds(data.totalTime) -
                 timeStringToMilliseconds(data.relativeTimePosition);
-              console.log(
-                '⌚️ ~ fetchDataAndEnqueue ~ refreshInterval updated to:',
-                refreshInterval
-              );
             }
             if (
               (data && previousState?.title !== data.title) ||
