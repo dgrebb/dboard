@@ -1,14 +1,15 @@
 import type { Fetch, FetchOptions, NowPlayingData } from '$root/lib/types';
-// import { fetchMediaInfo } from '$utils/wiim';
+import { fetchMediaInfo } from '$utils/wiim';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import type { LoadEvent } from '@sveltejs/kit';
 import { colorThief } from '$utils/colorThief';
 import { homeState } from '$root/lib/stores';
+import { timeStringToMilliseconds } from '$utils/strings';
 
 export const prerender = false;
 
 const URL = '/api/v1/music';
-const refreshInterval = 5000;
+let refreshInterval = 5000;
 const requestOptions: FetchOptions = {
   method: 'GET',
   redirect: 'follow',
@@ -52,17 +53,27 @@ export const GET = async (event: RequestEvent | LoadEvent) => {
           try {
             if (controllerClosed) return;
             // TODO: Refactor with WiiM API in `$lib/utils/wiim.ts`
-            // fetchMediaInfo(fetch);
-            const data = await fetchData(fetch);
+            const data = await fetchMediaInfo(fetch);
+            console.log('🚀 ~ fetchDataAndEnqueue ~ data:', data);
+            // const data = await fetchData(fetch);
+            if (data.totalTime && data.relativeTimePosition) {
+              refreshInterval =
+                timeStringToMilliseconds(data.totalTime) -
+                timeStringToMilliseconds(data.relativeTimePosition);
+              console.log(
+                '⌚️ ~ fetchDataAndEnqueue ~ refreshInterval updated to:',
+                refreshInterval
+              );
+            }
             if (
               (data && previousState?.title !== data.title) ||
               previousState?.loved !== data.loved
             ) {
               const timestamp = Date.now();
               let art: string =
-                previousState.art || '/data/AirplayArtWorkData.png';
+                data.art || previousState.art || '/data/AirplayArtWorkData.png';
               if (previousState.album !== data.album) {
-                art = `/data/AirplayArtWorkData.png?ts=${timestamp}`;
+                art = `${art}?ts=${timestamp}`;
               }
               const gradient = await createGradient(art);
               const nowPlaying: NowPlayingData = {
