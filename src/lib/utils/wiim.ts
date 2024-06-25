@@ -16,7 +16,7 @@ interface MediaInfo {
   playMedium: string | null;
   recordMedium: string | null;
   writeStatus: string | null;
-  isLoved: boolean;
+  loved: boolean;
 }
 
 interface PositionInfo {
@@ -92,7 +92,7 @@ const parseMediaInfoResponse = (responseXml: string): MediaInfo => {
     playMedium: extractValue(xmlDoc, 'PlayMedium'),
     recordMedium: extractValue(xmlDoc, 'RecordMedium'),
     writeStatus: extractValue(xmlDoc, 'WriteStatus'),
-    isLoved: extractBoolean('Favorite'),
+    loved: extractBoolean('Favorite'),
   };
 };
 
@@ -109,10 +109,10 @@ interface NowPlayingInfo {
   album: string | null;
   artist: string | null;
   title: string | null;
-  artUrl: string | null;
+  art: string | null;
   totalTime: string | null;
   relativeTimePosition: string | null;
-  isLoved: boolean;
+  loved: boolean;
 }
 
 export const fetchMediaInfo = async (fetch: Fetch): Promise<NowPlayingInfo> => {
@@ -151,8 +151,8 @@ export const fetchMediaInfo = async (fetch: Fetch): Promise<NowPlayingInfo> => {
       album: extractDIDLValue('upnp:album'),
       artist: extractDIDLValue('upnp:artist'),
       title: extractDIDLValue('dc:title'),
-      artUrl: extractDIDLValue('upnp:albumArtURI'),
-      isLoved: mediaInfo.isLoved,
+      art: extractDIDLValue('upnp:albumArtURI'),
+      loved: mediaInfo.loved,
       totalTime: positionInfo.totalTime,
       relativeTimePosition: positionInfo.relativeTimePosition,
     };
