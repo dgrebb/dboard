@@ -1,7 +1,18 @@
-<script>
-  // your script goes here
+<script lang="ts">
+  import NewWidget from '$components/Composer/NewWidget.svelte';
+  import type { Snippet } from 'svelte';
+
+  type Props = {
+    children: Snippet;
+  };
+
+  let { children }: Props = $props();
 </script>
 
 <div class="dboard__grid">
-  <slot />
+  {#if children}
+    {@render children()}
+  {:else}
+    <NewWidget />
+  {/if}
 </div>

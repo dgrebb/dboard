@@ -1,8 +1,17 @@
-<script>
+<script lang="ts">
   import App from './(layouts)/App.svelte';
   import '$lib/styles/global.pcss';
+  import type { Snippet } from 'svelte';
+
+  type Props = {
+    children: Snippet;
+  };
+
+  let { children }: Props = $props();
 </script>
 
 <App>
-  <slot></slot>
+  {#if children}
+    {@render children()}
+  {/if}
 </App>

@@ -7,8 +7,16 @@
   import time from '$lib/stores/time';
   import { onDestroy, onMount } from 'svelte';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
-  import { browser } from '$app/environment';
-  import type { CheckboxEvents } from 'flowbite-svelte/Checkbox.svelte';
+  import type { Snippet } from 'svelte';
+  // TODO: Kiosk Prop Implementation
+  // import { browser } from '$app/environment';
+  // import type { CheckboxEvents } from 'flowbite-svelte/Checkbox.svelte';
+
+  type Props = {
+    children: Snippet;
+  };
+
+  let { children }: Props = $props();
 
   const now = new Date();
   const hours = now.getHours();
@@ -35,6 +43,7 @@
     localStorage.removeItem('color-theme');
   }
 
+  // TODO: Kiosk Prop Implementation
   // const KioskShouldDisableIdleTimer = () => {
   //   var shouldSkipAction = 'YES';
   //   if (idleTimer) {
@@ -43,6 +52,7 @@
   //   return shouldSkipAction;
   // };
 
+  // TODO: Kiosk Prop Implementation
   // const toggleIdleTimer = (e: CheckboxEvents) => {
   //   iz dleTimer = !idleTimer;
   //   setTimeout(() => (e.target.checked = idleTimer), 0);
@@ -68,10 +78,15 @@
 <BackgroundFrame component={ClearOrCloudy} />
 
 <main use:pullToRefresh class="dboard">
-  <slot><h1>There is no page here.</h1></slot>
+  {#if children}
+    {@render children()}
+  {:else}
+    <h1>There is no page here.</h1>
+  {/if}
 </main>
 
-<!-- <footer class="absolute bottom-0 z-30 w-full text-center">
+<!-- // TODO: Kiosk Prop Implementation
+ <footer class="absolute bottom-0 z-30 w-full text-center">
   <input
     name="idle-timer"
     id="idle-timer"
