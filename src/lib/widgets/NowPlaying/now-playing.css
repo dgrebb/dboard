@@ -255,9 +255,6 @@
 
     .album-art,
     img {
-      @media screen and (min-width: 600px) {
-        max-width: 512px;
-      }
       @media screen and (min-width: 1200px) {
         min-width: 512px;
       }
@@ -271,7 +268,6 @@
         -75px 75px 75px -6px rgba(0, 0, 0, 0.24),
         -150px 150px 150px -12px rgba(0, 0, 0, 0.48);
       @media screen and (min-width: 1900px) {
-        width: 100%;
       }
     }
 
