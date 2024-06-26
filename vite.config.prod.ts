@@ -8,7 +8,6 @@ import {
   onHttpServerUpgrade,
 } from './src/lib/server/webSocketUtils';
 
-// Load environment variables from .env file
 dotenv.config();
 
 const certPath = path.resolve('./.devServer/dboard.server+7.pem');
@@ -39,7 +38,7 @@ export default defineConfig({
     },
     proxy: {
       '/data': {
-        target: `https://${SECRET_AUDIO_CONTROL_IP_ADDRESS}`, // The base URL of the target server
+        target: `https://${SECRET_AUDIO_CONTROL_IP_ADDRESS}`,
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/data/, '/data'),

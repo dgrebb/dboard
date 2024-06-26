@@ -8,7 +8,7 @@ import { timeStringToMilliseconds } from '$utils/strings';
 export const prerender = false;
 
 const URL = '/api/v1/music';
-let refreshInterval = 5000;
+let refreshInterval = 1000;
 const requestOptions: FetchOptions = {
   method: 'GET',
   redirect: 'follow',
@@ -27,18 +27,19 @@ const createGradient = async (image: string): Promise<string | false> => {
   return albumGradient;
 };
 
-const fetchData = async (fetch: Fetch): Promise<NowPlayingData> => {
-  try {
-    const response = await fetch(URL, requestOptions);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    throw error;
-  }
-};
+// TODO: remove legacy music API
+// const fetchData = async (fetch: Fetch): Promise<NowPlayingData> => {
+//   try {
+//     const response = await fetch(URL, requestOptions);
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Error fetching data:', error);
+//     throw error;
+//   }
+// };
 
 const startInterval = (fetch: Fetch) => {
   if (interval) return;

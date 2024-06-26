@@ -19,6 +19,12 @@
     "release": "standard-version --no-verify",
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm i"
   },
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "fast-average-color": "^9.4.0",
+    "ws": "^8.17.1",
+    "xmldom": "^0.6.0"
+  },
   "devDependencies": {
     "@iconify/svelte": "^4.0.2",
     "@playwright/test": "^1.44.1",
@@ -35,7 +41,6 @@
     "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "autoprefixer": "^10.4.19",
-    "canvas": "^2.11.2",
     "commitizen": "^4.3.0",
     "cors": "^2.8.5",
     "cz-conventional-changelog": "^3.3.0",
@@ -44,7 +49,6 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.40.0",
-    "fast-average-color": "^9.4.0",
     "flowbite": "^2.3.0",
     "flowbite-svelte": "^0.46.4",
     "flowbite-svelte-icons": "^1.6.1",
@@ -65,9 +69,7 @@
     "tslib": "^2.6.3",
     "typescript": "^5.4.5",
     "vite": "^5.3.1",
-    "vitest": "^1.6.0",
-    "ws": "^8.17.1",
-    "xmldom": "^0.6.0"
+    "vitest": "^1.6.0"
   },
   "config": {
     "commitizen": {
