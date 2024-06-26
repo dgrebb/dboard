@@ -1,7 +1,6 @@
 import type { Fetch, FetchOptions, NowPlayingData } from '$root/lib/types';
 import { fetchMediaInfo } from '$utils/wiim';
 import { json, type RequestEvent } from '@sveltejs/kit';
-import type { LoadEvent } from '@sveltejs/kit';
 import { colorThief } from '$utils/colorThief';
 import { homeState } from '$root/lib/stores';
 import { timeStringToMilliseconds } from '$utils/strings';
@@ -14,6 +13,10 @@ const requestOptions: FetchOptions = {
   method: 'GET',
   redirect: 'follow',
 };
+
+let clients: Set<ReadableStreamDefaultController<Uint8Array>> = new Set();
+let interval: NodeJS.Timeout | null = null;
+let previousState: NowPlayingData = homeState.nowPlaying();
 
 const createGradient = async (image: string): Promise<string | false> => {
   if (typeof image !== 'string') return false;
@@ -37,80 +40,83 @@ const fetchData = async (fetch: Fetch): Promise<NowPlayingData> => {
   }
 };
 
-export const GET = async (event: RequestEvent | LoadEvent) => {
-  let previousState: NowPlayingData = homeState.nowPlaying();
+const startInterval = (fetch: Fetch) => {
+  if (interval) return;
+
+  interval = setInterval(async () => {
+    try {
+      const data = await fetchMediaInfo(fetch);
+      if (data.totalTime && data.relativeTimePosition) {
+        refreshInterval =
+          timeStringToMilliseconds(data.totalTime) -
+          timeStringToMilliseconds(data.relativeTimePosition);
+      }
+      if (
+        (data && previousState?.title !== data.title) ||
+        previousState?.loved !== data.loved
+      ) {
+        const timestamp = Date.now();
+        let art: string =
+          data.art || previousState.art || '/data/AirplayArtWorkData.png';
+        if (previousState.album !== data.album) {
+          art = `${art}?ts=${timestamp}`;
+        }
+        const gradient = await createGradient(art);
+        const nowPlaying: NowPlayingData = {
+          ...previousState,
+          ...data,
+          art,
+          ...(typeof gradient === 'string' ? { gradient } : {}),
+        };
+        previousState = nowPlaying;
+        const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
+        broadcast(new TextEncoder().encode(stream));
+      }
+    } catch (error) {
+      console.error('Error fetching or broadcasting data:', error);
+    }
+  }, refreshInterval);
+};
+
+const broadcast = (message: Uint8Array) => {
+  clients.forEach((client) => {
+    try {
+      client.enqueue(message);
+    } catch (error) {
+      console.error('Error broadcasting to client:', error);
+      clients.delete(client);
+    }
+  });
+};
+
+export const GET = async (event: RequestEvent) => {
   const fetch = event.fetch as Fetch;
 
-  try {
-    let interval: NodeJS.Timeout;
-    let controllerClosed = false;
+  const readable = new ReadableStream({
+    start(controller) {
+      clients.add(controller);
 
-    const readable = new ReadableStream({
-      async start(controller) {
-        const encoder = new TextEncoder();
+      const cleanup = () => {
+        clients.delete(controller);
+      };
 
-        const fetchDataAndEnqueue = async (fetch: Fetch) => {
-          try {
-            if (controllerClosed) return;
-            // TODO: Refactor with WiiM API in `$lib/utils/wiim.ts`
-            const data = await fetchMediaInfo(fetch);
-            // const data = await fetchData(fetch);
-            if (data.totalTime && data.relativeTimePosition) {
-              refreshInterval =
-                timeStringToMilliseconds(data.totalTime) -
-                timeStringToMilliseconds(data.relativeTimePosition);
-            }
-            if (
-              (data && previousState?.title !== data.title) ||
-              previousState?.loved !== data.loved
-            ) {
-              const timestamp = Date.now();
-              let art: string =
-                data.art || previousState.art || '/data/AirplayArtWorkData.png';
-              if (previousState.album !== data.album) {
-                art = `${art}?ts=${timestamp}`;
-              }
-              const gradient = await createGradient(art);
-              const nowPlaying: NowPlayingData = {
-                ...previousState,
-                ...data,
-                art,
-                ...(typeof gradient === 'string' ? { gradient } : {}),
-              };
-              previousState = nowPlaying;
-              const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
-              controller.enqueue(encoder.encode(stream));
-            }
-          } catch (error) {
-            console.error('Error fetching or enqueuing data:', error);
-          }
-        };
+      // Handle client disconnection
+      event.request.signal.addEventListener('abort', cleanup);
 
-        await fetchDataAndEnqueue(fetch); // Fetch initial data
+      if (clients.size === 1) {
+        startInterval(fetch);
+      }
+    },
+    cancel() {
+      clients.delete(readable.getReader());
+    },
+  });
 
-        if (!interval) {
-          interval = setInterval(async () => {
-            fetchDataAndEnqueue(fetch);
-          }, refreshInterval);
-        }
-      },
-      async cancel() {
-        controllerClosed = true;
-        clearInterval(interval);
-      },
-    });
-
-    return new Response(readable, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
-      },
-    });
-  } catch (error) {
-    let message = 'Unknown Error';
-    if (error instanceof Error) message = error.message;
-    console.error('Stream setup error:', message);
-    return json({ message });
-  }
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      Connection: 'keep-alive',
+    },
+  });
 };
