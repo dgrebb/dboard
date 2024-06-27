@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=dboard.server PORT=443 vite dev --config vite.config.dev.ts --host --port 443",
-    "start": "sudo PORT=443 HOST=dboard.server node build/index.js",
+    "start": "sudo NODE_TLS_REJECT_UNAUTHORIZED=0 PORT=443 HOST=dboard.server node server.js",
     "build": "NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=dboard.server PORT=443 vite build --config vite.config.prod.ts",
     "build.dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=dboard.server PORT=443 vite build --config vite.config.dev.ts --mode development",
     "preview": "NODE_TLS_REJECT_UNAUTHORIZED=0 vite preview --config vite.config.prod.ts --host --port 443",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "canvas": "^2.11.2",
+    "express": "^4.19.2",
     "fast-average-color": "^9.4.0",
     "ws": "^8.17.1",
     "xmldom": "^0.6.0"
