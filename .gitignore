@@ -12,4 +12,4 @@ static/album*.png
 static/music.json
 static/video
 .vscode/*
-.devServer/*
+.config/ssl/*
