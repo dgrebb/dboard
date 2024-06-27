@@ -17,7 +17,7 @@ export const createHomeStore = () => {
     nowPlaying: {
       artist: '',
       title: '',
-      art: '/data/AirplayArtWorkData.png',
+      art: '/missing-album-art.png',
       gradient: 'radial-gradient(at right top, darkblue, #1f1f1f)',
       album: '',
       loved: false,
