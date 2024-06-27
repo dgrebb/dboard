@@ -106,12 +106,12 @@ const parsePositionInfoResponse = (responseXml: string): PositionInfo => {
 };
 
 interface NowPlayingInfo {
-  album: string | null;
-  artist: string | null;
-  title: string | null;
+  album: string;
+  artist: string;
+  title: string;
   art: string | null;
-  totalTime: string | null;
-  relativeTimePosition: string | null;
+  totalTime: string;
+  relativeTimePosition: string;
   loved: boolean;
 }
 

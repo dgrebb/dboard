@@ -17,21 +17,23 @@
   let retryTimeout: NodeJS.Timeout;
   let retryCount = 0;
   let eventSource: EventSource | null = null;
-  let title = $state('');
-  let album = $state('');
-  let artist = $state('');
-  let loved = $state(false);
-  let art = $state('/album_art.png');
-  let gradient = $state(homeState.nowPlayingGradient());
+  let title: string = $state('');
+  let album: string = $state('');
+  let artist: string = $state('');
+  let loved: boolean = $state(false);
+  let art: string = $state('/album_art.png');
+  let gradient: string = $state(homeState.nowPlayingGradient());
   let previousGradient = $state(
     'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0)); --previousGradient: linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
   );
-  let modal = $state(localStorage.getItem('musicModal') === 'true' || false);
+  let modal: boolean = $state(
+    localStorage.getItem('musicModal') === 'true' || false
+  );
   let difference: string | number = $state('0');
-  let direction = $state('Flat');
-  let directionIcon = $state(mapNightScoutDirectionIcon());
-  let currentValue = $state(0);
-  let locationName: string = $derived(homeState.locationName());
+  let direction: string | null = $state('Flat');
+  let directionIcon: string = $state(mapNightScoutDirectionIcon());
+  let currentValue: number | null = $state(0);
+  let locationName: string | null = $derived(homeState.locationName());
   let transition: boolean = $state(false);
 
   async function startSubscription() {

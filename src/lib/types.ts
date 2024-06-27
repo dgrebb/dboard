@@ -299,10 +299,10 @@ export type HealthData = {
  */
 export type NowPlayingData = {
   status?: string;
-  art: string | null;
-  gradient: string | null;
-  album: string | null;
-  title: string | null;
-  artist: string | null;
-  loved: boolean | null;
+  art: string;
+  gradient: string;
+  album: string;
+  title: string;
+  artist: string;
+  loved: boolean;
 };
