@@ -10,6 +10,12 @@ import {
 
 dotenv.config();
 
+/**
+ * @warning
+ * Using self-signed certificates can make your application vulnerable to man-in-the-middle attacks.
+ * This should only be used in a trusted local development environment.
+ * Do not use self-signed certificates in production environments as they do not provide the same level of security as certificates issued by a trusted Certificate Authority.
+ */
 const certPath = path.resolve('./.config/ssl/dboard.server+7.pem');
 const keyPath = path.resolve('./.config/ssl/dboard.server+7-key.pem');
 
@@ -35,6 +41,8 @@ export default defineConfig({
     https: {
       key: fs.readFileSync(keyPath),
       cert: fs.readFileSync(certPath),
+      rejectUnauthorized:
+        false /* WARNING: this makes TLS connections and HTTPS requests insecure by disabling certificate verification. */,
     },
     proxy: {
       '/data': {

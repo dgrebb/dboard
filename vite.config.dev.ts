@@ -1,3 +1,15 @@
+/**
+ * @warning
+ * Setting NODE_TLS_REJECT_UNAUTHORIZED to '0' makes TLS connections and HTTPS
+ * requests insecure by disabling certificate verification.
+ * This should only be used in a trusted local development environment.
+ * Do not use this setting in production environments as it exposes the
+ * application to security vulnerabilities.
+ * @see {@link setupInsecureTLS}
+ */
+import { setupInsecureTLS } from './server';
+setupInsecureTLS();
+
 import { sveltekit } from '@sveltejs/kit/vite';
 import dotenv from 'dotenv';
 import fs from 'fs';
@@ -11,6 +23,15 @@ import {
 // Load environment variables from .env file
 dotenv.config();
 
+/**
+ * @warning
+ * Using self-signed certificates can make your application vulnerable to man-in-
+ * the-middle attacks.
+ * This should only be used in a trusted local development environment.
+ * Do not use self-signed certificates in production environments as they do not
+ * provide the same level of security as certificates issued by a trusted Certificate
+ * Authority.
+ */
 const certPath = path.resolve('./.config/ssl/dboard.server+7.pem');
 const keyPath = path.resolve('./.config/ssl/dboard.server+7-key.pem');
 
@@ -36,10 +57,13 @@ export default defineConfig({
     https: {
       key: fs.readFileSync(keyPath),
       cert: fs.readFileSync(certPath),
+      rejectUnauthorized:
+        false /* WARNING: this makes TLS connections and HTTPS requests insecure by 
+        disabling certificate verification. */,
     },
     proxy: {
       '/data': {
-        target: `https://${SECRET_AUDIO_CONTROL_IP_ADDRESS}`, // The base URL of the target server
+        target: `https://${SECRET_AUDIO_CONTROL_IP_ADDRESS}`,
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/data/, '/data'),
