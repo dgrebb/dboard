@@ -10,8 +10,8 @@ import {
 
 dotenv.config();
 
-const certPath = path.resolve('./.devServer/dboard.server+7.pem');
-const keyPath = path.resolve('./.devServer/dboard.server+7-key.pem');
+const certPath = path.resolve('./.config/ssl/dboard.server+7.pem');
+const keyPath = path.resolve('./.config/ssl/dboard.server+7-key.pem');
 
 const SECRET_AUDIO_CONTROL_IP_ADDRESS =
   process.env.SECRET_AUDIO_CONTROL_IP_ADDRESS;
