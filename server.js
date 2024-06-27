@@ -3,22 +3,11 @@
  * Setting NODE_TLS_REJECT_UNAUTHORIZED to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
  * This should only be used in a trusted local development environment.
  * Do not use this setting in production environments as it exposes the application to security vulnerabilities.
+ * @see setupInsecureSSL
  */
-export const setupInsecureTLS = () => {
-  // NOTE: This silences warnings about NODE_TLS_REJECT_UNAUTHORIZED for cleaner server logs.
-  const originalEmitWarning = process.emitWarning;
-  process.emitWarning = (warning, ...args) => {
-    if (
-      typeof warning === 'string' &&
-      warning.includes('NODE_TLS_REJECT_UNAUTHORIZED')
-    ) {
-      return;
-    }
-    originalEmitWarning(warning, ...args);
-  };
-};
+import { setupInsecureSSL } from './sslConfig.js';
 
-setupInsecureTLS();
+setupInsecureSSL();
 
 import { handler } from './build/handler.js';
 import express from 'express';
