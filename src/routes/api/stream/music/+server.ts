@@ -3,7 +3,7 @@ import { fetchMediaInfo } from '$utils/wiim';
 import type { RequestEvent } from '@sveltejs/kit';
 import { colorThief } from '$utils/colorThief';
 import { homeState } from '$root/lib/stores';
-import { timeStringToMilliseconds } from '$utils/strings';
+import { timeStringToMilliseconds, timeStringToSeconds } from '$utils/strings';
 
 export const prerender = false;
 
@@ -37,11 +37,16 @@ const broadcast = (message: Uint8Array) => {
 };
 
 // Send the initial state to a new client
-const sendInitialState = (
+const sendInitialState = async (
   client: ReadableStreamDefaultController<Uint8Array>
 ) => {
   try {
-    const stream = `data: ${JSON.stringify(previousState)}\n\n`;
+    const data = await fetchMediaInfo(fetch);
+    const state = {
+      ...previousState,
+      ...data,
+    };
+    const stream = `data: ${JSON.stringify(state)}\n\n`;
     if (client.desiredSize !== null) {
       client.enqueue(new TextEncoder().encode(stream));
     }
@@ -57,19 +62,22 @@ const startInterval = (fetch: Fetch) => {
   interval = setInterval(async () => {
     try {
       const data = await fetchMediaInfo(fetch);
-      if (data.totalTime && data.relativeTimePosition) {
-        refreshInterval =
-          timeStringToMilliseconds(data.totalTime) -
-          timeStringToMilliseconds(data.relativeTimePosition);
+      const { totalTime, relativeTimePosition } = data;
+      const total: number = timeStringToSeconds(totalTime);
+      const relative: number = timeStringToSeconds(relativeTimePosition);
+      if (total && relative) {
+        refreshInterval = total;
       }
       if (
-        (data && previousState?.title !== data.title) ||
-        previousState?.loved !== data.loved
+        ((data && previousState?.title !== data.title) ||
+          previousState?.loved !== data.loved) &&
+        timeStringToSeconds(data.relativeTimePosition) < 30
       ) {
         const timestamp = Date.now();
         let art: string =
           data.art || previousState.art || '/data/AirplayArtWorkData.png';
         if (previousState.album !== data.album) {
+          console.log('art changed');
           art = `${art}?ts=${timestamp}`;
         }
 
@@ -103,9 +111,9 @@ export const GET = async (event: RequestEvent) => {
   const fetch = event.fetch as Fetch;
 
   const readable = new ReadableStream<Uint8Array>({
-    start(controller) {
+    async start(controller) {
       // Send initial state to the new client
-      sendInitialState(controller);
+      await sendInitialState(controller);
 
       clients.add(controller);
 

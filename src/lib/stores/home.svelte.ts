@@ -4,6 +4,7 @@ import type {
   NowPlayingData,
   WeatherData,
 } from '$lib/types';
+import { timeStringToSeconds } from '$utils/strings';
 
 export const createHomeStore = () => {
   let homeStore: HomeData = $state({
@@ -15,12 +16,15 @@ export const createHomeStore = () => {
       longitude: 0,
     },
     nowPlaying: {
+      status: 'unknown',
       artist: '',
-      title: '',
+      album: '',
       art: '/missing-album-art.png',
       gradient: 'radial-gradient(at right top, darkblue, #1f1f1f)',
-      album: '',
       loved: false,
+      relativeTimePosition: '00:00:00',
+      title: '',
+      totalTime: '00:00:00',
     },
     weather: {
       success: false,
@@ -38,6 +42,18 @@ export const createHomeStore = () => {
 
     nowPlayingGradient: (): string => {
       return homeStore.nowPlaying.gradient;
+    },
+
+    nowPlayingTotalTime: (): number => {
+      const time = timeStringToSeconds(homeStore.nowPlaying.totalTime);
+      return time;
+    },
+
+    nowPlayingRelativeTimePosition: (): number => {
+      const time = timeStringToSeconds(
+        homeStore.nowPlaying.relativeTimePosition
+      );
+      return time;
     },
 
     weather: () => {
@@ -68,6 +84,7 @@ export const createHomeStore = () => {
         },
       };
       homeStore = state;
+      // console.log('🚀 ~ setNowPlaying: ~ state:', state);
     },
 
     setWeather: (weather: WeatherData) => {

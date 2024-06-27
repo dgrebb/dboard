@@ -37,7 +37,7 @@
   }
 }
 
-.audio-controls {
+.playback-controls {
   position: absolute;
   .current-music__modal & {
     position: relative;
@@ -111,7 +111,7 @@
   }
   .album-art {
     position: relative;
-    img + img {
+    & + .album-art {
       display: none;
     }
   }
@@ -135,7 +135,7 @@
     h3 {
       color: var(--skyBaseColor);
       filter: invert(1);
-      transition: color 3s ease-in;
+      /* transition: color 3s ease-in; */
     }
   }
   img {
@@ -204,26 +204,26 @@
       transition: opacity 3s ease-in-out;
     }
     &::before {
-      background: var(--previousGradient);
-      z-index: -1;
-      opacity: 1;
+      z-index: 0;
+      opacity: 0;
+      background: var(--nextGradient);
       /* TODO: Explore layers and opacity between album gradient and dboard background */
       /* Look into perf implications - use the opacity below */
       /* opacity: 0.67; */
     }
     &::after {
-      background: var(--nextGradient);
-      z-index: 1;
-      opacity: 0;
+      background: var(--previousGradient);
+      z-index: -1;
+      opacity: 1;
     }
 
     &.transition {
       background: var(--previousGradient);
       &::before {
-        opacity: 0;
+        opacity: 1;
       }
       &::after {
-        opacity: 1;
+        opacity: 0;
         /* TODO: Explore layers and opacity between album gradient and dboard background */
         /* Look into perf implications - use the opacity below */
         /* opacity: 0.67; */
@@ -248,7 +248,6 @@
         justify-content: end;
       }
       @media screen and (min-width: 1900px) {
-        width: 100%;
         justify-content: center;
       }
     }
@@ -257,6 +256,11 @@
     img {
       @media screen and (min-width: 1200px) {
         min-width: 512px;
+        max-width: 512px;
+      }
+      @media screen and (min-width: 1900px) {
+        min-width: 512px;
+        max-width: 512px;
       }
     }
     .album-art {
