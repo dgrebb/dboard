@@ -1,20 +1,15 @@
-import type { Fetch, FetchOptions, NowPlayingData } from '$root/lib/types';
+import type { Fetch, NowPlayingData } from '$lib/types';
 import { fetchMediaInfo } from '$utils/wiim';
-import { json, type RequestEvent } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
 import { colorThief } from '$utils/colorThief';
 import { homeState } from '$root/lib/stores';
 import { timeStringToMilliseconds } from '$utils/strings';
 
 export const prerender = false;
 
-const URL = '/api/v1/music';
 let refreshInterval = 1000;
-const requestOptions: FetchOptions = {
-  method: 'GET',
-  redirect: 'follow',
-};
 
-let clients: Set<ReadableStreamDefaultController<Uint8Array>> = new Set();
+const clients: Set<ReadableStreamDefaultController<Uint8Array>> = new Set();
 let interval: NodeJS.Timeout | null = null;
 let previousState: NowPlayingData = homeState.nowPlaying();
 
@@ -27,19 +22,30 @@ const createGradient = async (image: string): Promise<string | false> => {
   return albumGradient;
 };
 
-// TODO: remove legacy music API
-// const fetchData = async (fetch: Fetch): Promise<NowPlayingData> => {
-//   try {
-//     const response = await fetch(URL, requestOptions);
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-//     return await response.json();
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//     throw error;
-//   }
-// };
+// Broadcast the current state to all clients
+const broadcast = (message: Uint8Array) => {
+  clients.forEach((client) => {
+    try {
+      client.enqueue(message);
+    } catch (error) {
+      console.error('Error broadcasting to client:', error);
+      clients.delete(client);
+    }
+  });
+};
+
+// Send the initial state to a new client
+const sendInitialState = (
+  client: ReadableStreamDefaultController<Uint8Array>
+) => {
+  try {
+    const stream = `data: ${JSON.stringify(previousState)}\n\n`;
+    client.enqueue(new TextEncoder().encode(stream));
+  } catch (error) {
+    console.error('Error sending initial state to client:', error);
+    clients.delete(client);
+  }
+};
 
 const startInterval = (fetch: Fetch) => {
   if (interval) return;
@@ -82,7 +88,6 @@ const startInterval = (fetch: Fetch) => {
           ...(typeof gradient === 'string' ? { gradient } : {}),
         };
         previousState = nowPlaying;
-        console.log('🚀 ~ interval=setInterval ~ nowPlaying:', nowPlaying);
         const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
         broadcast(new TextEncoder().encode(stream));
       }
@@ -92,26 +97,22 @@ const startInterval = (fetch: Fetch) => {
   }, refreshInterval);
 };
 
-const broadcast = (message: Uint8Array) => {
-  clients.forEach((client) => {
-    try {
-      client.enqueue(message);
-    } catch (error) {
-      console.error('Error broadcasting to client:', error);
-      clients.delete(client);
-    }
-  });
-};
-
 export const GET = async (event: RequestEvent) => {
   const fetch = event.fetch as Fetch;
 
-  const readable = new ReadableStream({
+  const readable = new ReadableStream<Uint8Array>({
     start(controller) {
+      // Send initial state to the new client
+      sendInitialState(controller);
+
       clients.add(controller);
 
       const cleanup = () => {
         clients.delete(controller);
+        if (clients.size === 0 && interval) {
+          clearInterval(interval);
+          interval = null;
+        }
       };
 
       // Handle client disconnection
@@ -122,7 +123,11 @@ export const GET = async (event: RequestEvent) => {
       }
     },
     cancel() {
-      clients.delete(readable.getReader());
+      clients.forEach((client) => {
+        if (client.desiredSize === null) {
+          clients.delete(client);
+        }
+      });
     },
   });
 
