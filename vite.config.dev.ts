@@ -1,14 +1,13 @@
 /**
  * @warning
- * Setting NODE_TLS_REJECT_UNAUTHORIZED to '0' makes TLS connections and HTTPS
- * requests insecure by disabling certificate verification.
+ * Setting NODE_TLS_REJECT_UNAUTHORIZED to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
  * This should only be used in a trusted local development environment.
- * Do not use this setting in production environments as it exposes the
- * application to security vulnerabilities.
- * @see {@link setupInsecureTLS}
+ * Do not use this setting in production environments as it exposes the application to security vulnerabilities.
+ * @see setupInsecureSSL
  */
-import { setupInsecureTLS } from './server';
-setupInsecureTLS();
+import { setupInsecureSSL } from './sslConfig.js';
+
+setupInsecureSSL();
 
 import { sveltekit } from '@sveltejs/kit/vite';
 import dotenv from 'dotenv';
