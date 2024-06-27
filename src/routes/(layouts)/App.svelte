@@ -69,7 +69,7 @@
     on:establishWebSocket={establishWebSocket}
   /> -->
   <p class="time">
-    {hh}:{mm} |
+    {hh}:{mm}
   </p>
   <Controls />
 </header>
