@@ -28,14 +28,6 @@ const randomizeColor = (color, random) => {
 export const colorThief = async (
   imageSrc: string
 ): Promise<string | boolean> => {
-  if (!imageSrc) {
-    console.log(
-      imageSrc,
-      `Image source is missing. Gradient cannot be processed.`
-    );
-    return false;
-  }
-
   const imageUrl = imageSrc.includes('http')
     ? imageSrc
     : `${PUBLIC_HOST_URL}${imageSrc}`;
@@ -88,6 +80,11 @@ export const colorThief = async (
     return gradient;
   } catch (error) {
     console.error(error);
+    console.log([
+      `Image source is missing. Gradient cannot be processed.`,
+      `Original Source: ${imageSrc}`,
+      `Processed Upstream Request: ${imageUrl}`,
+    ]);
     return false;
   } finally {
     fac.destroy();
