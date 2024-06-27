@@ -26,7 +26,9 @@ const createGradient = async (image: string): Promise<string | false> => {
 const broadcast = (message: Uint8Array) => {
   clients.forEach((client) => {
     try {
-      client.enqueue(message);
+      if (client.desiredSize !== null) {
+        client.enqueue(message);
+      }
     } catch (error) {
       console.error('Error broadcasting to client:', error);
       clients.delete(client);
@@ -40,7 +42,9 @@ const sendInitialState = (
 ) => {
   try {
     const stream = `data: ${JSON.stringify(previousState)}\n\n`;
-    client.enqueue(new TextEncoder().encode(stream));
+    if (client.desiredSize !== null) {
+      client.enqueue(new TextEncoder().encode(stream));
+    }
   } catch (error) {
     console.error('Error sending initial state to client:', error);
     clients.delete(client);
