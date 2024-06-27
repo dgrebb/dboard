@@ -1,16 +1,13 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
 
-  /**
-   * Props for the AudioControls component.
-   */
   type Props = {
+    setTrackChange: (state: boolean) => void;
     classes: string;
   };
 
-  export let classes: string;
+  let { classes, setTrackChange }: Props = $props();
 
   /**
    * Send a command to control music playback.
@@ -20,7 +17,24 @@
    */
   const sendCommand = async (event: MouseEvent, command: string) => {
     event.stopPropagation();
-    await fetch(`/api/control/music/${command}`, { method: 'POST' });
+    try {
+      await fetch(`/api/control/music/${command}`, { method: 'POST' });
+    } catch (e) {
+      console.log(`Error processing the music control:`);
+      console.error(e);
+    }
+  };
+
+  const handleNext = (e: MouseEvent) => {
+    e.preventDefault();
+    setTrackChange(true);
+    sendCommand(e, 'next');
+  };
+
+  const handlePrev = (e: MouseEvent) => {
+    e.preventDefault();
+    setTrackChange(true);
+    sendCommand(e, 'prev');
   };
 
   onMount(() => {
@@ -36,9 +50,7 @@
 </script>
 
 <div class={classes}>
-  <button
-    class="bounce-ui prev"
-    onclick={(e: MouseEvent) => sendCommand(e, 'prev')}
+  <button class="bounce-ui prev" onclick={(e: MouseEvent) => handlePrev(e)}
     ><Icon icon="majesticons:next-circle" height={33} width={33} /></button
   >
   <button
@@ -49,7 +61,7 @@
   <button class="bounce-ui" onclick={(e: MouseEvent) => sendCommand(e, 'pause')}
     ><Icon icon="bi:pause-circle-fill" height={33} width={33} /></button
   >
-  <button class="bounce-ui" onclick={(e: MouseEvent) => sendCommand(e, 'next')}
+  <button class="bounce-ui" onclick={(e: MouseEvent) => handleNext(e)}
     ><Icon icon="majesticons:next-circle" height={33} width={33} /></button
   >
 </div>

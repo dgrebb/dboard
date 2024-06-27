@@ -63,3 +63,14 @@ export const timeStringToMilliseconds = (time: string): number => {
   const [hours, minutes, seconds] = time.split(':').map(Number);
   return (hours * 60 * 60 + minutes * 60 + seconds) * 1000;
 };
+
+/**
+ * Converts a time string in the format "HH:MM:SS" to seconds.
+ *
+ * @param {string} time - The time string to convert.
+ * @returns {number} The time in milliseconds.
+ */
+export const timeStringToSeconds = (time: string): number => {
+  const [hours, minutes, seconds] = time.split(':').map(Number);
+  return hours * 60 * 60 + minutes * 60 + seconds;
+};
