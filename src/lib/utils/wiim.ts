@@ -5,6 +5,19 @@ import {
 import type { Fetch } from '../types';
 import { DOMParser } from 'xmldom';
 
+/**
+ * WiiM API interface.
+ */
+interface NowPlayingAPI {
+  album: string;
+  artist: string;
+  title: string;
+  art: string | null;
+  totalTime: string;
+  relativeTimePosition: string;
+  loved: boolean;
+}
+
 interface MediaInfo {
   nrTracks: string | null;
   mediaDuration: string | null;
@@ -105,17 +118,7 @@ const parsePositionInfoResponse = (responseXml: string): PositionInfo => {
   };
 };
 
-interface NowPlayingInfo {
-  album: string;
-  artist: string;
-  title: string;
-  art: string | null;
-  totalTime: string;
-  relativeTimePosition: string;
-  loved: boolean;
-}
-
-export const fetchMediaInfo = async (fetch: Fetch): Promise<NowPlayingInfo> => {
+export const fetchMediaInfo = async (fetch: Fetch): Promise<NowPlayingAPI> => {
   const controlUrl = `http://${SECRET_AUDIO_CONTROL_IP_ADDRESS}:${SECRET_WIIM_SOAP_API_PORT}/upnp/control/rendertransport1`;
 
   try {
@@ -147,7 +150,7 @@ export const fetchMediaInfo = async (fetch: Fetch): Promise<NowPlayingInfo> => {
       return element ? element.textContent : null;
     };
 
-    const nowPlayingInfo: NowPlayingInfo = {
+    const nowPlayingInfo: NowPlayingAPI = {
       album: extractDIDLValue('upnp:album'),
       artist: extractDIDLValue('upnp:artist'),
       title: extractDIDLValue('dc:title'),
