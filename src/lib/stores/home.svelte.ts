@@ -4,7 +4,6 @@ import type {
   NowPlayingData,
   WeatherData,
 } from '$lib/types';
-import { timeStringToSeconds } from '$utils/strings';
 
 export const createHomeStore = () => {
   let homeStore: HomeData = $state({
@@ -42,18 +41,6 @@ export const createHomeStore = () => {
 
     nowPlayingGradient: (): string => {
       return homeStore.nowPlaying.gradient;
-    },
-
-    nowPlayingTotalTime: (): number => {
-      const time = timeStringToSeconds(homeStore.nowPlaying.totalTime);
-      return time;
-    },
-
-    nowPlayingRelativeTimePosition: (): number => {
-      const time = timeStringToSeconds(
-        homeStore.nowPlaying.relativeTimePosition
-      );
-      return time;
     },
 
     weather: () => {

@@ -1,15 +1,11 @@
 <script lang="ts">
-  import { Button } from 'flowbite-svelte';
-  import {
-    AdjustmentsHorizontalSolid,
-    ArrowUpDownOutline,
-    CloseCircleOutline,
-    RefreshOutline,
-  } from 'flowbite-svelte-icons';
-  import { clickOutside } from '$lib/actions/clickOutside';
   import './controls.css';
+  import { Button } from 'flowbite-svelte';
+  import { clickOutside } from '$lib/actions/clickOutside';
 
   import { createEventDispatcher } from 'svelte';
+  import { homeState } from '$root/lib/stores';
+  import Icon from '@iconify/svelte';
 
   // Define the component props
   type Props = {
@@ -20,6 +16,21 @@
   let open = $state(false);
   let toggleable = $state(false);
   let showVersions = $state(false);
+  let showStateDebug = $state(false);
+
+  let iconSize = 27;
+
+  let {
+    status,
+    artist,
+    album,
+    art,
+    gradient,
+    loved,
+    relativeTimePosition,
+    title,
+    totalTime,
+  } = $state(homeState.nowPlaying());
 
   // Destructure props with default values
   let { webSocketEstablished = false }: Props = $props();
@@ -76,6 +87,24 @@
       showVersions = false;
     }
   };
+
+  const toggleShowStateDebug = (): void => {
+    showStateDebug = !showStateDebug;
+  };
+
+  $effect(() => {
+    ({
+      status,
+      artist,
+      album,
+      art,
+      gradient,
+      loved,
+      relativeTimePosition,
+      title,
+      totalTime,
+    } = homeState.nowPlaying());
+  });
 </script>
 
 <!-- Component Template -->
@@ -86,26 +115,36 @@
   <Button
     size="sm"
     color="light"
-    class={`controls-toggle w-full self-end border-opacity-0 bg-opacity-25 opacity-0 bg-blend-overlay mix-blend-difference transition-opacity focus:opacity-100 active:opacity-100 ${
-      open ? 'w-auto opacity-100' : 'w-full opacity-0'
-    }`}
+    class={`absolute right-3 top-3 self-end border-opacity-0 bg-opacity-25 opacity-0 bg-blend-overlay mix-blend-difference transition-opacity ${
+      open ? 'opacity-100' : 'opacity-0'
+    } controls-toggle`}
     on:click={toggleControls}
     on:hover={enableToggle}
     on:blur={disableToggle}
   >
+    <Icon
+      icon="solar:settings-outline"
+      height={iconSize}
+      width={iconSize}
+      class="mr-3"
+    />
     {open ? 'Hide' : 'Show'} Controls
   </Button>
 
   {#if open}
     <div class="controls absolute left-3 top-3 z-10 w-4/5">
-      <Button
+      <!-- <Button
         size="sm"
         disabled={!webSocketEstablished}
         color="dark"
         class="control border-opacity-0 bg-opacity-25 text-green-500 bg-blend-overlay mix-blend-difference"
         on:click={closeSocket}
       >
-        <CloseCircleOutline />
+        <Icon
+          icon="solar:plug-circle-outline"
+          height={iconSize}
+          width={iconSize}
+        />
       </Button>
 
       <Button
@@ -115,8 +154,12 @@
         class="control border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
         on:click={establishWebSocket}
       >
-        <ArrowUpDownOutline />
-      </Button>
+        <Icon
+          icon="solar:plug-circle-outline"
+          height={iconSize}
+          width={iconSize}
+        />
+      </Button> -->
 
       <Button
         size="sm"
@@ -124,17 +167,37 @@
         class="control border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
         on:click={refreshDboard}
       >
-        <RefreshOutline />
+        <Icon icon="solar:refresh-outline" height={iconSize} width={iconSize} />
       </Button>
 
       <div class="version-selector relative">
-        <Button
+        <!-- <Button
           size="sm"
           color="dark"
           class="control border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
           on:click={toggleVersions}
         >
-          <AdjustmentsHorizontalSolid />Version
+          <Icon
+            icon="solar:branching-paths-down-outline"
+            height={iconSize}
+            width={iconSize}
+            class="mr-3"
+          />
+          Version
+        </Button> -->
+        <Button
+          size="sm"
+          color="dark"
+          class="control border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
+          on:click={toggleShowStateDebug}
+        >
+          <Icon
+            icon="solar:bug-outline"
+            height={iconSize}
+            width={iconSize}
+            class="mr-3"
+          />
+          Debug
         </Button>
 
         {#if showVersions}
@@ -149,3 +212,60 @@
     </div>
   {/if}
 </div>
+
+{#if showStateDebug}
+  <dl class="state-list absolute left-9 top-20 block bg-blend-difference">
+    <dt>status:</dt>
+    <dd>{status}</dd>
+    <dt>artist:</dt>
+    <dd>{artist}</dd>
+    <dt>album:</dt>
+    <dd>{album}</dd>
+    <dt>art:</dt>
+    <dd>{art}</dd>
+    <dt>gradient:</dt>
+    <dd>{gradient}</dd>
+    <dt>loved:</dt>
+    <dd>{loved}</dd>
+    <dt>relativeTimePosition:</dt>
+    <dd>{relativeTimePosition}</dd>
+    <dt>title:</dt>
+    <dd>{title}</dd>
+    <dt>totalTime:</dt>
+    <dd>{totalTime}</dd>
+  </dl>
+{/if}
+
+<style lang="postcss">
+  .state-list {
+    display: inline-block;
+    text-color: white;
+    mix-blend-mode: difference;
+
+    &::before {
+      content: ' ';
+      display: table;
+    }
+
+    &::after {
+      clear: both;
+    }
+
+    dt {
+      margin-right: 5px;
+      display: inline-block;
+      float: left;
+      clear: left;
+    }
+
+    dd {
+      display: inline-block;
+      float: left;
+      padding-left: 0;
+      margin-left: 0;
+    }
+    dt {
+      font-weight: bold;
+    }
+  }
+</style>

@@ -1,9 +1,9 @@
 import type { Fetch, NowPlayingData } from '$lib/types';
+import { homeState } from '$root/lib/stores';
+import { colorThief } from '$utils/colorThief';
+import { timeStringToSeconds } from '$utils/strings';
 import { fetchMediaInfo } from '$utils/wiim';
 import type { RequestEvent } from '@sveltejs/kit';
-import { colorThief } from '$utils/colorThief';
-import { homeState } from '$root/lib/stores';
-import { timeStringToMilliseconds, timeStringToSeconds } from '$utils/strings';
 
 export const prerender = false;
 
@@ -13,13 +13,16 @@ const clients: Set<ReadableStreamDefaultController<Uint8Array>> = new Set();
 let interval: NodeJS.Timeout | null = null;
 let previousState: NowPlayingData = homeState.nowPlaying();
 
-const createGradient = async (image: string): Promise<string | false> => {
+const createGradient = async (image: string): Promise<string | boolean> => {
   if (typeof image !== 'string') return false;
-  let albumGradient: string | boolean = false;
-  await colorThief(image)
-    .then((gradient) => (albumGradient = gradient))
-    .catch((error) => console.error(error));
-  return albumGradient;
+
+  try {
+    const gradient = await colorThief(image);
+    return gradient;
+  } catch (error) {
+    console.error('Error creating gradient:', error);
+    return false;
+  }
 };
 
 // Broadcast the current state to all clients
@@ -63,24 +66,22 @@ const startInterval = (fetch: Fetch) => {
     try {
       const data = await fetchMediaInfo(fetch);
       const { totalTime, relativeTimePosition } = data;
-      const total: number = timeStringToSeconds(totalTime);
-      const relative: number = timeStringToSeconds(relativeTimePosition);
+      const total = timeStringToSeconds(totalTime);
+      const relative = timeStringToSeconds(relativeTimePosition);
       if (total && relative) {
         refreshInterval = total;
       }
-      if (
-        ((data && previousState?.title !== data.title) ||
-          previousState?.loved !== data.loved) &&
-        timeStringToSeconds(data.relativeTimePosition) < 30
-      ) {
+      const shouldBroadcast =
+        (data && previousState?.title !== data.title) ||
+        (previousState?.loved !== data.loved && relative < 30);
+
+      if (shouldBroadcast) {
         const timestamp = Date.now();
-        let art: string =
+        let art =
           data.art || previousState.art || '/data/AirplayArtWorkData.png';
         if (previousState.album !== data.album) {
-          console.log('art changed');
           art = `${art}?ts=${timestamp}`;
         }
-
         const ipPattern =
           /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?(\/[^\n?#]*)?(\?[^\n#]*)?(#.*)?$/;
         const match = art.match(ipPattern);
@@ -89,7 +90,6 @@ const startInterval = (fetch: Fetch) => {
           const query = match[5] || '';
           art = `${path}${query}`;
         }
-
         const gradient = await createGradient(art);
         const nowPlaying: NowPlayingData = {
           ...previousState,
