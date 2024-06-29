@@ -2,12 +2,13 @@
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
   import { healthState, homeState } from '$lib/stores';
   import { mapNightScoutDirectionIcon } from '$utils/nightscout';
-  import { timeStringToSeconds } from '$utils/strings';
+  import { timeStringToSeconds, formatSecondsToMinutes } from '$utils/strings';
   import Icon from '@iconify/svelte';
   import { onDestroy, onMount } from 'svelte';
-  import { blur, fade } from 'svelte/transition';
+  import { blur, crossfade, fade, fly } from 'svelte/transition';
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './PlayHead.svelte';
+  import { quintOut } from 'svelte/easing';
 
   const resubscribeInterval = 3600000; // Resubscribe every hour
 
@@ -20,7 +21,6 @@
   let eventSource: EventSource | null = null;
   let title: string = $state('');
   let album: string = $state('');
-  let previousAlbum: string = $state('Unknown');
   let artist: string = $state('');
   let loved: boolean = $state(false);
   let totalTime: string | number = $state(0);
@@ -29,9 +29,6 @@
   let playState: string = $state('loading');
   let art: string = $state('/missing-album-art.png');
   let gradient: string = $state('/missing-album-art.png');
-  let previousGradient = $state(
-    'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0)); --previousGradient: linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
-  );
   let modal: boolean = $state(
     localStorage.getItem('musicModal') === 'true' || false
   );
@@ -40,13 +37,19 @@
   let directionIcon: string = $state(mapNightScoutDirectionIcon());
   let currentValue: number | null = $state(0);
   let locationName: string | null = $derived(homeState.locationName());
+
   let showAudioPlayer: boolean = $state(false);
-  let transition: boolean = $state(false);
+  let transitionGradient: boolean = $state(false);
+  let transitionArt: boolean = $state(false);
   let timer: number = $state(0);
   let timeInterval: NodeJS.Timeout | null = $state(null);
-  let artFadeThreshhold: boolean = $state(false);
-  let trackFadeThreshhold: boolean = $state(false);
-  let animationSpeed: number = $state(5000);
+  let animationSpeed: number = $state(3333);
+  let previousAlbum: string = $state('Unknown');
+  let currentArt: string | null = $state('/missing-album-art.png');
+  let newArt: string | null = $state(null);
+  let previousGradient = $state(
+    'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
+  );
 
   async function startSubscription() {
     if (eventSource) {
@@ -57,6 +60,9 @@
 
     eventSource.onmessage = async (event) => {
       const data = JSON.parse(event.data);
+      const ipAddressPattern =
+        /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
+
       ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
       const currentSeconds = timeStringToSeconds(
         relativeTimePosition?.toString()
@@ -64,12 +70,14 @@
       totalSeconds = timeStringToSeconds(totalTime?.toString());
       let time = totalSeconds - currentSeconds;
 
-      if (timeInterval) {
-        clearInterval(timeInterval);
-        timeInterval = null;
-      }
-
       keepTime(time);
+
+      art = art.includes('/data/AirplayArtWorkData.png')
+        ? (art = art.replace(ipAddressPattern, ''))
+        : art;
+
+      newArt = art;
+
       await homeState.setNowPlaying(data);
       retryCount = 0;
       loaded = true;
@@ -100,14 +108,17 @@
 
   const keepTime = (timeRemaining: number) => {
     timer = timeRemaining;
-    if (timeInterval) return;
+    if (timeInterval) {
+      clearInterval(timeInterval);
+      timeInterval = null;
+    }
     timeInterval = setInterval(() => {
+      if (timer <= 0) return;
       timer--;
       if (timer < 5) {
-        trackFadeThreshhold = true;
-        console.log('start fading');
+        // console.log('start fading');
       }
-      artFadeThreshhold = trackFadeThreshhold && album !== previousAlbum;
+      // console.log(timer);
     }, 1000);
   };
 
@@ -125,18 +136,17 @@
     gradient = homeState.nowPlayingGradient();
     playState = 'starting';
 
-    if (transition === false) {
-      transition = true;
-    }
+    // console.log('🚀 ~ $effect ~ gradient:', gradient);
+    transitionGradient = true;
 
     return () => {
       loaded = true;
-      previousGradient = gradient;
       previousAlbum = album;
+      currentArt = art;
       setTimeout(() => {
-        transition = false;
-        artFadeThreshhold = false;
-        trackFadeThreshhold = false;
+        transitionGradient = false;
+        previousGradient = gradient;
+        transitionArt = false;
       }, delay);
     };
   });
@@ -167,18 +177,8 @@
 
   const setTrackChange = () => {
     console.log('track change with controls');
-
-    if (timeInterval) {
-      clearTimeout(timeInterval);
-      timeInterval = null;
-    }
-
-    // transition = true;
-    artFadeThreshhold = true;
-    trackFadeThreshhold = true;
-    animationSpeed = 3333;
-    artFadeThreshhold = true;
-    trackFadeThreshhold = true;
+    // timeInterval = null;
+    timer = 0;
   };
 
   onMount(async () => {
@@ -198,6 +198,35 @@
       clearTimeout(retryTimeout);
     }
   });
+
+  const preloadImage = (url: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => resolve();
+      img.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleImageLoad = () => {
+    if (newArt) {
+      preloadImage(newArt)
+        .then(() => {
+          currentArt = newArt;
+        })
+        .catch((error) => {
+          console.error('Image failed to load', error);
+        })
+        .finally(() => {
+          newArt = null; // Reset newImage
+        });
+    }
+  };
+
+  const [send, receive] = crossfade({
+    duration: (d) => Math.sqrt(d * 200),
+    easing: quintOut,
+  });
 </script>
 
 <div
@@ -205,11 +234,11 @@
 >
   {#if loaded === true}
     <!-- svelte-ignore a11y_click_events_have_key_events -->
-    {#key art}
+    {#key newArt && album !== previousAlbum}
       <div
         class="album-art"
-        out:fade={{ duration: 333 }}
-        in:fade={{ duration: 333, delay: 333 }}
+        out:fade={{ duration: animationSpeed }}
+        in:fade={{ duration: animationSpeed, delay: animationSpeed * 2 }}
       >
         <LovedHeart {loved} size={33} />
         <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
@@ -231,7 +260,7 @@
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <div
     class="current-music__modal"
-    class:transition
+    class:transitionGradient
     transition:fade
     style="--nextGradient: {gradient}; --previousGradient: {previousGradient};"
     onclick={(e) => {
@@ -272,20 +301,36 @@
     </header>
     <main class="items-between flex w-[77%] flex-col md:flex-row">
       <!-- svelte-ignore a11y_click_events_have_key_events -->
-      {#key artFadeThreshhold === true}
-        <div
-          class="album-art flex pt-3 md:flex-col md:items-start"
-          role="switch"
-          tabindex="-1"
-          aria-checked={modal}
-          onclick={(e) => toggleModal(e)}
-          out:fade={{ duration: animationSpeed }}
-          in:fade={{ duration: animationSpeed / 2, delay: animationSpeed }}
-        >
-          <LovedHeart {loved} size={77} />
-          <img src={art} alt="{album} Artwork" />
+      <div
+        class="album-art flex pt-3 md:flex-col md:items-start"
+        role="switch"
+        tabindex="-1"
+        aria-checked={modal}
+        onclick={(e) => toggleModal(e)}
+      >
+        <LovedHeart {loved} size={77} />
+        <!-- {#key art}
+          <img
+            src={art}
+            alt="{album} Artwork"
+            in:receive={{ key: newArt}}
+            out:send={{ key: currentArt }}
+          />
+        {/key} -->
+        <div class="image-container">
+          {#key currentArt}
+            <img src={currentArt} alt="{album} Artwork" transition:fade />
+          {/key}
+          {#if newArt}
+            <img
+              src={newArt}
+              alt="{album} Artwork"
+              onload={handleImageLoad}
+              transition:fade
+            />
+          {/if}
         </div>
-      {/key}
+      </div>
       {#if showAudioPlayer === true}
         <div transition:fade class="audio-player">
           <PlaybackControls
@@ -295,26 +340,45 @@
         </div>
       {/if}
     </main>
-    {#key art}
-      <footer
-        class="current-music__modal__info block text-center text-lg"
-        out:blur={{ duration: 150 }}
-        in:blur={{ duration: 333, delay: 150 }}
-      >
-        {#key trackFadeThreshhold === true}
-          <h2 class="text-fuchsia-200">{title}</h2>
-          <h3 class="text-fuchsia-200">{album}</h3>
-          <h1 class="justify-center text-3xl text-white">{artist}</h1>
-          {#if timer}
-            <PlayHead
-              total={typeof totalSeconds === 'number' ? totalSeconds : 0}
-              current={timer}
-            />
-          {/if}
-          <h1 class="justify-center text-3xl text-white">{timer}</h1>
-        {/key}
-      </footer>
-    {/key}
+    <footer
+      class="current-music__modal__info block text-center text-lg"
+      out:blur={{ duration: 150 }}
+      in:blur={{ duration: 333, delay: 150 }}
+    >
+      {#if timer}
+        <PlayHead
+          total={typeof totalSeconds === 'number' ? totalSeconds : 0}
+          current={timer}
+        />
+      {/if}
+      {#key title}
+        <h2 class="text-fuchsia-200">{title}</h2>
+        <h3 class="text-fuchsia-200">{album}</h3>
+        <h1 class="justify-center text-3xl text-white">{artist}</h1>
+        <h1 class="justify-center text-3xl text-white">
+          {#if timer <= 0}∞{:else}{formatSecondsToMinutes(timer)}{/if}
+        </h1>
+      {/key}
+    </footer>
     <!-- <AudioWave /> -->
   </div>
 {/if}
+
+<style lang="postcss">
+  .image-container {
+    position: relative;
+    width: 512px;
+    height: 512px;
+  }
+
+  .image-container img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
