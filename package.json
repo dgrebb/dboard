@@ -63,7 +63,6 @@
     "eslint-plugin-svelte": "^2.41.0",
     "flowbite": "^2.3.0",
     "flowbite-svelte": "^0.46.10",
-    "flowbite-svelte-icons": "^1.6.1",
     "nanoid": "^5.0.7",
     "node-fetch": "^3.3.2",
     "postcss": "^8.4.38",

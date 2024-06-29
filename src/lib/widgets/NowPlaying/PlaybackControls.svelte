@@ -3,7 +3,7 @@
   import { onMount } from 'svelte';
 
   type Props = {
-    setTrackChange: (state: boolean) => void;
+    setTrackChange: () => void;
     classes: string;
   };
 
@@ -27,13 +27,13 @@
 
   const handleNext = (e: MouseEvent) => {
     e.preventDefault();
-    setTrackChange(true);
+    setTrackChange();
     sendCommand(e, 'next');
   };
 
   const handlePrev = (e: MouseEvent) => {
     e.preventDefault();
-    setTrackChange(true);
+    setTrackChange();
     sendCommand(e, 'prev');
   };
 
