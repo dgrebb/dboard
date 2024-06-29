@@ -74,3 +74,17 @@ export const timeStringToSeconds = (time: string): number => {
   const [hours, minutes, seconds] = time.split(':').map(Number);
   return hours * 60 * 60 + minutes * 60 + seconds;
 };
+
+/**
+ * Converts a total number of seconds to a formatted string "mm:ss".
+ *
+ * @param {number} seconds - The total number of seconds.
+ * @returns {string} The formatted time string in "mm:ss" format.
+ */
+export const formatSecondsToMinutes = (seconds: number): string => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+  return `${formattedMinutes}:${formattedSeconds}`;
+};
