@@ -112,7 +112,8 @@
   .album-art {
     position: relative;
     & + .album-art {
-      display: none;
+      /* display: none; */
+      position: absolute;
     }
   }
   .loved-heart {
@@ -217,7 +218,7 @@
       opacity: 1;
     }
 
-    &.transition {
+    &.transitionGradient {
       background: var(--previousGradient);
       &::before {
         opacity: 1;
@@ -272,6 +273,13 @@
         -75px 75px 75px -6px rgba(0, 0, 0, 0.24),
         -150px 150px 150px -12px rgba(0, 0, 0, 0.48);
       @media screen and (min-width: 1900px) {
+      }
+      img {
+        max-height: 512px;
+        & + img {
+          /* display: none; */
+          position: absolute;
+        }
       }
     }
 

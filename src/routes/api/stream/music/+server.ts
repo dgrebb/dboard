@@ -82,14 +82,6 @@ const startInterval = (fetch: Fetch) => {
         if (previousState.album !== data.album) {
           art = `${art}?ts=${timestamp}`;
         }
-        const ipPattern =
-          /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?(\/[^\n?#]*)?(\?[^\n#]*)?(#.*)?$/;
-        const match = art.match(ipPattern);
-        if (match) {
-          const path = match[4] || '';
-          const query = match[5] || '';
-          art = `${path}${query}`;
-        }
         const gradient = await createGradient(art);
         const nowPlaying: NowPlayingData = {
           ...previousState,
