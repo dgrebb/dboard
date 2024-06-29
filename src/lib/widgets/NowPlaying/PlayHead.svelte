@@ -5,10 +5,10 @@
   };
 
   let { total, current }: Props = $props();
-  let percent: number = 50; //$derived(Math.round(100 - (current / total) * 100));
+  let percent: number = $derived(Math.round(100 - (current / total) * 100));
 </script>
 
-<div class="track-progress w-full">
+<div class="track-progress" style={`--percent: ${percent}%;`}>
   <!-- <input
     type="range"
     id="progress"
@@ -19,8 +19,23 @@
     value={percent}
   /> -->
   <!-- ${percent}% -->
-  <button class={`playhead absolute right-[] h-3 w-3 rounded-full bg-blue-700`}
-    >o</button
-  >
-  <label for="progress"></label>
+  <button class={`playhead absolute h-3 w-3 rounded-full bg-blue-700`}></button>
 </div>
+
+<style lang="postcss">
+  .track-progress {
+    margin: 1rem 0;
+    position: relative;
+    height: 0.25rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    mix-blend-mode: difference;
+    .playhead {
+      transition: left 2s linear;
+      position: relative;
+      left: var(--percent);
+    }
+  }
+</style>

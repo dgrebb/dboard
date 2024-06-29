@@ -23,9 +23,9 @@
   let previousAlbum: string = $state('Unknown');
   let artist: string = $state('');
   let loved: boolean = $state(false);
-  let totalTime: number = $state(0);
-  let relativeTimePosition: number = $state(0);
-  let percentComplete: number = $state(0);
+  let totalTime: string | number = $state(0);
+  let totalSeconds: number = $state(0);
+  let relativeTimePosition: string | number = $state(0);
   let playState: string = $state('loading');
   let art: string = $state('/missing-album-art.png');
   let gradient: string = $state('/missing-album-art.png');
@@ -43,10 +43,10 @@
   let showAudioPlayer: boolean = $state(false);
   let transition: boolean = $state(false);
   let timer: number = $state(0);
-  let interval: NodeJS.Timeout | null;
+  let timeInterval: NodeJS.Timeout | null = $state(null);
   let artFadeThreshhold: boolean = $state(false);
   let trackFadeThreshhold: boolean = $state(false);
-  let animationSpeed: number = $state(10000);
+  let animationSpeed: number = $state(5000);
 
   async function startSubscription() {
     if (eventSource) {
@@ -56,25 +56,22 @@
     eventSource = new EventSource(`/api/stream/music`);
 
     eventSource.onmessage = async (event) => {
-      if (interval) {
-        clearInterval(interval);
-      }
-      interval = null;
       const data = JSON.parse(event.data);
-
-      const { totalTime, relativeTimePosition } = data;
-      const currentSeconds = timeStringToSeconds(relativeTimePosition);
-      const totalSeconds = timeStringToSeconds(totalTime);
-      let time = totalSeconds - currentSeconds;
-      console.log('🚀 ~ eventSource.onmessage= ~ totalSeconds:', totalSeconds);
-      console.log(
-        '🚀 ~ eventSource.onmessage= ~ currentSeconds:',
-        currentSeconds
+      ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
+      const currentSeconds = timeStringToSeconds(
+        relativeTimePosition?.toString()
       );
-      console.log('🚀 ~ eventSource.onmessage= ~ time:', time);
+      totalSeconds = timeStringToSeconds(totalTime?.toString());
+      let time = totalSeconds - currentSeconds;
+
+      if (timeInterval) {
+        clearInterval(timeInterval);
+        timeInterval = null;
+      }
+
       keepTime(time);
       await homeState.setNowPlaying(data);
-      retryCount = 0; // Reset retry count on successful message
+      retryCount = 0;
       loaded = true;
     };
 
@@ -101,6 +98,49 @@
     }, resubscribeInterval);
   }
 
+  const keepTime = (timeRemaining: number) => {
+    timer = timeRemaining;
+    if (timeInterval) return;
+    timeInterval = setInterval(() => {
+      timer--;
+      if (timer < 5) {
+        trackFadeThreshhold = true;
+        console.log('start fading');
+      }
+      artFadeThreshhold = trackFadeThreshhold && album !== previousAlbum;
+    }, 1000);
+  };
+
+  $effect(() => {
+    const currentHealthData = healthState.getCurrentData() || false;
+    if (currentHealthData !== false) {
+      directionIcon = healthState.getDirectionIcon();
+      ({ direction, sgv: currentValue } = currentHealthData);
+      difference = healthState.getDifference();
+    }
+  });
+
+  $effect(() => {
+    const delay = 3333;
+    gradient = homeState.nowPlayingGradient();
+    playState = 'starting';
+
+    if (transition === false) {
+      transition = true;
+    }
+
+    return () => {
+      loaded = true;
+      previousGradient = gradient;
+      previousAlbum = album;
+      setTimeout(() => {
+        transition = false;
+        artFadeThreshhold = false;
+        trackFadeThreshhold = false;
+      }, delay);
+    };
+  });
+
   function handleWindowUnload() {
     console.log('Handling window unload...');
     if (eventSource) {
@@ -125,27 +165,20 @@
     showAudioPlayer = !showAudioPlayer;
   };
 
-  const keepTime = (timeRemaining: number) => {
-    timer = timeRemaining;
-    if (interval) return;
-    interval = setInterval(() => {
-      timer--;
-      if (timer < 10) {
-        trackFadeThreshhold = true;
-      }
-      artFadeThreshhold = trackFadeThreshhold && album !== previousAlbum;
-      console.log(
-        '🚀 ~ interval=setInterval ~ timer < 10 && album !== previousAlbum:',
-        timer > 10 && album !== previousAlbum
-      );
-    }, 1000);
-  };
-
-  const setTrackChange = (state: boolean) => {
+  const setTrackChange = () => {
     console.log('track change with controls');
-    animationSpeed = 3000;
-    artFadeThreshhold = state;
-    trackFadeThreshhold = state;
+
+    if (timeInterval) {
+      clearTimeout(timeInterval);
+      timeInterval = null;
+    }
+
+    // transition = true;
+    artFadeThreshhold = true;
+    trackFadeThreshhold = true;
+    animationSpeed = 3333;
+    artFadeThreshhold = true;
+    trackFadeThreshhold = true;
   };
 
   onMount(async () => {
@@ -164,44 +197,6 @@
     if (retryTimeout) {
       clearTimeout(retryTimeout);
     }
-  });
-
-  $effect(() => {
-    const currentHealthData = healthState.getCurrentData() || false;
-    if (currentHealthData !== false) {
-      directionIcon = healthState.getDirectionIcon();
-      ({ direction, sgv: currentValue } = currentHealthData);
-      difference = healthState.getDifference();
-    }
-  });
-
-  $effect(() => {
-    const delay = 3333;
-    playState = 'starting';
-    totalTime = homeState.nowPlayingTotalTime();
-    relativeTimePosition = homeState.nowPlayingRelativeTimePosition();
-    percentComplete = relativeTimePosition / totalTime;
-    ({ artist, album, title, loved, gradient } = homeState.nowPlaying());
-
-    // // console.log('🚀 ~ $effect ~ totalTime:', totalTime);
-
-    setTimeout(async () => {
-      previousGradient = gradient;
-      previousAlbum = album;
-    }, delay);
-
-    transition = true;
-    return () => {
-      let delay = 5000;
-      relativeTimePosition = homeState.nowPlayingRelativeTimePosition();
-      loaded = true;
-      art = homeState.nowPlayingArt();
-      setTimeout(() => {
-        transition = false;
-        artFadeThreshhold = false;
-        trackFadeThreshhold = false;
-      }, delay);
-    };
   });
 </script>
 
@@ -284,8 +279,8 @@
           tabindex="-1"
           aria-checked={modal}
           onclick={(e) => toggleModal(e)}
-          out:blur={{ duration: animationSpeed }}
-          in:blur={{ duration: animationSpeed / 2, delay: animationSpeed }}
+          out:fade={{ duration: animationSpeed }}
+          in:fade={{ duration: animationSpeed / 2, delay: animationSpeed }}
         >
           <LovedHeart {loved} size={77} />
           <img src={art} alt="{album} Artwork" />
@@ -297,7 +292,6 @@
             classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
             {setTrackChange}
           />
-          <PlayHead total={totalTime} current={timer} />
         </div>
       {/if}
     </main>
@@ -309,11 +303,15 @@
       >
         {#key trackFadeThreshhold === true}
           <h2 class="text-fuchsia-200">{title}</h2>
-          <h1 class="justify-center text-3xl text-white">{timer}</h1>
-          <h2 class="hidden text-fuchsia-200 md:visible">&bull;</h2>
           <h3 class="text-fuchsia-200">{album}</h3>
           <h1 class="justify-center text-3xl text-white">{artist}</h1>
-          <!-- <h1 class="justify-center text-3xl text-white">{percentComplete}</h1> -->
+          {#if timer}
+            <PlayHead
+              total={typeof totalSeconds === 'number' ? totalSeconds : 0}
+              current={timer}
+            />
+          {/if}
+          <h1 class="justify-center text-3xl text-white">{timer}</h1>
         {/key}
       </footer>
     {/key}
