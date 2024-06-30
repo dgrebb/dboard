@@ -40,7 +40,6 @@
 
   let showAudioPlayer: boolean = $state(false);
   let transitionGradient: boolean = $state(false);
-  let transitionArt: boolean = $state(false);
   let timer: number = $state(0);
   let timeInterval: NodeJS.Timeout | null = $state(null);
   let animationSpeed: number = $state(3333);
@@ -50,6 +49,15 @@
   let previousGradient = $state(
     'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
   );
+
+  const preloadImage = (url: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => resolve();
+      img.onerror = (error) => reject(error);
+    });
+  };
 
   async function startSubscription() {
     if (eventSource) {
@@ -75,8 +83,6 @@
       art = art.includes('/data/AirplayArtWorkData.png')
         ? (art = art.replace(ipAddressPattern, ''))
         : art;
-
-      newArt = art;
 
       await homeState.setNowPlaying(data);
       retryCount = 0;
@@ -139,15 +145,27 @@
     // console.log('🚀 ~ $effect ~ gradient:', gradient);
     transitionGradient = true;
 
+    preloadImage(art)
+      .then(() => {
+        newArt = art;
+      })
+      .catch((error) => {
+        console.error('Image failed to load', error);
+      });
+
     return () => {
       loaded = true;
       previousAlbum = album;
-      currentArt = art;
       setTimeout(() => {
+        currentArt = art;
+        // console.log('this is where the secong gradient animation fires');
         transitionGradient = false;
         previousGradient = gradient;
-        transitionArt = false;
+        // transitionArt = false;
       }, delay);
+      setTimeout(() => {
+        newArt = null;
+      }, delay + 1000);
     };
   });
 
@@ -185,6 +203,7 @@
     await startSubscription();
     window.addEventListener('beforeunload', handleWindowUnload);
     mounted = true;
+    currentArt = art;
   });
 
   onDestroy(() => {
@@ -199,34 +218,25 @@
     }
   });
 
-  const preloadImage = (url: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => resolve();
-      img.onerror = (error) => reject(error);
-    });
-  };
+  // const handleImageLoad = () => {
+  //   if (newArt) {
+  //     preloadImage(newArt)
+  //       .then(() => {
+  //         currentArt = newArt;
+  //       })
+  //       .catch((error) => {
+  //         console.error('Image failed to load', error);
+  //       })
+  //       .finally(() => {
+  //         newArt = null; // Reset newImage
+  //       });
+  //   }
+  // };
 
-  const handleImageLoad = () => {
-    if (newArt) {
-      preloadImage(newArt)
-        .then(() => {
-          currentArt = newArt;
-        })
-        .catch((error) => {
-          console.error('Image failed to load', error);
-        })
-        .finally(() => {
-          newArt = null; // Reset newImage
-        });
-    }
-  };
-
-  const [send, receive] = crossfade({
-    duration: (d) => Math.sqrt(d * 200),
-    easing: quintOut,
-  });
+  // const [send, receive] = crossfade({
+  //   duration: (d) => Math.sqrt(d * 200),
+  //   easing: quintOut,
+  // });
 </script>
 
 <div
@@ -322,12 +332,8 @@
             <img src={currentArt} alt="{album} Artwork" transition:fade />
           {/key}
           {#if newArt}
-            <img
-              src={newArt}
-              alt="{album} Artwork"
-              onload={handleImageLoad}
-              transition:fade
-            />
+            <!-- onload={handleImageLoad} -->
+            <img src={newArt} alt="{album} Artwork" transition:fade />
           {/if}
         </div>
       </div>
@@ -356,7 +362,10 @@
         <h3 class="text-fuchsia-200">{album}</h3>
         <h1 class="justify-center text-3xl text-white">{artist}</h1>
         <h1 class="justify-center text-3xl text-white">
-          {#if timer <= 0}∞{:else}{formatSecondsToMinutes(timer)}{/if}
+          <!-- {#if timer <= 0}∞{:else}{formatSecondsToMinutes(timer)}{/if} -->
+          {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
+              totalSeconds - timer
+            )}{/if}
         </h1>
       {/key}
     </footer>
@@ -369,9 +378,11 @@
     position: relative;
     width: 512px;
     height: 512px;
+    background: transparent;
   }
 
   .image-container img {
+    background: transparent;
     position: absolute;
     width: 100%;
     height: 100%;
