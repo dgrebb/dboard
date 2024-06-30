@@ -7,4 +7,12 @@
       }
     }
   }
+  &-night {
+    .dboard__card {
+      &::after {
+        opacity: 0.33;
+        filter: invert(1);
+      }
+    }
+  }
 }

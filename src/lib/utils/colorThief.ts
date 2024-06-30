@@ -18,13 +18,13 @@ const randomizeColorComponent = (
 ): number => {
   const variation = 20; // Maximum variation for the color component
   const newComponent = component + Math.floor((random() - 0.5) * variation * 2);
-  console.log(`Component: ${component}, New Component: ${newComponent}`); // Debug log
+  // console.log(`Component: ${component}, New Component: ${newComponent}`); // Debug log
   return Math.min(255, Math.max(0, newComponent));
 };
 
 // Function to randomize colors
 const randomizeColor = (color: number[], random: () => number): string => {
-  console.log(`Randomizing color: ${color}`); // Debug log
+  // console.log(`Randomizing color: ${color}`); // Debug log
   return `rgb(${randomizeColorComponent(color[0], random)}, ${randomizeColorComponent(color[1], random)}, ${randomizeColorComponent(color[2], random)})`;
 };
 
@@ -88,17 +88,17 @@ export const colorThief = async (
 
       // Ensure the color is valid
       if (color && color.length >= 3) {
-        console.log(`Original Color: ${color}`); // Debug log
+        // console.log(`Original Color: ${color}`); // Debug log
 
         const randomizedColor = randomizeColor(color, random);
         backgroundColors.push(randomizedColor);
 
         // Create contrasting color
         const invertedColor = invertColor(color);
-        console.log('🚀 ~ Inverted Color:', invertedColor); // Debug log
+        // console.log('🚀 ~ Inverted Color:', invertedColor); // Debug log
 
         const randomizedInvertedColor = randomizeColor(invertedColor, random);
-        console.log('🚀 ~ Randomized Inverted Color:', randomizedInvertedColor); // Debug log
+        // console.log('🚀 ~ Randomized Inverted Color:', randomizedInvertedColor); // Debug log
 
         foregroundColors.push(randomizedInvertedColor);
       } else {
@@ -109,11 +109,6 @@ export const colorThief = async (
     // Create gradient strings using the captured and randomized colors
     const backgroundGradient = `linear-gradient(45deg, ${backgroundColors.join(', ')})`;
     const foregroundGradient = `linear-gradient(45deg, ${foregroundColors.join(', ')})`;
-
-    console.log('🚀 ~ { backgroundGradient, foregroundGradient }:', {
-      backgroundGradient,
-      foregroundGradient,
-    });
     return { backgroundGradient, foregroundGradient };
   } catch (error) {
     console.error(error);

@@ -76,6 +76,7 @@ const startInterval = (fetch: Fetch) => {
 
   interval = setInterval(async () => {
     try {
+      let gradientResult: GradientResult | boolean;
       const data = await fetchMediaInfo(fetch);
       const { totalTime, relativeTimePosition } = data;
       const total = timeStringToSeconds(totalTime);
@@ -91,7 +92,6 @@ const startInterval = (fetch: Fetch) => {
         const timestamp = Date.now();
         let art =
           data.art || previousState.art || '/data/AirplayArtWorkData.png';
-        const gradientResult = await createGradient(art);
         let backgroundGradient: string | undefined;
         let foregroundGradient: string | undefined;
 
@@ -99,8 +99,12 @@ const startInterval = (fetch: Fetch) => {
           art = `${art}?ts=${timestamp}`;
         }
 
-        if (gradientResult && typeof gradientResult !== 'boolean') {
-          ({ backgroundGradient, foregroundGradient } = gradientResult);
+        if (previousState.title !== data.title) {
+          gradientResult = (await createGradient(art)) || false;
+
+          if (gradientResult && typeof gradientResult !== 'boolean') {
+            ({ backgroundGradient, foregroundGradient } = gradientResult);
+          }
         }
 
         const nowPlaying: NowPlayingData = {
