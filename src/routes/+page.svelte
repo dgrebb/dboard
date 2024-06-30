@@ -1,5 +1,5 @@
 <script lang="ts">
-  '@hmr:keep-all';
+  // '@hmr:keep-all';
   import time from '$lib/stores/time';
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
   import settings from '$root/.config/settings.json';
