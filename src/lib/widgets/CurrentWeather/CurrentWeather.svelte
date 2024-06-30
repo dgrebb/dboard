@@ -7,6 +7,7 @@
   import type { CurrentWeatherSettings } from '$root/.config/settings';
   import { createWeather, homeState, type WeatherType } from '$root/lib/stores';
   import { background } from '$root/lib/stores';
+  import './current-weather.css';
 
   let highlightColor = fahrenheitToColorShade(77);
   let pushing = $state(false);
@@ -88,7 +89,7 @@
   tabindex="-1"
   role="button"
   style={`--mainColor: ${highlightColor}`}
-  class="dboard__grid__item push-to-refresh current-weather relative"
+  class={`dboard__grid__item push-to-refresh current-weather ${current.is_day ? 'current-weather-day' : 'current-weather-night'} relative`}
 >
   {#if current}
     <div
@@ -160,19 +161,19 @@
 <style>
   .push-to-refresh {
     .dboard__card {
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       transform-origin: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       &:before {
         position: absolute;
-        content: '';
+        opacity: 0.5;
+        z-index: 10;
         transition: 333ms opacity cubic-bezier(0.175, 0.885, 0.32, 1.275);
         inset: 0;
-        z-index: 10;
-        opacity: 0.5;
+        content: '';
       }
       &.pushing {
-        background-color: rgba(255, 255, 255, 0.8);
         transform: scale3d(0.77, 0.77, 0.77);
+        background-color: rgba(255, 255, 255, 0.8);
       }
       &.refreshed {
         &:before {
