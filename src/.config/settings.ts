@@ -94,6 +94,13 @@ export const locations: LocationsType = {
     longitude: 105.3886,
     name: 'Jamestown, CO',
   },
+  chennai: {
+    timezone: 'Asia/Kolkata',
+    primary: false,
+    latitude: 13.0878,
+    longitude: 80.2785,
+    name: 'Chennai, IN',
+  },
 };
 
 export type SettingsType = {
