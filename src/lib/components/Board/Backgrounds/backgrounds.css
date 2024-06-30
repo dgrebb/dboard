@@ -1,10 +1,10 @@
 .sky {
   display: flex;
   position: absolute;
-  align-items: center;
   justify-content: center;
-  height: 100%;
+  align-items: center;
   width: 100%;
+  height: 100%;
   /* transition: opacity 60s linear; */
   * {
     box-sizing: content-box;
@@ -12,49 +12,49 @@
 }
 
 .noite {
+  position: absolute;
+  z-index: 0;
+  mix-blend-mode: overlay;
   background: -webkit-linear-gradient(
     top,
     rgb(0, 0, 0) 50%,
     rgb(25, 19, 39) 80%,
     rgb(43, 32, 72)
   );
-  mix-blend-mode: overlay;
   width: 100%;
   height: 100%;
-  position: absolute;
   overflow: hidden;
-  z-index: 0;
 }
 
 .nuvem {
   position: absolute;
   opacity: var(--cloudCoverPercent);
-  inset: 0;
   z-index: 4;
+  inset: 0;
 }
 
 .constelacao {
-  z-index: 2;
-  position: absolute;
   display: flex;
+  position: absolute;
   top: auto;
   left: auto;
-  opacity: 0.5;
-  width: 150%;
-  height: 150%;
-  transform-origin: center;
   /* animation: rotate 600s infinite linear; */
   transform: translate3d(0, 0, 0);
+  transform-origin: center;
+  opacity: 0.5;
+  z-index: 2;
+  width: 150%;
+  height: 150%;
 }
 
 .estrela {
-  transform: translate3d(0, 0, 0);
-  background-color: #fff;
-  border-radius: 50%;
   position: absolute;
-  animation-name: estrela;
+  transform: translate3d(0, 0, 0);
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  animation-name: estrela;
+  border-radius: 50%;
+  background-color: #fff;
 }
 
 .estrela.style1 {
@@ -98,40 +98,40 @@
 }
 
 .lua {
+  display: none;
   position: absolute;
-  right: 77px;
   top: 133px;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+  right: 77px;
+  z-index: 3;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-name: lua;
   box-shadow:
     0 0 160px 0px #fff,
     0 0 30px -4px #fff,
     0 0 8px 2px rgba(255, 255, 255, 0.26);
+  border-radius: 50%;
   background-color: #fff;
-  animation-name: lua;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-duration: 10s;
-  z-index: 3;
-  display: none;
+  width: 120px;
+  height: 120px;
   /* html.dark & {
     display: block;
   } */
 }
 
 .lua .textura {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.4;
+  border-radius: 50%;
   background-image: url(https://raw.githubusercontent.com/interaminense/starry-sky/master/src/img/bgMoon.png);
   background-position: center;
   background-size: 100%;
   width: 100%;
   height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: 50%;
   overflow: hidden;
-  opacity: 0.4;
 }
 
 @keyframes escurecer {
@@ -157,28 +157,28 @@
 
 @keyframes estrelaDestacada {
   0% {
-    background-color: #ffffff;
     box-shadow: 0 0 10px 0px rgba(255, 255, 255, 1);
+    background-color: #ffffff;
   }
   20% {
-    background-color: #ffc4c4;
     box-shadow: 0 0 10px 0px rgb(255, 196, 196, 1);
+    background-color: #ffc4c4;
   }
   80% {
-    background-color: #c4cfff;
     box-shadow: 0 0 10px 0px rgb(196, 207, 255, 1);
+    background-color: #c4cfff;
   }
   100% {
-    background-color: #ffffff;
     box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.2);
+    background-color: #ffffff;
   }
 }
 
 @keyframes meteoroStyle1 {
   0% {
-    opacity: 0;
-    right: 300px;
     top: 100px;
+    right: 300px;
+    opacity: 0;
   }
   30% {
     opacity: 0.3;
@@ -187,17 +187,17 @@
     opacity: 0.3;
   }
   100% {
-    opacity: 0;
-    right: 1000px;
     top: 600px;
+    right: 1000px;
+    opacity: 0;
   }
 }
 
 @keyframes meteoroStyle2 {
   0% {
-    opacity: 0;
-    right: 700px;
     top: 100px;
+    right: 700px;
+    opacity: 0;
   }
   30% {
     opacity: 1;
@@ -206,17 +206,17 @@
     opacity: 1;
   }
   100% {
-    opacity: 0;
-    right: 1400px;
     top: 600px;
+    right: 1400px;
+    opacity: 0;
   }
 }
 
 @keyframes meteoroStyle3 {
   0% {
-    opacity: 0;
-    right: 300px;
     top: 300px;
+    right: 300px;
+    opacity: 0;
   }
   30% {
     opacity: 1;
@@ -225,17 +225,17 @@
     opacity: 1;
   }
   100% {
-    opacity: 0;
-    right: 1000px;
     top: 800px;
+    right: 1000px;
+    opacity: 0;
   }
 }
 
 @keyframes meteoroStyle4 {
   0% {
-    opacity: 0;
-    right: 700px;
     top: 300px;
+    right: 700px;
+    opacity: 0;
   }
   30% {
     opacity: 1;
@@ -244,9 +244,9 @@
     opacity: 1;
   }
   100% {
-    opacity: 0;
-    right: 1400px;
     top: 800px;
+    right: 1400px;
+    opacity: 0;
   }
 }
 
