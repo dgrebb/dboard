@@ -9,6 +9,7 @@
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './PlayHead.svelte';
   import { quintOut } from 'svelte/easing';
+  import type { GradientResult } from '$lib/types';
 
   const resubscribeInterval = 3600000; // Resubscribe every hour
 
@@ -28,7 +29,9 @@
   let relativeTimePosition: string | number = $state(0);
   let playState: string = $state('loading');
   let art: string = $state('/missing-album-art.png');
-  let gradient: string = $state('/missing-album-art.png');
+  let { backgroundGradient, foregroundGradient }: GradientResult = $state(
+    homeState.nowPlayingGradients()
+  );
   let modal: boolean = $state(
     localStorage.getItem('musicModal') === 'true' || false
   );
@@ -46,7 +49,10 @@
   let previousAlbum: string = $state('Unknown');
   let currentArt: string | null = $state('/missing-album-art.png');
   let newArt: string | null = $state(null);
-  let previousGradient = $state(
+  let previousBackgroundGradient = $state(
+    'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
+  );
+  let previousForegroundGradient = $state(
     'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
   );
 
@@ -69,6 +75,7 @@
     eventSource.onmessage = async (event) => {
       timer = 0;
       const data = JSON.parse(event.data);
+      console.log('🚀 ~ eventSource.onmessage= ~ data:', data);
       const ipAddressPattern =
         /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
 
@@ -139,10 +146,13 @@
 
   $effect(() => {
     const delay = 3333;
-    gradient = homeState.nowPlayingGradient();
+    ({ backgroundGradient, foregroundGradient } =
+      homeState.nowPlayingGradients());
     playState = 'starting';
 
     // console.log('🚀 ~ $effect ~ gradient:', gradient);
+    console.log('🚀 ~ $effect ~ backgroundGradient:', backgroundGradient);
+    console.log('🚀 ~ $effect ~ foregroundGradient:', foregroundGradient);
     transitionGradient = true;
 
     preloadImage(art)
@@ -160,7 +170,8 @@
         currentArt = art;
         // console.log('this is where the secong gradient animation fires');
         transitionGradient = false;
-        previousGradient = gradient;
+        previousBackgroundGradient = backgroundGradient;
+        previousForegroundGradient = foregroundGradient;
         // transitionArt = false;
       }, delay);
       setTimeout(() => {
@@ -272,7 +283,7 @@
     class="current-music__modal"
     class:transitionGradient
     transition:fade
-    style="--nextGradient: {gradient}; --previousGradient: {previousGradient};"
+    style="--nextBackgroundGradient: {backgroundGradient}; --previousBackgroundGradient: {previousBackgroundGradient}; --nextForegroundGradient: {foregroundGradient}; --previousForegroundGradient: {previousForegroundGradient}; "
     onclick={(e) => {
       toggleControls(e);
     }}
@@ -361,15 +372,21 @@
         />
       {/if}
       {#key title}
-        <Icon icon="solar:soundwave-bold-duotone" width={50} />
-        <h2 class="artist">{artist}</h2>
-        <h1 class="title">{title}</h1>
-        <h3 class="track-time">
-          <!-- {#if timer <= 0}∞{:else}{formatSecondsToMinutes(timer)}{/if} -->
-          {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
-              totalSeconds - timer
-            )}{/if}
-        </h3>
+        <div
+          class="track-info"
+          in:blur={{ duration: 500, delay: 333 }}
+          out:blur={{ duration: 500 }}
+        >
+          <Icon icon="solar:soundwave-bold-duotone" width={50} />
+          <h2 class="artist">{artist}</h2>
+          <h1 class="title">{title}</h1>
+          <h3 class="track-time">
+            <!-- {#if timer <= 0}∞{:else}{formatSecondsToMinutes(timer)}{/if} -->
+            {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
+                totalSeconds - timer
+              )}{/if}
+          </h3>
+        </div>
       {/key}
       <div
         transition:fade
