@@ -1,3 +1,5 @@
+@import './controls.css';
+
 .now-playing,
 .current-music__modal {
   .loved {
@@ -9,6 +11,7 @@
     bottom: -0.5rem;
     right: -0.5rem;
     border-radius: 50%;
+
     &::before {
       border-radius: 50%;
       content: '';
@@ -21,6 +24,7 @@
       }
     }
   }
+
   .loved-heart {
     display: flex;
     will-change: transform;
@@ -37,376 +41,467 @@
   }
 }
 
-.playback-controls {
-  position: absolute;
-  .current-music__modal & {
-    position: relative;
-    @media screen and (min-width: 1000px) and (max-height: 1919px) {
-      flex-direction: row;
-      position: absolute;
-      right: 5rem;
-      bottom: 11rem;
-    }
-    @media screen and (min-width: 1900px) {
-      display: none;
-      flex-direction: column;
-      position: relative;
-      inset: auto;
-    }
-  }
-  button {
-    display: inline-block;
-    border: none;
-    padding: 1em 1.5em;
-    background-color: #36383f;
-    color: #eee;
-    border-radius: 0.25em;
-    user-select: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    padding: 0.33rem 0.5rem;
-    margin: 0.25rem;
-    color: white;
-    clip-path: text;
-    transform: scale(1);
-    transition-property: transform, opacity, color;
-    transition-timing-function: cubic-bezier(0.05, 0.58, 0.44, 1.53);
-    transition-duration: 116.5ms;
-    svg {
-      filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.7));
-      opacity: 0.67;
-    }
-    &:hover,
-    &:focus,
-    &:focus-visible {
-      outline: none;
-      transform: scale(1.1);
-      box-shadow: 0 0 0 2px #ffd838;
-      svg {
-        opacity: 1;
-      }
-    }
-    &:active {
-      transition-duration: 0.25s;
-      transition-timing-function: cubic-bezier(0.09, 0.58, 0.42, 0.96);
-      transform: scale(0.925);
-    }
-    &.prev {
-      svg {
-        transform: rotate(180deg);
-      }
-    }
-  }
-}
-
-.current-music,
 .current-music__modal {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  z-index: 40;
+  /* TODO: Explore layers and opacity between album gradient and dboard background */
+  /* Look into perf implications - remove below background */
+  background: var(--previousGradient);
+
+  &::after,
+  &::before {
+    filter: saturate(1.2);
+    content: '';
+    display: block;
+    position: absolute;
+    inset: 0;
+    transition: opacity 3s ease-in-out;
+  }
+
+  &::before {
+    z-index: 0;
+    opacity: 0;
+    background: var(--nextGradient);
+    /* TODO: Explore layers and opacity between album gradient and dboard background */
+    /* Look into perf implications - use the opacity below */
+    /* opacity: 0.67; */
+  }
+
+  &::after {
+    background: var(--previousGradient);
+    z-index: -1;
+    opacity: 1;
+  }
+
+  &.transitionGradient {
+    background: var(--previousGradient);
+    &::before {
+      opacity: 1;
+    }
+    &::after {
+      opacity: 0;
+      /* TODO: Explore layers and opacity between album gradient and dboard background */
+      /* Look into perf implications - use the opacity below */
+      /* opacity: 0.67; */
+    }
+  }
+
   h1,
   h2,
   h3 {
     display: block;
     opacity: 0.5;
   }
+
+  h1 {
+    margin-top: 0.5rem;
+  }
+
   h2 {
     opacity: 0.77;
   }
+
+  main,
+  header,
+  footer {
+    max-width: 100%;
+    z-index: 3;
+    display: flex;
+  }
+
+  main {
+    align-items: center;
+  }
+
   .album-art {
     position: relative;
+    box-shadow:
+      0px 0px 0px 1px rgba(165, 165, 165, 0.04),
+      -9px 9px 9px -0.5px rgba(0, 0, 0, 0.04),
+      -18px 18px 18px -1.5px rgba(0, 0, 0, 0.08),
+      -37px 37px 37px -3px rgba(0, 0, 0, 0.16),
+      -75px 75px 75px -6px rgba(0, 0, 0, 0.24),
+      -150px 150px 150px -12px rgba(0, 0, 0, 0.48);
+
+    .image-container {
+      position: relative;
+      width: 512px;
+      height: 512px;
+      background: transparent;
+    }
+
+    .image-container img {
+      background: transparent;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    img {
+      max-height: 512px;
+      & + img {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+
     & + .album-art {
       /* display: none; */
       position: absolute;
     }
   }
+
   .loved-heart {
     bottom: 0.5rem;
     right: -0.5rem;
   }
-}
 
-.current-music {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  opacity: 0.77;
-  height: 100%;
-  &__info {
-    width: 100%;
-    text-align: right;
-    h1,
-    h2,
-    h3 {
-      color: var(--skyBaseColor);
-      filter: invert(1);
-      /* transition: color 3s ease-in; */
-    }
-  }
-  img {
-    align-self: end;
-    justify-self: end;
-    cursor: pointer;
-    max-height: 100%;
-    @media screen and (min-height: 1200px) {
-      max-height: 504px;
-    }
-    border-radius: 0.5rem;
-    transition: opacity 0.5s linear;
-    &:hover,
-    &:focus,
-    &active,
-    &:focus-visible {
-      opacity: 1;
-    }
-    @media screen and (min-width: 1280px) {
-      max-height: 300px;
-    }
-  }
+  header {
+    display: none;
 
-  &__modal,
-  &__modal::before,
-  &__modal::after {
-    filter: saturate(1.2);
-  }
-  &__modal {
-    padding: env(safe-area-inset-top) env(safe-area-inset-right)
-      env(safe-area-inset-bottom) env(safe-area-inset-left);
-    height: 100vh;
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    z-index: 40;
-    /* TODO: Explore layers and opacity between album gradient and dboard background */
-    /* Look into perf implications - remove below background */
-    background: var(--previousGradient);
-
-    @media screen and (min-width: 1000px) and (max-height: 1919px) {
-      flex-direction: row;
-      padding-left: 3rem;
-      padding-right: 3rem;
-      main,
-      footer {
-        width: 50%;
-      }
-    }
-    @media screen and (min-width: 1900px) and (min-height: 1079px) {
-      flex-direction: column;
-      padding: env(safe-area-inset-top) env(safe-area-inset-right)
-        env(safe-area-inset-bottom) env(safe-area-inset-left);
-      cursor: none;
-    }
-
-    &::before,
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      inset: 0;
-      transition: opacity 3s ease-in-out;
-    }
-    &::before {
-      z-index: 0;
-      opacity: 0;
-      background: var(--nextGradient);
-      /* TODO: Explore layers and opacity between album gradient and dboard background */
-      /* Look into perf implications - use the opacity below */
-      /* opacity: 0.67; */
-    }
-    &::after {
-      background: var(--previousGradient);
-      z-index: -1;
-      opacity: 1;
-    }
-
-    &.transitionGradient {
-      background: var(--previousGradient);
-      &::before {
-        opacity: 1;
-      }
-      &::after {
-        opacity: 0;
-        /* TODO: Explore layers and opacity between album gradient and dboard background */
-        /* Look into perf implications - use the opacity below */
-        /* opacity: 0.67; */
-      }
-    }
-
-    main,
-    header,
-    footer {
-      max-width: 100%;
-      z-index: 3;
-    }
-    header,
-    footer {
+    .reading {
+      flex-grow: 1;
       display: flex;
-      /* mix-blend-mode: difference; */
-    }
-    main {
       align-items: center;
-      @media screen and (min-width: 1000px) and (max-height: 1919px) {
-        height: 75%;
-        justify-content: end;
-      }
-      @media screen and (min-width: 1900px) {
-        justify-content: center;
-      }
-    }
-
-    .album-art,
-    img {
-      @media screen and (min-width: 1200px) {
-        min-width: 512px;
-        max-width: 512px;
-      }
-      @media screen and (min-width: 1900px) {
-        min-width: 512px;
-        max-width: 512px;
-      }
-    }
-    .album-art {
-      box-shadow:
-        0px 0px 0px 1px rgba(165, 165, 165, 0.04),
-        -9px 9px 9px -0.5px rgba(0, 0, 0, 0.04),
-        -18px 18px 18px -1.5px rgba(0, 0, 0, 0.08),
-        -37px 37px 37px -3px rgba(0, 0, 0, 0.16),
-        -75px 75px 75px -6px rgba(0, 0, 0, 0.24),
-        -150px 150px 150px -12px rgba(0, 0, 0, 0.48);
-      @media screen and (min-width: 1900px) {
-      }
-      img {
-        max-height: 512px;
-        & + img {
-          /* display: none; */
-          position: absolute;
-        }
-      }
-    }
-
-    header {
-      display: none;
-      @media screen and (min-height: 1200px) {
-        flex-direction: row;
-        align-content: center;
-        width: 100%;
-        padding: 0 0.25rem;
-        display: flex;
-        height: 0;
-      }
-      .reading {
-        flex-grow: 1;
-        /* width: 50%; */
-        display: flex;
-        align-items: center;
-        padding-bottom: 1rem;
-        flex-direction: column;
-        padding: 1rem;
-        @media screen and (min-width: 600px) {
-          /* padding: 3rem; */
-        }
-        h1 {
-          font-size: 4rem;
-          @media screen and (min-height: 1200px) {
-            font-size: 9rem;
-          }
-        }
-      }
-      h1,
-      h2 {
-        line-height: 1;
-      }
-      h1 {
-        color: #e0e0e0;
-        text-shadow:
-          1px 1px 0 #000,
-          -1px -1px 0 #000,
-          2px 2px 0 #000,
-          -2px -2px 0 #000,
-          3px 3px 0 #000,
-          -3px -3px 0 #000;
-        &.bg {
-          color: rgba(255, 133, 133, 1);
-          mix-blend-mode: hard-light;
-        }
-      }
-      h2 {
-        flex-direction: flex-row;
-
-        color: #e0e0e0;
-        text-shadow:
-          1px 1px 0 #000,
-          -1px -1px 0 #000,
-          2px 2px 0 #000,
-          -2px -2px 0 #000;
-      }
-    }
-
-    footer {
-      padding: 2rem 1rem;
+      padding-bottom: 1rem;
       flex-direction: column;
-      position: relative;
-      font-weight: bold;
-      text-align: center;
-      color: white; /* Default to white */
-      mix-blend-mode: difference;
-      z-index: 1;
-      & + footer {
-        display: none;
-      }
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: inherit;
-        z-index: -1;
-      }
+      padding: 1rem;
       h1 {
-        width: 100%;
-        font-size: 2rem;
+        font-size: 4rem;
       }
-      h2,
-      h3 {
-        font-size: 1.5rem;
-      }
-      h1,
-      h2,
-      h3 {
-        display: block;
-        padding: 0.25rem;
-        text-wrap: balance;
-        opacity: 1;
-        @media screen and (min-width: 600px) {
-          padding: 1rem 1rem 0;
-          display: inline;
-        }
-      }
-      h2.hidden {
-        display: none;
-      }
+    }
 
-      @media screen and (min-width: 1900px) {
-        h1 {
-          font-size: 3rem;
-        }
-        h2,
-        h3 {
-          font-size: 2rem;
-        }
-      }
+    h1,
+    h2 {
+      line-height: 1;
     }
 
     h1 {
-      margin-top: 0.5rem;
+      color: #e0e0e0;
+      text-shadow:
+        1px 1px 0 #000,
+        -1px -1px 0 #000,
+        2px 2px 0 #000,
+        -2px -2px 0 #000,
+        3px 3px 0 #000,
+        -3px -3px 0 #000;
+
+      &.bg {
+        color: rgba(255, 133, 133, 1);
+        mix-blend-mode: hard-light;
+      }
     }
-    &__audio-animation {
-      position: relative;
+
+    h2 {
+      flex-direction: flex-row;
+      color: #e0e0e0;
+      text-shadow:
+        1px 1px 0 #000,
+        -1px -1px 0 #000,
+        2px 2px 0 #000,
+        -2px -2px 0 #000;
+    }
+  }
+
+  footer {
+    padding: 2rem 1rem;
+    flex-direction: column;
+    position: relative;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: white; /* Default to white */
+    mix-blend-mode: difference;
+    z-index: 1;
+
+    & + footer {
+      display: none;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      z-index: -1;
+    }
+
+    h1 {
+      width: 100%;
+      font-size: 2rem;
+    }
+
+    h2,
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    h1.title,
+    h2.artist,
+    h3.track-time {
+      display: block;
+      padding: 0.25rem;
+      text-wrap: balance;
+      opacity: 0.67;
+    }
+
+    h1.title {
+      line-height: 1.25;
+    }
+
+    h2.hidden {
+      display: none;
+    }
+
+    .track-progress {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0;
+      overflow: hidden;
+      height: 0.5rem;
+      width: 100%;
       display: flex;
       flex-direction: row;
-      top: 3rem;
-      opacity: 0.77;
+      &::before {
+        background-color: white;
+        position: absolute;
+        z-index: 3;
+        height: 100%;
+        width: var(--percent);
+        content: '';
+        transition: width 2s linear;
+      }
+      &::before,
+      .playhead {
+        top: 0;
+      }
+      .playhead {
+        transition: left 2s linear;
+        position: relative;
+        height: 1rem;
+        width: 0.25rem;
+        mix-blend-mode: normal;
+        mix-blend-mode: darken;
+        background-color: white;
+        &:hover,
+        &:focus,
+        &:active {
+          background-color: black;
+          width: 0.75rem;
+        }
+      }
+    }
+
+    .audio-player {
+      display: none;
+    }
+
+    svg {
+      padding: 0.5rem;
+    }
+  }
+
+  @media screen and (min-width: 600px) {
+    footer {
+      padding: 1rem 1rem 0;
+      /* display: inline; */
+    }
+  }
+
+  /* Vertical portrait wallmount overrides */
+  @media screen and (min-width: 1080px) and (max-height: 1919px) {
+    flex-direction: row;
+
+    main,
+    footer {
+      width: 50%;
+      padding-left: 3rem;
+      padding-right: 3rem;
+      flex-direction: column;
+    }
+
+    main {
+      height: 75%;
+      justify-content: end;
+    }
+  }
+
+  @media screen and (min-width: 1900px) {
+    main {
+      justify-content: center;
+    }
+
+    footer {
+      h1 {
+        font-size: 3rem;
+      }
+      h2,
+      h3 {
+        font-size: 2rem;
+      }
+    }
+  }
+
+  /* iPad only */
+  @media screen and (min-width: 810px) and (max-width: 1080px) {
+    padding: 0;
+    main {
+      justify-content: center;
+      height: 100%;
+
+      .album-art {
+        width: 100%;
+
+        .image-container {
+          position: relative;
+          width: 100%;
+          height: auto;
+          background: transparent;
+        }
+
+        .image-container img {
+          background: transparent;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .hidden {
+          display: none;
+        }
+      }
+
+      img {
+        max-height: 512px;
+        & + img {
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+      }
+      .audio-player {
+        display: none;
+      }
+    }
+  }
+
+  @media screen and (min-width: 1900px) and (min-height: 1079px) {
+    flex-direction: column;
+    cursor: none;
+  }
+
+  /* vertical wall display */
+  @media screen and (min-height: 1919px) {
+    main,
+    header,
+    footer {
+      display: flex;
+    }
+    header {
+      justify-content: center;
+      flex-direction: row;
+      align-content: center;
+      width: 100%;
+      padding: 0 0.25rem;
+      .reading {
+        h1 {
+          font-size: 9rem;
+        }
+      }
+    }
+    main {
+      /* justify-content: center; */
+      flex-direction: column;
+      height: 50%;
+      .album-art,
+      img {
+        min-width: 700px;
+        min-height: 700px;
+        max-width: 700px;
+        max-height: 700px;
+      }
+      .image-container {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+      .album-title {
+        font-size: 2rem;
+        margin-top: 3rem;
+      }
+    }
+  }
+
+  @media screen and (max-width: 720px) and (min-height: 1079) {
+    main {
+      display: none;
+    }
+  }
+
+  /* large horizontal displays */
+  @media screen and (min-width: 1919px) {
+    header {
+      display: none;
+      height: 0;
+    }
+    main {
+      flex-direction: column;
+      justify-content: end;
+      .album-title {
+        margin-top: 1rem;
+        font-size: 2rem;
+      }
+    }
+    .album-art,
+    img {
+      min-width: 600px;
+      min-height: 600px;
+    }
+    .album-art {
+      .image-container {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+    }
+    footer {
+      width: 100%;
+      padding: 0 3rem;
+      margin-bottom: 5rem;
+      h1.title,
+      h2.artist,
+      h3.track-time {
+        color: white;
+        opacity: 1;
+        margin: 0;
+        padding: 1rem;
+      }
+      h2.artist {
+        padding-bottom: 0;
+      }
+      h3.track-time {
+        font-weight: lighter;
+        opacity: 0.33;
+      }
     }
   }
 }
