@@ -239,10 +239,11 @@
       justify-content: center;
       align-items: center;
       z-index: 0;
+      will-change: opacity, filter, background;
       /* background: var(--nextForegroundGradient); */
       padding: 2rem 1rem;
 
-      & + track-info {
+      & + .track-info {
         display: none;
       }
 
@@ -258,20 +259,22 @@
 
       h1.title,
       h2.artist,
-      h3.track-time,
-      svg {
+      h3.track-time {
+        display: block;
         z-index: 3;
         background: var(--nextForegroundGradient);
         /* background: var(--previousForegroundGradient); */
         background-clip: text;
         -webkit-background-clip: text;
+        padding: 0.25rem;
         color: transparent;
-        /* &::after {
+        text-wrap: balance;
+        &::after {
           display: block;
           position: absolute;
           opacity: 0;
           z-index: 5;
-          transition: opacity 1500ms ease-in;
+          transition: opacity 333ms ease-in;
           inset: 0;
           background: var(--nextForegroundGradient);
           background-clip: text;
@@ -280,10 +283,10 @@
           height: 100%;
           content: '';
           color: transparent;
-        } */
+        }
       }
 
-      /* &.transitionGradient {
+      &.transitionGradient {
         h1.title,
         h2.artist,
         h3.track-time {
@@ -291,37 +294,30 @@
             opacity: 1;
           }
         }
-      } */
+      }
+
+      h1.title {
+        width: 100%;
+        font-size: 2rem;
+        line-height: 1.25;
+      }
+
+      h2.hidden {
+        display: none;
+      }
 
       h1,
       h2 {
         opacity: 1;
       }
 
-      h1 {
-        width: 100%;
-        font-size: 2rem;
+      h3.track-time {
+        opacity: 0.73;
       }
 
       h2,
       h3 {
         font-size: 1.5rem;
-      }
-
-      h1.title,
-      h2.artist,
-      h3.track-time {
-        display: block;
-        padding: 0.25rem;
-        text-wrap: balance;
-      }
-
-      h1.title {
-        line-height: 1.25;
-      }
-
-      h2.hidden {
-        display: none;
       }
     }
 
@@ -338,9 +334,10 @@
       overflow: hidden;
       &::before {
         position: absolute;
+        opacity: 0.67;
         z-index: 3;
         transition: width 2s linear;
-        background-color: white;
+        background: var(--previousForegroundGradient);
         width: var(--percent);
         height: 100%;
         content: '';
@@ -354,7 +351,7 @@
         mix-blend-mode: normal;
         mix-blend-mode: darken;
         transition: left 2s linear;
-        background-color: white;
+        background: var(--previousForegroundGradient);
         width: 0.25rem;
         height: 1rem;
         &:hover,
@@ -467,13 +464,13 @@
         opacity: 0;
         transition:
           500ms max-height ease-in-out,
-          333ms opacity 500ms ease-in-out;
+          333ms opacity 111ms ease-in-out;
         width: 100%;
         max-height: 0;
         overflow: hidden;
         &.expanded {
           opacity: 1;
-          max-height: 500px;
+          max-height: 120px;
         }
       }
     }
@@ -605,10 +602,6 @@
       }
       h2.artist {
         padding-bottom: 0;
-      }
-      h3.track-time {
-        opacity: 0.33;
-        font-weight: lighter;
       }
     }
   }

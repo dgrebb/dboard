@@ -10,6 +10,7 @@
   import PlayHead from './PlayHead.svelte';
   import { quintOut } from 'svelte/easing';
   import type { GradientResult } from '$lib/types';
+  import { areTimesCloserTogether } from '$utils/timecodes';
 
   const resubscribeInterval = 3600000; // Resubscribe every hour
 
@@ -74,18 +75,20 @@
 
     eventSource.onmessage = async (event) => {
       timer = 0;
-      const data = JSON.parse(event.data);
-      console.log('🚀 ~ eventSource.onmessage= ~ data:', data);
+      const data = await JSON.parse(event.data);
+      // console.log('🚀 ~ eventSource.onmessage= ~ data:', data);
       const ipAddressPattern =
         /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
 
       ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
-      const currentSeconds = timeStringToSeconds(
+      let currentSeconds = timeStringToSeconds(
         relativeTimePosition?.toString()
       );
+
       totalSeconds = timeStringToSeconds(totalTime?.toString());
+
       let time = totalSeconds - currentSeconds;
-      keepTime(time);
+      keepTime(time, totalSeconds);
 
       art = art.includes('/data/AirplayArtWorkData.png')
         ? (art = art.replace(ipAddressPattern, ''))
@@ -117,23 +120,26 @@
     resubscribeTimeout = setInterval(() => {
       startSubscription();
     }, resubscribeInterval);
-  }
 
-  const keepTime = (timeRemaining: number) => {
-    timer = timeRemaining;
-    if (timeInterval) {
-      clearInterval(timeInterval);
-      timeInterval = null;
-    }
-    timeInterval = setInterval(() => {
-      if (timer <= 0) return;
-      timer--;
-      if (timer < 5) {
-        // console.log('start fading');
+    /**
+     * Keeps track of the remaining time for the track and updates the timer.
+     * @param {number} timeRemaining - The time remaining for the track in seconds.
+     */
+    const keepTime = (timeRemaining: number, totalTime: number) => {
+      timer = timeRemaining < 5 ? totalTime : timeRemaining;
+      if (timeInterval) {
+        clearInterval(timeInterval);
+        timeInterval = null;
       }
-      // console.log(timer);
-    }, 1000);
-  };
+      timeInterval = setInterval(() => {
+        timer--;
+        if (timer < 5) {
+          // console.log('start fading');
+        }
+        // console.log(timer);
+      }, 1000);
+    };
+  }
 
   $effect(() => {
     const currentHealthData = healthState.getCurrentData() || false;
@@ -151,8 +157,8 @@
     playState = 'starting';
 
     // console.log('🚀 ~ $effect ~ gradient:', gradient);
-    console.log('🚀 ~ $effect ~ backgroundGradient:', backgroundGradient);
-    console.log('🚀 ~ $effect ~ foregroundGradient:', foregroundGradient);
+    // console.log('🚀 ~ $effect ~ backgroundGradient:', backgroundGradient);
+    // console.log('🚀 ~ $effect ~ foregroundGradient:', foregroundGradient);
     transitionGradient = true;
 
     preloadImage(art)
@@ -228,26 +234,6 @@
       clearTimeout(retryTimeout);
     }
   });
-
-  // const handleImageLoad = () => {
-  //   if (newArt) {
-  //     preloadImage(newArt)
-  //       .then(() => {
-  //         currentArt = newArt;
-  //       })
-  //       .catch((error) => {
-  //         console.error('Image failed to load', error);
-  //       })
-  //       .finally(() => {
-  //         newArt = null; // Reset newImage
-  //       });
-  //   }
-  // };
-
-  // const [send, receive] = crossfade({
-  //   duration: (d) => Math.sqrt(d * 200),
-  //   easing: quintOut,
-  // });
 </script>
 
 <div
@@ -331,20 +317,11 @@
         onclick={(e) => toggleModal(e)}
       >
         <LovedHeart {loved} size={77} />
-        <!-- {#key art}
-          <img
-            src={art}
-            alt="{album} Artwork"
-            in:receive={{ key: newArt}}
-            out:send={{ key: currentArt }}
-          />
-        {/key} -->
         <div class="image-container">
           {#key currentArt}
             <img src={currentArt} alt="{album} Artwork" transition:fade />
           {/key}
           {#if newArt}
-            <!-- onload={handleImageLoad} -->
             <img src={newArt} alt="{album} Artwork" transition:fade />
           {/if}
         </div>
@@ -374,8 +351,9 @@
       {#key title}
         <div
           class="track-info"
-          in:blur={{ duration: 500, delay: 333 }}
-          out:blur={{ duration: 500 }}
+          in:blur={{ duration: 333, delay: 333 }}
+          out:blur={{ duration: 333 }}
+          class:transitionGradient
         >
           <Icon icon="solar:soundwave-bold-duotone" width={50} />
           <h2 class="artist">{artist}</h2>
@@ -399,7 +377,5 @@
         />
       </div>
     </footer>
-
-    <!-- <AudioWave /> -->
   </div>
 {/if}
