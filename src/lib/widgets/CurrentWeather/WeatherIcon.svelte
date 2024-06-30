@@ -9,11 +9,9 @@
   };
 
   let { weatherCode, isDay }: Props = $props();
-  let icon = $state('data-sunburst-24-filled');
+  let icon: undefined | string = $state(undefined);
   let color = $state('#85aba0');
   let name = $state('Loading');
-
-  // console.log('🚀 ~ weatherCode:', weatherCode);
 
   onMount(() => {
     ({ icon, color, name } = mapWeatherIcon(weatherCode, isDay));

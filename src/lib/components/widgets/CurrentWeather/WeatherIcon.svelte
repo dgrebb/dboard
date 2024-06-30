@@ -23,6 +23,8 @@
 <div class="big-icon-wow right-0 flex flex-col items-end">
   {#if icon !== undefined}
     <p class="absolute self-end p-3 text-slate-500">{name}</p>
+    a ssdfasd fasdfasd
+    <p>{weatherCode}</p>
     <Icon {icon} {color} width={200} class="self-end" />
   {:else}
     <Icon icon="meteocons:not-available-fill" width={200} />
