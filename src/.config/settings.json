@@ -25,6 +25,19 @@
         },
         "tempo": 900000
       }
+    },
+    {
+      "type": "CurrentWeather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "timezone": "Asia/Kolkata",
+          "latitude": 13.0878,
+          "longitude": 80.2785,
+          "name": "Chennai, IN"
+        },
+        "tempo": 900000
+      }
     }
   ]
 }
