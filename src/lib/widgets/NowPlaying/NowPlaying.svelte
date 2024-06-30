@@ -78,12 +78,6 @@
       );
       totalSeconds = timeStringToSeconds(totalTime?.toString());
       let time = totalSeconds - currentSeconds;
-      // console.log(
-      //   '🚀 ~ eventSource.onmessage= ~ currentSeconds:',
-      //   currentSeconds
-      // );
-      // console.log('🚀 ~ eventSource.onmessage= ~ totalSeconds:', totalSeconds);
-      // console.log('🚀 ~ eventSource.onmessage= ~ time:', time);
       keepTime(time);
 
       art = art.includes('/data/AirplayArtWorkData.png')
@@ -130,7 +124,7 @@
       if (timer < 5) {
         // console.log('start fading');
       }
-      console.log(timer);
+      // console.log(timer);
     }, 1000);
   };
 
