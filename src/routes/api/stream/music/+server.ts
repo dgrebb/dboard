@@ -1,4 +1,4 @@
-import type { Fetch, NowPlayingData } from '$lib/types';
+import type { Fetch, GradientResult, NowPlayingData } from '$lib/types';
 import { homeState } from '$root/lib/stores';
 import { colorThief } from '$utils/colorThief';
 import { timeStringToSeconds } from '$utils/strings';
@@ -13,12 +13,24 @@ const clients: Set<ReadableStreamDefaultController<Uint8Array>> = new Set();
 let interval: NodeJS.Timeout | null = null;
 let previousState: NowPlayingData = homeState.nowPlaying();
 
-const createGradient = async (image: string): Promise<string | boolean> => {
+const createGradient = async (
+  image: string
+): Promise<GradientResult | boolean> => {
   if (typeof image !== 'string') return false;
 
   try {
-    const gradient = await colorThief(image);
-    return gradient;
+    const gradientResult = await colorThief(image);
+    let backgroundGradient: string | undefined;
+    let foregroundGradient: string | undefined;
+
+    if (gradientResult && typeof gradientResult !== 'boolean') {
+      ({ backgroundGradient, foregroundGradient } = gradientResult);
+    }
+
+    return {
+      backgroundGradient: backgroundGradient || '',
+      foregroundGradient: foregroundGradient || '',
+    };
   } catch (error) {
     console.error('Error creating gradient:', error);
     return false;
@@ -79,15 +91,28 @@ const startInterval = (fetch: Fetch) => {
         const timestamp = Date.now();
         let art =
           data.art || previousState.art || '/data/AirplayArtWorkData.png';
+        const gradientResult = await createGradient(art);
+        let backgroundGradient: string | undefined;
+        let foregroundGradient: string | undefined;
+
         if (previousState.album !== data.album) {
           art = `${art}?ts=${timestamp}`;
         }
-        const gradient = await createGradient(art);
+
+        if (gradientResult && typeof gradientResult !== 'boolean') {
+          ({ backgroundGradient, foregroundGradient } = gradientResult);
+        }
+
         const nowPlaying: NowPlayingData = {
           ...previousState,
           ...data,
           art,
-          ...(typeof gradient === 'string' ? { gradient } : {}),
+          ...(typeof backgroundGradient === 'string'
+            ? { backgroundGradient }
+            : {}),
+          ...(typeof foregroundGradient === 'string'
+            ? { foregroundGradient }
+            : {}),
         };
         previousState = nowPlaying;
         const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;

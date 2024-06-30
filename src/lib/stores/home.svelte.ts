@@ -1,4 +1,5 @@
 import type {
+  GradientResult,
   HomeData,
   LocationData,
   NowPlayingData,
@@ -19,7 +20,8 @@ export const createHomeStore = () => {
       artist: '',
       album: '',
       art: '/missing-album-art.png',
-      gradient: 'radial-gradient(at right top, darkblue, #1f1f1f)',
+      backgroundGradient: 'radial-gradient(at right top, darkblue, #1f1f1f)',
+      foregroundGradient: 'radial-gradient(at right top, #FFFF74, #E0E0E0)',
       loved: false,
       relativeTimePosition: '00:00:00',
       title: '',
@@ -39,8 +41,11 @@ export const createHomeStore = () => {
       return homeStore.nowPlaying.art;
     },
 
-    nowPlayingGradient: (): string => {
-      return homeStore.nowPlaying.gradient;
+    nowPlayingGradients: (): GradientResult => {
+      return {
+        backgroundGradient: homeStore.nowPlaying.backgroundGradient,
+        foregroundGradient: homeStore.nowPlaying.foregroundGradient,
+      };
     },
 
     weather: () => {
