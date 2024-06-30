@@ -78,6 +78,12 @@
       );
       totalSeconds = timeStringToSeconds(totalTime?.toString());
       let time = totalSeconds - currentSeconds;
+      // console.log(
+      //   '🚀 ~ eventSource.onmessage= ~ currentSeconds:',
+      //   currentSeconds
+      // );
+      // console.log('🚀 ~ eventSource.onmessage= ~ totalSeconds:', totalSeconds);
+      // console.log('🚀 ~ eventSource.onmessage= ~ time:', time);
       keepTime(time);
 
       art = art.includes('/data/AirplayArtWorkData.png')
@@ -124,7 +130,7 @@
       if (timer < 5) {
         // console.log('start fading');
       }
-      // console.log(timer);
+      console.log(timer);
     }, 1000);
   };
 
@@ -196,7 +202,7 @@
   const setTrackChange = () => {
     console.log('track change with controls');
     // timeInterval = null;
-    timer = 0;
+    // timer = 0;
   };
 
   onMount(async () => {
@@ -310,7 +316,7 @@
       {/key}
     </header>
 
-    <main class="items-between flex w-[77%] flex-col md:flex-row">
+    <main class="current-music__modal__main">
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <div
         class="album-art flex pt-3 md:flex-col md:items-start"
@@ -371,14 +377,16 @@
             )}{/if}
         </h3>
       {/key}
-      {#if showAudioPlayer === true}
-        <div transition:fade class="audio-player">
-          <PlaybackControls
-            classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
-            {setTrackChange}
-          />
-        </div>
-      {/if}
+      <div
+        transition:fade
+        class="audio-player"
+        class:expanded={showAudioPlayer}
+      >
+        <PlaybackControls
+          classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
+          {setTrackChange}
+        />
+      </div>
     </footer>
 
     <!-- <AudioWave /> -->
