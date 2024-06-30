@@ -302,9 +302,15 @@ export type NowPlayingData = {
   artist: string;
   album: string;
   art: string;
-  gradient: string;
+  backgroundGradient: string;
+  foregroundGradient: string;
   loved: boolean;
   relativeTimePosition: string;
   title: string;
   totalTime: string;
+};
+
+export type GradientResult = {
+  backgroundGradient: string;
+  foregroundGradient: string;
 };
