@@ -5,20 +5,20 @@
   .loved {
     display: flex;
     position: absolute;
-    z-index: 30;
+    right: -0.5rem;
+    bottom: -0.5rem;
     justify-content: center;
     align-items: center;
-    bottom: -0.5rem;
-    right: -0.5rem;
+    z-index: 30;
     border-radius: 50%;
 
     &::before {
-      border-radius: 50%;
-      content: '';
       position: absolute;
       inset: 0.25rem;
+      border-radius: 50%;
       background-color: rgba(255, 33, 33, 0.8);
       padding: 0;
+      content: '';
       html.dark & {
         background-color: rgba(233, 12, 12, 0.8);
       }
@@ -27,14 +27,14 @@
 
   .loved-heart {
     display: flex;
-    will-change: transform;
     animation: beat 15s infinite;
-    transition: box-shadow 333ms ease-out;
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: box-shadow 333ms ease-out;
+    will-change: transform;
     box-shadow: 0 0 9px rgba(175, 9, 33, 0.5);
+    border-radius: 50%;
     height: auto;
     color: rgba(255, 233, 233, 1);
-    border-radius: 50%;
     html.dark & {
       color: rgba(12, 0, 0, 0.8);
     }
@@ -42,33 +42,33 @@
 }
 
 .current-music__modal {
-  padding: env(safe-area-inset-top) env(safe-area-inset-right)
-    env(safe-area-inset-bottom) env(safe-area-inset-left);
-  height: 100vh;
-  position: fixed;
-  inset: 0;
   display: flex;
+  position: fixed;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   z-index: 40;
+  inset: 0;
   /* TODO: Explore layers and opacity between album gradient and dboard background */
   /* Look into perf implications - remove below background */
   background: var(--previousGradient);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  height: 100vh;
 
   &::after,
   &::before {
-    filter: saturate(1.2);
-    content: '';
     display: block;
     position: absolute;
-    inset: 0;
+    filter: saturate(1.2);
     transition: opacity 3s ease-in-out;
+    inset: 0;
+    content: '';
   }
 
   &::before {
-    z-index: 0;
     opacity: 0;
+    z-index: 0;
     background: var(--nextGradient);
     /* TODO: Explore layers and opacity between album gradient and dboard background */
     /* Look into perf implications - use the opacity below */
@@ -76,9 +76,9 @@
   }
 
   &::after {
-    background: var(--previousGradient);
-    z-index: -1;
     opacity: 1;
+    z-index: -1;
+    background: var(--previousGradient);
   }
 
   &.transitionGradient {
@@ -112,9 +112,9 @@
   main,
   header,
   footer {
-    max-width: 100%;
-    z-index: 3;
     display: flex;
+    z-index: 3;
+    max-width: 100%;
   }
 
   main {
@@ -133,9 +133,9 @@
 
     .image-container {
       position: relative;
+      background: transparent;
       width: 512px;
       height: 512px;
-      background: transparent;
     }
 
     .image-container img {
@@ -165,19 +165,19 @@
   }
 
   .loved-heart {
-    bottom: 0.5rem;
     right: -0.5rem;
+    bottom: 0.5rem;
   }
 
   header {
     display: none;
 
     .reading {
-      flex-grow: 1;
       display: flex;
+      flex-grow: 1;
+      flex-direction: column;
       align-items: center;
       padding-bottom: 1rem;
-      flex-direction: column;
       padding: 1rem;
       h1 {
         font-size: 4rem;
@@ -200,8 +200,8 @@
         -3px -3px 0 #000;
 
       &.bg {
-        color: rgba(255, 133, 133, 1);
         mix-blend-mode: hard-light;
+        color: rgba(255, 133, 133, 1);
       }
     }
 
@@ -217,30 +217,30 @@
   }
 
   footer {
-    padding: 2rem 1rem;
-    flex-direction: column;
     position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    mix-blend-mode: difference;
+    padding: 2rem 1rem;
+    color: white; /* Default to white */
     font-weight: bold;
     text-align: center;
-    align-items: center;
-    justify-content: center;
-    color: white; /* Default to white */
-    mix-blend-mode: difference;
-    z-index: 1;
 
     & + footer {
       display: none;
     }
 
     &::before {
-      content: '';
       position: absolute;
       top: 0;
       left: 0;
+      z-index: -1;
+      background: inherit;
       width: 100%;
       height: 100%;
-      background: inherit;
-      z-index: -1;
+      content: '';
     }
 
     h1 {
@@ -257,9 +257,9 @@
     h2.artist,
     h3.track-time {
       display: block;
+      opacity: 0.67;
       padding: 0.25rem;
       text-wrap: balance;
-      opacity: 0.67;
     }
 
     h1.title {
@@ -271,37 +271,37 @@
     }
 
     .track-progress {
+      display: flex;
       position: fixed;
+      right: 0;
       bottom: 0;
       left: 0;
-      right: 0;
-      margin: 0;
-      overflow: hidden;
-      height: 0.5rem;
-      width: 100%;
-      display: flex;
       flex-direction: row;
+      margin: 0;
+      width: 100%;
+      height: 0.5rem;
+      overflow: hidden;
       &::before {
-        background-color: white;
         position: absolute;
         z-index: 3;
-        height: 100%;
-        width: var(--percent);
-        content: '';
         transition: width 2s linear;
+        background-color: white;
+        width: var(--percent);
+        height: 100%;
+        content: '';
       }
       &::before,
       .playhead {
         top: 0;
       }
       .playhead {
-        transition: left 2s linear;
         position: relative;
-        height: 1rem;
-        width: 0.25rem;
         mix-blend-mode: normal;
         mix-blend-mode: darken;
+        transition: left 2s linear;
         background-color: white;
+        width: 0.25rem;
+        height: 1rem;
         &:hover,
         &:focus,
         &:active {
@@ -333,15 +333,15 @@
 
     main,
     footer {
-      width: 50%;
-      padding-left: 3rem;
-      padding-right: 3rem;
       flex-direction: column;
+      padding-right: 3rem;
+      padding-left: 3rem;
+      width: 50%;
     }
 
     main {
-      height: 75%;
       justify-content: end;
+      height: 75%;
     }
   }
 
@@ -373,9 +373,9 @@
 
         .image-container {
           position: relative;
+          background: transparent;
           width: 100%;
           height: auto;
-          background: transparent;
         }
 
         .image-container img {
@@ -417,11 +417,11 @@
       display: flex;
     }
     header {
-      justify-content: center;
       flex-direction: row;
       align-content: center;
-      width: 100%;
+      justify-content: center;
       padding: 0 0.25rem;
+      width: 100%;
       .reading {
         h1 {
           font-size: 9rem;
@@ -435,18 +435,18 @@
       .album-art,
       img {
         min-width: 700px;
-        min-height: 700px;
         max-width: 700px;
+        min-height: 700px;
         max-height: 700px;
       }
       .image-container {
         display: block;
-        height: 100%;
         width: 100%;
+        height: 100%;
       }
       .album-title {
-        font-size: 2rem;
         margin-top: 3rem;
+        font-size: 2rem;
       }
     }
   }
@@ -479,28 +479,28 @@
     .album-art {
       .image-container {
         display: block;
-        height: 100%;
         width: 100%;
+        height: 100%;
       }
     }
     footer {
-      width: 100%;
-      padding: 0 3rem;
       margin-bottom: 5rem;
+      padding: 0 3rem;
+      width: 100%;
       h1.title,
       h2.artist,
       h3.track-time {
-        color: white;
         opacity: 1;
         margin: 0;
         padding: 1rem;
+        color: white;
       }
       h2.artist {
         padding-bottom: 0;
       }
       h3.track-time {
-        font-weight: lighter;
         opacity: 0.33;
+        font-weight: lighter;
       }
     }
   }

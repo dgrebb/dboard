@@ -7,37 +7,37 @@
 
 /* PWA Safe Area Padding */
 html {
-  min-height: calc(100% + env(safe-area-inset-top));
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   padding: env(safe-area-inset-top) env(safe-area-inset-right)
     env(safe-area-inset-bottom) env(safe-area-inset-left);
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  min-height: calc(100% + env(safe-area-inset-top));
 }
 
 html,
 body {
   min-height: 100vh;
-  font-family: var(--font-nasa) !important;
   scrollbar-width: none;
+  font-family: var(--font-nasa) !important;
 }
 
 body {
-  background: var(--bgColor);
-  transition-property: background;
   transition-duration: 10s;
+  transition-property: background;
+  background: var(--bgColor);
 
   &:after {
-    content: '';
     position: absolute;
+    opacity: 0;
+    z-index: -1;
+    transition-duration: 10s;
+    transition-property: opacity;
     inset: 0;
     min-height: 100%;
-    z-index: -1;
     pointer-events: none;
-    transition-property: opacity;
-    transition-duration: 10s;
-    opacity: 0;
+    content: '';
 
     html.dark & {
       background: linear-gradient(
@@ -50,9 +50,9 @@ body {
 
   .dboard {
     opacity: 0;
-    transition-property: opacity;
-    transition-duration: 1s;
     z-index: 9;
+    transition-duration: 1s;
+    transition-property: opacity;
   }
 
   &.ready {
@@ -69,18 +69,18 @@ body {
 .header {
   display: flex;
   position: absolute;
-  width: 100%;
   z-index: 33;
+  width: 100%;
 }
 
 .foreground {
   position: fixed;
-  height: 100vh;
-  width: 100vw;
-  background-color: transparent;
   opacity: 0.05;
-  pointer-events: none;
   z-index: 10;
+  background-color: transparent;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
 
   html.dark & {
     background-color: #c4c100;
@@ -88,27 +88,27 @@ body {
 }
 
 .time {
-  width: 100%;
   position: absolute;
   top: 0.5rem;
-  text-align: center;
-  color: var(--skyBaseColor);
-  filter: invert(1);
   z-index: 1;
+  filter: invert(1);
+  width: 100%;
+  color: var(--skyBaseColor);
+  text-align: center;
 }
 
 .dboard {
   display: grid;
-  grid-auto-flow: column;
   position: relative;
-  height: 100vh;
+  grid-auto-flow: column;
   gap: 1.5rem;
-  box-sizing: border-box;
-  scrollbar-width: none;
-  overflow: auto;
-  scroll-snap-type: both mandatory;
-  overscroll-behavior-x: contain;
   z-index: 10;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: both mandatory;
+  scrollbar-width: none;
 
   /* TODO: Explore layers and opacity between album gradient and dboard background
   Look into perf implications - use the opacity below */
@@ -125,16 +125,16 @@ body {
 
   &__grid {
     display: grid;
-    width: 100vw;
     gap: 1.5rem;
     padding: 1.5rem;
+    width: 100vw;
     scroll-snap-align: center;
 
     @media screen and (min-width: 480px) {
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 2.5rem;
       padding: 2.5rem;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: repeat(2, minmax(0, 1fr));
     }
 
     @media screen and (min-height: 1200px) {
@@ -146,8 +146,8 @@ body {
     }
 
     &__item {
-      max-height: 315px;
       position: relative;
+      max-height: 315px;
 
       @media screen and (min-height: 1200px) {
         max-height: 353px;
@@ -158,8 +158,8 @@ body {
         justify-self: end;
 
         @media screen and (min-width: 480px) {
-          grid-column-start: auto;
           grid-row-start: auto;
+          grid-column-start: auto;
         }
 
         @media screen and (min-height: 1200px) {
@@ -179,23 +179,23 @@ body {
 
   &__card {
     display: flex;
+    position: relative;
     flex-direction: column;
-    height: 100%;
+    border-radius: 0.5rem;
     padding: 1rem;
+    height: 100%;
     min-height: 277px;
     overflow: hidden;
-    border-radius: 0.5rem;
-    position: relative;
 
     &:after {
-      content: '';
       position: absolute;
-      inset: 0;
-      z-index: -1;
-      background-color: var(--skyBaseColor);
-      border-radius: 0.5rem;
       opacity: 0.45;
+      z-index: -1;
       transition: colors 500ms ease-in-out;
+      inset: 0;
+      border-radius: 0.5rem;
+      background-color: var(--skyBaseColor);
+      content: '';
     }
   }
 }
@@ -214,11 +214,11 @@ body {
 
 .big-icon-wow {
   position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
   z-index: 0;
   mix-blend-mode: hard-light;
-  opacity: 0;
-  right: 0;
-  top: 0;
 
   body.ready & {
     opacity: 0.77;
@@ -229,8 +229,8 @@ body {
   }
 
   svg {
-    will-change: transform;
     animation: float 5s infinite;
+    will-change: transform;
 
     path {
       position: absolute;
@@ -245,8 +245,8 @@ body {
 
   &,
   svg {
-    padding: 0;
     margin: 0;
+    padding: 0;
   }
 }
 
@@ -260,8 +260,8 @@ body {
 
 .septa {
   &__train {
-    color: var(--bgColor);
     filter: invert(1);
+    color: var(--bgColor);
 
     dt {
       opacity: 0.75;
@@ -272,9 +272,9 @@ body {
 .control-widget {
   button {
     display: flex;
-    width: auto;
     opacity: 0.75;
     transition: opacity 0.5s linear;
+    width: auto;
 
     &:hover,
     &:focus,
@@ -296,11 +296,11 @@ video.player {
   position: absolute;
   top: 0;
   left: 0;
+  opacity: 0;
+  transition: opacity 3s ease-in-out;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 3s ease-in-out;
-  opacity: 0;
 }
 
 video.visible {
