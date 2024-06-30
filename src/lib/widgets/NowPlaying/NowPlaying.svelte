@@ -67,6 +67,7 @@
     eventSource = new EventSource(`/api/stream/music`);
 
     eventSource.onmessage = async (event) => {
+      timer = 0;
       const data = JSON.parse(event.data);
       const ipAddressPattern =
         /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
@@ -77,7 +78,6 @@
       );
       totalSeconds = timeStringToSeconds(totalTime?.toString());
       let time = totalSeconds - currentSeconds;
-
       keepTime(time);
 
       art = art.includes('/data/AirplayArtWorkData.png')
@@ -301,7 +301,7 @@
           <h2 class="text-md">
             {locationName}
             <Icon
-              icon="ion:location-sharp"
+              icon="line-md:map-marker"
               height="32px"
               class="inline-flex align-middle"
             />
@@ -309,6 +309,7 @@
         </div>
       {/key}
     </header>
+
     <main class="items-between flex w-[77%] flex-col md:flex-row">
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <div
@@ -337,6 +338,7 @@
           {/if}
         </div>
       </div>
+      <h3 class="album-title text-fuchsia-200">{album}</h3>
       {#if showAudioPlayer === true}
         <div transition:fade class="audio-player">
           <PlaybackControls
@@ -346,6 +348,7 @@
         </div>
       {/if}
     </main>
+
     <footer
       class="current-music__modal__info block text-center text-lg"
       out:blur={{ duration: 150 }}
@@ -358,38 +361,26 @@
         />
       {/if}
       {#key title}
-        <h2 class="text-fuchsia-200">{title}</h2>
-        <h3 class="text-fuchsia-200">{album}</h3>
-        <h1 class="justify-center text-3xl text-white">{artist}</h1>
-        <h1 class="justify-center text-3xl text-white">
+        <Icon icon="solar:soundwave-bold-duotone" width={50} />
+        <h2 class="artist">{artist}</h2>
+        <h1 class="title">{title}</h1>
+        <h3 class="track-time">
           <!-- {#if timer <= 0}∞{:else}{formatSecondsToMinutes(timer)}{/if} -->
           {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
               totalSeconds - timer
             )}{/if}
-        </h1>
+        </h3>
       {/key}
+      {#if showAudioPlayer === true}
+        <div transition:fade class="audio-player">
+          <PlaybackControls
+            classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
+            {setTrackChange}
+          />
+        </div>
+      {/if}
     </footer>
+
     <!-- <AudioWave /> -->
   </div>
 {/if}
-
-<style lang="postcss">
-  .image-container {
-    position: relative;
-    width: 512px;
-    height: 512px;
-    background: transparent;
-  }
-
-  .image-container img {
-    background: transparent;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hidden {
-    display: none;
-  }
-</style>
