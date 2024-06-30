@@ -8,6 +8,7 @@
   };
 
   let { classes, setTrackChange }: Props = $props();
+  let buttonSize: number = 50;
 
   /**
    * Send a command to control music playback.
@@ -51,17 +52,33 @@
 
 <div class={classes}>
   <button class="bounce-ui prev" onclick={(e: MouseEvent) => handlePrev(e)}
-    ><Icon icon="majesticons:next-circle" height={33} width={33} /></button
+    ><Icon
+      icon="majesticons:next-circle"
+      height={buttonSize}
+      width={buttonSize}
+    /></button
   >
   <button
     class="bounce-ui"
     onclick={(e: MouseEvent) => sendCommand(e, 'resume')}
-    ><Icon icon="majesticons:play-circle" height={33} width={33} /></button
+    ><Icon
+      icon="majesticons:play-circle"
+      height={buttonSize}
+      width={buttonSize}
+    /></button
   >
   <button class="bounce-ui" onclick={(e: MouseEvent) => sendCommand(e, 'pause')}
-    ><Icon icon="bi:pause-circle-fill" height={33} width={33} /></button
+    ><Icon
+      icon="bi:pause-circle-fill"
+      height={buttonSize}
+      width={buttonSize}
+    /></button
   >
   <button class="bounce-ui" onclick={(e: MouseEvent) => handleNext(e)}
-    ><Icon icon="majesticons:next-circle" height={33} width={33} /></button
+    ><Icon
+      icon="majesticons:next-circle"
+      height={buttonSize}
+      width={buttonSize}
+    /></button
   >
 </div>
