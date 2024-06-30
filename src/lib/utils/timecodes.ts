@@ -27,3 +27,17 @@ export const calculatePercentageComplete = (
 
   return (currentSeconds / totalSeconds) * 100;
 };
+
+/**
+ * Determines if the relative time position and total time are closer together than they are apart.
+ * @param {number} relativeSeconds - The relative time position in seconds
+ * @param {number} totalSeconds - The total time of the track in seconds
+ * @returns {boolean} True if the times are closer together than apart, false otherwise.
+ */
+export const areTimesCloserTogether = (
+  relativeSeconds: number,
+  totalSeconds: number
+): boolean => {
+  const difference = Math.abs(totalSeconds - relativeSeconds);
+  return difference < totalSeconds / 2;
+};
