@@ -289,114 +289,114 @@
       toggleControls(e);
     }}
   >
-    <header>
-      {#key typeof weather?.temperature_2m === 'number' && currentValue !== 0}
-        <div class="reading" in:fade>
-          <h1 class="current-music__modal__headline bg">
-            {currentValue}
-          </h1>
-          <h2 class="text-md">
-            {difference} | {direction}
-            <Icon
-              icon={directionIcon}
-              height="32px"
-              class="inline-flex align-middle"
-            />
-          </h2>
-        </div>
-        <div class="reading" in:fade>
-          <h1 class="current-music__modal__headline">
-            {typeof weather?.temperature_2m === 'number'
-              ? Math.round(weather?.temperature_2m)
-              : weather?.temperature_2m}ºF
-          </h1>
-          <h2 class="text-md">
-            {locationName}
-            <Icon
-              icon="line-md:map-marker"
-              height="32px"
-              class="inline-flex align-middle"
-            />
-          </h2>
-        </div>
-      {/key}
-    </header>
+    {#if loaded}
+      <header>
+        {#key typeof weather?.temperature_2m === 'number' && currentValue !== 0}
+          <div class="reading" in:fade>
+            <h1 class="current-music__modal__headline bg">
+              {currentValue}
+            </h1>
+            <h2 class="text-md">
+              {difference} | {direction}
+              <Icon
+                icon={directionIcon}
+                height="32px"
+                class="inline-flex align-middle"
+              />
+            </h2>
+          </div>
+          <div class="reading" in:fade>
+            <h1 class="current-music__modal__headline">
+              {typeof weather?.temperature_2m === 'number'
+                ? Math.round(weather?.temperature_2m)
+                : weather?.temperature_2m}ºF
+            </h1>
+            <h2 class="text-md">
+              {locationName}
+              <Icon
+                icon="line-md:map-marker"
+                height="32px"
+                class="inline-flex align-middle"
+              />
+            </h2>
+          </div>
+        {/key}
+      </header>
 
-    <main class="current-music__modal__main">
-      <!-- svelte-ignore a11y_click_events_have_key_events -->
-      <div
-        class="album-art flex pt-3 md:flex-col md:items-start"
-        role="switch"
-        tabindex="-1"
-        aria-checked={modal}
-        onclick={(e) => toggleModal(e)}
-      >
-        <LovedHeart {loved} size={77} />
-        <div class="image-container">
-          {#key currentArt}
-            <img src={currentArt} alt="{album} Artwork" transition:fade />
-          {/key}
-          {#if newArt}
-            <img src={newArt} alt="{album} Artwork" transition:fade />
-          {/if}
-        </div>
-      </div>
-      {#key title}<h3
-          class="album-title text-fuchsia-200"
-          out:fade={{ duration: 500 }}
-          in:fade={{ duration: 500, delay: 500 }}
+      <main class="current-music__modal__main">
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
+        <div
+          class="album-art flex pt-3 md:flex-col md:items-start"
+          role="switch"
+          tabindex="-1"
+          aria-checked={modal}
+          onclick={(e) => toggleModal(e)}
         >
-          {album}
-        </h3>{/key}
-      {#if showAudioPlayer === true}
-        <div transition:fade class="audio-player">
+          <LovedHeart {loved} size={77} />
+          <div class="image-container">
+            {#key currentArt}
+              <img src={currentArt} alt="{album} Artwork" transition:fade />
+            {/key}
+            {#if newArt}
+              <img src={newArt} alt="{album} Artwork" transition:fade />
+            {/if}
+          </div>
+        </div>
+        {#key title}<h3
+            class="album-title text-fuchsia-200"
+            out:fade={{ duration: 500 }}
+            in:fade={{ duration: 500, delay: 500 }}
+          >
+            {album}
+          </h3>{/key}
+        {#if showAudioPlayer === true}
+          <div transition:fade class="audio-player">
+            <PlaybackControls
+              classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
+              {setTrackChange}
+            />
+          </div>
+        {/if}
+      </main>
+
+      <footer
+        class="current-music__modal__info block text-center text-lg"
+        out:blur={{ duration: 150 }}
+        in:blur={{ duration: 333, delay: 150 }}
+      >
+        <PlayHead
+          total={typeof totalSeconds === 'number' ? totalSeconds : 0}
+          current={timer}
+        />
+        {#key title}
+          <div
+            class="track-info"
+            in:blur={{ duration: 500, delay: 500 }}
+            out:blur={{ duration: 500 }}
+            class:transitionForegroundGradient
+          >
+            <Icon icon="solar:soundwave-bold-duotone" width={50} />
+            <h2 class="artist">{artist}</h2>
+            <h1 class="title">{title}</h1>
+            <h3 class="track-time">
+              <!-- {#if timer <= 0}∞{:else}{formatSecondsToMinutes(timer)}{/if} -->
+              {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
+                  totalSeconds - timer
+                )}{/if}
+            </h3>
+          </div>
+        {/key}
+        <div
+          transition:fade
+          class="audio-player"
+          class:expanded={showAudioPlayer}
+        >
           <PlaybackControls
             classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
             {setTrackChange}
           />
         </div>
-      {/if}
-    </main>
-
-    <footer
-      class="current-music__modal__info block text-center text-lg"
-      out:blur={{ duration: 150 }}
-      in:blur={{ duration: 333, delay: 150 }}
-    >
-      {#if timer}
-        <PlayHead
-          total={typeof totalSeconds === 'number' ? totalSeconds : 0}
-          current={timer}
-        />
-      {/if}
-      {#key title}
-        <div
-          class="track-info"
-          in:blur={{ duration: 500, delay: 500 }}
-          out:blur={{ duration: 500 }}
-          class:transitionForegroundGradient
-        >
-          <Icon icon="solar:soundwave-bold-duotone" width={50} />
-          <h2 class="artist">{artist}</h2>
-          <h1 class="title">{title}</h1>
-          <h3 class="track-time">
-            <!-- {#if timer <= 0}∞{:else}{formatSecondsToMinutes(timer)}{/if} -->
-            {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
-                totalSeconds - timer
-              )}{/if}
-          </h3>
-        </div>
-      {/key}
-      <div
-        transition:fade
-        class="audio-player"
-        class:expanded={showAudioPlayer}
-      >
-        <PlaybackControls
-          classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
-          {setTrackChange}
-        />
-      </div>
-    </footer>
+      </footer>
+    {/if}
   </div>
 {/if}
