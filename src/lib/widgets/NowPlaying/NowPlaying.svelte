@@ -46,7 +46,6 @@
   let transitionGradient: boolean = $state(false);
   let timer: number = $state(0);
   let timeInterval: NodeJS.Timeout | null = $state(null);
-  let animationSpeed: number = $state(3333);
   let previousAlbum: string = $state('Unknown');
   let currentArt: string | null = $state('/missing-album-art.png');
   let newArt: string | null = $state(null);
@@ -211,7 +210,7 @@
   };
 
   const setTrackChange = () => {
-    console.log('track change with controls');
+    // console.log('track change with controls');
     // timeInterval = null;
     // timer = 0;
   };
@@ -236,31 +235,45 @@
   });
 </script>
 
-<div
-  class="now-playing dboard__grid__item dboard__grid__item--bottom-right current-music flowover"
->
-  {#if loaded === true}
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    {#key newArt && album !== previousAlbum}
+{#if loaded === true}
+  <div class="now-playing dboard__grid__item current-music">
+    {#key album !== previousAlbum}
       <div
-        class="album-art"
-        out:fade={{ duration: animationSpeed }}
-        in:fade={{ duration: animationSpeed, delay: animationSpeed }}
+        class="dboard__card svelte-1s7u7zs refreshed w-full border-none bg-transparent"
+        out:fade={{ duration: 333 }}
+        in:fade={{ duration: 333, delay: 333 }}
       >
-        <LovedHeart {loved} size={33} />
-        <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-        <img
-          src={art}
-          alt="{album} Artwork"
-          onclick={(e) => toggleModal(e)}
-          tabindex="-1"
-          role="switch"
-          aria-checked={modal}
-        />
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
+        <div class="album-art">
+          <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
+          <img
+            src={art}
+            alt="{album} Artwork"
+            onclick={(e) => toggleModal(e)}
+            tabindex="-1"
+            role="switch"
+            aria-checked={modal}
+          />
+          <h3 class="album-title">{album}</h3>
+          <LovedHeart {loved} size={33} />
+        </div>
+        <div class="track-details">
+          <span class="track-artist">
+            <h2 class="artist">{artist}</h2>
+          </span>
+          <span class="track">
+            <h3 class="track-time">
+              {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
+                  totalSeconds - timer
+                )}{/if}
+            </h3>
+            <h1 class="track-title text-fuchsia-200">{title}</h1>
+          </span>
+        </div>
       </div>
     {/key}
-  {/if}
-</div>
+  </div>
+{/if}
 
 {#if modal}
   <!-- svelte-ignore a11y_no_static_element_interactions -->
