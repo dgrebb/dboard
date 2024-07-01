@@ -90,8 +90,7 @@ const startInterval = (fetch: Fetch) => {
 
       if (shouldBroadcast) {
         const timestamp = Date.now();
-        let art =
-          data.art || previousState.art || '/data/AirplayArtWorkData.png';
+        let art = data.art || '/missing-album-art.png';
         let backgroundGradient: string | undefined;
         let foregroundGradient: string | undefined;
 
