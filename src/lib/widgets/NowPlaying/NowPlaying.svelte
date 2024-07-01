@@ -44,6 +44,7 @@
 
   let showAudioPlayer: boolean = $state(false);
   let transitionGradient: boolean = $state(false);
+  let transitionForegroundGradient: boolean = $state(false);
   let timer: number = $state(0);
   let timeInterval: NodeJS.Timeout | null = $state(null);
   let previousAlbum: string = $state('Unknown');
@@ -73,13 +74,13 @@
     eventSource = new EventSource(`/api/stream/music`);
 
     eventSource.onmessage = async (event) => {
-      timer = 0;
       const data = await JSON.parse(event.data);
-      // console.log('🚀 ~ eventSource.onmessage= ~ data:', data);
+      ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
+
       const ipAddressPattern =
         /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
 
-      ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
+      timer = 0;
       let currentSeconds = timeStringToSeconds(
         relativeTimePosition?.toString()
       );
@@ -92,6 +93,8 @@
       art = art.includes('/data/AirplayArtWorkData.png')
         ? (art = art.replace(ipAddressPattern, ''))
         : art;
+
+      newArt = art;
 
       await homeState.setNowPlaying(data);
       retryCount = 0;
@@ -155,11 +158,6 @@
       homeState.nowPlayingGradients());
     playState = 'starting';
 
-    // console.log('🚀 ~ $effect ~ gradient:', gradient);
-    // console.log('🚀 ~ $effect ~ backgroundGradient:', backgroundGradient);
-    // console.log('🚀 ~ $effect ~ foregroundGradient:', foregroundGradient);
-    transitionGradient = true;
-
     preloadImage(art)
       .then(() => {
         newArt = art;
@@ -168,16 +166,20 @@
         console.error('Image failed to load', error);
       });
 
+    transitionGradient = true;
+    transitionForegroundGradient = true;
+
+    previousForegroundGradient = foregroundGradient;
     return () => {
       loaded = true;
       previousAlbum = album;
       setTimeout(() => {
+        transitionForegroundGradient = false;
+      }, 500);
+      setTimeout(() => {
         currentArt = art;
-        // console.log('this is where the secong gradient animation fires');
         transitionGradient = false;
         previousBackgroundGradient = backgroundGradient;
-        previousForegroundGradient = foregroundGradient;
-        // transitionArt = false;
       }, delay);
       setTimeout(() => {
         newArt = null;
@@ -282,7 +284,7 @@
     class="current-music__modal"
     class:transitionGradient
     transition:fade
-    style="--nextBackgroundGradient: {backgroundGradient}; --previousBackgroundGradient: {previousBackgroundGradient}; --nextForegroundGradient: {foregroundGradient}; --previousForegroundGradient: {previousForegroundGradient}; "
+    style="--nextBackgroundGradient: {backgroundGradient}; --previousBackgroundGradient: {previousBackgroundGradient}; --nextForegroundGradient: {foregroundGradient}; --previousForegroundGradient: {previousForegroundGradient};"
     onclick={(e) => {
       toggleControls(e);
     }}
@@ -339,7 +341,13 @@
           {/if}
         </div>
       </div>
-      <h3 class="album-title text-fuchsia-200">{album}</h3>
+      {#key title}<h3
+          class="album-title text-fuchsia-200"
+          out:fade={{ duration: 500 }}
+          in:fade={{ duration: 500, delay: 500 }}
+        >
+          {album}
+        </h3>{/key}
       {#if showAudioPlayer === true}
         <div transition:fade class="audio-player">
           <PlaybackControls
@@ -364,9 +372,9 @@
       {#key title}
         <div
           class="track-info"
-          in:blur={{ duration: 333, delay: 333 }}
-          out:blur={{ duration: 333 }}
-          class:transitionGradient
+          in:blur={{ duration: 500, delay: 500 }}
+          out:blur={{ duration: 500 }}
+          class:transitionForegroundGradient
         >
           <Icon icon="solar:soundwave-bold-duotone" width={50} />
           <h2 class="artist">{artist}</h2>
