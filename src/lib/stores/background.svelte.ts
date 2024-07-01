@@ -194,7 +194,7 @@ export const createBackground = function createBackground() {
 };
 
 export const background = {
-  updateColor: function (
+  updateColor: async function (
     current: WeatherType['current'],
     daily: WeatherType['daily']
   ) {

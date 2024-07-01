@@ -78,7 +78,7 @@ export type CurrentWeatherData = {
   interval?: number;
   apparent_temperature?: number;
   temperature_2m: number;
-  is_day?: number;
+  is_day: number;
   weather_code?: number;
   cloud_cover: number;
   wind_speed_10m: number;
