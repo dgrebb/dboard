@@ -1,5 +1,52 @@
 @import './controls.css';
 
+.now-playing {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .dboard__card {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-height: auto;
+  }
+
+  .album-art,
+  .track-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .album-art {
+    margin-right: 1rem;
+    img {
+      max-width: 200px;
+      max-height: 200px;
+    }
+  }
+
+  .album-title {
+    margin-top: 0.5rem;
+    max-width: 50%;
+    text-wrap: balance;
+  }
+
+  .track-details {
+    justify-content: space-between;
+    height: 100%;
+
+    span {
+      display: block;
+    }
+
+    .track-time,
+    .track-title {
+      text-align: right;
+    }
+  }
+}
+
 .now-playing,
 .current-music__modal {
   .loved {
@@ -120,10 +167,13 @@
   main {
     flex-direction: column;
     align-items: center;
+    --size: 320px;
 
     h3.album-title {
       margin-top: 0.5rem;
+      max-width: var(--size);
       font-size: 1.5rem;
+      text-align: center;
     }
   }
 
@@ -140,8 +190,8 @@
     .image-container {
       position: relative;
       background: transparent;
-      max-width: 512px;
-      max-height: 512px;
+      max-width: var(--size);
+      max-height: var(--size);
     }
 
     .image-container img {
@@ -156,7 +206,7 @@
     }
 
     img {
-      max-height: 512px;
+      max-height: var(--size);
       & + img {
         position: absolute;
         top: 0;
