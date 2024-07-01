@@ -56,11 +56,17 @@ export const createHomeStore = () => {
       return homeStore.weather.current;
     },
 
+    solarData: () => {
+      return {
+        isDay: homeStore.weather.current?.is_day,
+      };
+    },
+
     locationName: () => {
       return homeStore.location.name;
     },
 
-    setLocation: (location: LocationData) => {
+    setLocation: async (location: LocationData) => {
       homeStore = {
         ...homeStore,
         location,
@@ -79,10 +85,13 @@ export const createHomeStore = () => {
       // console.log('🚀 ~ setNowPlaying: ~ state:', state);
     },
 
-    setWeather: (weather: WeatherData) => {
+    setWeather: async (weather: WeatherData) => {
+      console.log('🚀 ~ createHomeStore ~ weather:', weather);
       homeStore = {
         ...homeStore,
-        weather,
+        weather: {
+          ...weather,
+        },
       };
     },
   };

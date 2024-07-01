@@ -245,7 +245,7 @@
       <div
         class="album-art"
         out:fade={{ duration: animationSpeed }}
-        in:fade={{ duration: animationSpeed, delay: animationSpeed * 2 }}
+        in:fade={{ duration: animationSpeed, delay: animationSpeed }}
       >
         <LovedHeart {loved} size={33} />
         <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->

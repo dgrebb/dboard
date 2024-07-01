@@ -349,7 +349,7 @@
       .playhead {
         position: relative;
         mix-blend-mode: normal;
-        mix-blend-mode: darken;
+        mix-blend-mode: difference;
         transition: left 2s linear;
         background: var(--previousForegroundGradient);
         width: 0.25rem;
