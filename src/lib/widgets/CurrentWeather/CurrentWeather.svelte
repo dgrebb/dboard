@@ -1,14 +1,13 @@
 <script lang="ts">
-  import Icon from '@iconify/svelte';
-  import fahrenheitToColorShade from './tempColor';
-  import { fade, blur } from 'svelte/transition';
-  import WeatherIcon from './WeatherIcon.svelte';
-  import { onMount } from 'svelte';
-  import type { CurrentWeatherSettings } from '$root/.config/settings';
-  import { createWeather, homeState } from '$root/lib/stores';
   import type { WeatherData } from '$lib/types';
-  import { background } from '$root/lib/stores';
+  import type { CurrentWeatherSettings } from '$root/.config/settings';
+  import { background, createWeather, homeState } from '$root/lib/stores';
+  import Icon from '@iconify/svelte';
+  import { onMount } from 'svelte';
+  import { blur, fade } from 'svelte/transition';
   import './current-weather.css';
+  import fahrenheitToColorShade from './tempColor';
+  import WeatherIcon from './WeatherIcon.svelte';
 
   let highlightColor = fahrenheitToColorShade(77);
   let pushing = $state(false);
@@ -20,18 +19,18 @@
     location: { name },
   } = settings;
   let weather = createWeather();
-  let current: WeatherData['current'] | boolean = $derived(weather.current);
-  let daily: WeatherData['daily'] | boolean = $derived(weather.daily);
+  let current: WeatherData['current'] | undefined = $state(weather.current());
+  let daily: WeatherData['daily'] | undefined = $state(weather.daily());
+  let globalIsDay: number | undefined = $state(homeState.globalIsDay());
 
-  let solarData = $state(homeState.solarData());
-  let { isDay: globalIsDay } = $state(solarData);
-
-  function handlePushing() {
+  function handlePushing(e: MouseEvent) {
+    if (e.button === 2) return;
     pushing = true;
     refreshed = false;
   }
 
-  function handleUp() {
+  function handleUp(e: MouseEvent) {
+    if (e.button === 2) return;
     const fakeWeatherUpdateLocation = {
       primary: false,
       timezone: 'America/Denver',
@@ -64,12 +63,17 @@
         daily,
       });
     }
+    if (globalIsDay === undefined) {
+      setTimeout(() => {
+        globalIsDay = homeState.globalIsDay();
+      }, 500);
+    }
     mounted = true;
   });
 
   $effect(() => {
-    let daily = $state.snapshot(weather.daily);
-    let current = $state.snapshot(weather.current);
+    daily = weather.daily();
+    current = weather.current();
     if (
       location.primary === true &&
       typeof daily === 'object' &&
@@ -77,24 +81,22 @@
     ) {
       background.updateColor(current, daily);
       return () => {
-        homeState.setWeather({
-          success: true,
-          current,
-          daily,
-        });
+        globalIsDay = homeState.globalIsDay();
       };
     }
   });
 </script>
 
-{#if typeof current !== 'boolean' && current?.is_day !== undefined}
+{#if globalIsDay}
   <div
-    onmousedown={handlePushing}
-    onmouseup={handleUp}
+    onmousedown={(e) => handlePushing(e)}
+    onmouseup={(e) => handleUp(e)}
     tabindex="-1"
     role="button"
     style={`--mainColor: ${highlightColor}`}
-    class={`dboard__grid__item push-to-refresh current-weather ${current.is_day === 1 && globalIsDay === 0 ? 'current-weather-day' : ''} ${current.is_day === 0 && globalIsDay === 1 ? 'current-weather-night' : ''} relative`}
+    class="dboard__grid__item push-to-refresh current-weather relative"
+    class:night-override={globalIsDay === 1 && current?.is_day === 0}
+    class:day-override={globalIsDay === 0 && current?.is_day === 1}
   >
     {#if current}
       <div
@@ -142,7 +144,9 @@
             out:blur={{ duration: 333, delay: 0 }}
           >
             <WeatherIcon
-              weatherCode={current.weather_code}
+              weatherCode={typeof current.weather_code === 'number'
+                ? current.weather_code
+                : 0}
               isDay={current.is_day}
             />
           </span>

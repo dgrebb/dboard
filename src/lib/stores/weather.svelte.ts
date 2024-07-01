@@ -1,8 +1,15 @@
-import type { WeatherData, FetchOptions, LocationData } from '../types';
+import type {
+  WeatherData,
+  FetchOptions,
+  LocationData,
+  CurrentWeatherData,
+} from '../types';
 // import { counter } from '$root/routes/runes/location.svelte';
 
 export const createWeather = function createWeather() {
-  let weather: WeatherData | boolean = $state(false);
+  let weather: WeatherData = $state({
+    success: false,
+  });
   let tempoId: number | NodeJS.Timeout | null;
 
   async function getWeather(
@@ -68,20 +75,18 @@ export const createWeather = function createWeather() {
   }
 
   return {
-    get current() {
-      if (typeof weather === 'object') {
-        return weather.current;
-      } else {
-        return weather;
-      }
+    current: (): CurrentWeatherData | undefined => {
+      return typeof weather.current === 'object' ? weather.current : undefined;
     },
-    get daily() {
+
+    daily: () => {
       if (typeof weather === 'object') {
         return weather.daily;
       } else {
         return weather;
       }
     },
+
     getWeather,
     loadWeather,
     setTempo,

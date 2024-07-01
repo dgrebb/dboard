@@ -113,6 +113,7 @@ export interface WeatherData {
 export type SolarData = {
   sunrise: Date[];
   sunset: Date[];
+  isDay: number;
 };
 
 /**
@@ -277,7 +278,7 @@ export type HomeData = {
   location: LocationData;
   nowPlaying: NowPlayingData;
   lights?: unknown;
-  weather: WeatherData;
+  weather?: WeatherData;
   time?: {
     milliseconds: 0;
     hours: 0;
