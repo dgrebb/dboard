@@ -45,7 +45,7 @@
   let timeInterval: NodeJS.Timeout | null = $state(null);
   let previousAlbum = $state('Unknown');
   let currentArt: string | null = $state(homeState.nowPlayingArt());
-  let newArt: string | null = $state(null);
+  let newArt: string | undefined = $state(undefined);
   let previousBackgroundGradient = $state(
     'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
   );
@@ -104,7 +104,6 @@
       art = art.includes('/data/AirplayArtWorkData.png')
         ? art.replace(ipAddressPattern, '')
         : art;
-      newArt = art;
 
       await homeState.setNowPlaying(data);
       retryCount = 0;
@@ -189,7 +188,7 @@
         previousBackgroundGradient = backgroundGradient;
       }, delay);
       setTimeout(() => {
-        newArt = null;
+        newArt = undefined;
       }, delay + 1000);
     };
   });
@@ -243,7 +242,7 @@
   });
 </script>
 
-d{#if loaded === true}
+{#if loaded === true}
   <div class="now-playing dboard__grid__item current-music">
     {#key album !== previousAlbum}
       <div
@@ -338,26 +337,35 @@ d{#if loaded === true}
         onclick={(e) => toggleModal(e)}
       >
         <LovedHeart {loved} size={77} />
+
         <div class="image-container">
-          {#key currentArt && loaded}
+          {#key newArt}
             <img
               src={currentArt}
               alt="{album} Artwork"
-              transition:blur={{ duration: 5000, delay: 5000 }}
+              out:fade={{ duration: 500 }}
             />
           {/key}
           {#if newArt}
-            <img src={newArt} alt="{album} Artwork" />
+            <img
+              src={newArt}
+              alt="{album} Artwork"
+              in:fade={{ duration: 500 }}
+            />
           {/if}
         </div>
       </div>
-      {#key title}<h3
+
+      {#key title}
+        <h3
           class="album-title text-fuchsia-200"
           out:fade={{ duration: 500 }}
           in:fade={{ duration: 500, delay: 500 }}
         >
           {album}
-        </h3>{/key}
+        </h3>
+      {/key}
+
       {#if showAudioPlayer === true}
         <div
           transition:fade

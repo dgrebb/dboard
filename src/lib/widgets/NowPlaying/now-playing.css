@@ -176,7 +176,7 @@
     align-items: center;
 
     h3.album-title {
-      margin-top: 0.5rem;
+      margin-top: 1rem;
       max-width: var(--size);
       font-size: 1.5rem;
       text-align: center;
@@ -224,6 +224,7 @@
         position: absolute;
         top: 0;
         left: 0;
+        z-index: 0;
       }
     }
 
@@ -507,15 +508,6 @@
         .hidden {
           display: none;
         }
-
-        img {
-          max-height: 100%;
-          & + img {
-            position: absolute;
-            top: 0;
-            left: 0;
-          }
-        }
       }
       .audio-player {
         display: flex;
@@ -554,7 +546,6 @@
       /* justify-content: center; */
       flex-direction: column;
       margin-left: 0;
-      height: 50%;
 
       h3.album-title {
         margin-top: 2rem;
@@ -584,6 +575,7 @@
 
     main {
       --size: 512px;
+      justify-content: center;
     }
   }
 
@@ -612,7 +604,6 @@
     main {
       flex-direction: column;
       justify-content: end;
-      height: 67%;
       .album-title {
         margin-top: 1rem;
         font-size: 2rem;
