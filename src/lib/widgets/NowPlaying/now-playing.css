@@ -252,6 +252,16 @@
       h1 {
         font-size: 4rem;
       }
+      &.nightscout-reading {
+        & + .nightscout-reading {
+          display: none;
+        }
+      }
+      &.weather-reading {
+        & + .weather-reading {
+          display: none;
+        }
+      }
     }
 
     h1,

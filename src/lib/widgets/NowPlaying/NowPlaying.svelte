@@ -14,7 +14,7 @@
 
   let mounted = $state(false);
   let loaded = $state(false);
-  let weather = $derived(homeState.currentWeather());
+  let weather = $state(undefined);
   let resubscribeTimeout: NodeJS.Timeout;
   let retryTimeout: NodeJS.Timeout;
   let retryCount = 0;
@@ -149,6 +149,35 @@
     }, 1000);
   };
 
+  function handleWindowUnload() {
+    if (eventSource) {
+      eventSource.close();
+    }
+    if (resubscribeTimeout) {
+      clearInterval(resubscribeTimeout);
+    }
+    if (retryTimeout) {
+      clearTimeout(retryTimeout);
+    }
+  }
+
+  function toggleModal(e: MouseEvent) {
+    e.preventDefault();
+    modal = !modal;
+    localStorage.setItem('musicModal', modal.toString());
+  }
+
+  const toggleControls = (e: MouseEvent) => {
+    e.preventDefault();
+    showAudioPlayer = !showAudioPlayer;
+  };
+
+  const setTrackChange = (e: Event) => {
+    e.preventDefault;
+    // Handle track change with controls
+    showAudioPlayer = false;
+  };
+
   $effect(() => {
     const currentHealthData = healthState.getCurrentData() || false;
     if (currentHealthData !== false) {
@@ -156,6 +185,11 @@
       ({ direction, sgv: currentValue } = currentHealthData);
       difference = healthState.getDifference();
     }
+  });
+
+  $effect(() => {
+    const weatherUpdate = homeState.currentWeather();
+    weather = weatherUpdate;
   });
 
   $effect(() => {
@@ -193,35 +227,6 @@
     };
   });
 
-  function handleWindowUnload() {
-    if (eventSource) {
-      eventSource.close();
-    }
-    if (resubscribeTimeout) {
-      clearInterval(resubscribeTimeout);
-    }
-    if (retryTimeout) {
-      clearTimeout(retryTimeout);
-    }
-  }
-
-  function toggleModal(e: MouseEvent) {
-    e.preventDefault();
-    modal = !modal;
-    localStorage.setItem('musicModal', modal.toString());
-  }
-
-  const toggleControls = (e: MouseEvent) => {
-    e.preventDefault();
-    showAudioPlayer = !showAudioPlayer;
-  };
-
-  const setTrackChange = (e: Event) => {
-    e.preventDefault;
-    // Handle track change with controls
-    showAudioPlayer = false;
-  };
-
   onMount(async () => {
     await startSubscription();
     window.addEventListener('beforeunload', handleWindowUnload);
@@ -242,7 +247,7 @@
   });
 </script>
 
-{#if loaded === true}
+{#if loaded}
   <div class="now-playing dboard__grid__item current-music">
     {#key album !== previousAlbum}
       <div
@@ -282,7 +287,7 @@
   </div>
 {/if}
 
-{#if modal && loaded}
+{#if modal}
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <div
@@ -295,8 +300,8 @@
     }}
   >
     <header>
-      {#key typeof weather?.temperature_2m === 'number' && currentValue !== 0}
-        <div class="reading" in:fade>
+      {#key loaded && currentValue}
+        <div class="reading nightscout-reading" in:fade>
           <h1 class="current-music__modal__headline bg">
             {currentValue}
           </h1>
@@ -309,7 +314,13 @@
             />
           </h2>
         </div>
-        <div class="reading" in:fade>
+      {/key}
+      {#key loaded && typeof weather?.temperature_2m === 'number' && currentValue !== 0}
+        <div
+          class="reading weather-reading"
+          in:blur={{ duration: 500, delay: 500 }}
+          out:blur={{ duration: 500 }}
+        >
           <h1 class="current-music__modal__headline">
             {typeof weather?.temperature_2m === 'number'
               ? Math.round(weather?.temperature_2m)
