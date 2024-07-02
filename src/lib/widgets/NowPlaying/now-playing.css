@@ -453,7 +453,6 @@
     main,
     footer {
       flex-direction: column;
-      padding-right: 3rem;
       padding-left: 3rem;
       width: 50%;
     }
@@ -527,6 +526,10 @@
 
     footer {
       padding: 0;
+      .track-info {
+        padding-right: 1.5rem;
+        padding-left: 0;
+      }
     }
   }
 
