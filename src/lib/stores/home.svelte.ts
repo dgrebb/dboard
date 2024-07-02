@@ -1,4 +1,5 @@
 import type {
+  CurrentWeatherData,
   GradientResult,
   HomeData,
   LocationData,
@@ -49,8 +50,8 @@ export const createHomeStore = () => {
       return homeStore.weather;
     },
 
-    currentWeather: () => {
-      const state = homeStore.weather?.current || null;
+    currentWeather: (): CurrentWeatherData | undefined => {
+      const state = homeStore.weather?.current || undefined;
       return state;
     },
 
