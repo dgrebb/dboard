@@ -1,6 +1,6 @@
 <script lang="ts">
   // '@hmr:keep-all';
-  import time from '$lib/stores/time';
+  import legTime from '$root/lib/stores/legTime';
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
   import settings from '$root/.config/settings.json';
   import updateBackgroundColorGradient from '$root/lib/layout/background';
@@ -35,7 +35,7 @@
 
     setInterval(() => {
       let now = new Date();
-      $time = now.getHours() * 60 + now.getMinutes();
+      $legTime = now.getHours() * 60 + now.getMinutes();
     }, 1000);
 
     for (const widget of widgets) {
