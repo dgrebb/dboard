@@ -19,33 +19,31 @@
   let retryTimeout: NodeJS.Timeout;
   let retryCount = 0;
   let eventSource: EventSource | null = null;
-  let title: string = $state('');
-  let album: string = $state('');
-  let artist: string = $state('');
-  let loved: boolean = $state(false);
+  let title = $state('');
+  let album = $state('');
+  let artist = $state('');
+  let loved = $state(false);
   let totalTime: string | number = $state(0);
-  let totalSeconds: number = $state(0);
+  let totalSeconds = $state(0);
   let relativeTimePosition: string | number = $state(0);
-  let playState: string = $state('loading');
-  let art: string = $state('/missing-album-art.png');
+  let playState = $state('loading');
+  let art = $state('/missing-album-art.png');
   let { backgroundGradient, foregroundGradient }: GradientResult = $state(
     homeState.nowPlayingGradients()
   );
-  let modal: boolean = $state(
-    localStorage.getItem('musicModal') === 'true' || false
-  );
+  let modal = $state(localStorage.getItem('musicModal') === 'true' || false);
   let difference: string | number = $state('0');
   let direction: string | null = $state('Flat');
-  let directionIcon: string = $state(mapNightScoutDirectionIcon());
+  let directionIcon = $state(mapNightScoutDirectionIcon());
   let currentValue: number | null = $state(0);
   let locationName: string | null = $derived(homeState.locationName());
 
-  let showAudioPlayer: boolean = $state(false);
-  let transitionGradient: boolean = $state(false);
-  let transitionForegroundGradient: boolean = $state(false);
-  let timer: number = $state(0);
+  let showAudioPlayer = $state(false);
+  let transitionGradient = $state(false);
+  let transitionForegroundGradient = $state(false);
+  let timer = $state(0);
   let timeInterval: NodeJS.Timeout | null = $state(null);
-  let previousAlbum: string = $state('Unknown');
+  let previousAlbum = $state('Unknown');
   let currentArt: string | null = $state(homeState.nowPlayingArt());
   let newArt: string | null = $state(null);
   let previousBackgroundGradient = $state(
@@ -55,15 +53,32 @@
     'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
   );
 
+  const imageCache = new Map<string, boolean>();
+
+  /**
+   * Preloads an image and returns a promise that resolves when the image is loaded.
+   * @param {string} url - The URL of the image to preload.
+   * @returns {Promise<void>}
+   */
   const preloadImage = (url: string): Promise<void> => {
+    if (imageCache.has(url)) {
+      return Promise.resolve();
+    }
+
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.src = url;
-      img.onload = () => resolve();
+      img.onload = () => {
+        imageCache.set(url, true);
+        resolve();
+      };
       img.onerror = (error) => reject(error);
     });
   };
 
+  /**
+   * Starts the subscription to the music event source.
+   */
   async function startSubscription() {
     if (eventSource) {
       eventSource.close();
@@ -82,16 +97,13 @@
       let currentSeconds = timeStringToSeconds(
         relativeTimePosition?.toString()
       );
-
       totalSeconds = timeStringToSeconds(totalTime?.toString());
-
       let time = totalSeconds - currentSeconds;
       keepTime(time, totalSeconds);
 
       art = art.includes('/data/AirplayArtWorkData.png')
-        ? (art = art.replace(ipAddressPattern, ''))
+        ? art.replace(ipAddressPattern, '')
         : art;
-
       newArt = art;
 
       await homeState.setNowPlaying(data);
@@ -120,26 +132,23 @@
     resubscribeTimeout = setInterval(() => {
       startSubscription();
     }, resubscribeInterval);
-
-    /**
-     * Keeps track of the remaining time for the track and updates the timer.
-     * @param {number} timeRemaining - The time remaining for the track in seconds.
-     */
-    const keepTime = (timeRemaining: number, totalTime: number) => {
-      timer = timeRemaining < 5 ? totalTime : timeRemaining;
-      if (timeInterval) {
-        clearInterval(timeInterval);
-        timeInterval = null;
-      }
-      timeInterval = setInterval(() => {
-        timer--;
-        if (timer < 5) {
-          // console.log('start fading');
-        }
-        // console.log(timer);
-      }, 1000);
-    };
   }
+
+  /**
+   * Keeps track of the remaining time for the track and updates the timer.
+   * @param {number} timeRemaining - The time remaining for the track in seconds.
+   * @param {number} totalTime - The total time of the track in seconds.
+   */
+  const keepTime = (timeRemaining: number, totalTime: number) => {
+    timer = timeRemaining < 5 ? totalTime : timeRemaining;
+    if (timeInterval) {
+      clearInterval(timeInterval);
+      timeInterval = null;
+    }
+    timeInterval = setInterval(() => {
+      timer--;
+    }, 1000);
+  };
 
   $effect(() => {
     const currentHealthData = healthState.getCurrentData() || false;
@@ -186,7 +195,6 @@
   });
 
   function handleWindowUnload() {
-    console.log('Handling window unload...');
     if (eventSource) {
       eventSource.close();
     }
@@ -209,10 +217,10 @@
     showAudioPlayer = !showAudioPlayer;
   };
 
-  const setTrackChange = () => {
-    // console.log('track change with controls');
-    // timeInterval = null;
-    // timer = 0;
+  const setTrackChange = (e: Event) => {
+    e.preventDefault;
+    // Handle track change with controls
+    showAudioPlayer = false;
   };
 
   onMount(async () => {
@@ -235,7 +243,7 @@
   });
 </script>
 
-{#if loaded === true}
+d{#if loaded === true}
   <div class="now-playing dboard__grid__item current-music">
     {#key album !== previousAlbum}
       <div
@@ -331,17 +339,15 @@
       >
         <LovedHeart {loved} size={77} />
         <div class="image-container">
-          {#if art}
-            {#key currentArt && loaded}
-              <img
-                src={currentArt}
-                alt="{album} Artwork"
-                transition:fade={{ duration: 5000, delay: 5000 }}
-              />
-            {/key}
-            {#if newArt}
-              <img src={newArt} alt="{album} Artwork" transition:fade />
-            {/if}
+          {#key currentArt && loaded}
+            <img
+              src={currentArt}
+              alt="{album} Artwork"
+              transition:blur={{ duration: 5000, delay: 5000 }}
+            />
+          {/key}
+          {#if newArt}
+            <img src={newArt} alt="{album} Artwork" />
           {/if}
         </div>
       </div>
@@ -353,8 +359,13 @@
           {album}
         </h3>{/key}
       {#if showAudioPlayer === true}
-        <div transition:fade class="audio-player">
+        <div
+          transition:fade
+          class="audio-player"
+          class:expanded={showAudioPlayer}
+        >
           <PlaybackControls
+            buttonSize={33}
             classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
             {setTrackChange}
           />
@@ -382,23 +393,12 @@
           <h2 class="artist">{artist}</h2>
           <h1 class="title">{title}</h1>
           <h3 class="track-time">
-            <!-- {#if timer <= 0}∞{:else}{formatSecondsToMinutes(timer)}{/if} -->
             {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
                 totalSeconds - timer
               )}{/if}
           </h3>
         </div>
       {/key}
-      <div
-        transition:fade
-        class="audio-player"
-        class:expanded={showAudioPlayer}
-      >
-        <PlaybackControls
-          classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
-          {setTrackChange}
-        />
-      </div>
     </footer>
   </div>
 {/if}

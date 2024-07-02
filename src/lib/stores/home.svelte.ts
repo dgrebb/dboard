@@ -55,7 +55,10 @@ export const createHomeStore = () => {
     },
 
     globalIsDay: () => {
-      const state = homeStore.weather?.current?.is_day || undefined;
+      const state =
+        typeof homeStore.weather?.current?.is_day === 'number'
+          ? homeStore.weather?.current?.is_day
+          : undefined;
       return state;
     },
 
