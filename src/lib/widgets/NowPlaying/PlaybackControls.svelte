@@ -5,10 +5,10 @@
   type Props = {
     setTrackChange: () => void;
     classes: string;
+    buttonSize?: number;
   };
 
-  let { classes, setTrackChange }: Props = $props();
-  let buttonSize: number = 50;
+  let { buttonSize = 50, classes, setTrackChange }: Props = $props();
 
   /**
    * Send a command to control music playback.
@@ -16,8 +16,9 @@
    * @param event - The mouse event triggered by the button click.
    * @param command - The command to send (e.g., 'prev', 'resume', 'pause', 'next').
    */
-  const sendCommand = async (event: MouseEvent, command: string) => {
-    event.stopPropagation();
+  const sendCommand = async (e: MouseEvent, command: string) => {
+    if (e.button === 2) return;
+    e.stopPropagation();
     try {
       await fetch(`/api/control/music/${command}`, { method: 'POST' });
     } catch (e) {
@@ -27,14 +28,16 @@
   };
 
   const handleNext = (e: MouseEvent) => {
+    if (e.button === 2) return;
     e.preventDefault();
-    setTrackChange();
+    setTrackChange(e);
     sendCommand(e, 'next');
   };
 
   const handlePrev = (e: MouseEvent) => {
+    if (e.button === 2) return;
     e.preventDefault();
-    setTrackChange();
+    setTrackChange(e);
     sendCommand(e, 'prev');
   };
 
