@@ -19,7 +19,6 @@
       .then((res) => res.json())
       .catch((err) => console.error(err));
     schedule = data.schedule;
-    // console.log('🚀 ~ fetchSeptaNextToArrive ~ schedule:', schedule);
   };
 
   let widgets = settings.widgets;

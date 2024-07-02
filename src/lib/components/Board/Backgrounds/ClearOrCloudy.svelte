@@ -47,7 +47,6 @@
     if (nightSky) nightSky.innerHTML = starsHTML;
   }
 
-  // $: console.log('🚀 ~ onMount ~ $solar:', $solar);
   $: rise = new Date($solar?.sunrise[0]) || false;
   $: set = new Date($solar?.sunset[0]) || false;
   if (rise && set) {
@@ -67,18 +66,10 @@
           ? ($time + 30 - setMinutes) / setMinutes
           : -($time - 30 - riseMinutes) / riseMinutes;
 
-  // DEBUG
-  // console.log('🚀 ~ onMount ~ twilightOpacity:', twilightOpacity);
-  // console.log('🚀 ~ onMount ~ riseMinutes:', rise, riseMinutes);
-  // console.log('🚀 ~ onMount ~ setMinutes:', set, setMinutes);
-
   onMount(() => {
     init();
   });
 </script>
-
-<!-- create by adriano.interaminense@gmail.com
-full screen for better viewing -->
 
 {#if typeof twilightOpacity === 'number'}
   <div

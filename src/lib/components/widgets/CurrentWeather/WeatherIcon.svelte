@@ -13,8 +13,6 @@
   let color = $state('#85aba0');
   let name = $state('Loading');
 
-  // console.log('🚀 ~ weatherCode:', weatherCode);
-
   onMount(() => {
     ({ icon, color, name } = mapWeatherIcon(weatherCode, isDay));
   });

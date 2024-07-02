@@ -49,6 +49,5 @@ export const connect = (socketURL: string) => {
 
   ws.addEventListener('close', (_message: unknown) => {
     // TODO: Handle close
-    // console.log(_message);
   });
 };
