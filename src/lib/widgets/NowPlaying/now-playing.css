@@ -27,7 +27,7 @@
   }
 
   .album-title {
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     max-width: 50%;
     text-wrap: balance;
   }
@@ -43,6 +43,13 @@
     .track-time,
     .track-title {
       text-align: right;
+    }
+  }
+
+  html.dark & {
+    .album-title,
+    .track-details {
+      filter: invert(1);
     }
   }
 }
@@ -280,6 +287,7 @@
 
   footer {
     position: relative;
+    width: 100%;
     &::before {
       position: absolute;
       inset: 0;
@@ -298,6 +306,7 @@
       will-change: opacity, filter, background;
       /* background: var(--nextForegroundGradient); */
       padding: 2rem 1rem;
+      width: 100%;
 
       & + .track-info {
         display: none;
@@ -335,6 +344,8 @@
       }
 
       h1.title {
+        /* position: absolute; */
+        /* bottom: -1rem; */
         width: 100%;
         font-size: 2rem;
         line-height: 1.25;
@@ -412,6 +423,12 @@
 
   @media screen and (min-width: 100px) {
     main {
+      --size: 320px;
+    }
+  }
+
+  @media screen and (min-width: 540px) {
+    main {
       --size: 420px;
     }
   }
@@ -419,7 +436,12 @@
   @media screen and (min-width: 600px) {
     footer {
       padding: 1rem 1rem 0;
-      /* display: inline; */
+    }
+  }
+
+  @media screen and (min-width: 680px) {
+    main {
+      --size: 512px;
     }
   }
 
@@ -496,27 +518,23 @@
         }
       }
       .audio-player {
-        display: none;
+        display: flex;
+        position: absolute;
+        right: 0;
+        bottom: 1rem;
+        left: 0;
+        opacity: 0;
+        transition: 333ms opacity cubic-bezier(0.075, 0.82, 0.165, 1);
+        width: 100%;
+        overflow: hidden;
+        &.expanded {
+          opacity: 1;
+        }
       }
     }
 
     footer {
       padding: 0;
-
-      .audio-player {
-        display: flex;
-        opacity: 0;
-        transition:
-          333ms max-height ease-in-out,
-          333ms opacity 111ms ease-in-out;
-        width: 100%;
-        max-height: 0;
-        overflow: hidden;
-        &.expanded {
-          opacity: 1;
-          max-height: 120px;
-        }
-      }
     }
   }
 
@@ -534,7 +552,6 @@
 
     main {
       /* justify-content: center; */
-      --size: 420px;
       flex-direction: column;
       margin-left: 0;
       height: 50%;
@@ -550,7 +567,7 @@
     }
   }
 
-  @media screen and (min-height: 1080px) or (min-width: 1080) {
+  @media screen and (min-height: 1080px) {
     header {
       display: flex;
       flex-direction: row;
