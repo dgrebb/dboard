@@ -54,7 +54,7 @@ export const createHomeStore = () => {
       return state;
     },
 
-    globalIsDay: () => {
+    globalIsDay: async () => {
       const state =
         typeof homeStore.weather?.current?.is_day === 'number'
           ? homeStore.weather?.current?.is_day
