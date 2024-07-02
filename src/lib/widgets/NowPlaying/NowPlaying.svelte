@@ -1,7 +1,7 @@
 <script lang="ts">
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
   import { healthState, homeState } from '$lib/stores';
-  import type { GradientResult } from '$lib/types';
+  import type { GradientResult, CurrentWeatherData } from '$lib/types';
   import { mapNightScoutDirectionIcon } from '$utils/nightscout';
   import { formatSecondsToMinutes, timeStringToSeconds } from '$utils/strings';
   import Icon from '@iconify/svelte';
@@ -14,7 +14,7 @@
 
   let mounted = $state(false);
   let loaded = $state(false);
-  let weather = $state(undefined);
+  let weather: undefined | CurrentWeatherData = $state(undefined);
   let resubscribeTimeout: NodeJS.Timeout;
   let retryTimeout: NodeJS.Timeout;
   let retryCount = 0;
@@ -165,6 +165,7 @@
     e.preventDefault();
     modal = !modal;
     localStorage.setItem('musicModal', modal.toString());
+    showAudioPlayer = false;
   }
 
   const toggleControls = (e: MouseEvent) => {
@@ -188,8 +189,9 @@
   });
 
   $effect(() => {
-    const weatherUpdate = homeState.currentWeather();
-    weather = weatherUpdate;
+    const weatherUpdate: CurrentWeatherData | undefined =
+      homeState.currentWeather();
+    if (typeof weatherUpdate === 'object') weather = weatherUpdate;
   });
 
   $effect(() => {
@@ -397,10 +399,6 @@
       out:blur={{ duration: 150 }}
       in:blur={{ duration: 333, delay: 150 }}
     >
-      <PlayHead
-        total={typeof totalSeconds === 'number' ? totalSeconds : 0}
-        current={timer}
-      />
       {#key title}
         <div
           class="track-info"
@@ -419,5 +417,12 @@
         </div>
       {/key}
     </footer>
+
+    {#key timer}
+      <PlayHead
+        total={typeof totalSeconds === 'number' ? totalSeconds : 0}
+        current={timer}
+      />
+    {/key}
   </div>
 {/if}
