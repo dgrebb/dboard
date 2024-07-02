@@ -23,14 +23,14 @@
   let daily: WeatherData['daily'] | undefined = $state(weather.daily());
   let globalIsDay: number | undefined = $state(undefined);
 
-  function handlePushing(e: MouseEvent) {
-    if (e.button === 2) return;
+  function handlePushing(e: MouseEvent | TouchEvent) {
+    if (e instanceof MouseEvent && e.button === 2) return;
     pushing = true;
     refreshed = false;
   }
 
-  function handleUp(e: MouseEvent) {
-    if (e.button === 2) return;
+  function handleUp(e: MouseEvent | TouchEvent) {
+    if (e instanceof MouseEvent && e.button === 2) return;
     pushing = false;
 
     weather.loadWeather(location);
@@ -88,6 +88,8 @@
   <div
     onmousedown={(e) => handlePushing(e)}
     onmouseup={(e) => handleUp(e)}
+    ontouchstart={(e) => handlePushing(e)}
+    ontouchend={(e) => handleUp(e)}
     tabindex="-1"
     role="button"
     style={`--mainColor: ${highlightColor}`}
