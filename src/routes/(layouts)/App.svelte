@@ -4,7 +4,7 @@
   import ForegroundFrame from '$components/Board/ForegroundFrame.svelte';
   import Controls from '$root/lib/components/Controls/Controls.svelte';
   import { invalidateAll } from '$app/navigation';
-  import time from '$lib/stores/time';
+  import legTime from '$lib/stores/legTime';
   import { onDestroy, onMount } from 'svelte';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
   import type { Snippet } from 'svelte';
@@ -23,14 +23,14 @@
   const minutes = now.getMinutes();
   const minutesToday = hours * 60 + minutes;
 
-  $time = minutesToday;
+  $legTime = minutesToday;
   let hh: string = $state('00');
   let mm: string = $state('00');
   let timeValue: number;
   // TODO: Integrations for Kiosk Pro
   // let idleTimer = $state(true);
 
-  const unsubscribe = time.subscribe((value) => {
+  const unsubscribe = legTime.subscribe((value) => {
     timeValue = value;
     hh = Math.trunc(timeValue / 60)
       .toString()

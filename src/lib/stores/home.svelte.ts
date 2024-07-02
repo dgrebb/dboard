@@ -67,6 +67,10 @@ export const createHomeStore = () => {
       return homeStore.location.name;
     },
 
+    locationTimezone: () => {
+      return homeStore.location.timezone;
+    },
+
     setLocation: async (location: LocationData) => {
       homeStore = {
         ...homeStore,

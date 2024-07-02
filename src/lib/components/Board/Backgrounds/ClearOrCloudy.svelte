@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
-  import time from '$lib/stores/time';
+  import legTime from '$lib/stores/legTime';
   import weather from '$root/lib/stores/weatherLeg';
   import solar from '$lib/stores/solar';
   import Clouds from './Clouds.svelte';
@@ -58,13 +58,13 @@
   }
 
   $: twilightOpacity =
-    $time < riseMinutes - 60 || $time > setMinutes + 120
+    $legTime < riseMinutes - 60 || $legTime > setMinutes + 120
       ? 0.9999
-      : $time > riseMinutes && $time < setMinutes
+      : $legTime > riseMinutes && $legTime < setMinutes
         ? 0.0
-        : $time > 1140
-          ? ($time + 30 - setMinutes) / setMinutes
-          : -($time - 30 - riseMinutes) / riseMinutes;
+        : $legTime > 1140
+          ? ($legTime + 30 - setMinutes) / setMinutes
+          : -($legTime - 30 - riseMinutes) / riseMinutes;
 
   onMount(() => {
     init();
