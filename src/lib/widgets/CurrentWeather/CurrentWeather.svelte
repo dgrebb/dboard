@@ -56,11 +56,6 @@
         daily,
       });
     }
-    if (globalIsDay === undefined) {
-      setTimeout(() => {
-        globalIsDay = homeState.globalIsDay();
-      }, 100);
-    }
     mounted = true;
   });
 
@@ -72,6 +67,11 @@
       typeof daily === 'object' &&
       typeof current === 'object'
     ) {
+      if (globalIsDay === undefined) {
+        setTimeout(() => {
+          globalIsDay = current?.is_day;
+        }, 100);
+      }
       background.updateColor(current, daily);
     }
   });
