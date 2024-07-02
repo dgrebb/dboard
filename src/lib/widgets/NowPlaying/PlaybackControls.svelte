@@ -3,7 +3,7 @@
   import { onMount } from 'svelte';
 
   type Props = {
-    setTrackChange: () => void;
+    setTrackChange: (e: Event) => void;
     classes: string;
     buttonSize?: number;
   };
