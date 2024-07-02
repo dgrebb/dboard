@@ -35,7 +35,6 @@
       response
         .json()
         .then((result) => {
-          // console.log('🚀 ~ .then ~ result:', result);
           typeof actionIndex === 'number'
             ? (actions[actionIndex].light.on = lightState)
             : false;
@@ -61,7 +60,6 @@
         .catch((error) => {
           return console.error(error);
         });
-      // console.log(actionState);
       actions[i].light.on =
         action.light.actionType === 'groups'
           ? actionState.state.any_on

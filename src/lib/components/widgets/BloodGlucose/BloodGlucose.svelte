@@ -26,33 +26,26 @@
     if (direction) {
       switch (direction) {
         case 'Up':
-          // console.log('up');
           directionIcon = 'ph:trend-up-light';
           break;
 
         case 'FortyFiveUp':
-          // console.log('up');
           directionIcon = 'ph:arrow-bend-right-up-light';
           break;
 
         case 'Flat':
-          // console.log('flat');
           directionIcon = 'material-symbols-light:trending-flat';
           break;
 
         case 'Down':
-          // console.log('down');
           directionIcon = 'ph:trend-down-light';
           break;
 
         case 'FortyFiveDown':
-          // console.log('up');
           directionIcon = 'ph:arrow-bend-right-down-light';
           break;
 
         default:
-          // console.log('error');
-          // console.log('🩸 ~ GLU ~ direction not covered:', direction);
           directionIcon = 'iconamoon:cloud-error-light';
           break;
       }
@@ -119,7 +112,7 @@
 
 <style lang="postcss">
   .bg-value {
-    color: var(--mainColor);
     transition: color 30s ease-in;
+    color: var(--mainColor);
   }
 </style>
