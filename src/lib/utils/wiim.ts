@@ -160,7 +160,6 @@ export const fetchMediaInfo = async (fetch: Fetch): Promise<NowPlayingAPI> => {
       relativeTimePosition: positionInfo.relativeTimePosition,
     };
 
-    // console.log(nowPlayingInfo);
     return nowPlayingInfo;
   } catch (error) {
     console.error('Error fetching media info:', error);

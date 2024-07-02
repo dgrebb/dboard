@@ -14,11 +14,8 @@
   let newStreamInterval: number = $state(900000);
   let newStreamAPIURL: string = $state('');
 
-  // console.log(streams);
-
   async function subscribe(endpoint: string) {
     const response = await fetch(`/api/stream/${endpoint}`);
-    // console.log('🚀 ~ subscribe ~ response:', response);
     const reader = response.body
       ? response.body.pipeThrough(new TextDecoderStream()).getReader()
       : false;
@@ -30,7 +27,6 @@
         ...result,
         [endpoint]: value,
       };
-      // console.log('🚀 ~ subscribe ~ result:', result);
     }
   }
 
@@ -38,7 +34,6 @@
     (async () => {
       if (newStreamPath) {
         await subscribe(newStreamPath);
-        console.log($state.snapshot(streams.getAll));
       }
     })();
   });
@@ -49,7 +44,6 @@
       refreshInterval: newStreamInterval * 60,
       upstreamAPIURL: newStreamAPIURL,
     });
-    console.log('🚀 ~ handleAddStream ~ newStreamPath:', newStreamPath);
   }
 
   onMount(async function () {

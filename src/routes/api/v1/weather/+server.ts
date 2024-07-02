@@ -44,7 +44,6 @@ async function fetchWeather() {
 export const GET = (async ({ url, locals }) => {
   // call server for data
   const weather = await fetchWeather();
-  // console.log('🚀 ~ GET ~ weather:', weather);
   // setTempo(locals, 300000);
 
   if (weather) {

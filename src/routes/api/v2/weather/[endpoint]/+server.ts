@@ -5,8 +5,6 @@ import type { FetchOptions } from '$lib/types';
 import type { WeatherType } from '$lib/stores';
 
 export const GET = (async ({ url, params }) => {
-  // console.log('🚀 ~ GET ~ url:', url);
-  // call server for data
   const query: string = url.search;
   const { endpoint } = params;
   const requestOptions: FetchOptions = {
