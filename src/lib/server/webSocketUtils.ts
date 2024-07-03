@@ -33,7 +33,7 @@ export const onHttpServerUpgrade = (
   const wss = (globalThis as ExtendedGlobal)[GlobalThisWSS];
 
   wss.handleUpgrade(req, sock, head, (ws) => {
-    console.log('[handleUpgrade] creating new connecttion');
+    console.info('[handleUpgrade] creating new connecttion');
     ws.id = uuidv4();
     wss.emit('connection', ws, req);
   });
@@ -48,10 +48,10 @@ export const createWSSGlobalInstance = () => {
 
   wss.on('connection', (ws) => {
     ws.socketId = nanoid();
-    console.log(`[wss:global] client connected (${ws.socketId})`);
+    console.info(`[wss:global] client connected (${ws.socketId})`);
 
     ws.on('close', () => {
-      console.log(`[wss:global] client disconnected (${ws.socketId})`);
+      console.info(`[wss:global] client disconnected (${ws.socketId})`);
     });
   });
 

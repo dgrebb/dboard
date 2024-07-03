@@ -2,7 +2,7 @@
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
   import AudioWave from '$lib/components/Animations/AudioWave.svelte';
   import type { DBoardItem } from '$lib/types';
-  import { homeState } from '$root/lib/stores';
+  import { homeState } from '$lib/stores';
   import { uuidv4 } from '$utils/uuidv4';
   import { onDestroy, onMount } from 'svelte';
   import { cubicInOut } from 'svelte/easing';
@@ -36,7 +36,7 @@
   let webSocketEstablished = $state(false);
 
   const establishWebSocket = () => {
-    console.log('connecting', webSocketEstablished);
+    console.info('connecting', webSocketEstablished);
     if (webSocketEstablished) return;
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     ws = new WebSocket(
@@ -44,14 +44,14 @@
     );
     ws.addEventListener('open', (event) => {
       webSocketEstablished = true;
-      console.log('[websocket] connection open', event);
+      console.info('[websocket] connection open', event);
     });
     ws.addEventListener('close', (event) => {
       webSocketEstablished = false;
-      console.log('[websocket] connection closed', event);
+      console.info('[websocket] connection closed', event);
     });
     ws.addEventListener('message', (event) => {
-      console.log('[websocket] message received', event);
+      console.info('[websocket] message received', event);
       ({ album, title, artist, loved } = JSON.parse(event.data));
     });
   };

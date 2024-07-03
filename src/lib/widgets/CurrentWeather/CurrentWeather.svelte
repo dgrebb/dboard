@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { WeatherData } from '$lib/types';
   import type { CurrentWeatherSettings } from '$root/.config/settings';
-  import { background, createWeather, homeState } from '$root/lib/stores';
+  import { background, createWeather, homeState, timeState } from '$lib/stores';
   import Icon from '@iconify/svelte';
   import { onMount } from 'svelte';
   import { blur, fade } from 'svelte/transition';
@@ -16,12 +16,13 @@
   const { settings }: Props = $props();
   const {
     location,
-    location: { name },
+    location: { name, timeZone },
   } = settings;
   let weather = createWeather();
   let current: WeatherData['current'] | undefined = $state(weather.current());
   let daily: WeatherData['daily'] | undefined = $state(weather.daily());
   let globalIsDay: number | undefined = $state(undefined);
+  let clock: string = $state(timeState.hoursMinutesString(timeZone));
 
   function handlePushing(e: MouseEvent | TouchEvent) {
     if (e instanceof MouseEvent && e.button === 2) return;
@@ -82,26 +83,30 @@
       background.updateColor(current, daily);
     }
   });
+
+  $effect(() => {
+    clock = timeState.hoursMinutesString(timeZone);
+  });
 </script>
 
-{#if current !== undefined && globalIsDay}
-  <div
-    onmousedown={(e) => handlePushing(e)}
-    onmouseup={(e) => handleUp(e)}
-    ontouchstart={(e) => handlePushing(e)}
-    ontouchend={(e) => handleUp(e)}
-    tabindex="-1"
-    role="button"
-    style={`--mainColor: ${highlightColor}`}
-    class="dboard__grid__item push-to-refresh current-weather relative"
-    class:night-override={nightOverride(current?.is_day, globalIsDay)}
-    class:day-override={dayOverride(current?.is_day, globalIsDay)}
-  >
+<div
+  onmousedown={(e) => handlePushing(e)}
+  onmouseup={(e) => handleUp(e)}
+  ontouchstart={(e) => handlePushing(e)}
+  ontouchend={(e) => handleUp(e)}
+  tabindex="-1"
+  role="button"
+  style={`--mainColor: ${highlightColor}`}
+  class="dboard__grid__item push-to-refresh current-weather relative"
+>
+  {#if current && globalIsDay !== undefined}
     <div
       class="dboard__card border-none bg-transparent"
       class:pushing
       class:refreshed
       transition:fade
+      class:night-override={nightOverride(current?.is_day, globalIsDay)}
+      class:day-override={dayOverride(current?.is_day, globalIsDay)}
     >
       <h2
         class="brightness-25 text-[var(--mainColor)] bg-blend-darken dark:saturate-200"
@@ -160,10 +165,17 @@
             >&deg;</span
           >
         </h1>
+        {#if location.primary === false}
+          <div
+            class="local-time text-[var(--mainColor)] brightness-50 dark:brightness-150 dark:saturate-200"
+          >
+            {clock}
+          </div>
+        {/if}
       {/key}
     </div>
-  </div>
-{/if}
+  {/if}
+</div>
 
 <style>
   .push-to-refresh {

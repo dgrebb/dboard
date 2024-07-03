@@ -2,11 +2,11 @@
   import { onDestroy, onMount } from 'svelte';
   import { fade, blur } from 'svelte/transition';
   import Icon from '@iconify/svelte';
-  import { TypeOfWidget } from '$root/lib/types';
+  import { TypeOfWidget } from '$lib/types';
   import { generateID, toCamelCase } from '$utils/strings';
   import { createNightScoutWidget } from './nightScoutStore.svelte';
-  import NightscoutLineGraph from '$root/lib/widgets/NightScout/NightScoutLineGraph.svelte';
-  import { healthState } from '$root/lib/stores/health.svelte';
+  import NightscoutLineGraph from '$lib/widgets/NightScout/NightScoutLineGraph.svelte';
+  import { healthState } from '$lib/stores/health.svelte';
 
   let loaded = $state(false);
   let label = 'mg/dL';
@@ -58,7 +58,7 @@
     };
 
     eventSource.onerror = (error) => {
-      console.log('EventSource error:', error);
+      console.info('EventSource error:', error);
 
       // Retry connection with exponential backoff
       retryCount++;
@@ -87,7 +87,7 @@
   });
 
   function handleWindowUnload() {
-    console.log('Handling window unload...');
+    console.info('Handling window unload...');
     if (eventSource) {
       eventSource.close();
     }
@@ -178,18 +178,18 @@
 
 <style lang="postcss">
   .bg-value {
-    color: var(--mainColor);
-    transition: color 3s ease-in;
     z-index: 10;
+    transition: color 3s ease-in;
+    color: var(--mainColor);
   }
   .warning {
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
     align-self: flex-end;
-    color: #ffffa8;
     opacity: 0;
     animation: fadeInOut 2s infinite;
+    color: #ffffa8;
   }
 
   .shaking {

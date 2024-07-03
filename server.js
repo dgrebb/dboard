@@ -82,11 +82,11 @@ app.use('/data', (req, res) => {
 });
 
 httpServer.listen(PORT, () => {
-  console.log('HTTP Server is running on: http://dboard.server:%s', PORT);
+  console.info('HTTP Server is running on: http://dboard.server:%s', PORT);
 });
 
 httpsServer.listen(SSLPORT, () => {
-  console.log('HTTPS Server is running on: https://dboard.server:%s', SSLPORT);
+  console.info('HTTPS Server is running on: https://dboard.server:%s', SSLPORT);
 });
 
 /**

@@ -1,9 +1,9 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import type { WeatherType } from '$root/lib/stores';
+  import type { WeatherType } from '$lib/stores';
   import mapWeatherIcon from '$components/widgets/Weather/iconMap';
   import { fade } from 'svelte/transition';
-  import { dayOfWeek } from '$root/lib/utils/dayOfWeek
+  import { dayOfWeek } from '$lib/utils/dayOfWeek
   type Props = {
     daily: WeatherType['daily'];
   };
@@ -53,7 +53,7 @@
   li,
   h1,
   h2 {
-    color: var(--bgColor);
     filter: invert();
+    color: var(--bgColor);
   }
 </style>

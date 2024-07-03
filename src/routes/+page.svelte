@@ -1,15 +1,15 @@
 <script lang="ts">
   // '@hmr:keep-all';
-  import legTime from '$root/lib/stores/legTime';
+  import legTime from '$lib/stores/legTime';
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
   import settings from '$root/.config/settings.json';
-  import updateBackgroundColorGradient from '$root/lib/layout/background';
+  import updateBackgroundColorGradient from '$lib/layout/background';
   import SeptaNextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
   import NightScout from '$widgets/NightScout/NightScout.svelte';
   import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';
   import { onMount } from 'svelte';
   import Board from './(layouts)/Board.svelte';
-  import { isSteptaNextToArriveDataArray } from '$root/lib/types';
+  import { isSteptaNextToArriveDataArray } from '$lib/types';
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
   let schedule: SeptaNextToArrive[] | boolean = $state(false);

@@ -2,7 +2,7 @@ import { json } from '@sveltejs/kit';
 import { SECRET_AUDIO_CONTROL_IP_ADDRESS } from '$env/static/private';
 
 import type { RequestHandler } from './$types';
-import type { FetchOptions } from '$root/lib/types';
+import type { FetchOptions } from '$lib/types';
 
 export const prerender = false;
 
@@ -36,7 +36,7 @@ export const POST = (async ({ fetch, params: { command } }) => {
     requestOptions
   )
     .then((response) => response.text())
-    .then((result) => console.log(result))
+    .then((result) => console.info(result))
     .catch((error) => console.error(error));
 
   return json({ success: true });

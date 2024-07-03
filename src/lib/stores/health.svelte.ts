@@ -15,7 +15,7 @@ export const createHealthStore = () => {
       const current: NightScoutReading = healthStore.nightScout[0];
       return current;
     } else {
-      console.log(`NightScout data loading...`);
+      console.info(`NightScout data loading...`);
       return false;
     }
   };
@@ -25,7 +25,7 @@ export const createHealthStore = () => {
       const current: NightScoutReading = healthStore.nightScout[1];
       return current;
     } else {
-      console.log(`NightScout data loading...`);
+      console.info(`NightScout data loading...`);
       return false;
     }
   };

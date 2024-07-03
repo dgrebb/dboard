@@ -181,10 +181,10 @@ export interface IconMap {
 /**
  * Type representing location data.
  */
-export type LocationData = {
+export type LocationType = {
   primary?: boolean;
   name: string;
-  timezone: string;
+  timeZone: TimeZone;
   latitude: number;
   longitude: number;
 };
@@ -192,12 +192,12 @@ export type LocationData = {
 /**
  * Type representing a collection of location data indexed by string keys.
  */
-export type LocationsType = { [key: string]: LocationData };
+export type LocationsType = { [key: string]: LocationType };
 
 /**
  * Type representing a location store which includes a key.
  */
-export type LocationStore = LocationData & { key: string };
+export type LocationStore = LocationType & { key: string };
 
 /**
  * Enum representing the types of widgets available.
@@ -275,7 +275,7 @@ export type NightScoutWidget = {
  * Type representing home data.
  */
 export type HomeData = {
-  location: LocationData;
+  location: LocationType;
   nowPlaying: NowPlayingData;
   lights?: unknown;
   weather?: WeatherData;
@@ -315,3 +315,18 @@ export type GradientResult = {
   backgroundGradient: string;
   foregroundGradient: string;
 };
+
+// NOTE: Maintain as needed
+export type TimeZone =
+  | 'UTC'
+  | 'Europe/London'
+  | 'America/New_York'
+  | 'America/Denver'
+  | 'Asia/Tokyo'
+  | 'Europe/Paris'
+  | 'Europe/Berlin'
+  | 'America/Chicago'
+  | 'America/Los_Angeles'
+  | 'Asia/Kolkata'
+  | 'Australia/Sydney'
+  | 'Pacific/Auckland';
