@@ -41,6 +41,7 @@
       display: block;
     }
 
+    .track-artist,
     .track-time,
     .track-title {
       text-align: right;
