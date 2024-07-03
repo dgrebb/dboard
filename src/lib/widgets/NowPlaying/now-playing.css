@@ -315,8 +315,6 @@
       justify-content: center;
       align-items: center;
       z-index: 0;
-      will-change: opacity, filter, background;
-      /* background: var(--nextForegroundGradient); */
       padding: 2rem 1rem;
       width: 100%;
 
@@ -340,6 +338,7 @@
         display: block;
         z-index: 3;
         background: var(--previousForegroundGradient);
+        background-size: 100vw 100vh;
         background-clip: text;
         -webkit-background-clip: text;
         padding: 0.25rem;
@@ -356,9 +355,6 @@
       }
 
       h1.title {
-        /* position: absolute; */
-        /* bottom: -1rem; */
-        width: 100%;
         font-size: 2rem;
         line-height: 1.25;
       }
@@ -432,9 +428,9 @@
     }
   }
 
-  @media screen and (min-width: 100px) {
+  @media screen and (min-width: 100px) or (min-height: 380px) {
     main {
-      --size: 320px;
+      --size: 80%;
     }
   }
 
@@ -450,10 +446,13 @@
     }
   }
 
-  @media screen and (min-width: 680px) {
+  @media screen and (min-width: 680px) and (min-height: 1080px) {
     main {
       --size: 512px;
     }
+  }
+
+  @media screen and (min-width: 100px) and (max-width: px) {
   }
 
   /* Vertical portrait wallmount overrides */
