@@ -111,7 +111,7 @@
     };
 
     eventSource.onerror = (error) => {
-      console.log('EventSource error:', error);
+      console.info('EventSource error:', error);
 
       // Retry connection with exponential backoff
       retryCount++;
@@ -281,7 +281,7 @@
                   totalSeconds - timer
                 )}{/if}
             </h3>
-            <h1 class="track-title text-fuchsia-200">{title}</h1>
+            <h1 class="track-title">{title}</h1>
           </span>
         </div>
       </div>
@@ -343,7 +343,7 @@
     <main class="current-music__modal__main">
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <div
-        class="album-art flex pt-3 md:flex-col md:items-start"
+        class="album-art"
         role="switch"
         tabindex="-1"
         aria-checked={modal}

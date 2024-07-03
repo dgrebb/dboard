@@ -4,4 +4,4 @@ export { streams } from './streams.svelte';
 export { createWidget } from './widget.svelte';
 export { createHomeStore, homeState } from './home.svelte';
 export { createHealthStore, healthState } from './health.svelte';
-export { timeState } from './time.svelte';
+export { timeState, uiState } from './client.svelte';

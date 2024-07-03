@@ -1,47 +1,20 @@
 <script lang="ts">
-  import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
+  import { invalidateAll } from '$app/navigation';
   import BackgroundFrame from '$components/Board/BackgroundFrame.svelte';
   import ForegroundFrame from '$components/Board/ForegroundFrame.svelte';
-  import Controls from '$root/lib/components/Controls/Controls.svelte';
-  import { invalidateAll } from '$app/navigation';
-  import legTime from '$lib/stores/legTime';
-  import { onDestroy, onMount } from 'svelte';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
+  import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
+  import Controls from '$lib/components/Controls/Controls.svelte';
+  import { timeState } from '$lib/stores';
   import type { Snippet } from 'svelte';
+  import { onDestroy } from 'svelte';
+
   // TODO: Kiosk Prop Implementation
   // import { browser } from '$app/environment';
   // import type { CheckboxEvents } from 'flowbite-svelte/Checkbox.svelte';
 
-  type Props = {
-    children: Snippet;
-  };
-
-  let { children }: Props = $props();
-
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const minutesToday = hours * 60 + minutes;
-
-  $legTime = minutesToday;
-  let hh: string = $state('00');
-  let mm: string = $state('00');
-  let timeValue: number;
   // TODO: Integrations for Kiosk Pro
   // let idleTimer = $state(true);
-
-  const unsubscribe = legTime.subscribe((value) => {
-    timeValue = value;
-    hh = Math.trunc(timeValue / 60)
-      .toString()
-      .padStart(2, '0');
-    mm = (timeValue % 60).toString().padStart(2, '0');
-  });
-
-  function refresh() {
-    invalidateAll();
-    localStorage.removeItem('color-theme');
-  }
 
   // TODO: Kiosk Prop Implementation
   // const KioskShouldDisableIdleTimer = () => {
@@ -59,17 +32,36 @@
   //   KioskShouldDisableIdleTimer();
   // };
 
-  onDestroy(unsubscribe);
+  type Props = {
+    children: Snippet;
+  };
+
+  let { children }: Props = $props();
+
+  let clock = $state(timeState.hoursMinutesString());
+
+  const appTime = setInterval(() => {
+    const now = new Date(Date.now());
+    timeState.set(now);
+  }, 15000);
+
+  function refresh() {
+    invalidateAll();
+    localStorage.removeItem('color-theme');
+  }
+
+  $effect(() => {
+    clock = timeState.hoursMinutesString();
+  });
+
+  onDestroy(() => {
+    clearInterval(appTime);
+  });
 </script>
 
 <header class="header">
-  <!-- <Controls
-    {webSocketEstablished}
-    on:closeSocket={closeSocket}
-    on:establishWebSocket={establishWebSocket}
-  /> -->
   <p class="time">
-    {hh}:{mm}
+    {#key clock}{clock}{/key}
   </p>
   <Controls />
 </header>

@@ -7,7 +7,7 @@ const config = {
   onwarn: (warning, handler) => {
     if (warning.code === 'element_invalid_self_closing_tag') return;
     if (warning.code.startsWith('css_unused_selector')) return;
-    console.log(warning.code);
+    console.info(warning.code);
     handler(warning);
   },
   precompress: false,

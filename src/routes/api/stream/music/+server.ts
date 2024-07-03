@@ -1,5 +1,5 @@
 import type { Fetch, GradientResult, NowPlayingData } from '$lib/types';
-import { homeState } from '$root/lib/stores';
+import { homeState } from '$lib/stores';
 import { colorThief } from '$utils/colorThief';
 import { timeStringToSeconds } from '$utils/strings';
 import { fetchMediaInfo } from '$utils/wiim';

@@ -6,7 +6,7 @@
         "location": {
           "primary": true,
           "name": "Lansdale, PA",
-          "timezone": "America/New_York",
+          "timeZone": "America/New_York",
           "latitude": 40.2415,
           "longitude": -75.2838
         },
@@ -18,7 +18,7 @@
       "settings": {
         "location": {
           "primary": false,
-          "timezone": "America/Denver",
+          "timeZone": "America/Denver",
           "latitude": 40.10298,
           "longitude": -105.34346,
           "name": "Jamestown, CO"
@@ -31,7 +31,7 @@
       "settings": {
         "location": {
           "primary": false,
-          "timezone": "Asia/Kolkata",
+          "timeZone": "Asia/Kolkata",
           "latitude": 13.0878,
           "longitude": 80.2785,
           "name": "Chennai, IN"

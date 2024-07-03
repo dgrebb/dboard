@@ -3,7 +3,7 @@
   import fahrenheitToColorShade from './tempColor';
   import { fade, blur } from 'svelte/transition';
   import WeatherIcon from './WeatherIcon.svelte';
-  import weather from '$root/lib/stores/weatherLeg';
+  import weather from '$lib/stores/weatherLeg';
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
