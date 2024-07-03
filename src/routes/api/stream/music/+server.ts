@@ -117,9 +117,9 @@ const startInterval = (fetch: Fetch) => {
             ? { foregroundGradient }
             : {}),
         };
-        previousState = nowPlaying;
         const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
         broadcast(new TextEncoder().encode(stream));
+        previousState = nowPlaying;
       }
     } catch (error) {
       console.error('Error fetching or broadcasting data:', error);
