@@ -44,4 +44,9 @@ jobs:
         run: pnpm build.test
 
       - name: Run
-        run: pnpm preview.test
+        run: |
+          pnpm preview.test &
+          npm install -g ngrok
+          ngrok http 4173
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
