@@ -544,7 +544,7 @@
   }
 
   @media screen and (min-width: 1900px) and (min-height: 800px) {
-    flex-direction: column;
+    /* flex-direction: column; */
     cursor: none;
   }
 
@@ -617,14 +617,14 @@
     main {
       --size: 600px;
       position: relative;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 3rem 2rem;
+      /* flex-direction: column; */
+      justify-content: center;
+      padding: 0 3rem 5rem 9rem;
       width: 80%;
       height: 67%;
       h3.album-title {
         position: absolute;
-        bottom: -3rem;
+        bottom: 0;
         width: 100%;
         max-width: 100%;
         font-size: 2rem;

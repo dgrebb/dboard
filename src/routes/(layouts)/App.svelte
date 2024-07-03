@@ -60,7 +60,7 @@
 </script>
 
 <header class="header">
-  <p class="time">
+  <p class="app-time">
     {#key clock}{clock}{/key}
   </p>
   <Controls />
