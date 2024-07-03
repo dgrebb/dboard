@@ -90,7 +90,9 @@ const startInterval = (fetch: Fetch) => {
 
       if (shouldBroadcast) {
         const timestamp = Date.now();
-        let art = data.art || '/missing-album-art.png';
+        let art = data.art
+          ? `${data.art}?ts=${timestamp}`
+          : '/missing-album-art.png';
         let backgroundGradient: string | undefined;
         let foregroundGradient: string | undefined;
 
