@@ -10,6 +10,7 @@
   import { blur, fade } from 'svelte/transition';
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './PlayHead.svelte';
+  import { addHtmlLineBreaks } from '$utils/strings';
 
   const resubscribeInterval = 3600000; // Resubscribe every hour
 
@@ -180,6 +181,13 @@
     showAudioPlayer = false;
   };
 
+  const handleGradientRefresh = (e: MouseEvent | TouchEvent) => {
+    if (e instanceof MouseEvent && e.button === 2) return;
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('you are making a new gradient. wow!');
+  };
+
   $effect(() => {
     const currentHealthData = healthState.getCurrentData() || false;
     if (currentHealthData !== false) {
@@ -269,12 +277,12 @@
             role="switch"
             aria-checked={modal}
           />
-          <h3 class="album-title">{album}</h3>
+          <h3 class="album-title">{@html addHtmlLineBreaks(album)}</h3>
           <LovedHeart {loved} size={33} />
         </div>
         <div class="track-details">
           <span class="track-artist">
-            <h2 class="artist">{artist}</h2>
+            <h2 class="artist">{@html addHtmlLineBreaks(artist)}</h2>
           </span>
           <span class="track">
             <h3 class="track-time">
@@ -282,7 +290,7 @@
                   totalSeconds - timer
                 )}{/if}
             </h3>
-            <h1 class="track-title">{title}</h1>
+            <h1 class="track-title">{@html addHtmlLineBreaks(title)}</h1>
           </span>
         </div>
       </div>
@@ -370,13 +378,13 @@
         </div>
       </div>
 
-      {#key title}
+      {#key album}
         <h3
           class="album-title text-fuchsia-200"
           out:fade={{ duration: 500 }}
           in:fade={{ duration: 500, delay: 500 }}
         >
-          {album}
+          {@html addHtmlLineBreaks(album)}
         </h3>
       {/key}
 
@@ -408,9 +416,18 @@
           class:transitionForegroundGradient
           onbeforeenter={selfOffsetBackground}
         >
-          <Icon icon="solar:soundwave-bold-duotone" width={50} />
-          <h2 class="artist" use:selfOffsetBackground>{artist}</h2>
-          <h1 class="title" use:selfOffsetBackground>{title}</h1>
+          <button
+            class="refresh-gradient"
+            onclick={(e: MouseEvent) => handleGradientRefresh(e)}
+          >
+            <Icon icon="solar:soundwave-bold-duotone" width={50} /></button
+          >
+          <h2 class="artist" use:selfOffsetBackground>
+            {@html addHtmlLineBreaks(artist)}
+          </h2>
+          <h1 class="title" use:selfOffsetBackground>
+            {@html addHtmlLineBreaks(title)}
+          </h1>
           <h3 class="track-time" use:selfOffsetBackground>
             {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
                 totalSeconds - timer

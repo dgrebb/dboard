@@ -88,3 +88,28 @@ export const formatSecondsToMinutes = (seconds: number): string => {
   const formattedSeconds = String(remainingSeconds).padStart(2, '0');
   return `${formattedMinutes}:${formattedSeconds}`;
 };
+
+/**
+ * Processes a string to add HTML line break entities before certain characters.
+ *
+ * @param {string} input - The input string to process.
+ * @returns {string} - The processed string with HTML line break entities.
+ */
+export const addHtmlLineBreaks = (input: string): string => {
+  // Define the regex to match characters and patterns
+  const regex = /([[{(\]])|(([^-]-[^-])|( - ))/g;
+
+  // Replace matched characters with a line break before them
+  return input.replace(regex, (match, p1, p2) => {
+    if (p1) {
+      // If the match is an opening character, add a line break before it
+      return `<br>${p1}`;
+    }
+    if (p2) {
+      // If the match is a hyphen, keep the hyphen and add a line break after it
+      return `${match}<br>`;
+    }
+    // Default case (should not be hit due to specific patterns above)
+    return match;
+  });
+};

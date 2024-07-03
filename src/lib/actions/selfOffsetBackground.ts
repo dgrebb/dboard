@@ -5,7 +5,7 @@
  * @param {HTMLElement} node - The HTML element whose background position needs to be set.
  * @returns {object} An object with a `destroy` method to clean up event listeners when the node is destroyed.
  */
-export function selfOffsetBackground(node: HTMLElement) {
+export function selfOffsetBackground(node: HTMLElement): object {
   /**
    * Sets the background position of the element based on its offset from the top-left corner of the viewport.
    */
