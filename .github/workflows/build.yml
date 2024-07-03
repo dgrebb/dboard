@@ -10,9 +10,12 @@ env:
   NODE_VERSION: ${{ vars.NODE_VERSION}}
 
 jobs:
-  lint:
+  build:
     name: 📦 Build
     runs-on: ubuntu-latest
+    concurrency:
+      group: build
+      cancel-in-progress: true
 
     steps:
       - name: 𐂷 Checkout
