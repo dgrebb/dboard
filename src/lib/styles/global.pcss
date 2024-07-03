@@ -2,6 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import './fonts.css';
+@import './animations.css';
 @import '../widgets/NowPlaying/now-playing.css';
 @import '../widgets/NightScout/nightscout.css';
 
@@ -307,40 +308,14 @@ video.visible {
   opacity: 1;
 }
 
-/* Animations */
-
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-  100% {
-    transform: translateY(0px);
+@media screen and (min-width: 100px) and (min-height: 380px) {
+  .app-time {
+    display: none;
   }
 }
 
-@keyframes beat {
-  0%,
-  3%,
-  9%,
-  12%,
-  18%,
-  21%,
-  27%,
-  30% {
-    transform: scale(1);
-    box-shadow: 0 0 9px rgba(213, 9, 33, 0.5);
-  }
-  6%,
-  15%,
-  24% {
-    transform: scale(1.077);
-    box-shadow: 0 0 15px rgba(213, 9, 33, 0.33);
-  }
-  33%,
-  100% {
-    transform: scale(1);
+@media screen and (min-width: 540px) and (min-height: 580px) {
+  .app-time {
+    display: inline-block;
   }
 }
