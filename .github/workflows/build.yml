@@ -46,11 +46,15 @@ jobs:
       - name: ⬢ Build
         run: pnpm sync && pnpm build.test
 
-      - name: Run
+      - name: Start App and ngrok with tmux
         run: |
           npm install -g ngrok
           ngrok config add-authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
-          timeout 10m sh -c 'pnpm preview.test & ngrok http 4173'
+          tmux new-session -d -s dboard 'pnpm preview.test'
+          sleep 5
+          ngrok http 4173 > ngrok.log &
+          sleep 5
+          cat ngrok.log
         env:
           NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
 
