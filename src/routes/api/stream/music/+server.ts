@@ -95,6 +95,14 @@ const startInterval = (fetch: Fetch) => {
           : '/missing-album-art.png';
         let backgroundGradient: string | undefined;
         let foregroundGradient: string | undefined;
+        if (!data.art) {
+          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log('🚀 ~ interval=setInterval ~ data.art:', data.art);
+          console.log('🚀 ~ interval=setInterval ~ art:', art);
+          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        }
 
         if (previousState.album !== data.album) {
           art = `${art}?ts=${timestamp}`;
