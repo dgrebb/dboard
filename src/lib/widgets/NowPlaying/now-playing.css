@@ -429,19 +429,37 @@
     }
   }
 
-  @media screen and (min-width: 100px) or (min-height: 380px) {
+  @media screen and (min-width: 100px) and (min-height: 0px) {
+    justify-content: start;
+    overflow: scroll;
+
     main {
-      --size: 80%;
+      justify-content: flex-start;
+      margin-top: 1rem;
+      width: 90%;
+      .album-art,
+      .album-art .image-container,
+      .album-art img {
+        width: 100%;
+        min-width: auto;
+        max-width: auto;
+        min-height: auto;
+        max-height: auto;
+      }
     }
   }
 
   @media screen and (min-width: 540px) {
+    justify-content: space-evenly;
+
     main {
+      justify-content: center;
       --size: 420px;
     }
   }
 
   @media screen and (min-width: 600px) {
+    overflow: hidden;
     footer {
       padding: 1rem 1rem 0;
     }
