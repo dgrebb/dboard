@@ -1,5 +1,6 @@
 <script lang="ts">
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
+  import { selfOffsetBackground } from '$actions/selfOffsetBackground';
   import { healthState, homeState } from '$lib/stores';
   import type { GradientResult, CurrentWeatherData } from '$lib/types';
   import { mapNightScoutDirectionIcon } from '$utils/nightscout';
@@ -405,11 +406,12 @@
           in:blur={{ duration: 500, delay: 500 }}
           out:blur={{ duration: 500 }}
           class:transitionForegroundGradient
+          onbeforeenter={selfOffsetBackground}
         >
           <Icon icon="solar:soundwave-bold-duotone" width={50} />
-          <h2 class="artist">{artist}</h2>
-          <h1 class="title">{title}</h1>
-          <h3 class="track-time">
+          <h2 class="artist" use:selfOffsetBackground>{artist}</h2>
+          <h1 class="title" use:selfOffsetBackground>{title}</h1>
+          <h3 class="track-time" use:selfOffsetBackground>
             {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
                 totalSeconds - timer
               )}{/if}
