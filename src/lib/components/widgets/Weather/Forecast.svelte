@@ -1,11 +1,11 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import type { WeatherType } from '$lib/stores';
+  import type { WeatherData } from '$root/lib/types';
   import mapWeatherIcon from '$components/widgets/Weather/iconMap';
   import { fade } from 'svelte/transition';
-  import { dayOfWeek } from '$lib/utils/dayOfWeek
+  import { dayOfWeek } from '$lib/utils/dayOfWeek';
   type Props = {
-    daily: WeatherType['daily'];
+    daily: WeatherData['daily'];
   };
   let { daily }: Props = $props();
 
@@ -20,7 +20,7 @@
   let name = $state('Loading');
 </script>
 
-{#if daily.weather_code}
+{#if daily && daily.weather_code}
   <div class="weather-forecast" transition:fade>
     <h1>Forecast</h1>
     <ul class="flex flex-row">
