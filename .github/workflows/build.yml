@@ -44,4 +44,4 @@ jobs:
         run: pnpm build.test
 
       - name: Run
-        run: pnpm start
+        run: pnpm preview.test

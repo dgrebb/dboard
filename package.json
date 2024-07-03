@@ -16,6 +16,7 @@
     "build.dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=dboard.server PORT=443 vite build --config vite.config.dev.ts --mode development",
     "build.test": "vite build --config vite.config.test.ts",
     "preview": "NODE_TLS_REJECT_UNAUTHORIZED=0 vite preview --config vite.config.prod.ts --host --port 443",
+    "preview.test": "vite preview --config vite.config.test.ts --host",
     "test": "npm run test:integration && npm run test:unit",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
