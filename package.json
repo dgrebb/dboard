@@ -13,8 +13,8 @@
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=dboard.server PORT=443 vite dev --config vite.config.dev.ts --host --port 443",
     "start": "sudo NODE_TLS_REJECT_UNAUTHORIZED=0 PORT=443 HOST=dboard.server node server.js",
     "build": "NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=dboard.server PORT=443 vite build --config vite.config.prod.ts",
-    "trash": "rm -rf .svelte-kit build",
     "build.dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=dboard.server PORT=443 vite build --config vite.config.dev.ts --mode development",
+    "build.test": "vite build --config vite.config.test.ts",
     "preview": "NODE_TLS_REJECT_UNAUTHORIZED=0 vite preview --config vite.config.prod.ts --host --port 443",
     "test": "npm run test:integration && npm run test:unit",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -23,6 +23,7 @@
     "format": "prettier --write .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
+    "trash": "rm -rf .svelte-kit build",
     "cz": "cz",
     "release": "standard-version --no-verify",
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm i"
