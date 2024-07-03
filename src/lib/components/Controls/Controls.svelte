@@ -4,7 +4,7 @@
   import { clickOutside } from '$lib/actions/clickOutside';
 
   import { createEventDispatcher } from 'svelte';
-  import { homeState } from '$root/lib/stores';
+  import { homeState } from '$lib/stores';
   import Icon from '@iconify/svelte';
 
   // Define the component props
@@ -243,8 +243,8 @@
     mix-blend-mode: difference;
 
     &::before {
-      content: ' ';
       display: table;
+      content: ' ';
     }
 
     &::after {
@@ -252,17 +252,17 @@
     }
 
     dt {
-      margin-right: 5px;
       display: inline-block;
       float: left;
       clear: left;
+      margin-right: 5px;
     }
 
     dd {
       display: inline-block;
       float: left;
-      padding-left: 0;
       margin-left: 0;
+      padding-left: 0;
     }
     dt {
       font-weight: bold;

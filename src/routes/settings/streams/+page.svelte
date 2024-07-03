@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { StreamsType } from '$lib/types';
   import { generateID } from '$utils/strings';
-  import { streams } from '$root/lib/stores/streams.svelte';
+  import { streams } from '$lib/stores/streams.svelte';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
 
@@ -22,7 +22,7 @@
     while (true && reader) {
       const { value, done } = await reader.read();
       if (done) break;
-      console.log('reading stream', `${endpoint}: ${value}`);
+      console.info('reading stream', `${endpoint}: ${value}`);
       result = {
         ...result,
         [endpoint]: value,

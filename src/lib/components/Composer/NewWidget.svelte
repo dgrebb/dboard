@@ -5,10 +5,10 @@
   let showWidgetTypeModal = $state(false);
   let mounted = $state(false);
   const createNewWidget = function (type: string) {
-    console.log('type of widget: ', type);
+    console.info('type of widget: ', type);
   };
   const handleNewWidgetClick = function () {
-    console.log('show modeal');
+    console.info('show modeal');
     showWidgetTypeModal = true;
   };
 

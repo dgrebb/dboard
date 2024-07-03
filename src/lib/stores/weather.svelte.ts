@@ -1,7 +1,7 @@
 import type {
   WeatherData,
   FetchOptions,
-  LocationData,
+  LocationType,
   CurrentWeatherData,
 } from '../types';
 // import { counter } from '$root/routes/runes/location.svelte';
@@ -13,17 +13,17 @@ export const createWeather = function createWeather() {
   let tempoId: number | NodeJS.Timeout | null;
 
   async function getWeather(
-    location: LocationData,
+    location: LocationType,
     host: string = ''
   ): Promise<WeatherData | void> {
-    const { latitude, longitude, timezone } = location;
+    const { latitude, longitude, timeZone } = location;
     const requestOptions: FetchOptions = {
       method: 'GET',
       redirect: 'follow',
     };
 
     const weatherData: WeatherData | void = await fetch(
-      `${host}/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,temperature_2m,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,temperature_2m,cloud_cover,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code,apparent_temperature_max,apparent_temperature_min&timezone=${timezone}`,
+      `${host}/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,temperature_2m,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,temperature_2m,cloud_cover,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code,apparent_temperature_max,apparent_temperature_min&timezone=${timeZone}`,
       requestOptions
     )
       .then(function (res) {
@@ -42,16 +42,16 @@ export const createWeather = function createWeather() {
   }
 
   async function loadWeather(
-    location: LocationData,
+    location: LocationType,
     host: string = ''
   ): Promise<void> {
-    const { latitude, longitude, timezone } = location;
+    const { latitude, longitude, timeZone } = location;
     const requestOptions: FetchOptions = {
       method: 'GET',
       redirect: 'follow',
     };
     await fetch(
-      `${host}/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,temperature_2m,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,temperature_2m,cloud_cover,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code,apparent_temperature_max,apparent_temperature_min&timezone=${timezone}`,
+      `${host}/api/v2/weather/forecast?latitude=${latitude}&longitude=${longitude}&current=apparent_temperature,temperature_2m,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,apparent_temperature,temperature_2m,cloud_cover,is_day,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&daily=sunrise,sunset,weather_code,apparent_temperature_max,apparent_temperature_min&timezone=${timeZone}`,
       requestOptions
     )
       .then(function (res) {
@@ -65,7 +65,7 @@ export const createWeather = function createWeather() {
       });
   }
 
-  function setTempo(time: number, location: LocationData) {
+  function setTempo(time: number, location: LocationType) {
     if (tempoId) {
       clearInterval(tempoId);
     }

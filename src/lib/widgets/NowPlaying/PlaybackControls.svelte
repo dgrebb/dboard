@@ -22,7 +22,7 @@
     try {
       await fetch(`/api/control/music/${command}`, { method: 'POST' });
     } catch (e) {
-      console.log(`Error processing the music control:`);
+      console.info(`Error processing the music control:`);
       console.error(e);
     }
   };

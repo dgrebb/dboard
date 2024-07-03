@@ -1,7 +1,7 @@
 <script lang="ts">
   import { PUBLIC_HUE_USERNAME as username } from '$env/static/public';
   import { fade } from 'svelte/transition';
-  import weather from '$root/lib/stores/weatherLeg.js';
+  import weather from '$lib/stores/weatherLeg.js';
   import solar from '$lib/stores/solar';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';

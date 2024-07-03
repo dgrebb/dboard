@@ -1,30 +1,28 @@
-.current-weather {
-  .dboard__card {
-    filter: invert(0);
-  }
+.dboard__card {
+  filter: invert(0);
   &.day-override {
-    .dboard__card {
-      &::after {
-        opacity: 0.33;
-        filter: invert(1);
-      }
+    &::after {
+      opacity: 0.33;
+      filter: invert(1);
     }
   }
   &.night-override {
-    .dboard__card {
-      &::after {
-        opacity: 0.33;
-        background: black;
-      }
-      h1,
-      h2,
-      h3,
-      .current-weather__wind {
-        filter: invert(1);
-      }
-      .big-icon-wow {
-        filter: brightness(133);
-      }
+    &::after {
+      opacity: 0.33;
+      background: black;
     }
+    h1,
+    h2,
+    h3,
+    .current-weather__wind {
+      filter: invert(1);
+    }
+    .big-icon-wow {
+      filter: brightness(133);
+    }
+  }
+  .local-time {
+    width: 100%;
+    text-align: right;
   }
 }

@@ -1,9 +1,5 @@
 import widgets from '$root/.config/settings.json';
-import type {
-  LocationData,
-  LocationsType,
-  TypeOfWidget,
-} from '$root/lib/types';
+import type { LocationType, LocationsType, TypeOfWidget } from '$lib/types';
 import type { ComponentType } from 'svelte';
 
 export const glu = {
@@ -81,21 +77,21 @@ export const hue = {
 
 export const locations: LocationsType = {
   home: {
-    timezone: 'America/New_York',
+    timeZone: 'America/New_York',
     primary: true,
     latitude: 40.2415,
     longitude: -75.2838,
     name: 'Lansdale, PA',
   },
   jamestown: {
-    timezone: 'America/Denver',
+    timeZone: 'America/Denver',
     primary: false,
     latitude: 40.1155,
     longitude: 105.3886,
     name: 'Jamestown, CO',
   },
   chennai: {
-    timezone: 'Asia/Kolkata',
+    timeZone: 'Asia/Kolkata',
     primary: false,
     latitude: 13.0878,
     longitude: 80.2785,
@@ -110,7 +106,7 @@ export type SettingsType = {
 };
 
 export type CurrentWeatherSettings = {
-  location: LocationData;
+  location: LocationType;
   tempo: number;
 };
 

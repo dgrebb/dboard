@@ -2,7 +2,7 @@ import type {
   CurrentWeatherData,
   GradientResult,
   HomeData,
-  LocationData,
+  LocationType,
   NowPlayingData,
   WeatherData,
 } from '$lib/types';
@@ -12,7 +12,7 @@ export const createHomeStore = () => {
     location: {
       primary: true,
       name: 'Home',
-      timezone: 'America/New_York',
+      timeZone: 'America/New_York',
       latitude: 0,
       longitude: 0,
     },
@@ -67,11 +67,11 @@ export const createHomeStore = () => {
       return homeStore.location.name;
     },
 
-    locationTimezone: () => {
-      return homeStore.location.timezone;
+    locationTimeZone: () => {
+      return homeStore.location.timeZone;
     },
 
-    setLocation: async (location: LocationData) => {
+    setLocation: async (location: LocationType) => {
       homeStore = {
         ...homeStore,
         location,

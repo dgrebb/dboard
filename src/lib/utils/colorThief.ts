@@ -106,7 +106,7 @@ export const colorThief = async (
     return { backgroundGradient, foregroundGradient };
   } catch (error) {
     console.error(error);
-    console.log([
+    console.info([
       `Image source is missing. Gradient cannot be processed.`,
       `Original Source: ${imageSrc}`,
       `Processed Upstream Request: ${imageUrl}`,
@@ -120,5 +120,5 @@ export const colorThief = async (
 // Usage example:
 // const imageSrc = 'https://example.com/path-to-your-image.jpg?ts=1719132849317';
 // colorThief(imageSrc)
-//     .then(gradients => console.log(gradients))
+//     .then(gradients => console.info(gradients))
 //     .catch(error => console.error(error));

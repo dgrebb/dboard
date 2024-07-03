@@ -54,7 +54,7 @@ export const createStreams = function createStreams() {
   }
 
   function updateStream(streamId: string) {
-    console.log(streamId);
+    console.info(streamId);
   }
 
   return {
