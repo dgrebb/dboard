@@ -1,0 +1,38 @@
+name: "Install and Cache Dependencies"
+description: "Sets up caches and/or installs project dependencies."
+author: dgrebb
+
+inputs:
+  NODE_VERSION:
+    description: The version of Node to install and use
+  PNPM_VERSION:
+    description: The version of PNPM to install and use
+
+runs:
+  using: composite
+  steps:
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.NODE_VERSION }}
+
+    - name: Install pnpm
+      shell: bash
+      run: npm install -g pnpm@${{ inputs.PNPM_VERSION }}
+
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - uses: actions/cache@v4
+      name: Setup pnpm cache
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: ↧ Install Remaining Dependencies
+      shell: bash
+      run: pnpm install
