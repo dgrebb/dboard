@@ -22,7 +22,7 @@
     }
   }
   .local-time {
-    width: 100%;
-    text-align: right;
+    display: flex;
+    align-self: end;
   }
 }
