@@ -242,8 +242,6 @@
   }
 
   header {
-    display: none;
-
     .reading {
       display: flex;
       flex-grow: 1;
@@ -452,15 +450,21 @@
     }
     .track-time-now {
       left: 1rem;
+      font-size: 1.5rem;
     }
     .track-time-remaining {
       right: 1rem;
+      font-size: 1.5rem;
     }
   }
 
   @media screen and (min-width: 100px) and (min-height: 0px) {
     justify-content: start;
     overflow: scroll;
+
+    header {
+      display: none;
+    }
 
     main {
       justify-content: flex-start;
@@ -587,6 +591,37 @@
     cursor: none;
   }
 
+  @media screen and (min-height: 600px) and (max-height: 1919px) {
+    header {
+      display: flex;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      .reading {
+        padding: 0.75rem 1rem;
+        h1 {
+          opacity: 0.33;
+          mix-blend-mode: difference;
+          margin: 0;
+          color: white;
+          font-size: 2rem;
+          text-shadow: none;
+        }
+        h2 {
+          display: none;
+        }
+      }
+      .nightscout-reading {
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+      .weather-reading {
+        justify-content: flex-start;
+        align-items: flex-end;
+      }
+    }
+  }
+
   /* vertical wall display */
   @media screen and (min-height: 900px) {
     main,
@@ -650,9 +685,19 @@
   /* large horizontal displays */
   @media screen and (min-width: 1919px) {
     header {
-      display: none;
-      height: 0;
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      justify-content: center;
+      padding: 0 0.25rem;
+      width: 100%;
+      .reading {
+        h1 {
+          font-size: 2rem;
+        }
+      }
     }
+
     main {
       --size: 600px;
       position: relative;
