@@ -9,7 +9,7 @@
   import { onDestroy, onMount } from 'svelte';
   import { blur, fade } from 'svelte/transition';
   import PlaybackControls from './PlaybackControls.svelte';
-  import PlayHead from './PlayHead.svelte';
+  import PlayHead from './TrackProgress.svelte';
   import { addHtmlLineBreaks } from '$utils/strings';
   import Widget from './Widget.svelte';
   import Modal from './Modal.svelte';
