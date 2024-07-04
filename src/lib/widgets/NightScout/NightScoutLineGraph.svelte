@@ -10,7 +10,7 @@
     maxMeasurable: number;
   };
 
-  let { maxMeasurable, series, mainColor, backgroundColor }: Props = $props();
+  let { maxMeasurable, series, backgroundColor }: Props = $props();
 
   let nightScoutGraph: echarts.ECharts;
 
@@ -85,7 +85,6 @@
   });
 </script>
 
-<!-- svelte-ignore css_unused_selector -->
 <div class="graph-container">
   <div
     id="main"

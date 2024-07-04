@@ -1,7 +1,5 @@
-import { WEATHER_API } from '../../.config/GLOBALS';
+import { type WeatherData } from '$lib/types';
 import { nightDay } from '../utils/nightDay';
-import { type WeatherType } from '$lib/stores';
-import type { FetchOptions, SolarData } from '../types';
 
 // Function to calculate the background color gradient based on current time, sunrise, and sunset
 function calculateBackgroundColorGradient(
@@ -117,35 +115,35 @@ function interpolateColor(
 }
 
 // Function to fetch sunrise and sunset data based on latitude and longitude
-async function fetchSunriseSunsetData(
-  latitude: string,
-  longitude: string
-): Promise<SolarData | null> {
-  const apiUrl: string = `${WEATHER_API}/forecast?latitude=${latitude}&longitude=${longitude}&daily=sunrise,sunset,cloud_cover&forecast_days=1&timezone=America%2FNew_York`;
+// async function fetchSunriseSunsetData(
+//   latitude: string,
+//   longitude: string
+// ): Promise<SolarData | null> {
+//   const apiUrl: string = `${WEATHER_API}/forecast?latitude=${latitude}&longitude=${longitude}&daily=sunrise,sunset,cloud_cover&forecast_days=1&timezone=America%2FNew_York`;
 
-  // call server for data
-  const requestOptions: FetchOptions = {
-    method: 'GET',
-    redirect: 'follow',
-  };
+//   // call server for data
+//   const requestOptions: FetchOptions = {
+//     method: 'GET',
+//     redirect: 'follow',
+//   };
 
-  try {
-    const response: Response = await fetch(apiUrl, requestOptions);
-    const data = await response.json();
-    const sunrise = data?.daily.sunrise || null;
-    const sunset = data?.daily.sunset || null;
-    if (sunrise === null || sunset === null) throw Error;
-    return { sunrise: sunrise[0], sunset: sunset[0] };
-  } catch (error) {
-    console.error('Error fetching sunrise and sunset data:', error);
-    return null;
-  }
-}
+//   try {
+//     const response: Response = await fetch(apiUrl, requestOptions);
+//     const data = await response.json();
+//     const sunrise = data?.daily.sunrise || null;
+//     const sunset = data?.daily.sunset || null;
+//     if (sunrise === null || sunset === null) throw Error;
+//     return { sunrise: sunrise[0], sunset: sunset[0] };
+//   } catch (error) {
+//     console.error('Error fetching sunrise and sunset data:', error);
+//     return null;
+//   }
+// }
 
 // Function to update background color gradient based on sunrise and sunset data
 export default async function updateBackgroundColorGradient(
-  sunrise,
-  sunset
+  sunrise: string,
+  sunset: string
 ): Promise<void> {
   const body = document.body;
   let bgColor: string = body.style.getPropertyValue('--bgColor');
@@ -169,11 +167,11 @@ export const createBackground = function createBackground() {
   // let tempoId: number | NodeJS.Timeout | null;
 
   function updateColor(
-    current: WeatherType['current'],
-    daily: WeatherType['daily']
+    current: WeatherData['current'],
+    daily: WeatherData['daily']
   ) {
-    const sunrise = daily?.sunrise[0];
-    const sunset = daily?.sunset[0];
+    const sunrise = daily?.sunrise[0] || '2024-07-04T05:37';
+    const sunset = daily?.sunset[0] || '2024-07-04T20:34';
     nightDay(current?.is_day);
     updateBackgroundColorGradient(sunrise, sunset);
   }
@@ -195,11 +193,11 @@ export const createBackground = function createBackground() {
 
 export const background = {
   updateColor: async function (
-    current: WeatherType['current'],
-    daily: WeatherType['daily']
+    current: WeatherData['current'],
+    daily: WeatherData['daily']
   ) {
-    const sunrise = daily?.sunrise[0];
-    const sunset = daily?.sunset[0];
+    const sunrise = daily?.sunrise[0] || '2024-07-04T05:37';
+    const sunset = daily?.sunset[0] || '2024-07-04T20:34';
     nightDay(current?.is_day);
     updateBackgroundColorGradient(sunrise, sunset);
   },

@@ -3,8 +3,7 @@
   import Icon from '@iconify/svelte';
 
   function restart() {
-    // @ts-ignore
-    location.reload(true);
+    location.reload();
   }
 </script>
 

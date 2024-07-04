@@ -3,6 +3,7 @@
 @import 'tailwindcss/utilities';
 @import './fonts.css';
 @import './animations.css';
+@import './board.css';
 @import '../widgets/NowPlaying/now-playing.css';
 @import '../widgets/NightScout/nightscout.css';
 
@@ -107,109 +108,6 @@ body {
   width: 100%;
   color: var(--skyBaseColor);
   text-align: center;
-}
-
-.dboard {
-  display: grid;
-  position: relative;
-  grid-auto-flow: column;
-  gap: 1.5rem;
-  z-index: 10;
-  box-sizing: border-box;
-  height: 100vh;
-  overflow: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: both mandatory;
-  scrollbar-width: none;
-
-  /* TODO: Explore layers and opacity between album gradient and dboard background
-  Look into perf implications - use the opacity below */
-  /* &:has(.current-music__modal) {
-    .dboard__grid__item {
-      opacity: 0;
-    }
-  } */
-
-  @media screen and (min-width: 480px) {
-    gap: 2.5rem;
-    overflow-y: hidden;
-  }
-
-  &__grid {
-    display: grid;
-    gap: 1.5rem;
-    padding: 1.5rem;
-    width: 100vw;
-    scroll-snap-align: center;
-
-    @media screen and (min-width: 480px) {
-      grid-template-rows: repeat(2, minmax(0, 1fr));
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2.5rem;
-      padding: 2.5rem;
-    }
-
-    @media screen and (min-height: 1200px) {
-      grid-template-rows: repeat(5, minmax(0, 1fr));
-    }
-
-    @media screen and (min-width: 1280px) {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    &__item {
-      position: relative;
-      max-height: 315px;
-
-      @media screen and (min-height: 1200px) {
-        max-height: 353px;
-      }
-
-      &--bottom-right {
-        align-self: end;
-        justify-self: end;
-
-        @media screen and (min-width: 480px) {
-          grid-row-start: auto;
-          grid-column-start: auto;
-        }
-
-        @media screen and (min-height: 1200px) {
-          grid-row-start: span 5;
-        }
-
-        @media screen and (min-width: 1280px) {
-          grid-column-start: span 3;
-        }
-      }
-
-      &.flowover {
-        overflow: visible;
-      }
-    }
-  }
-
-  &__card {
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    height: 100%;
-    min-height: 277px;
-    overflow: hidden;
-
-    &:after {
-      position: absolute;
-      opacity: 0.45;
-      z-index: -1;
-      transition: colors 500ms ease-in-out;
-      inset: 0;
-      border-radius: 0.5rem;
-      background-color: var(--skyBaseColor);
-      content: '';
-    }
-  }
 }
 
 .current-weather {

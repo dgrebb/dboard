@@ -5,10 +5,3 @@
 </script>
 
 <!-- <canvas id="canvas"></canvas> -->
-
-<style>
-  #canvas {
-    position: absolute;
-    inset: 0;
-  }
-</style>

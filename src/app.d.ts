@@ -3,6 +3,7 @@
 declare global {
   namespace App {
     declare module 'postcss-color-function';
+    declare module 'svelte-grid';
     // interface Error {}
     // interface Locals {}
     // interface PageData {}
