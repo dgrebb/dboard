@@ -2,6 +2,8 @@ name: 📦 Build
 run-name: "Build | `${{ github.head_ref || github.ref_name }}`"
 
 on:
+  pull_request:
+    branches: [main, develop]
   workflow_dispatch:
   workflow_call:
 
@@ -46,62 +48,24 @@ jobs:
       - name: ⬢ Build
         run: pnpm sync && pnpm build.test
 
-      - name: Start App and ngrok
+      - name: Test Start App
         run: |
           # Install ngrok
-          npm install -g ngrok
-
-          # Create ngrok configuration
-          cat <<EOF > ngrok.yml
-          version: 2
-          update_check: false
-          authtoken: ${{ secrets.NGROK_AUTH_TOKEN }}
-          EOF
 
           # Start the application
           nohup pnpm preview.test > server.log 2>&1 &
 
-          # Start ngrok and capture the output
-          nohup ngrok http 4173 --config ngrok.yml > ngrok.log 2>&1 &
-
-          # Wait a bit for ngrok to initialize
-          sleep 10
 
           # Display the logs
           echo "Server log:"
           cat server.log
-
-          echo "ngrok log:"
-          cat ngrok.log
-
-          # Extract and display the ngrok URL
-          echo "ngrok URL:"
-          ngrok_url=$(grep -o 'https://[a-z0-9]*\.ngrok\.io' ngrok.log || echo "ngrok URL not found")
-          echo "$ngrok_url"
 
           echo "## Server Log" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat server.log >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
-          echo "## ngrok Log" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          cat ngrok.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-
-          echo "## ngrok URL" >> $GITHUB_STEP_SUMMARY
-          echo "$ngrok_url" >> $GITHUB_STEP_SUMMARY
-
-          # Exit with error if ngrok URL is not found
-          if [ "$ngrok_url" == "ngrok URL not found" ]; then
-            echo "ngrok failed to start correctly"
-            exit 1
-          fi
-        env:
-          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-
       - name: Stop application (if still running)
         run: |
           pkill -f 'pnpm preview.test'
-          pkill -f 'ngrok'
         if: always()
