@@ -98,8 +98,13 @@ const startInterval = (fetch: Fetch) => {
         if (!data.art) {
           console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
           console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-          console.log('🚀 ~ interval=setInterval ~ data.art:', data.art);
+          console.log(
+            '🚀 ~ Updating art not found in WiiM Response:',
+            data.art
+          );
           console.log('🚀 ~ interval=setInterval ~ art:', art);
+          console.log('🚀 ~ Full data object:');
+          console.log(data);
           console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
           console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
         }

@@ -57,7 +57,6 @@ jobs:
           update_check: false
           authtoken: ${{ secrets.NGROK_AUTH_TOKEN }}
           EOF
-          echo "authtoken: ${{ secrets.NGROK_AUTH_TOKEN }}" > ngrok.yml
 
           # Start the application
           nohup pnpm preview.test > server.log 2>&1 &
