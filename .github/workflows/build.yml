@@ -48,15 +48,22 @@ jobs:
 
       - name: Start App and ngrok
         run: |
-          # Install and configure ngrok
+          # Install ngrok
           npm install -g ngrok
-          ngrok config add-authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
+
+          # Create ngrok configuration
+          cat <<EOF > ngrok.yml
+          version: 2
+          update_check: false
+          authtoken: ${{ secrets.NGROK_AUTH_TOKEN }}
+          EOF
+          echo "authtoken: ${{ secrets.NGROK_AUTH_TOKEN }}" > ngrok.yml
 
           # Start the application
           nohup pnpm preview.test > server.log 2>&1 &
 
           # Start ngrok and capture the output
-          nohup ngrok http 4173 > ngrok.log 2>&1 &
+          nohup ngrok http 4173 --config ngrok.yml > ngrok.log 2>&1 &
 
           # Wait a bit for ngrok to initialize
           sleep 10
@@ -71,6 +78,7 @@ jobs:
           # Extract and display the ngrok URL
           echo "ngrok URL:"
           ngrok_url=$(grep -o 'https://[a-z0-9]*\.ngrok\.io' ngrok.log || echo "ngrok URL not found")
+          echo "$ngrok_url"
 
           echo "## Server Log" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
@@ -84,6 +92,12 @@ jobs:
 
           echo "## ngrok URL" >> $GITHUB_STEP_SUMMARY
           echo "$ngrok_url" >> $GITHUB_STEP_SUMMARY
+
+          # Exit with error if ngrok URL is not found
+          if [ "$ngrok_url" == "ngrok URL not found" ]; then
+            echo "ngrok failed to start correctly"
+            exit 1
+          fi
         env:
           NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
 
