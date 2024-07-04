@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { invalidateAll } from '$app/navigation';
+  // import { invalidateAll } from '$app/navigation';
   import BackgroundFrame from '$components/Board/BackgroundFrame.svelte';
   import ForegroundFrame from '$components/Board/ForegroundFrame.svelte';
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
@@ -45,10 +45,10 @@
     timeState.set(now);
   }, 15000);
 
-  function refresh() {
-    invalidateAll();
-    localStorage.removeItem('color-theme');
-  }
+  // function refresh() {
+  //   invalidateAll();
+  //   localStorage.removeItem('color-theme');
+  // }
 
   $effect(() => {
     clock = timeState.hoursMinutesString();

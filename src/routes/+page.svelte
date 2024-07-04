@@ -1,15 +1,18 @@
 <script lang="ts">
   '@hmr:keep-all';
+  import updateBackgroundColorGradient from '$lib/layout/background';
   import legTime from '$lib/stores/legTime';
+  import {
+    isSteptaNextToArriveDataArray,
+    type WidgetSettings,
+  } from '$lib/types';
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
   import settings from '$root/.config/settings.json';
-  import updateBackgroundColorGradient from '$lib/layout/background';
-  import SeptaNextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
   import NightScout from '$widgets/NightScout/NightScout.svelte';
   import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';
-  import { onMount } from 'svelte';
+  import SeptaNextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
+  import { onMount, type Component } from 'svelte';
   import Board from './(layouts)/Board.svelte';
-  import { isSteptaNextToArriveDataArray } from '$lib/types';
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
   let schedule: SeptaNextToArrive[] | boolean = $state(false);
@@ -21,8 +24,8 @@
     schedule = data.schedule;
   };
 
-  let widgets = settings.widgets;
-  let components: { [key: string]: any } = {};
+  let widgets: WidgetSettings[] = settings.widgets;
+  let components: Record<string, Component> = {};
 
   onMount(async () => {
     updateBackgroundColorGradient(LATITUDE, LONGITUDE);

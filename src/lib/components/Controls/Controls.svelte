@@ -3,18 +3,11 @@
   import { Button } from 'flowbite-svelte';
   import { clickOutside } from '$lib/actions/clickOutside';
 
-  import { createEventDispatcher } from 'svelte';
   import { homeState } from '$lib/stores';
   import Icon from '@iconify/svelte';
 
-  // Define the component props
-  type Props = {
-    webSocketEstablished?: boolean;
-  };
-
   // Define the state variables
   let open = $state(false);
-  let toggleable = $state(false);
   let showVersions = $state(false);
   let showStateDebug = $state(false);
 
@@ -25,67 +18,27 @@
     artist,
     album,
     art,
-    gradient,
+    backgroundGradient,
     loved,
     relativeTimePosition,
     title,
     totalTime,
   } = $state(homeState.nowPlaying());
 
-  // Destructure props with default values
-  let { webSocketEstablished = false }: Props = $props();
-
-  // Create an event dispatcher
-  const dispatch = createEventDispatcher();
-
-  // Function to close WebSocket connection
-  const closeSocket = (): void => {
-    dispatch('closeSocket');
-  };
-
-  // Function to establish WebSocket connection
-  const establishWebSocket = (): void => {
-    dispatch('establishWebSocket');
-  };
-
-  // Function to enable toggle
-  const enableToggle = (): void => {
-    toggleable = true;
-  };
-
-  // Function to disable toggle
-  const disableToggle = (): void => {
-    toggleable = false;
-  };
-
   // Function to toggle controls visibility
   const toggleControls = (): void => {
     open = !open;
-    if (!open) {
-      showVersions = false;
-    }
   };
 
   // Function to hide controls
   const hideControls = (e: Event): void => {
     e.preventDefault();
     open = false;
-    toggleable = false;
-    showVersions = false;
   };
 
   // Function to refresh the dashboard
   const refreshDboard = (): void => {
     location.reload();
-  };
-
-  // Function to toggle version display
-  const toggleVersions = (): void => {
-    if (open) {
-      showVersions = !showVersions;
-    } else {
-      showVersions = false;
-    }
   };
 
   const toggleShowStateDebug = (): void => {
@@ -98,7 +51,7 @@
       artist,
       album,
       art,
-      gradient,
+      backgroundGradient,
       loved,
       relativeTimePosition,
       title,
@@ -119,8 +72,6 @@
       open ? 'opacity-100' : 'opacity-0'
     } controls-toggle`}
     on:click={toggleControls}
-    on:hover={enableToggle}
-    on:blur={disableToggle}
   >
     <Icon
       icon="solar:settings-outline"
@@ -224,7 +175,7 @@
     <dt>art:</dt>
     <dd>{art}</dd>
     <dt>gradient:</dt>
-    <dd>{gradient}</dd>
+    <dd>{backgroundGradient}</dd>
     <dt>loved:</dt>
     <dd>{loved}</dd>
     <dt>relativeTimePosition:</dt>

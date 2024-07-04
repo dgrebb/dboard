@@ -92,8 +92,8 @@ export type CurrentWeatherData = {
 export type DailyWeather = {
   apparent_temperature_max: number[];
   apparent_temperature_min: number[];
-  sunrise: number[];
-  sunset: number[];
+  sunrise: string[];
+  sunset: string[];
   time: string[];
   weather_code: string[];
 };
@@ -210,11 +210,32 @@ export enum TypeOfWidget {
 }
 
 /**
+ * Type representing Widgets as defined by settings
+ */
+export type WidgetSettings = {
+  type: string;
+  name?: string;
+  settings: {
+    location: {
+      primary: boolean;
+      name: string;
+      timeZone: string;
+      latitude: number;
+      longitude: number;
+    };
+    tempo: number;
+  };
+};
+
+export type WidgetComponent = {
+  [key: string]: unknown;
+};
+
+/**
  * Type representing widget data.
  */
-export type WidgetData = {
+export type WidgetData = WidgetSettings & {
   type: TypeOfWidget;
-  name: string;
   stream: StreamType;
   data: PossibleWidgetData | false;
 };

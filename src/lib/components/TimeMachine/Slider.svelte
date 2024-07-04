@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { Range } from 'flowbite-svelte';
   import legTime from '$lib/stores/legTime';
-  import { onDestroy } from 'svelte';
+  import { Range } from 'flowbite-svelte';
 
   let minutesPerDay = 24 * 60;
-  let timeOfDay = 12 * 60;
+  // let timeOfDay = 12 * 60;
 </script>
 
 <div class="time-machine">
