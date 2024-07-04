@@ -9,9 +9,22 @@ export const prerender = false;
 
 let refreshInterval = 1000;
 
-const clients: Set<ReadableStreamDefaultController<Uint8Array>> = new Set();
+const clients: Set<{
+  controller: ReadableStreamDefaultController<Uint8Array>;
+  isClosed: boolean;
+  ip: string;
+}> = new Set();
 let interval: NodeJS.Timeout | null = null;
 let previousState: NowPlayingData = homeState.nowPlaying();
+
+// Log the clients in a tabular format
+const logClients = () => {
+  const clientArray = Array.from(clients).map((client) => ({
+    ip: client.ip,
+    isClosed: client.isClosed,
+  }));
+  console.table(clientArray);
+};
 
 const createGradient = async (
   image: string
@@ -38,20 +51,21 @@ const createGradient = async (
 };
 
 // Broadcast the current state to all clients
+
 const broadcast = (message: Uint8Array) => {
   clients.forEach((client) => {
     try {
-      if (client.desiredSize !== null) {
-        client.enqueue(message);
+      if (!client.isClosed) {
+        client.controller.enqueue(message);
       }
     } catch (error) {
-      console.error('Error broadcasting to client:', error);
+      console.error(`Error broadcasting to client ${client.ip}:`, error);
+      client.isClosed = true;
       clients.delete(client);
     }
   });
 };
 
-// Send the initial state to a new client
 const sendInitialState = async (
   client: ReadableStreamDefaultController<Uint8Array>
 ) => {
@@ -67,7 +81,11 @@ const sendInitialState = async (
     }
   } catch (error) {
     console.error('Error sending initial state to client:', error);
-    clients.delete(client);
+    clients.forEach((c) => {
+      if (c.controller === client) {
+        c.isClosed = true;
+      }
+    });
   }
 };
 
@@ -90,9 +108,7 @@ const startInterval = (fetch: Fetch) => {
 
       if (shouldBroadcast) {
         const timestamp = Date.now();
-        let art = data.art
-          ? `${data.art}?ts=${timestamp}`
-          : '/missing-album-art.png';
+        let art = data.art ? data.art : '/missing-album-art.png';
         let backgroundGradient: string | undefined;
         let foregroundGradient: string | undefined;
         if (!data.art) {
@@ -144,16 +160,28 @@ const startInterval = (fetch: Fetch) => {
 
 export const GET = async (event: RequestEvent) => {
   const fetch = event.fetch as Fetch;
+  const clientIp = event.getClientAddress();
 
   const readable = new ReadableStream<Uint8Array>({
     async start(controller) {
       // Send initial state to the new client
       await sendInitialState(controller);
 
-      clients.add(controller);
+      clients.add({ controller, isClosed: false, ip: clientIp });
+
+      // Print the client list on new connections
+
+      console.info('------------------ CLIENT LIST -----------------');
+      logClients();
 
       const cleanup = () => {
-        clients.delete(controller);
+        const client = Array.from(clients).find(
+          (c) => c.controller === controller
+        );
+        if (client) {
+          client.isClosed = true;
+          clients.delete(client);
+        }
         if (clients.size === 0 && interval) {
           clearInterval(interval);
           interval = null;
@@ -169,7 +197,8 @@ export const GET = async (event: RequestEvent) => {
     },
     cancel() {
       clients.forEach((client) => {
-        if (client.desiredSize === null) {
+        if (client.controller.desiredSize === null) {
+          client.isClosed = true;
           clients.delete(client);
         }
       });
