@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { fade, blur } from 'svelte/transition';
-  import { addHtmlLineBreaks } from '$utils/strings';
-  import { formatSecondsToMinutes } from '$utils/strings';
-  import LovedHeart from '$components/Animations/LovedHeart.svelte';
-  import Icon from '@iconify/svelte';
-  import PlaybackControls from './PlaybackControls.svelte';
   import { selfOffsetBackground } from '$actions/selfOffsetBackground';
-  import PlayHead from './TrackProgress.svelte';
+  import LovedHeart from '$components/Animations/LovedHeart.svelte';
   import type { CurrentWeatherData } from '$root/lib/types';
+  import { addHtmlLineBreaks } from '$utils/strings';
+  import Icon from '@iconify/svelte';
+  import { blur, fade } from 'svelte/transition';
+  import PlaybackControls from './PlaybackControls.svelte';
+  import PlayHead from './TrackProgress.svelte';
 
   type Props = {
     loaded: boolean;

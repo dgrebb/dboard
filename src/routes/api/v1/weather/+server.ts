@@ -5,26 +5,26 @@ import type { FetchOptions, WeatherData } from '$lib/types';
 
 export const prerender = false;
 
-function setTempo(locals, time) {
-  setInterval(async function () {
-    const weather = await fetchWeather();
+// function setTempo(locals, time) {
+//   setInterval(async function () {
+//     const weather = await fetchWeather();
 
-    if (locals.wss) {
-      locals.wss.clients.forEach((client) => {
-        if (client.readyState === 1) {
-          // client.send(`Weather update — at ${new Date().toLocaleString()}`);
-          client.send(
-            JSON.stringify({
-              success: true,
-              weatherData: weather.current,
-              solarData: weather.daily,
-            })
-          );
-        }
-      });
-    }
-  }, time);
-}
+//     if (locals.wss) {
+//       locals.wss.clients.forEach((client: WebSocket) => {
+//         if (client.readyState === 1) {
+//           // client.send(`Weather update — at ${new Date().toLocaleString()}`);
+//           client.send(
+//             JSON.stringify({
+//               success: true,
+//               weatherData: weather.current,
+//               solarData: weather.daily,
+//             })
+//           );
+//         }
+//       });
+//     }
+//   }, time);
+// }
 
 async function fetchWeather() {
   const requestOptions: FetchOptions = {
@@ -41,7 +41,7 @@ async function fetchWeather() {
   return weather;
 }
 
-export const GET = (async ({ url, locals }) => {
+export const GET = (async () => {
   // call server for data
   const weather = await fetchWeather();
   // setTempo(locals, 300000);

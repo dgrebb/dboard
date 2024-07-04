@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
   import legTime from '$lib/stores/legTime';
-  import weather from '$lib/stores/weatherLeg';
   import solar from '$lib/stores/solar';
+  import weather from '$lib/stores/weatherLeg';
+  import { onMount } from 'svelte';
   import Clouds from './Clouds.svelte';
 
   export let cloudCover: number = 0;
-  let twilightTransition: number;
   let riseMinutes = 7 * 60;
   let setMinutes = 19 * 60;
 

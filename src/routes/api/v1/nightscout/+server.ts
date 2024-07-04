@@ -1,13 +1,13 @@
-import { json, type RequestOptions } from '@sveltejs/kit';
 import { SECRET_NIGHTSCOUT_TOKEN } from '$env/static/private';
-import { NIGHTSCOUT_API } from '$root/.config/GLOBALS';
-import type { RequestHandler } from './$types';
 import type { FetchOptions } from '$lib/types';
+import { NIGHTSCOUT_API } from '$root/.config/GLOBALS';
 import { glu } from '$root/.config/settings';
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
 const dataPoints = glu.hoursDisplayed * 12;
 
-export const GET = (async ({ url, locals }) => {
+export const GET = (async ({ url }) => {
   // if (locals.wss) {
   //   locals.wss.clients.forEach((client) => {
   //     if (client.readyState === 1) {

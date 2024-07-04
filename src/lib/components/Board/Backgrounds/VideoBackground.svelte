@@ -1,13 +1,13 @@
 <script lang="ts">
   import weather from '$lib/stores/weatherLeg';
   import { onMount } from 'svelte';
-  let isDay: number, weatherCode;
+  let isDay: number;
 
   type VideoStuff = {
     file: string;
   }[];
 
-  $: ({ is_day: isDay, weatherCode } = $weather);
+  $: ({ is_day: isDay } = $weather);
 
   const dayPlaylist = {
     clear: [
@@ -90,7 +90,6 @@
       <video
         playsinline
         src={`/video/${isDay === 1 ? 'day' : 'night'}/clear/${video.file}`}
-        key={video.file}
         autoplay
         loop
         muted

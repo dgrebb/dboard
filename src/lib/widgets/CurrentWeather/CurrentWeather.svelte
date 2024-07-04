@@ -12,7 +12,6 @@
   let highlightColor = fahrenheitToColorShade(77);
   let pushing = $state(false);
   let refreshed = $state(true);
-  let mounted = $state(false);
   const { settings }: Props = $props();
   const {
     location,
@@ -64,7 +63,6 @@
         daily,
       });
     }
-    mounted = true;
   });
 
   $effect(() => {

@@ -1,23 +1,13 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import type { WeatherData } from '$root/lib/types';
-  import mapWeatherIcon from '$components/widgets/Weather/iconMap';
+  import type { WeatherData } from '$lib/types';
+  import mapWeatherIcon from '$widgets/Weather/iconMap';
   import { fade } from 'svelte/transition';
   import { dayOfWeek } from '$lib/utils/dayOfWeek';
   type Props = {
     daily: WeatherData['daily'];
   };
   let { daily }: Props = $props();
-
-  type IconProps = {
-    icon: string;
-    color: string;
-    name: string;
-  };
-
-  let icon = $state('data-sunburst-24-filled');
-  let color = $state('#85aba0');
-  let name = $state('Loading');
 </script>
 
 {#if daily && daily.weather_code}

@@ -33,12 +33,12 @@
           class="widget-options absolute inset-0 flex flex-col justify-center bg-green-700 bg-opacity-55 text-red-300"
         >
           <button
-            onclick={(e) => {
+            onclick={() => {
               createNewWidget('weather');
             }}>Weather</button
           >
           <button
-            onclick={(e) => {
+            onclick={() => {
               createNewWidget('nightscout');
             }}>Nightscout</button
           >

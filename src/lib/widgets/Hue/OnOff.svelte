@@ -1,12 +1,10 @@
 <script lang="ts">
   import { PUBLIC_HUE_USERNAME as username } from '$env/static/public';
-  import { fade } from 'svelte/transition';
-  import weather from '$lib/stores/weatherLeg.js';
-  import solar from '$lib/stores/solar';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
   // import lights from '$lib/stores/solar';
-  import { hue } from '../../../../.config/settings.js';
+  import { hue } from '$root/.config/settings';
+  import type { FetchOptions } from '$root/lib/types';
 
   $: ({ actions } = hue);
 
@@ -22,7 +20,7 @@
     const apiPath = actionType === 'groups' ? 'action' : 'state';
     const raw = `{"on":${lightState}}`;
     headers.append('Content-Type', 'text/plain');
-    const requestOptions = {
+    const requestOptions: FetchOptions = {
       method: 'PUT',
       headers,
       body: raw,
@@ -34,7 +32,7 @@
     ).then((response) =>
       response
         .json()
-        .then((result) => {
+        .then(() => {
           typeof actionIndex === 'number'
             ? (actions[actionIndex].light.on = lightState)
             : false;

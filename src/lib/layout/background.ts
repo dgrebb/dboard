@@ -1,6 +1,3 @@
-import { WEATHER_API } from '../../.config/GLOBALS';
-import type { FetchOptions, SolarData } from '../types';
-
 // Function to calculate the background color gradient based on current time, sunrise, and sunset
 function calculateBackgroundColorGradient(
   currentTime: number,
@@ -9,7 +6,7 @@ function calculateBackgroundColorGradient(
 ): string {
   const dawnStart: number = sunrise - 3600000; // Dawn starts 1 hour before sunrise
   const dawnEnd: number = sunrise; // Dawn ends at sunrise
-  const duskStart: number = sunset; // Dusk starts at sunset
+  // const duskStart: number = sunset; // Dusk starts at sunset
   const duskEnd: number = sunset + 3600000; // Dusk ends 1 hour after sunset
 
   // Define colors for different times of the day
@@ -19,7 +16,7 @@ function calculateBackgroundColorGradient(
   const nightColor: number[] = [11, 11, 51]; // Dark blue
 
   let color: number[];
-  let sky: string;
+  // let sky: string;
 
   // Interpolate between different colors based on current time
   if (currentTime >= dawnStart && currentTime < dawnEnd) {

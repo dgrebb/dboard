@@ -1,9 +1,8 @@
 <script lang="ts">
-  import type { ComponentType } from 'svelte';
+  import type { Component } from 'svelte';
   import './Backgrounds/backgrounds.css';
-  import legTime from '$lib/stores/legTime';
 
-  export let component: ComponentType;
+  export let component: Component;
 </script>
 
 <div
