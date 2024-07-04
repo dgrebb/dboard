@@ -63,9 +63,6 @@
     {/if}
     <!-- <NewWidget /> -->
     <NowPlaying />
-  </Board>
-
-  <Board>
     {#if typeof schedule !== 'boolean' && isSteptaNextToArriveDataArray(schedule)}
       <SeptaNextToArrive {schedule} />
     {/if}
