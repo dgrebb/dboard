@@ -1,0 +1,71 @@
+name: 📦 Build
+run-name: "Build | `${{ github.head_ref || github.ref_name }}`"
+
+on:
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  NODE_VERSION: ${{ vars.NODE_VERSION}}
+
+jobs:
+  build:
+    name: 📦 Build
+    runs-on: ubuntu-latest
+    concurrency:
+      group: build
+      cancel-in-progress: true
+
+    steps:
+      - name: 𐂷 Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: dgrebb/dboard
+          ref: ${{ github.ref }}
+          token: ${{ github.token }}
+          fetch-depth: 1
+
+      - name: 🛢 Install & Cache Dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          NODE_VERSION: ${{ vars.NODE_VERSION}}
+          PNPM_VERSION: ${{ vars.PNPM_VERSION}}
+
+      - name: 🎛️ Environment Configuration
+        uses: ./.github/actions/set-env
+        with:
+          SECRET_NIGHTSCOUT_TOKEN: ${{ secrets.SECRET_NIGHTSCOUT_TOKEN }}
+          PUBLIC_HUE_USERNAME: ${{ secrets.PUBLIC_HUE_USERNAME }}
+          SECRET_NEST_CLIENT: ${{ secrets.SECRET_NEST_CLIENT }}
+          SECRET_NEST_CLIENT_SECRET: ${{ secrets.SECRET_NEST_CLIENT_SECRET }}
+          SECRET_AUDIO_CONTROL_IP_ADDRESS: ${{ secrets.SECRET_AUDIO_CONTROL_IP_ADDRESS }}
+          SECRET_WIIM_SOAP_API_PORT: ${{ secrets.SECRET_WIIM_SOAP_API_PORT }}
+          PUBLIC_HOST_URL: ${{ secrets.PUBLIC_HOST_URL }}
+
+      - name: ⬢ Build
+        run: pnpm sync && pnpm build.test
+
+      - name: Test Start App
+        run: |
+          # Install ngrok
+
+          # Start the application
+          nohup pnpm preview.test > server.log 2>&1 &
+
+
+          # Display the logs
+          echo "Server log:"
+          cat server.log
+
+          echo "## Server Log" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat server.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Stop application (if still running)
+        run: |
+          pkill -f 'pnpm preview.test'
+        if: always()

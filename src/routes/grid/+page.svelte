@@ -1,14 +1,13 @@
 <script lang="ts">
-  import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '../../.config/GLOBALS';
+  import { LATITUDE, LONGITUDE } from '../../.config/GLOBALS';
   // import Main from '../(layouts)/Main.v1.svelte';
-  import Grid from 'svelte-grid';
-  import gridHelp from 'svelte-grid/build/helper/index.mjs';
-  import { pullToRefresh } from '$lib/actions/pullToRefresh';
-  import ForegroundFrame from '$lib/components/Board/ForegroundFrame.svelte';
   import BackgroundFrame from '$lib/components/Board/BackgroundFrame.svelte';
   import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
+  import ForegroundFrame from '$lib/components/Board/ForegroundFrame.svelte';
   import updateBackgroundColorGradient from '$lib/layout/background';
   import { onMount } from 'svelte';
+  import Grid from 'svelte-grid';
+  import gridHelp from 'svelte-grid/build/helper/index.mjs';
 
   const COLS = 12;
 
@@ -138,12 +137,12 @@
     padding: 11px;
   }
   .grid-widget {
-    background: #f1f1f1;
-    height: 100%;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: #f1f1f1;
+    width: 100%;
+    height: 100%;
   }
 
   .grid-container {
@@ -151,10 +150,10 @@
   }
 
   .remove {
-    cursor: pointer;
     position: absolute;
-    right: 5px;
     top: 3px;
+    right: 5px;
+    cursor: pointer;
     user-select: none;
   }
 </style>
