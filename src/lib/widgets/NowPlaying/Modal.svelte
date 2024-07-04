@@ -77,7 +77,7 @@
   <header>
     {#key loaded && currentValue}
       <div class="reading nightscout-reading" in:fade>
-        <h1 class="current-music__modal__headline bg">
+        <h1 class="current-music__modal__headline bg" use:selfOffsetBackground>
           {currentValue}
         </h1>
         <h2 class="text-md">
@@ -96,7 +96,7 @@
         in:blur={{ duration: 500, delay: 500 }}
         out:blur={{ duration: 500 }}
       >
-        <h1 class="current-music__modal__headline">
+        <h1 class="current-music__modal__headline" use:selfOffsetBackground>
           {typeof weather?.temperature_2m === 'number'
             ? Math.round(weather?.temperature_2m)
             : weather?.temperature_2m}ºF
