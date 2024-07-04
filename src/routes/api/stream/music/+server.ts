@@ -90,9 +90,24 @@ const startInterval = (fetch: Fetch) => {
 
       if (shouldBroadcast) {
         const timestamp = Date.now();
-        let art = data.art || '/missing-album-art.png';
+        let art = data.art
+          ? `${data.art}?ts=${timestamp}`
+          : '/missing-album-art.png';
         let backgroundGradient: string | undefined;
         let foregroundGradient: string | undefined;
+        if (!data.art) {
+          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log(
+            '🚀 ~ Updating art not found in WiiM Response:',
+            data.art
+          );
+          console.log('🚀 ~ interval=setInterval ~ art:', art);
+          console.log('🚀 ~ Full data object:');
+          console.log(data);
+          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        }
 
         if (previousState.album !== data.album) {
           art = `${art}?ts=${timestamp}`;

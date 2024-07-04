@@ -23,20 +23,20 @@
     align-items: center;
   }
   .sound-wave {
-    width: 250px;
-    height: 100px;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    width: 250px;
+    height: 100px;
   }
   .bar {
     display: block;
+    animation: sound linear infinite alternate;
+    margin-right: 1px;
+    border-radius: 3px;
+    background: var(--bgColor);
     width: 3px;
     height: 20px; /* Initial height set here */
-    border-radius: 3px;
-    margin-right: 1px;
-    background: var(--bgColor);
-    animation: sound linear infinite alternate;
   }
   @keyframes sound {
     0%,

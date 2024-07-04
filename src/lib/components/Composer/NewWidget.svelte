@@ -51,10 +51,10 @@
 <style>
   .widget-options {
     button {
-      padding: 0.25rem;
-      background-color: rgba(255, 255, 255, 0.3);
       margin: 0.25rem 1rem;
       border: 1px solid rgba(255, 255, 255, 0.6);
+      background-color: rgba(255, 255, 255, 0.3);
+      padding: 0.25rem;
       &:hover {
         background-color: rgba(255, 255, 233, 0.5);
       }

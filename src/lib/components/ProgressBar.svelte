@@ -12,9 +12,9 @@
 
 <style>
   .progress-bar {
-    width: 1%;
-    transition-property: width;
     transition-duration: 2000ms;
+    transition-property: width;
+    width: 1%;
     height: 3px;
   }
 </style>

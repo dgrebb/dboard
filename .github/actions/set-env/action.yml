@@ -1,0 +1,34 @@
+name: "Set up Build .env"
+description: "Set .env variables for test build"
+author: dgrebb
+
+inputs:
+  SECRET_NIGHTSCOUT_TOKEN:
+    description: Env var for Vite/SvelteKit build
+  PUBLIC_HUE_USERNAME:
+    description: Env var for Vite/SvelteKit build
+  SECRET_NEST_CLIENT:
+    description: Env var for Vite/SvelteKit build
+  SECRET_NEST_CLIENT_SECRET:
+    description: Env var for Vite/SvelteKit build
+  SECRET_AUDIO_CONTROL_IP_ADDRESS:
+    description: Env var for Vite/SvelteKit build
+  SECRET_WIIM_SOAP_API_PORT:
+    description: Env var for Vite/SvelteKit build
+  PUBLIC_HOST_URL:
+    description: Env var for Vite/SvelteKit build
+
+runs:
+  using: composite
+  steps:
+    - name: Write variables
+      shell: bash
+      run: |
+        touch .env
+        echo SECRET_NIGHTSCOUT_TOKEN='${{ inputs.SECRET_NIGHTSCOUT_TOKEN }}' >> .env
+        echo PUBLIC_HUE_USERNAME='${{ inputs.PUBLIC_HUE_USERNAME }}' >> .env
+        echo SECRET_NEST_CLIENT='${{ inputs.SECRET_NEST_CLIENT }}' >> .env
+        echo SECRET_NEST_CLIENT_SECRET='${{ inputs.SECRET_NEST_CLIENT_SECRET }}' >> .env
+        echo SECRET_AUDIO_CONTROL_IP_ADDRESS='${{ inputs.SECRET_AUDIO_CONTROL_IP_ADDRESS }}' >> .env
+        echo SECRET_WIIM_SOAP_API_PORT='${{ inputs.SECRET_WIIM_SOAP_API_PORT }}' >> .env
+        echo PUBLIC_HOST_URL='${{ inputs.PUBLIC_HOST_URL }}' >> .env
