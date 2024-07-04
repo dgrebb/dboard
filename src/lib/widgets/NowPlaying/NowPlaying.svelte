@@ -11,6 +11,8 @@
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './PlayHead.svelte';
   import { addHtmlLineBreaks } from '$utils/strings';
+  import Widget from './Widget.svelte';
+  import Modal from './Modal.svelte';
 
   const resubscribeInterval = 3600000; // Resubscribe every hour
 
@@ -48,12 +50,6 @@
   let previousAlbum = $state('Unknown');
   let currentArt: string | null = $state(homeState.nowPlayingArt());
   let newArt: string | undefined = $state(undefined);
-  let previousBackgroundGradient = $state(
-    'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
-  );
-  let previousForegroundGradient = $state(
-    'linear-gradient(45deg, rgb(3, 2, 20), rgb(0, 0, 21), rgb(39, 19, 26), rgb(0, 0, 28), rgb(0, 6, 0))'
-  );
 
   const imageCache = new Map<string, boolean>();
 
@@ -204,9 +200,12 @@
   });
 
   $effect(() => {
+    const body = document.body;
     const delay = 3333;
     ({ backgroundGradient, foregroundGradient } =
       homeState.nowPlayingGradients());
+    body.style.setProperty('--nextBackgroundGradient', backgroundGradient);
+    body.style.setProperty('--nextForegroundGradient', foregroundGradient);
     playState = 'starting';
 
     preloadImage(art)
@@ -220,7 +219,7 @@
     transitionGradient = true;
     transitionForegroundGradient = true;
 
-    previousForegroundGradient = foregroundGradient;
+    body.style.setProperty('--previousForegroundGradient', foregroundGradient);
     return () => {
       loaded = true;
       previousAlbum = album;
@@ -230,7 +229,10 @@
       setTimeout(() => {
         currentArt = art;
         transitionGradient = false;
-        previousBackgroundGradient = backgroundGradient;
+        body.style.setProperty(
+          '--previousBackgroundGradient',
+          backgroundGradient
+        );
       }, delay);
       setTimeout(() => {
         newArt = undefined;
@@ -259,189 +261,46 @@
 </script>
 
 {#if loaded}
-  <div class="now-playing dboard__grid__item current-music">
-    {#key album !== previousAlbum}
-      <div
-        class="dboard__card svelte-1s7u7zs refreshed w-full border-none bg-transparent"
-        out:fade={{ duration: 333 }}
-        in:fade={{ duration: 333, delay: 333 }}
-      >
-        <!-- svelte-ignore a11y_click_events_have_key_events -->
-        <div class="album-art">
-          <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-          <img
-            src={art}
-            alt="{album} Artwork"
-            onclick={(e) => toggleModal(e)}
-            tabindex="-1"
-            role="switch"
-            aria-checked={modal}
-          />
-          <h3 class="album-title">{@html addHtmlLineBreaks(album)}</h3>
-          <LovedHeart {loved} size={33} />
-        </div>
-        <div class="track-details">
-          <span class="track-artist">
-            <h2 class="artist">{@html addHtmlLineBreaks(artist)}</h2>
-          </span>
-          <span class="track">
-            <h3 class="track-time">
-              {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
-                  totalSeconds - timer
-                )}{/if}
-            </h3>
-            <h1 class="track-title">{@html addHtmlLineBreaks(title)}</h1>
-          </span>
-        </div>
-      </div>
-    {/key}
-  </div>
+  <Widget
+    {artist}
+    {album}
+    {art}
+    {previousAlbum}
+    {modal}
+    {title}
+    {loved}
+    {timer}
+    {totalSeconds}
+    {toggleModal}
+  />
 {/if}
 
 {#if modal}
-  <!-- svelte-ignore a11y_no_static_element_interactions -->
-  <!-- svelte-ignore a11y_click_events_have_key_events -->
-  <div
-    class="current-music__modal"
-    class:transitionGradient
-    transition:fade
-    style="--nextBackgroundGradient: {backgroundGradient}; --previousBackgroundGradient: {previousBackgroundGradient}; --nextForegroundGradient: {foregroundGradient}; --previousForegroundGradient: {previousForegroundGradient};"
-    onclick={(e) => {
-      toggleControls(e);
-    }}
-  >
-    <header>
-      {#key loaded && currentValue}
-        <div class="reading nightscout-reading" in:fade>
-          <h1 class="current-music__modal__headline bg">
-            {currentValue}
-          </h1>
-          <h2 class="text-md">
-            {difference} | {direction}
-            <Icon
-              icon={directionIcon}
-              height="32px"
-              class="inline-flex align-middle"
-            />
-          </h2>
-        </div>
-      {/key}
-      {#key loaded && typeof weather?.temperature_2m === 'number' && currentValue !== 0}
-        <div
-          class="reading weather-reading"
-          in:blur={{ duration: 500, delay: 500 }}
-          out:blur={{ duration: 500 }}
-        >
-          <h1 class="current-music__modal__headline">
-            {typeof weather?.temperature_2m === 'number'
-              ? Math.round(weather?.temperature_2m)
-              : weather?.temperature_2m}ºF
-          </h1>
-          <h2 class="text-md">
-            {locationName}
-            <Icon
-              icon="line-md:map-marker"
-              height="32px"
-              class="inline-flex align-middle"
-            />
-          </h2>
-        </div>
-      {/key}
-    </header>
-
-    <main class="current-music__modal__main">
-      <!-- svelte-ignore a11y_click_events_have_key_events -->
-      <div
-        class="album-art"
-        role="switch"
-        tabindex="-1"
-        aria-checked={modal}
-        onclick={(e) => toggleModal(e)}
-      >
-        <LovedHeart {loved} size={77} />
-
-        <div class="image-container">
-          {#key newArt}
-            <img
-              src={currentArt}
-              alt="{album} Artwork"
-              out:fade={{ duration: 500 }}
-            />
-          {/key}
-          {#if newArt}
-            <img
-              src={newArt}
-              alt="{album} Artwork"
-              in:fade={{ duration: 500 }}
-            />
-          {/if}
-        </div>
-      </div>
-
-      {#key album}
-        <h3
-          class="album-title text-fuchsia-200"
-          out:fade={{ duration: 500 }}
-          in:fade={{ duration: 500, delay: 500 }}
-        >
-          {@html addHtmlLineBreaks(album)}
-        </h3>
-      {/key}
-
-      {#if showAudioPlayer === true}
-        <div
-          transition:fade
-          class="audio-player"
-          class:expanded={showAudioPlayer}
-        >
-          <PlaybackControls
-            buttonSize={33}
-            classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
-            {setTrackChange}
-          />
-        </div>
-      {/if}
-    </main>
-
-    <footer
-      class="current-music__modal__info block text-center text-lg"
-      out:blur={{ duration: 150 }}
-      in:blur={{ duration: 333, delay: 150 }}
-    >
-      {#key title}
-        <div
-          class="track-info"
-          in:blur={{ duration: 500, delay: 500 }}
-          out:blur={{ duration: 500 }}
-          class:transitionForegroundGradient
-          onbeforeenter={selfOffsetBackground}
-        >
-          <button
-            class="refresh-gradient"
-            onclick={(e: MouseEvent) => handleGradientRefresh(e)}
-          >
-            <Icon icon="solar:soundwave-bold-duotone" width={50} /></button
-          >
-          <h2 class="artist" use:selfOffsetBackground>
-            {@html addHtmlLineBreaks(artist)}
-          </h2>
-          <h1 class="title" use:selfOffsetBackground>
-            {@html addHtmlLineBreaks(title)}
-          </h1>
-          <h3 class="track-time" use:selfOffsetBackground>
-            {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
-                totalSeconds - timer
-              )}{/if}
-          </h3>
-        </div>
-      {/key}
-    </footer>
-
-    {#key timer}
-      <PlayHead
-        total={typeof totalSeconds === 'number' ? totalSeconds : 0}
-        current={timer}
-      />
-    {/key}
-  </div>
+  <Modal
+    {artist}
+    {album}
+    {art}
+    {newArt}
+    {currentArt}
+    {setTrackChange}
+    {previousAlbum}
+    {modal}
+    {title}
+    {loved}
+    {timer}
+    {totalSeconds}
+    {toggleModal}
+    {toggleControls}
+    {transitionGradient}
+    {transitionForegroundGradient}
+    {loaded}
+    {currentValue}
+    {difference}
+    {direction}
+    {directionIcon}
+    {weather}
+    {locationName}
+    {showAudioPlayer}
+    {handleGradientRefresh}
+  />
 {/if}
