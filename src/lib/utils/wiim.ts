@@ -12,7 +12,7 @@ interface NowPlayingAPI {
   album: string;
   artist: string;
   title: string;
-  art: string | null;
+  art: string;
   totalTime: string;
   relativeTimePosition: string;
   loved: boolean;
@@ -151,13 +151,13 @@ export const fetchMediaInfo = async (fetch: Fetch): Promise<NowPlayingAPI> => {
     };
 
     const nowPlayingInfo: NowPlayingAPI = {
-      album: extractDIDLValue('upnp:album'),
-      artist: extractDIDLValue('upnp:artist'),
-      title: extractDIDLValue('dc:title'),
-      art: extractDIDLValue('upnp:albumArtURI'),
+      album: extractDIDLValue('upnp:album') || '',
+      artist: extractDIDLValue('upnp:artist') || '',
+      title: extractDIDLValue('dc:title') || '',
+      art: extractDIDLValue('upnp:albumArtURI') || '',
       loved: mediaInfo.loved,
-      totalTime: positionInfo.totalTime,
-      relativeTimePosition: positionInfo.relativeTimePosition,
+      totalTime: positionInfo.totalTime || '00:00:00',
+      relativeTimePosition: positionInfo.relativeTimePosition || '00:00:00',
     };
 
     return nowPlayingInfo;

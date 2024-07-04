@@ -36,5 +36,4 @@ jobs:
         run: pnpm check
 
       - name: 🧹Lint
-        continue-on-error: true
         run: pnpm lint
