@@ -6,7 +6,7 @@
   import Icon from '@iconify/svelte';
   import PlaybackControls from './PlaybackControls.svelte';
   import { selfOffsetBackground } from '$actions/selfOffsetBackground';
-  import PlayHead from './PlayHead.svelte';
+  import PlayHead from './TrackProgress.svelte';
   import type { CurrentWeatherData } from '$root/lib/types';
 
   type Props = {
@@ -188,11 +188,6 @@
         <h1 class="title" use:selfOffsetBackground>
           {@html addHtmlLineBreaks(title)}
         </h1>
-        <h3 class="track-time" use:selfOffsetBackground>
-          {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
-              totalSeconds - timer
-            )}{/if}
-        </h3>
       </div>
     {/key}
   </footer>

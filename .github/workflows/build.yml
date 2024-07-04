@@ -50,11 +50,8 @@ jobs:
 
       - name: Test Start App
         run: |
-          # Install ngrok
-
           # Start the application
           nohup pnpm preview.test > server.log 2>&1 &
-
 
           # Display the logs
           echo "Server log:"
