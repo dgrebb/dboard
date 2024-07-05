@@ -38,6 +38,19 @@
         },
         "tempo": 900000
       }
+    },
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "timeZone": "America/New_York",
+          "latitude": 26.9762,
+          "longitude": -82.0906,
+          "name": "Port Charlotte, FL"
+        },
+        "tempo": 900000
+      }
     }
   ]
 }
