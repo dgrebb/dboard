@@ -1,7 +1,11 @@
 <script lang="ts">
-  import type { WeatherData } from '$lib/types';
-  import type { CurrentWeatherSettings } from '$root/.config/settings';
-  import { background, createWeather, homeState, timeState } from '$lib/stores';
+  import type { WeatherData, CurrentWeatherSettings } from '$lib/types';
+  import {
+    background,
+    createOldManWeather,
+    homeState,
+    timeState,
+  } from '$lib/stores';
   import Icon from '@iconify/svelte';
   import { onMount } from 'svelte';
   import { blur, fade } from 'svelte/transition';
@@ -17,7 +21,7 @@
     location,
     location: { name, timeZone },
   } = settings;
-  let weather = createWeather();
+  let weather = createOldManWeather();
   let current: WeatherData['current'] | undefined = $state(weather.current());
   let daily: WeatherData['daily'] | undefined = $state(weather.daily());
   let globalIsDay: number | undefined = $state(undefined);
