@@ -1,17 +1,20 @@
-import type { TimeZone } from '../types';
+import type { ModalState, TimeZone, UIState } from '../types';
 
 export const createUi = () => {
-  const ui = $state({
-    modal: false,
+  const ui: UIState = $state({
+    modalState: {
+      isActive: false,
+      component: undefined,
+    },
   });
 
   return {
-    modal: () => {
-      return ui.modal;
+    modal: (): ModalState => {
+      return ui.modalState;
     },
 
-    setModal: (state: boolean) => {
-      ui.modal = state;
+    setModal: (state: ModalState) => {
+      ui.modalState = state;
     },
   };
 };
