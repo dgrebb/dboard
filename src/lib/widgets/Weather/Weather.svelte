@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { browser } from '$app/environment';
   import type { WeatherSettings } from '$lib/types';
   import { TypeOfWidget } from '$lib/types';
   import { createWeatherWidget } from '$lib/widgets/Weather/weatherStore.svelte';
@@ -25,8 +24,6 @@
   let resubscribeTimeout: number;
   let retryTimeout: number;
   let retryCount = 0;
-  let host = browser ? window.location.hostname : '';
-  console.log('🚀 ~ host:', host);
 
   let eventSource: EventSource | null = null;
   const weatherWidget = createWeatherWidget(
@@ -38,7 +35,8 @@
     refreshInterval
   );
 
-  let temperature = $state(0);
+  let temperature = $state();
+  let weather = $state();
 
   async function startSubscription() {
     if (eventSource) {
@@ -49,14 +47,10 @@
     eventSource = new EventSource(
       `/api/stream/${path}?name=${widgetName}&id=${id}&path=${path}&refreshInterval=${refreshInterval}&upstreamAPIURL=${encodedUpstreamAPIURL}`
     );
-    console.log(
-      '🚀 ~ startSubscription ~',
-      `${host}/api/stream/${path}?name=${widgetName}&id=${id}&path=${path}&refreshInterval=${refreshInterval}&upstreamAPIURL=${encodedUpstreamAPIURL}`
-    );
 
     eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      weatherWidget.setData(data);
+      const { weather } = JSON.parse(event.data);
+      weatherWidget.setData(weather);
       retryCount = 0; // Reset retry count on successful message
     };
 
@@ -102,6 +96,7 @@
   }
 
   $effect(() => {
+    weather = weatherWidget.weather();
     temperature = weatherWidget.currentRoundTemperature();
   });
 

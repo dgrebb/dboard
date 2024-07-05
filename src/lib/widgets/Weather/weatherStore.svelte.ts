@@ -26,15 +26,28 @@ export const createWeatherWidget = function createWidget(
     data: undefined,
   });
 
-  const setData = function setData(data: WeatherData) {
-    console.log('🚀 ~ setData ~ data:', data);
-    widgetStore = {
-      ...widgetStore,
-      data,
-    };
-  };
-
   return {
+    setData: (data: WeatherData) => {
+      console.log('🗿 ~ rune data:', data);
+      widgetStore = {
+        ...widgetStore,
+        data,
+      };
+    },
+
+    weather: (): unknown => {
+      return widgetStore.data;
+    },
+
+    currentRoundTemperature: (): number => {
+      if (
+        widgetStore.data !== undefined &&
+        widgetStore.data.current !== undefined
+      ) {
+        return Math.round(widgetStore.data.current.temperature_2m);
+      }
+    },
+
     streamSettings: () => {
       return widgetStore.stream;
     },
@@ -47,15 +60,5 @@ export const createWeatherWidget = function createWidget(
     type: (): TypeOfWidget => {
       return widgetStore.type as TypeOfWidget;
     },
-    currentRoundTemperature: (): number => {
-      const data = widgetStore.data;
-      console.log('🚀 ~ data:', data);
-      let temperature = 0;
-      if (isWeatherData(data)) {
-        temperature = Math.round(data.current.temperature_2m);
-      }
-      return temperature;
-    },
-    setData,
   };
 };
