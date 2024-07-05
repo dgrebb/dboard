@@ -18,6 +18,8 @@ let interval: Timer | null = null;
 let previousState: NowPlayingData = homeState.nowPlaying();
 
 // Log the clients in a tabular format
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const logClients = () => {
   const clientArray = Array.from(clients).map((client) => ({
     ip: client.ip,

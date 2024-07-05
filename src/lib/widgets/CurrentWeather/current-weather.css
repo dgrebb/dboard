@@ -21,8 +21,26 @@
       filter: brightness(133);
     }
   }
-  .local-time {
+
+  .lower-card {
     display: flex;
-    align-self: end;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+
+    .current-temperature {
+      display: flex;
+      position: absolute;
+      bottom: 0;
+      line-height: 1;
+    }
+
+    .local-time {
+      display: block;
+      align-self: end;
+      width: 100%;
+      text-align: right;
+    }
   }
 }
