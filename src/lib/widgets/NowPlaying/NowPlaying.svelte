@@ -256,33 +256,32 @@
     {timer}
     {totalSeconds}
     {toggleModal}
+    {transitionGradient}
   />
 {/if}
 
-{#if modal}
-  <Modal
-    {artist}
-    {album}
-    {art}
-    {newArt}
-    {currentArt}
-    {setTrackChange}
-    {previousAlbum}
-    {modal}
-    {title}
-    {loved}
-    {timer}
-    {totalSeconds}
-    {toggleModal}
-    {toggleControls}
-    {transitionGradient}
-    {transitionForegroundGradient}
-    {currentValue}
-    {difference}
-    {direction}
-    {directionIcon}
-    {locationName}
-    {showAudioPlayer}
-    {handleGradientRefresh}
-  />
-{/if}
+<Modal
+  {artist}
+  {album}
+  {art}
+  {newArt}
+  {currentArt}
+  {setTrackChange}
+  {previousAlbum}
+  {modal}
+  {title}
+  {loved}
+  {timer}
+  {totalSeconds}
+  {toggleModal}
+  {toggleControls}
+  {transitionGradient}
+  {transitionForegroundGradient}
+  {currentValue}
+  {difference}
+  {direction}
+  {directionIcon}
+  {locationName}
+  {showAudioPlayer}
+  {handleGradientRefresh}
+/>

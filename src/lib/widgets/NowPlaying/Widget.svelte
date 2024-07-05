@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fade } from 'svelte/transition';
+  import { blur } from 'svelte/transition';
   import { addHtmlLineBreaks } from '$utils/strings';
   import { formatSecondsToMinutes } from '$utils/strings';
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
@@ -15,6 +15,7 @@
     modal: boolean;
     timer: number;
     totalSeconds: number;
+    transitionGradient: boolean;
     toggleModal: (e: MouseEvent) => void;
   };
 
@@ -29,18 +30,22 @@
     timer,
     totalSeconds,
     toggleModal,
+    transitionGradient,
   }: Props = $props();
 </script>
 
 <div class="now-playing dboard__grid__item current-music">
-  {#key album !== previousAlbum}
-    <div
-      class="dboard__card svelte-1s7u7zs refreshed w-full border-none bg-transparent"
-      out:fade={{ duration: 333 }}
-      in:fade={{ duration: 333, delay: 333 }}
-    >
-      <!-- svelte-ignore a11y_click_events_have_key_events -->
-      <div class="album-art">
+  <div
+    class="dboard__card svelte-1s7u7zs refreshed w-full border-none bg-transparent"
+    class:transitionGradient
+  >
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    {#key album !== previousAlbum}
+      <div
+        class="album-art"
+        out:blur={{ duration: 2000 }}
+        in:blur={{ duration: 2000, delay: 2000 }}
+      >
         <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
         <img
           src={art}
@@ -55,7 +60,13 @@
         </h3>
         <LovedHeart {loved} size={33} />
       </div>
-      <div class="track-details">
+    {/key}
+    {#key album !== previousAlbum}
+      <div
+        class="track-details"
+        out:blur={{ duration: 2000 }}
+        in:blur={{ duration: 2000, delay: 2000 }}
+      >
         <span class="track-artist">
           <h2 class="artist"><SafeHtml html={addHtmlLineBreaks(artist)} /></h2>
         </span>
@@ -70,6 +81,6 @@
           </h1>
         </span>
       </div>
-    </div>
-  {/key}
+    {/key}
+  </div>
 </div>
