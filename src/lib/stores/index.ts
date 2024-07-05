@@ -1,4 +1,4 @@
-export { createWeather } from './weather.svelte';
+export { createOldManWeather } from './old-weather-man.svelte';
 export { background } from './background.svelte';
 export { streams } from './streams.svelte';
 export { createWidget } from './widget.svelte';
