@@ -405,3 +405,12 @@ export type TimeZone =
   | 'Asia/Kolkata'
   | 'Australia/Sydney'
   | 'Pacific/Auckland';
+
+export type UIState = {
+  modalState: ModalState;
+};
+
+export type ModalState = {
+  isActive: boolean;
+  component: 'music' | 'nightscout' | 'weather' | undefined;
+};
