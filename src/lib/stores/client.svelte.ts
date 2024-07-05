@@ -13,6 +13,10 @@ export const createUi = () => {
       return ui.modalState;
     },
 
+    modalActive: (): ModalState['isActive'] => {
+      return ui.modalState.isActive;
+    },
+
     setModal: (state: ModalState) => {
       ui.modalState = state;
     },
