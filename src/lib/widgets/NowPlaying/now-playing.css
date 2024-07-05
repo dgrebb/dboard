@@ -87,6 +87,7 @@
     background-size: 100vw 100vh;
     background-clip: text;
     -webkit-background-clip: text;
+    background-blend-mode: difference;
     padding: 0.25rem;
     color: transparent;
     text-wrap: balance;
