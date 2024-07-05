@@ -1,7 +1,7 @@
 {
   "widgets": [
     {
-      "type": "CurrentWeather",
+      "type": "CurrentWeatherLeg",
       "settings": {
         "location": {
           "primary": true,
@@ -14,7 +14,7 @@
       }
     },
     {
-      "type": "CurrentWeather",
+      "type": "CurrentWeatherLeg",
       "settings": {
         "location": {
           "primary": false,
@@ -27,7 +27,7 @@
       }
     },
     {
-      "type": "CurrentWeather",
+      "type": "CurrentWeatherLeg",
       "settings": {
         "location": {
           "primary": false,

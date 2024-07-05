@@ -21,7 +21,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check.watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
-    "watch": "chokidar '**/*.{js,ts,svelte,json}' -c 'npm run lint'",
+    "watch": "chokidar './src/**/*.{js,ts,svelte,json}' -c 'npm run lint'",
     "format": "prettier --write .",
     "sync": "svelte-kit sync",
     "test.integration": "playwright test",

@@ -1,0 +1,28 @@
+.dboard__card {
+  filter: invert(0);
+  &.day-override {
+    &::after {
+      opacity: 0.33;
+      filter: invert(1);
+    }
+  }
+  &.night-override {
+    &::after {
+      opacity: 0.33;
+      background: black;
+    }
+    h1,
+    h2,
+    h3,
+    .current-weather__wind {
+      filter: invert(1);
+    }
+    .big-icon-wow {
+      filter: brightness(133);
+    }
+  }
+  .local-time {
+    display: flex;
+    align-self: end;
+  }
+}

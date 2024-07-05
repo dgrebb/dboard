@@ -170,9 +170,8 @@ export const GET = async (event: RequestEvent) => {
       clients.add({ controller, isClosed: false, ip: clientIp });
 
       // Print the client list on new connections
-
-      console.info('------------------ CLIENT LIST -----------------');
-      logClients();
+      // console.info('------------------ CLIENT LIST -----------------');
+      // logClients();
 
       const cleanup = () => {
         const client = Array.from(clients).find(
