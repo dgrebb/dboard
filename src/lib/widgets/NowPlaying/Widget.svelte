@@ -3,6 +3,7 @@
   import { addHtmlLineBreaks } from '$utils/strings';
   import { formatSecondsToMinutes } from '$utils/strings';
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
+  import SafeHtml from '$components/SafeHTML.svelte';
 
   type Props = {
     artist: string;
@@ -49,12 +50,14 @@
           role="switch"
           aria-checked={modal}
         />
-        <h3 class="album-title">{@html addHtmlLineBreaks(album)}</h3>
+        <h3 class="album-title">
+          <SafeHtml html={addHtmlLineBreaks(album)} />
+        </h3>
         <LovedHeart {loved} size={33} />
       </div>
       <div class="track-details">
         <span class="track-artist">
-          <h2 class="artist">{@html addHtmlLineBreaks(artist)}</h2>
+          <h2 class="artist"><SafeHtml html={addHtmlLineBreaks(artist)} /></h2>
         </span>
         <span class="track">
           <h3 class="track-time">
@@ -62,7 +65,9 @@
                 totalSeconds - timer
               )}{/if}
           </h3>
-          <h1 class="track-title">{@html addHtmlLineBreaks(title)}</h1>
+          <h1 class="track-title">
+            <SafeHtml html={addHtmlLineBreaks(title)} />
+          </h1>
         </span>
       </div>
     </div>

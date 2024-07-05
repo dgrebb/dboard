@@ -25,6 +25,12 @@ module.exports = {
   },
   overrides: [
     {
+      files: ['tsconfig.json', 'jsconfig.json'],
+      parserOptions: {
+        parser: 'jsonc',
+      },
+    },
+    {
       files: ['*.svelte'],
       parser: 'svelte-eslint-parser',
       parserOptions: {

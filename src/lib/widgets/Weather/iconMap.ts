@@ -1,7 +1,7 @@
 import type { IconMap } from '$lib/types';
 
 const lightYellowGray = '#fbf1de';
-const brightGreen = '#37cc37';
+// const brightGreen = '#37cc37';
 const brightYellow = '#ccc737';
 const paleGreen = '#37cc7f';
 const paleYellow = '#e5e5e5';

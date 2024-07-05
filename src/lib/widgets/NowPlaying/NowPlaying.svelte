@@ -1,26 +1,17 @@
 <script lang="ts">
-  import LovedHeart from '$components/Animations/LovedHeart.svelte';
-  import { selfOffsetBackground } from '$actions/selfOffsetBackground';
   import { healthState, homeState } from '$lib/stores';
-  import type { GradientResult, CurrentWeatherData } from '$lib/types';
+  import type { GradientResult, Timer } from '$lib/types';
   import { mapNightScoutDirectionIcon } from '$utils/nightscout';
-  import { formatSecondsToMinutes, timeStringToSeconds } from '$utils/strings';
-  import Icon from '@iconify/svelte';
+  import { timeStringToSeconds } from '$utils/strings';
   import { onDestroy, onMount } from 'svelte';
-  import { blur, fade } from 'svelte/transition';
-  import PlaybackControls from './PlaybackControls.svelte';
-  import PlayHead from './TrackProgress.svelte';
-  import { addHtmlLineBreaks } from '$utils/strings';
-  import Widget from './Widget.svelte';
   import Modal from './Modal.svelte';
+  import Widget from './Widget.svelte';
 
   const resubscribeInterval = 3600000; // Resubscribe every hour
 
-  let mounted = $state(false);
   let loaded = $state(false);
-  let weather: undefined | CurrentWeatherData = $state(undefined);
-  let resubscribeTimeout: NodeJS.Timeout;
-  let retryTimeout: NodeJS.Timeout;
+  let resubscribeTimeout: Timer;
+  let retryTimeout: Timer;
   let retryCount = 0;
   let eventSource: EventSource | null = null;
   let title = $state('');
@@ -30,6 +21,7 @@
   let totalTime: string | number = $state(0);
   let totalSeconds = $state(0);
   let relativeTimePosition: string | number = $state(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let playState = $state('loading');
   let art = $state('/missing-album-art.png');
   let { backgroundGradient, foregroundGradient }: GradientResult = $state(
@@ -46,7 +38,7 @@
   let transitionGradient = $state(false);
   let transitionForegroundGradient = $state(false);
   let timer = $state(0);
-  let timeInterval: NodeJS.Timeout | null = $state(null);
+  let timeInterval: Timer | null = $state(null);
   let previousAlbum = $state('Unknown');
   let currentArt: string | null = $state(homeState.nowPlayingArt());
   let newArt: string | undefined = $state(undefined);
@@ -194,12 +186,6 @@
   });
 
   $effect(() => {
-    const weatherUpdate: CurrentWeatherData | undefined =
-      homeState.currentWeather();
-    if (typeof weatherUpdate === 'object') weather = weatherUpdate;
-  });
-
-  $effect(() => {
     const body = document.body;
     const delay = 3333;
     ({ backgroundGradient, foregroundGradient } =
@@ -243,7 +229,6 @@
   onMount(async () => {
     await startSubscription();
     window.addEventListener('beforeunload', handleWindowUnload);
-    mounted = true;
     currentArt = art;
   });
 
@@ -293,12 +278,10 @@
     {toggleControls}
     {transitionGradient}
     {transitionForegroundGradient}
-    {loaded}
     {currentValue}
     {difference}
     {direction}
     {directionIcon}
-    {weather}
     {locationName}
     {showAudioPlayer}
     {handleGradientRefresh}
