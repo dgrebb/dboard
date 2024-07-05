@@ -25,7 +25,7 @@ export const createNightScoutWidget = function createWidget(
   });
 
   const getColors = () => {
-    const data = widgetStore.data;
+    const { data } = widgetStore;
     let value = 0;
     if (isNightScoutData(data)) {
       value = data[0].sgv;
@@ -34,7 +34,7 @@ export const createNightScoutWidget = function createWidget(
   };
 
   const getSeries = function getSeries() {
-    const data = widgetStore.data;
+    const { data } = widgetStore;
     let series: number[] = [];
     if (Array.isArray(data) && data.length) {
       series = data.map((reading) => reading.sgv);
@@ -43,7 +43,7 @@ export const createNightScoutWidget = function createWidget(
   };
 
   const getChronologicalSeries = function getSeries() {
-    const data = widgetStore.data;
+    const { data } = widgetStore;
     let series: number[] = [];
     if (Array.isArray(data) && data.length) {
       series = data.map((reading) => reading.sgv);
@@ -52,7 +52,7 @@ export const createNightScoutWidget = function createWidget(
   };
 
   const getCurrent = function getCurrent() {
-    const data = widgetStore.data;
+    const { data } = widgetStore;
     let current = 0;
     if (isNightScoutData(data)) {
       current = data[0].sgv;
@@ -61,7 +61,7 @@ export const createNightScoutWidget = function createWidget(
   };
 
   const getLast = function getLast() {
-    const data = widgetStore.data;
+    const { data } = widgetStore;
     let last = 0;
     if (isNightScoutData(data)) {
       last = data[1].sgv;
@@ -70,7 +70,7 @@ export const createNightScoutWidget = function createWidget(
   };
 
   const getDirectionIcon = function getDirectionIcon(): string {
-    const data = widgetStore.data;
+    const { data } = widgetStore;
     let icon = 'iconamoon:cloud-error-light';
     if (isNightScoutData(data)) {
       icon = mapNightScoutDirectionIcon(data);
@@ -79,7 +79,7 @@ export const createNightScoutWidget = function createWidget(
   };
 
   const getDifference = function getDifference() {
-    const data = widgetStore.data;
+    const { data } = widgetStore;
     let difference = 0;
 
     if (isNightScoutData(data)) {

@@ -5,14 +5,8 @@
 }
 
 @font-face {
-  src: url('/fonts/PublicSans-Regular.woff2') format('woff2');
-  font-family: 'Public Sans';
-  font-display: swap;
-}
-
-@font-face {
-  src: url('/fonts/uni-sans.heavy-caps-webfont.woff2') format('woff2');
-  font-family: 'Uni Sans';
+  src: url('/fonts/PublicSans-Black.woff2') format('woff2');
+  font-family: 'Public Sans Black';
   font-display: swap;
 }
 
@@ -23,10 +17,7 @@
 }
 
 :root {
-  --font-psxl: 'Public Sans Extra Light', sans-serif;
-  --font-ps: 'Public Sans', sans-serif;
   --font-psb: 'Public Sans Bold', sans-serif;
   --font-psbl: 'Public Sans Black', sans-serif;
-  --font-us: 'Uni Sans', sans-serif;
   --font-nasa: 'Nasalization Regular', sans-serif;
 }

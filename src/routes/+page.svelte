@@ -58,10 +58,10 @@
         <svelte:component this={components[type]} {settings} />
       {/each}
     {/if}
-    <!-- <NewWidget /> -->
-    <NowPlaying />
     {#if typeof schedule !== 'boolean' && isSteptaNextToArriveDataArray(schedule) && schedule.length > 0}
       <SeptaNextToArrive {schedule} />
     {/if}
+    <NowPlaying />
+    <!-- <NewWidget /> -->
   </Board>
 {/if}
