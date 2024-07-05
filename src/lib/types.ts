@@ -228,8 +228,8 @@ export enum TypeOfWidget {
 export type WidgetSettings = {
   type: string;
   name?: string;
-  settings: {
-    location: {
+  settings?: {
+    location?: {
       primary: boolean;
       name: string;
       timeZone: string;

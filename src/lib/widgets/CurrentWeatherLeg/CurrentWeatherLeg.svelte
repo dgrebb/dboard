@@ -9,9 +9,9 @@
   import Icon from '@iconify/svelte';
   import { onMount } from 'svelte';
   import { blur, fade } from 'svelte/transition';
-  import '$widgets/CurrentWeather/current-weather.css';
+  import '$widgets/Weather/weather.css';
   import fahrenheitToColorShade from '$utils/temperatureColor';
-  import WeatherIcon from '$widgets/CurrentWeather/WeatherIcon.svelte';
+  import WeatherIcon from '$widgets/Weather/WeatherIcon.svelte';
 
   let highlightColor = fahrenheitToColorShade(77);
   let pushing = $state(false);

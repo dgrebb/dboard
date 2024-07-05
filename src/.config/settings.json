@@ -14,7 +14,7 @@
       }
     },
     {
-      "type": "CurrentWeather",
+      "type": "Weather",
       "settings": {
         "location": {
           "primary": false,
