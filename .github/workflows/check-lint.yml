@@ -13,7 +13,7 @@ env:
 
 jobs:
   lint:
-    name: ≅ Lint
+    name: 🧹 Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -31,9 +31,28 @@ jobs:
           NODE_VERSION: ${{ vars.NODE_VERSION}}
           PNPM_VERSION: ${{ vars.PNPM_VERSION}}
 
-      - name: 🧐 Check
+      - name: "`pnpm lint`"
+        run: pnpm lint
+
+  check:
+    name: 🧐 Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 𐂷 Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: dgrebb/dboard
+          ref: ${{ github.ref }}
+          token: ${{ github.token }}
+          fetch-depth: 1
+
+      - name: 🛢 Install & Cache Dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          NODE_VERSION: ${{ vars.NODE_VERSION}}
+          PNPM_VERSION: ${{ vars.PNPM_VERSION}}
+
+      - name: "`pnpm check`"
         continue-on-error: true
         run: pnpm check
-
-      - name: 🧹Lint
-        run: pnpm lint

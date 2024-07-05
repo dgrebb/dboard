@@ -1,6 +1,4 @@
-import widgets from '$root/.config/settings.json';
 import type { LocationType, LocationsType, TypeOfWidget } from '$lib/types';
-import type { ComponentType } from 'svelte';
 
 export const glu = {
   hoursDisplayed: 1, // in hours
