@@ -5,17 +5,22 @@
   type Props = {
     total: number;
     current: number;
+    showHud: boolean;
   };
 
-  let { total, current }: Props = $props();
+  let { total, current, showHud }: Props = $props();
   let percent: number = $derived(Math.round(100 - (current / total) * 100));
   let progress: string = formatSecondsToMinutes(total - current);
   let remaining: string = formatSecondsToMinutes(current);
 </script>
 
 <div class="track-progress">
-  <p class="track-time-now" use:selfOffsetBackground>{progress}</p>
-  <p class="track-time-remaining" use:selfOffsetBackground>-{remaining}</p>
+  <p class="track-time-now" use:selfOffsetBackground class:showHud>
+    {progress}
+  </p>
+  <p class="track-time-remaining" use:selfOffsetBackground class:showHud>
+    -{remaining}
+  </p>
 
   <div class="track-progress-bar" style={`--percent: ${percent}%;`}>
     <!-- <input

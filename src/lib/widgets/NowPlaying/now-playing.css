@@ -496,11 +496,20 @@
       bottom: 1rem;
       opacity: 0.67;
       z-index: 3;
+      transition: opacity 1s ease-out;
       background: var(--previousForegroundGradient);
       background-size: 100vw 100vh;
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
+
+      &:not(.showHud) {
+        opacity: 0;
+      }
+
+      &.showHud {
+        opacity: 0.67;
+      }
     }
     .track-time-now {
       left: 1rem;
@@ -654,6 +663,8 @@
       top: 0;
       width: 100%;
       .reading {
+        opacity: 1;
+        transition: opacity 1s ease-out;
         padding: 0;
         h1 {
           opacity: 1;
@@ -668,6 +679,14 @@
         }
         h2 {
           display: none;
+        }
+
+        &:not(.showHud) {
+          opacity: 0;
+        }
+
+        &.showHud {
+          opacity: 1;
         }
       }
       .nightscout-reading {

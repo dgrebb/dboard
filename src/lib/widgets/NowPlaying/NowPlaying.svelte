@@ -35,6 +35,7 @@
   let locationName: string | null = $derived(homeState.locationName());
 
   let showAudioPlayer = $state(false);
+  let showHud = $state(false);
   let transitionGradient = $state(false);
   let transitionForegroundGradient = $state(false);
   let timer = $state(0);
@@ -166,6 +167,7 @@
   const toggleControls = (e: MouseEvent) => {
     e.preventDefault();
     showAudioPlayer = !showAudioPlayer;
+    showHud = showAudioPlayer;
   };
 
   const setTrackChange = (e: Event) => {
@@ -257,7 +259,6 @@
     {artist}
     {album}
     {art}
-    {previousAlbum}
     {title}
     {loved}
     {timer}
@@ -288,6 +289,7 @@
     {directionIcon}
     {locationName}
     {showAudioPlayer}
+    {showHud}
     {handleGradientRefresh}
     {modal}
     {toggleModal}
