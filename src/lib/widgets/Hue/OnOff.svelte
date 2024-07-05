@@ -4,7 +4,7 @@
   import { onMount } from 'svelte';
   // import lights from '$lib/stores/solar';
   import { hue } from '$root/.config/settings';
-  import type { FetchOptions } from '$root/lib/types';
+  import type { FetchOptions } from '$lib/types';
 
   $: ({ actions } = hue);
 
