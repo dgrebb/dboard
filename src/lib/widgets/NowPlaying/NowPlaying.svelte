@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { healthState, homeState } from '$lib/stores';
-  import type { GradientResult, Timer } from '$lib/types';
+  import { healthState, homeState, uiState } from '$lib/stores';
+  import type { GradientResult, ModalState, Timer } from '$lib/types';
   import { mapNightScoutDirectionIcon } from '$utils/nightscout';
   import { timeStringToSeconds } from '$utils/strings';
   import { onDestroy, onMount } from 'svelte';
@@ -27,7 +27,7 @@
   let { backgroundGradient, foregroundGradient }: GradientResult = $state(
     homeState.nowPlayingGradients()
   );
-  let modal = $state(localStorage.getItem('musicModal') === 'true' || false);
+  let modal: ModalState = $state(uiState.modal());
   let difference: string | number = $state('0');
   let direction: string | null = $state('Flat');
   let directionIcon = $state(mapNightScoutDirectionIcon());
@@ -153,8 +153,13 @@
 
   function toggleModal(e: MouseEvent) {
     e.preventDefault();
-    modal = !modal;
-    localStorage.setItem('musicModal', modal.toString());
+    e.stopPropagation();
+    const active = !uiState.modal().isActive;
+    uiState.setModal({
+      isActive: active,
+      component: 'music',
+    });
+    localStorage.setItem('musicModal', active.toString());
     showAudioPlayer = false;
   }
 
@@ -227,6 +232,9 @@
 
   onMount(async () => {
     await startSubscription();
+    if (localStorage.getItem('musicModal') === 'true') {
+      modal.isActive = true;
+    }
     window.addEventListener('beforeunload', handleWindowUnload);
     currentArt = art;
   });
@@ -250,38 +258,38 @@
     {album}
     {art}
     {previousAlbum}
-    {modal}
     {title}
     {loved}
     {timer}
     {totalSeconds}
-    {toggleModal}
     {transitionGradient}
+    {modal}
+    {toggleModal}
+  />
+
+  <Modal
+    {artist}
+    {album}
+    {art}
+    {newArt}
+    {currentArt}
+    {setTrackChange}
+    {previousAlbum}
+    {title}
+    {loved}
+    {timer}
+    {totalSeconds}
+    {toggleControls}
+    {transitionGradient}
+    {transitionForegroundGradient}
+    {currentValue}
+    {difference}
+    {direction}
+    {directionIcon}
+    {locationName}
+    {showAudioPlayer}
+    {handleGradientRefresh}
+    {modal}
+    {toggleModal}
   />
 {/if}
-
-<Modal
-  {artist}
-  {album}
-  {art}
-  {newArt}
-  {currentArt}
-  {setTrackChange}
-  {previousAlbum}
-  {modal}
-  {title}
-  {loved}
-  {timer}
-  {totalSeconds}
-  {toggleModal}
-  {toggleControls}
-  {transitionGradient}
-  {transitionForegroundGradient}
-  {currentValue}
-  {difference}
-  {direction}
-  {directionIcon}
-  {locationName}
-  {showAudioPlayer}
-  {handleGradientRefresh}
-/>
