@@ -1,5 +1,5 @@
-name: 🧺 Lint/Check
-run-name: "Lint & Check | `${{ github.head_ref || github.ref_name }}`"
+name: 🧐 Check
+run-name: "Checking `${{ github.head_ref || github.ref_name }}`"
 
 on:
   pull_request:
@@ -12,30 +12,7 @@ env:
   NODE_VERSION: ${{ vars.NODE_VERSION}}
 
 jobs:
-  lint:
-    name: 🧹 Lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 𐂷 Checkout
-        uses: actions/checkout@v4
-        with:
-          repository: dgrebb/dboard
-          ref: ${{ github.ref }}
-          token: ${{ github.token }}
-          fetch-depth: 1
-
-      - name: 🛢 Install & Cache Dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          NODE_VERSION: ${{ vars.NODE_VERSION}}
-          PNPM_VERSION: ${{ vars.PNPM_VERSION}}
-
-      - name: "`pnpm lint`"
-        run: pnpm lint
-
   check:
-    name: 🧐 Check
     runs-on: ubuntu-latest
 
     steps:

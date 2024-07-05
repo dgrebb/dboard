@@ -19,8 +19,8 @@ function preserveAcronyms(str: string): string {
 export function generateID(input: string): string {
   // Replace spaces with underscores and remove special characters
   const result = input
-    .replace(/[^a-zA-Z0-9\s]/g, "") // Remove special characters
-    .replace(/\s+/g, "_"); // Replace spaces with underscores
+    .replace(/[^a-zA-Z0-9\s]/g, '') // Remove special characters
+    .replace(/\s+/g, '_'); // Replace spaces with underscores
 
   return preserveAcronyms(result);
 }
@@ -42,13 +42,13 @@ export function toCamelCase(input: string): string {
 
   // Remove special characters and replace spaces with a single space
   const cleanedInput = input
-    .replace(/[^a-zA-Z0-9\s]/g, "")
-    .replace(/\s+/g, " ");
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .replace(/\s+/g, ' ');
 
   const camelCased = cleanedInput
-    .split(" ")
+    .split(' ')
     .map((word, index) => (index === 0 ? word.toLowerCase() : capitalize(word)))
-    .join("");
+    .join('');
 
   return preserveAcronyms(camelCased);
 }
@@ -60,7 +60,7 @@ export function toCamelCase(input: string): string {
  * @returns {number} The time in milliseconds.
  */
 export const timeStringToMilliseconds = (time: string): number => {
-  const [hours, minutes, seconds] = time.split(":").map(Number);
+  const [hours, minutes, seconds] = time.split(':').map(Number);
   return (hours * 60 * 60 + minutes * 60 + seconds) * 1000;
 };
 
@@ -71,7 +71,7 @@ export const timeStringToMilliseconds = (time: string): number => {
  * @returns {number} The time in milliseconds.
  */
 export const timeStringToSeconds = (time: string): number => {
-  const [hours, minutes, seconds] = time.split(":").map(Number);
+  const [hours, minutes, seconds] = time.split(':').map(Number);
   return hours * 60 * 60 + minutes * 60 + seconds;
 };
 
@@ -84,8 +84,8 @@ export const timeStringToSeconds = (time: string): number => {
 export const formatSecondsToMinutes = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  const formattedMinutes = String(minutes).padStart(2, "0");
-  const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = String(remainingSeconds).padStart(2, '0');
   return `${formattedMinutes}:${formattedSeconds}`;
 };
 
@@ -103,25 +103,25 @@ export const addHtmlLineBreaks = (input: string): string => {
   for (let i = 0; i < input.length; i++) {
     const char = input[i];
 
-    if ("[{(".includes(char)) {
+    if ('[{('.includes(char)) {
       stack.push(char);
       output.push(`<br>${char}`);
-    } else if ("]})".includes(char)) {
+    } else if (']})'.includes(char)) {
       stack.pop();
       output.push(char);
     } else if (
-      char === "-" &&
+      char === '-' &&
       i > 0 &&
-      input[i - 1] !== "-" &&
+      input[i - 1] !== '-' &&
       i < input.length - 1 &&
-      input[i + 1] !== "-"
+      input[i + 1] !== '-'
     ) {
       output.push(`${char}<br>`);
     } else if (
-      char === " " &&
+      char === ' ' &&
       i < input.length - 2 &&
-      input[i + 1] === "-" &&
-      input[i + 2] === " "
+      input[i + 1] === '-' &&
+      input[i + 2] === ' '
     ) {
       output.push(`${char}-<br>`);
       i += 2; // Skip next two characters
@@ -130,5 +130,5 @@ export const addHtmlLineBreaks = (input: string): string => {
     }
   }
 
-  return output.join("");
+  return output.join('');
 };
