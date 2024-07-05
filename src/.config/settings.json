@@ -1,7 +1,7 @@
 {
   "widgets": [
     {
-      "type": "CurrentWeatherLeg",
+      "type": "Weather",
       "settings": {
         "location": {
           "primary": true,
@@ -27,7 +27,7 @@
       }
     },
     {
-      "type": "CurrentWeatherLeg",
+      "type": "Weather",
       "settings": {
         "location": {
           "primary": false,

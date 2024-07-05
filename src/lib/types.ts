@@ -111,18 +111,7 @@ export const isCurrentWeatherData = (
   return (
     typeof data === 'object' &&
     data !== null &&
-    'temperature_2m' in data &&
-    typeof (data as CurrentWeatherData).temperature_2m === 'number' &&
-    'is_day' in data &&
-    typeof (data as CurrentWeatherData).is_day === 'number' &&
-    'cloud_cover' in data &&
-    typeof (data as CurrentWeatherData).cloud_cover === 'number' &&
-    'wind_speed_10m' in data &&
-    typeof (data as CurrentWeatherData).wind_speed_10m === 'number' &&
-    'wind_direction_10m' in data &&
-    typeof (data as CurrentWeatherData).wind_direction_10m === 'number' &&
-    'wind_gusts_10m' in data &&
-    typeof (data as CurrentWeatherData).wind_gusts_10m === 'number'
+    typeof (data as CurrentWeatherData).temperature_2m === 'number'
   );
 };
 
@@ -135,7 +124,7 @@ export type DailyWeatherData = {
   sunrise: string[];
   sunset: string[];
   time: string[];
-  weather_code: string[];
+  weather_code: number[];
 };
 
 /**
@@ -148,27 +137,9 @@ export const isDailyWeatherData = (data: unknown): data is DailyWeatherData => {
   return (
     typeof data === 'object' &&
     data !== null &&
-    Array.isArray((data as DailyWeatherData).apparent_temperature_max) &&
-    Array.isArray((data as DailyWeatherData).apparent_temperature_min) &&
-    Array.isArray((data as DailyWeatherData).sunrise) &&
-    Array.isArray((data as DailyWeatherData).sunset) &&
-    Array.isArray((data as DailyWeatherData).time) &&
     Array.isArray((data as DailyWeatherData).weather_code) &&
-    (data as DailyWeatherData).apparent_temperature_max.every(
-      (item) => typeof item === 'number'
-    ) &&
-    (data as DailyWeatherData).apparent_temperature_min.every(
-      (item) => typeof item === 'number'
-    ) &&
-    (data as DailyWeatherData).sunrise.every(
-      (item) => typeof item === 'string'
-    ) &&
-    (data as DailyWeatherData).sunset.every(
-      (item) => typeof item === 'string'
-    ) &&
-    (data as DailyWeatherData).time.every((item) => typeof item === 'string') &&
     (data as DailyWeatherData).weather_code.every(
-      (item) => typeof item === 'string'
+      (item) => typeof item === 'number'
     )
   );
 };
@@ -188,16 +159,10 @@ export type WeatherData = {
  * @param data - The data to check.
  * @returns A boolean indicating whether the data is WeatherData.
  */
-export const isWeatherData = (data: unknown): data is WeatherData => {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    typeof (data as WeatherData).success === 'boolean' &&
-    (typeof (data as WeatherData).current === 'undefined' ||
-      isCurrentWeatherData((data as WeatherData).current)) &&
-    (typeof (data as WeatherData).daily === 'undefined' ||
-      isDailyWeatherData((data as WeatherData).daily))
-  );
+export const isWeatherData = (
+  data: WidgetData['data']
+): data is WeatherData => {
+  return typeof data === 'object' && 'current' in data && 'daily' in data;
 };
 
 /**

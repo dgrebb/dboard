@@ -1,5 +1,9 @@
 import {
+  isCurrentWeatherData,
+  isDailyWeatherData,
   isWeatherData,
+  type CurrentWeatherData,
+  type DailyWeatherData,
   type TypeOfWidget,
   type WeatherData,
   type WidgetData,
@@ -28,24 +32,61 @@ export const createWeatherWidget = function createWidget(
 
   return {
     setData: (data: WeatherData) => {
-      console.log('🗿 ~ rune data:', data);
       widgetStore = {
         ...widgetStore,
         data,
       };
     },
 
-    weather: (): unknown => {
-      return widgetStore.data;
+    weather: (): WeatherData | undefined => {
+      const { data } = widgetStore;
+      let weatherData = undefined;
+      if (isWeatherData(data)) {
+        weatherData = data;
+      }
+      return weatherData;
     },
 
-    currentRoundTemperature: (): number => {
+    current: (): CurrentWeatherData | undefined => {
+      const { data } = widgetStore;
+      let weatherData = undefined;
       if (
-        widgetStore.data !== undefined &&
-        widgetStore.data.current !== undefined
+        data !== undefined &&
+        isWeatherData(data) &&
+        data?.current !== undefined &&
+        isCurrentWeatherData(data.current)
       ) {
-        return Math.round(widgetStore.data.current.temperature_2m);
+        weatherData = data.current;
       }
+      return weatherData;
+    },
+
+    daily: (): DailyWeatherData | undefined => {
+      const { data } = widgetStore;
+      let weatherData = undefined;
+      if (
+        data !== undefined &&
+        isWeatherData(data) &&
+        data?.daily !== undefined &&
+        isDailyWeatherData(data.daily)
+      ) {
+        weatherData = data.daily;
+      }
+      return weatherData;
+    },
+
+    currentRoundTemperature: (): number | undefined => {
+      const { data } = widgetStore;
+      let temperature: number | undefined = undefined;
+      if (
+        data !== undefined &&
+        isWeatherData(data) &&
+        data?.current !== undefined &&
+        isCurrentWeatherData(data.current)
+      ) {
+        temperature = Math.round(data.current.temperature_2m);
+      }
+      return temperature;
     },
 
     streamSettings: () => {
