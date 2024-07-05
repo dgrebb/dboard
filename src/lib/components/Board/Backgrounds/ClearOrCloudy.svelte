@@ -23,7 +23,7 @@
     ];
 
     // Utility to get random integer within range
-    const getRandomArbitrary = (min, max) =>
+    const getRandomArbitrary = (min: number, max: number) =>
       Math.floor(Math.random() * (max - min)) + min;
 
     // Prepare stars
@@ -46,8 +46,8 @@
     if (nightSky) nightSky.innerHTML = starsHTML;
   }
 
-  $: rise = new Date($solar?.sunrise[0]) || false;
-  $: set = new Date($solar?.sunset[0]) || false;
+  $: rise = new Date($solar?.sunrise[0]);
+  $: set = new Date($solar?.sunset[0]);
   if (rise && set) {
     riseMinutes = rise.getHours() * 60 + rise.getMinutes();
     setMinutes = set.getHours() * 60 + set.getMinutes();

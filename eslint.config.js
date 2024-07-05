@@ -14,7 +14,6 @@ export default [
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...globals.es2020,
         ...globals.node,
       },
     },
@@ -42,6 +41,18 @@ export default [
     languageOptions: {
       parserOptions: {
         parser: 'jsonc',
+      },
+    },
+  },
+  {
+    files: ['**/*.cjs'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'script',
       },
     },
   },
