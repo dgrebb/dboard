@@ -5,7 +5,7 @@
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
   import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
   import Controls from '$lib/components/Controls/Controls.svelte';
-  import { timeState } from '$lib/stores';
+  import { timeState, uiState } from '$lib/stores';
   import type { Snippet } from 'svelte';
   import { onDestroy } from 'svelte';
 
@@ -39,6 +39,7 @@
   let { children }: Props = $props();
 
   let clock = $state(timeState.hoursMinutesString());
+  let modalActive = $state(uiState.modalActive());
 
   const appTime = setInterval(() => {
     const now = new Date(Date.now());
@@ -52,6 +53,10 @@
 
   $effect(() => {
     clock = timeState.hoursMinutesString();
+  });
+
+  $effect(() => {
+    modalActive = uiState.modalActive();
   });
 
   onDestroy(() => {
@@ -69,7 +74,7 @@
 <ForegroundFrame />
 <BackgroundFrame component={ClearOrCloudy} />
 
-<main use:pullToRefresh class="dboard">
+<main use:pullToRefresh class="dboard" class:modalActive>
   {#if children}
     {@render children()}
   {:else}
