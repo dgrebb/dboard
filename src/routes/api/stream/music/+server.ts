@@ -14,7 +14,7 @@ const clients: Set<{
   isClosed: boolean;
   ip: string;
 }> = new Set();
-let interval: NodeJS.Timeout | null = null;
+let interval: Timer | null = null;
 let previousState: NowPlayingData = homeState.nowPlaying();
 
 // Log the clients in a tabular format

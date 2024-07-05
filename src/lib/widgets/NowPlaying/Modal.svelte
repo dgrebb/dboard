@@ -7,15 +7,15 @@
   import { blur, fade } from 'svelte/transition';
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './TrackProgress.svelte';
+  import { homeState } from '$root/lib/stores';
+  import SafeHtml from '$components/SafeHTML.svelte';
 
   type Props = {
-    loaded: boolean;
     currentValue: number | null;
     difference: string | number;
     direction: string | null;
     directionIcon: string;
     locationName: string;
-    weather: undefined | CurrentWeatherData;
     artist: string;
     title: string;
     album: string;
@@ -37,13 +37,11 @@
   };
 
   let {
-    loaded,
     currentValue,
     difference,
     direction,
     directionIcon,
     locationName,
-    weather,
     newArt,
     currentArt,
     artist,
@@ -61,6 +59,14 @@
     toggleControls,
     setTrackChange,
   }: Props = $props();
+
+  let temperature: CurrentWeatherData['temperature_2m'] = $state(
+    homeState.currentRoundTemperature()
+  );
+
+  $effect(() => {
+    temperature = homeState.currentRoundTemperature();
+  });
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -74,7 +80,7 @@
   }}
 >
   <header>
-    {#key loaded && currentValue}
+    {#key currentValue}
       <div class="reading nightscout-reading" in:fade>
         <h1 class="current-music__modal__headline bg" use:selfOffsetBackground>
           {currentValue}
@@ -89,16 +95,14 @@
         </h2>
       </div>
     {/key}
-    {#key loaded && typeof weather?.temperature_2m === 'number' && currentValue !== 0}
+    {#key temperature}
       <div
         class="reading weather-reading"
         in:blur={{ duration: 500, delay: 500 }}
         out:blur={{ duration: 500 }}
       >
         <h1 class="current-music__modal__headline" use:selfOffsetBackground>
-          {typeof weather?.temperature_2m === 'number'
-            ? Math.round(weather?.temperature_2m)
-            : weather?.temperature_2m}ºF
+          {temperature}ºF
         </h1>
         <h2 class="text-md">
           {locationName}
@@ -143,7 +147,7 @@
         out:fade={{ duration: 500 }}
         in:fade={{ duration: 500, delay: 500 }}
       >
-        {@html addHtmlLineBreaks(album)}
+        <SafeHtml html={addHtmlLineBreaks(album)} />
       </h3>
     {/key}
 
@@ -173,7 +177,6 @@
         in:blur={{ duration: 500, delay: 500 }}
         out:blur={{ duration: 500 }}
         class:transitionForegroundGradient
-        onbeforeenter={selfOffsetBackground}
       >
         <button
           class="refresh-gradient"
@@ -182,10 +185,10 @@
           <Icon icon="solar:soundwave-bold-duotone" width={50} /></button
         >
         <h2 class="artist" use:selfOffsetBackground>
-          {@html addHtmlLineBreaks(artist)}
+          <SafeHtml html={addHtmlLineBreaks(artist)} />
         </h2>
         <h1 class="title" use:selfOffsetBackground>
-          {@html addHtmlLineBreaks(title)}
+          <SafeHtml html={addHtmlLineBreaks(title)} />
         </h1>
       </div>
     {/key}
