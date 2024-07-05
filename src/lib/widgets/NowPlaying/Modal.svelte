@@ -1,14 +1,14 @@
 <script lang="ts">
   import { selfOffsetBackground } from '$actions/selfOffsetBackground';
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
-  import type { CurrentWeatherData } from '$lib/types';
+  import SafeHtml from '$components/SafeHTML.svelte';
+  import { homeState, uiState } from '$lib/stores';
+  import type { CurrentWeatherData, ModalState } from '$lib/types';
   import { addHtmlLineBreaks } from '$utils/strings';
   import Icon from '@iconify/svelte';
   import { blur, fade } from 'svelte/transition';
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './TrackProgress.svelte';
-  import { homeState } from '$lib/stores';
-  import SafeHtml from '$components/SafeHTML.svelte';
 
   type Props = {
     currentValue: number | null;
@@ -24,16 +24,16 @@
     newArt: string | undefined;
     currentArt: string | null;
     loved: boolean;
-    modal: boolean;
     showAudioPlayer: boolean;
     timer: number;
     totalSeconds: number;
     transitionForegroundGradient: boolean;
     transitionGradient: boolean;
-    toggleModal: (e: MouseEvent) => void;
     toggleControls: (e: MouseEvent) => void;
     setTrackChange: (e: Event) => void;
     handleGradientRefresh: (e: MouseEvent | TouchEvent) => void;
+    modal: ModalState;
+    toggleModal: (e: MouseEvent) => void;
   };
 
   let {
@@ -48,34 +48,39 @@
     title,
     album,
     loved,
-    modal,
     showAudioPlayer,
     timer,
     totalSeconds,
-    toggleModal,
     handleGradientRefresh,
     transitionGradient,
     transitionForegroundGradient,
     toggleControls,
     setTrackChange,
+    toggleModal,
   }: Props = $props();
 
   let temperature: CurrentWeatherData['temperature_2m'] = $state(
     homeState.currentRoundTemperature()
   );
 
+  let modal = $state(uiState.modal());
+
+  $effect(() => {
+    modal = uiState.modal();
+  });
+
   $effect(() => {
     temperature = homeState.currentRoundTemperature();
   });
 </script>
 
-{#if modal}
-  <!-- svelte-ignore a11y_no_static_element_interactions -->
+{#if modal.isActive}
   <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     class="current-music__modal"
     class:transitionGradient
-    transition:fade
+    transition:fade={{ duration: 500 }}
     onclick={(e) => {
       toggleControls(e);
     }}
@@ -102,8 +107,7 @@
       {#key temperature}
         <div
           class="reading weather-reading"
-          in:blur={{ duration: 500, delay: 500 }}
-          out:blur={{ duration: 500 }}
+          transition:blur={{ duration: 500 }}
         >
           <h1 class="current-music__modal__headline" use:selfOffsetBackground>
             {temperature}ºF
@@ -121,16 +125,14 @@
     </header>
 
     <main class="current-music__modal__main">
-      <!-- svelte-ignore a11y_click_events_have_key_events -->
       <div
         class="album-art"
         role="switch"
         tabindex="-1"
-        aria-checked={modal}
+        aria-checked={modal.isActive}
         onclick={(e) => toggleModal(e)}
       >
         <LovedHeart {loved} size={77} />
-
         <div class="image-container">
           {#key newArt}
             <img
@@ -148,7 +150,6 @@
           {/if}
         </div>
       </div>
-
       {#key album}
         <h3
           class="album-title text-fuchsia-200"
@@ -157,27 +158,25 @@
         >
           <SafeHtml html={addHtmlLineBreaks(album)} />
         </h3>
+        {#if showAudioPlayer === true}
+          <div
+            transition:fade
+            class="audio-player"
+            class:expanded={showAudioPlayer}
+          >
+            <PlaybackControls
+              buttonSize={33}
+              classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
+              {setTrackChange}
+            />
+          </div>
+        {/if}
       {/key}
-
-      {#if showAudioPlayer === true}
-        <div
-          transition:fade
-          class="audio-player"
-          class:expanded={showAudioPlayer}
-        >
-          <PlaybackControls
-            buttonSize={33}
-            classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
-            {setTrackChange}
-          />
-        </div>
-      {/if}
     </main>
 
     <footer
       class="current-music__modal__info block text-center text-lg"
-      out:blur={{ duration: 150 }}
-      in:blur={{ duration: 333, delay: 150 }}
+      transition:blur={{ duration: 500 }}
     >
       {#key title}
         <div
@@ -201,7 +200,6 @@
         </div>
       {/key}
     </footer>
-
     {#key timer}
       <PlayHead
         total={typeof totalSeconds === 'number' ? totalSeconds : 0}

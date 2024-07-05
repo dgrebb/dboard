@@ -522,7 +522,7 @@
 
     main {
       justify-content: flex-start;
-      margin-top: 1rem;
+      padding-top: 1rem;
       width: 90%;
       .album-art,
       .album-art .image-container,
@@ -624,9 +624,11 @@
         opacity: 0;
         transition: 333ms opacity cubic-bezier(0.075, 0.82, 0.165, 1);
         width: 100%;
+        height: 0;
         overflow: hidden;
         &.expanded {
           opacity: 1;
+          height: auto;
         }
       }
     }
