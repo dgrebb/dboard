@@ -8,7 +8,6 @@
   import NightscoutLineGraph from '$lib/widgets/NightScout/NightScoutLineGraph.svelte';
   import { healthState } from '$lib/stores/health.svelte';
 
-  let loaded = $state(false);
   let label = 'mg/dL';
   const name = 'NightScout';
   const id = generateID(name);
@@ -82,7 +81,6 @@
 
   onMount(async () => {
     await startSubscription();
-    loaded = true;
     window.addEventListener('beforeunload', handleWindowUnload);
   });
 

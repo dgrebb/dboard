@@ -10,7 +10,7 @@ export const createWeather = function createWeather() {
   let weather: WeatherData = $state({
     success: false,
   });
-  let tempoId: number | NodeJS.Timeout | null;
+  let tempoId: number | Timer | null;
 
   async function getWeather(
     location: LocationType,

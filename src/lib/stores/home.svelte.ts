@@ -55,6 +55,11 @@ export const createHomeStore = () => {
       return state;
     },
 
+    currentRoundTemperature: (): CurrentWeatherData['temperature_2m'] => {
+      const temp: number = homeStore?.weather?.current?.temperature_2m || 0;
+      return Math.round(temp);
+    },
+
     globalIsDay: async () => {
       const state =
         typeof homeStore.weather?.current?.is_day === 'number'

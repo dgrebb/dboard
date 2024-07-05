@@ -40,7 +40,7 @@ export const GET = (async ({ url }) => {
 
   try {
     const URL = evaluatedUpstreamAPIURL;
-    let interval: NodeJS.Timeout;
+    let interval: Timer;
     let controllerClosed = false;
 
     const readable = new ReadableStream({

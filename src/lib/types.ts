@@ -1,5 +1,3 @@
-// types.ts
-
 /**
  * A custom fetch function type.
  *
@@ -11,6 +9,13 @@ export type Fetch = (
   input: RequestInfo,
   init?: RequestInit
 ) => Promise<Response>;
+
+/**
+ * A Timer type that works in both Node.js and browser environments.
+ * In Node.js, setTimeout and setInterval return an object with
+ * additional methods and properties, while in browsers they return a number.
+ */
+export type Timer = ReturnType<typeof setTimeout>;
 
 /**
  * A type representing an object or an array.
