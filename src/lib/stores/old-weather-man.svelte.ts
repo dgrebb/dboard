@@ -3,10 +3,11 @@ import type {
   FetchOptions,
   LocationType,
   CurrentWeatherData,
+  Timer,
 } from '../types';
 // import { counter } from '$root/routes/runes/location.svelte';
 
-export const createWeather = function createWeather() {
+export const createOldManWeather = function createWeather() {
   let weather: WeatherData = $state({
     success: false,
   });
