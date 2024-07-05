@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { WeatherData, CurrentWeatherSettings } from '$lib/types';
+  import type { WeatherData, WeatherSettings } from '$lib/types';
   import {
     background,
     createOldManWeather,
@@ -41,7 +41,7 @@
   }
 
   type Props = {
-    settings: CurrentWeatherSettings;
+    settings: WeatherSettings;
   };
 
   const nightOverride = (isDay: number, localDay: number) => {

@@ -30,14 +30,6 @@ export type Timer = ReturnType<typeof setTimeout>;
 export type ObjectOrArray = Record<string, unknown> | unknown[];
 
 /**
- * Current Weather widget settings type
- */
-export type CurrentWeatherSettings = {
-  location: LocationType;
-  tempo: number;
-};
-
-/**
  * Type representing a stream configuration.
  */
 export type StreamType = {
@@ -84,6 +76,14 @@ export type DBoardItem = {
 };
 
 /**
+ * Current Weather widget settings type
+ */
+export type WeatherSettings = {
+  location: LocationType;
+  tempo: number;
+};
+
+/**
  * Type representing current weather data.
  */
 export type CurrentWeatherData = {
@@ -100,9 +100,36 @@ export type CurrentWeatherData = {
 };
 
 /**
+ * Type guard function to check if data is CurrentWeatherData.
+ *
+ * @param data - The data to check.
+ * @returns A boolean indicating whether the data is CurrentWeatherData.
+ */
+export const isCurrentWeatherData = (
+  data: unknown
+): data is CurrentWeatherData => {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'temperature_2m' in data &&
+    typeof (data as CurrentWeatherData).temperature_2m === 'number' &&
+    'is_day' in data &&
+    typeof (data as CurrentWeatherData).is_day === 'number' &&
+    'cloud_cover' in data &&
+    typeof (data as CurrentWeatherData).cloud_cover === 'number' &&
+    'wind_speed_10m' in data &&
+    typeof (data as CurrentWeatherData).wind_speed_10m === 'number' &&
+    'wind_direction_10m' in data &&
+    typeof (data as CurrentWeatherData).wind_direction_10m === 'number' &&
+    'wind_gusts_10m' in data &&
+    typeof (data as CurrentWeatherData).wind_gusts_10m === 'number'
+  );
+};
+
+/**
  * Type representing daily weather data.
  */
-export type DailyWeather = {
+export type DailyWeatherData = {
   apparent_temperature_max: number[];
   apparent_temperature_min: number[];
   sunrise: string[];
@@ -112,13 +139,66 @@ export type DailyWeather = {
 };
 
 /**
+ * Type guard function to check if data is DailyWeatherData.
+ *
+ * @param data - The data to check.
+ * @returns A boolean indicating whether the data is DailyWeatherData.
+ */
+export const isDailyWeatherData = (data: unknown): data is DailyWeatherData => {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    Array.isArray((data as DailyWeatherData).apparent_temperature_max) &&
+    Array.isArray((data as DailyWeatherData).apparent_temperature_min) &&
+    Array.isArray((data as DailyWeatherData).sunrise) &&
+    Array.isArray((data as DailyWeatherData).sunset) &&
+    Array.isArray((data as DailyWeatherData).time) &&
+    Array.isArray((data as DailyWeatherData).weather_code) &&
+    (data as DailyWeatherData).apparent_temperature_max.every(
+      (item) => typeof item === 'number'
+    ) &&
+    (data as DailyWeatherData).apparent_temperature_min.every(
+      (item) => typeof item === 'number'
+    ) &&
+    (data as DailyWeatherData).sunrise.every(
+      (item) => typeof item === 'string'
+    ) &&
+    (data as DailyWeatherData).sunset.every(
+      (item) => typeof item === 'string'
+    ) &&
+    (data as DailyWeatherData).time.every((item) => typeof item === 'string') &&
+    (data as DailyWeatherData).weather_code.every(
+      (item) => typeof item === 'string'
+    )
+  );
+};
+
+/**
  * Interface representing weather data response.
  */
 export interface WeatherData {
   success: boolean;
-  current?: CurrentWeatherData;
-  daily?: DailyWeather;
+  current: CurrentWeatherData;
+  daily: DailyWeatherData;
 }
+
+/**
+ * Type guard function to check if data is WeatherData.
+ *
+ * @param data - The data to check.
+ * @returns A boolean indicating whether the data is WeatherData.
+ */
+export const isWeatherData = (data: unknown): data is WeatherData => {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    typeof (data as WeatherData).success === 'boolean' &&
+    (typeof (data as WeatherData).current === 'undefined' ||
+      isCurrentWeatherData((data as WeatherData).current)) &&
+    (typeof (data as WeatherData).daily === 'undefined' ||
+      isDailyWeatherData((data as WeatherData).daily))
+  );
+};
 
 /**
  * Type representing solar data with sunrise and sunset times.
@@ -219,6 +299,7 @@ export enum TypeOfWidget {
   NightScout = 'NightScout',
   NowPlaying = 'NowPlaying',
   Weather = 'Weather',
+  CurrentWeatherLeg = 'CurrentWeatherLeg',
   Music = 'Music',
 }
 
@@ -226,7 +307,7 @@ export enum TypeOfWidget {
  * Type representing Widgets as defined by settings
  */
 export type WidgetSettings = {
-  type: string;
+  type: TypeOfWidget;
   name?: string;
   settings?: {
     location?: {
@@ -236,21 +317,15 @@ export type WidgetSettings = {
       latitude: number;
       longitude: number;
     };
-    tempo: number;
   };
-};
-
-export type WidgetComponent = {
-  [key: string]: unknown;
 };
 
 /**
  * Type representing widget data.
  */
 export type WidgetData = WidgetSettings & {
-  type: TypeOfWidget;
   stream: StreamType;
-  data: PossibleWidgetData | false;
+  data: PossibleWidgetData | undefined;
 };
 
 /**
@@ -294,6 +369,7 @@ export const isNightScoutData = (
 export type PossibleWidgetData =
   | NightScoutData
   | CurrentWeatherData
+  | WeatherData
   | MusicData
   | SteptaNextToArriveData;
 
