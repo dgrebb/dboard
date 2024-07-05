@@ -23,6 +23,7 @@ body {
   min-height: 100vh;
   scrollbar-width: none;
   font-family: var(--font-nasa) !important;
+  user-select: none;
 }
 
 body {
@@ -108,56 +109,6 @@ body {
   width: 100%;
   color: var(--skyBaseColor);
   text-align: center;
-}
-
-.current-weather {
-  &__wind-direction {
-    color: var(--highlightColor);
-  }
-
-  .current-temperature {
-    & + .current-temperature {
-      display: none;
-    }
-  }
-}
-
-.big-icon-wow {
-  position: absolute;
-  top: 0;
-  right: 0;
-  opacity: 0;
-  z-index: 0;
-  mix-blend-mode: hard-light;
-
-  body.ready & {
-    opacity: 0.77;
-  }
-
-  html.dark & {
-    mix-blend-mode: soft-light;
-  }
-
-  svg {
-    animation: float 5s infinite;
-    will-change: transform;
-
-    path {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-  }
-
-  * {
-    overflow: visible;
-  }
-
-  &,
-  svg {
-    margin: 0;
-    padding: 0;
-  }
 }
 
 .nightscout {
