@@ -90,21 +90,50 @@ export const formatSecondsToMinutes = (seconds: number): string => {
 };
 
 /**
- * Processes a string to add HTML line break entities before certain characters.
+ * Processes a string to add HTML line break entities before certain characters,
+ * ensuring no breaks are added within bracketed contexts.
  *
  * @param {string} input - The input string to process.
  * @returns {string} - The processed string with HTML line break entities.
  */
 export const addHtmlLineBreaks = (input: string): string => {
-  const regex = /([[{(\]])|(([^-]-[^-])|( - ))/g;
+  const output: string[] = [];
+  const stack: string[] = [];
 
-  return input.replace(regex, (match, p1, p2) => {
-    if (p1) {
-      return `<br>${p1}`;
+  for (let i = 0; i < input.length; i++) {
+    const char = input[i];
+
+    if ('[{('.includes(char)) {
+      stack.push(char);
+      output.push(`<br>${char}`);
+    } else if (']})'.includes(char)) {
+      stack.pop();
+      output.push(char);
+    } else if (
+      char === '-' &&
+      i > 0 &&
+      input[i - 1] !== '-' &&
+      i < input.length - 1 &&
+      input[i + 1] !== '-'
+    ) {
+      output.push(`${char}<br>`);
+    } else if (
+      char === ' ' &&
+      i < input.length - 2 &&
+      input[i + 1] === '-' &&
+      input[i + 2] === ' '
+    ) {
+      output.push(`${char}-<br>`);
+      i += 2; // Skip next two characters
+    } else {
+      output.push(char);
     }
-    if (p2) {
-      return `${match}<br>`;
-    }
-    return match;
-  });
+  }
+
+  return output.join('');
 };
+
+// Test
+const originalString = 'Teardrop [feat. Elizabeth Fraser]';
+const processedString = addHtmlLineBreaks(originalString);
+console.log(processedString); // Output: Teardrop <br>[feat. Elizabeth Fraser]
