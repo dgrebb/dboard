@@ -180,29 +180,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .push-to-refresh {
-    .dboard__card {
-      transform-origin: center;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      &:before {
-        position: absolute;
-        opacity: 0.5;
-        z-index: 10;
-        transition: 333ms opacity cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        inset: 0;
-        content: '';
-      }
-      &.pushing {
-        transform: scale3d(0.77, 0.77, 0.77);
-        background-color: rgba(255, 255, 255, 0.8);
-      }
-      &.refreshed {
-        &:before {
-          opacity: 0;
-        }
-      }
-    }
-  }
-</style>

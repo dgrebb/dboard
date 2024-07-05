@@ -1,26 +1,5 @@
 .dboard__card {
   filter: invert(0);
-  &.day-override {
-    &::after {
-      opacity: 0.33;
-      filter: invert(1);
-    }
-  }
-  &.night-override {
-    &::after {
-      opacity: 0.33;
-      background: black;
-    }
-    h1,
-    h2,
-    h3,
-    .current-weather__wind {
-      filter: invert(1);
-    }
-    .big-icon-wow {
-      filter: brightness(133);
-    }
-  }
 
   .lower-card {
     display: flex;
@@ -41,6 +20,65 @@
       align-self: end;
       width: 100%;
       text-align: right;
+    }
+  }
+}
+
+html.dark {
+  .dboard__card.day {
+    &::after {
+      opacity: 0.33;
+      filter: invert(1);
+    }
+
+    .local-time {
+      filter: invert(1);
+    }
+  }
+}
+
+html.light {
+  .dboard__card.night {
+    &::after {
+      opacity: 0.33;
+      background: black;
+    }
+    h1,
+    h2,
+    h3,
+    .current-weather__wind {
+      filter: invert(1);
+    }
+    .big-icon-wow {
+      filter: brightness(133);
+    }
+
+    .local-time {
+      filter: invert(1);
+    }
+  }
+}
+
+.push-to-refresh {
+  .dboard__card {
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    &:before {
+      position: absolute;
+      opacity: 0.5;
+      z-index: 10;
+      transition: 333ms opacity cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      inset: 0;
+      content: '';
+    }
+    &.pushing {
+      transform: scale3d(0.77, 0.77, 0.77);
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+    &.refreshed {
+      &:before {
+        opacity: 0;
+      }
     }
   }
 }
