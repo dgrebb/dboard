@@ -19,6 +19,7 @@
     const reader = response.body
       ? response.body.pipeThrough(new TextDecoderStream()).getReader()
       : false;
+    // eslint-disable-next-line no-constant-binary-expression
     while (true && reader) {
       const { value, done } = await reader.read();
       if (done) break;
