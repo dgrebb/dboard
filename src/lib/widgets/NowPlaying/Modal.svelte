@@ -1,13 +1,13 @@
 <script lang="ts">
   import { selfOffsetBackground } from '$actions/selfOffsetBackground';
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
-  import type { CurrentWeatherData } from '$root/lib/types';
+  import type { CurrentWeatherData } from '$lib/types';
   import { addHtmlLineBreaks } from '$utils/strings';
   import Icon from '@iconify/svelte';
   import { blur, fade } from 'svelte/transition';
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './TrackProgress.svelte';
-  import { homeState } from '$root/lib/stores';
+  import { homeState } from '$lib/stores';
   import SafeHtml from '$components/SafeHTML.svelte';
 
   type Props = {

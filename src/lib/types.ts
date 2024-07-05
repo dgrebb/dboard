@@ -11,6 +11,13 @@ export type Fetch = (
 ) => Promise<Response>;
 
 /**
+ * Extended fetch options including custom options.
+ */
+export interface FetchOptions extends RequestInit {
+  customOption?: string;
+}
+
+/**
  * A Timer type that works in both Node.js and browser environments.
  * In Node.js, setTimeout and setInterval return an object with
  * additional methods and properties, while in browsers they return a number.
@@ -21,6 +28,14 @@ export type Timer = ReturnType<typeof setTimeout>;
  * A type representing an object or an array.
  */
 export type ObjectOrArray = Record<string, unknown> | unknown[];
+
+/**
+ * Current Weather widget settings type
+ */
+export type CurrentWeatherSettings = {
+  location: LocationType;
+  tempo: number;
+};
 
 /**
  * Type representing a stream configuration.
@@ -37,13 +52,6 @@ export type StreamType = {
  * Type representing an array of stream configurations.
  */
 export type StreamsType = StreamType[];
-
-/**
- * Extended fetch options including custom options.
- */
-export interface FetchOptions extends RequestInit {
-  customOption?: string;
-}
 
 /**
  * Type representing a glucose data point in a chart series.
