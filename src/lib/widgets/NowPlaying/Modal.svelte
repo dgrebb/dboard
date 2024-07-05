@@ -25,6 +25,7 @@
     currentArt: string | null;
     loved: boolean;
     showAudioPlayer: boolean;
+    showHud: boolean;
     timer: number;
     totalSeconds: number;
     transitionForegroundGradient: boolean;
@@ -49,6 +50,7 @@
     album,
     loved,
     showAudioPlayer,
+    showHud,
     timer,
     totalSeconds,
     handleGradientRefresh,
@@ -87,7 +89,7 @@
   >
     <header>
       {#key currentValue}
-        <div class="reading nightscout-reading" in:fade>
+        <div class="reading nightscout-reading" in:fade class:showHud>
           <h1
             class="current-music__modal__headline bg"
             use:selfOffsetBackground
@@ -108,6 +110,7 @@
         <div
           class="reading weather-reading"
           transition:blur={{ duration: 500 }}
+          class:showHud
         >
           <h1 class="current-music__modal__headline" use:selfOffsetBackground>
             {temperature}ºF
@@ -204,6 +207,7 @@
       <PlayHead
         total={typeof totalSeconds === 'number' ? totalSeconds : 0}
         current={timer}
+        {showHud}
       />
     {/key}
   </div>

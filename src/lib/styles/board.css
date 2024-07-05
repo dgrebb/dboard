@@ -13,13 +13,13 @@
 
   &.modalActive {
     .dboard__grid__item {
-      display: none;
+      visibility: hidden;
     }
   }
 
   @media screen and (min-width: 480px) {
     gap: 2.5rem;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
   }
 
   &__grid {

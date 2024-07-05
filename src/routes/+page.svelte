@@ -53,6 +53,7 @@
 {#if mounted}
   <Board>
     <NightScout />
+    <NowPlaying />
     {#if widgets}
       {#each widgets as { type, settings }}
         <svelte:component this={components[type]} {settings} />
@@ -61,7 +62,6 @@
     {#if typeof schedule !== 'boolean' && isSteptaNextToArriveDataArray(schedule) && schedule.length > 0}
       <SeptaNextToArrive {schedule} />
     {/if}
-    <NowPlaying />
     <!-- <NewWidget /> -->
   </Board>
 {/if}
