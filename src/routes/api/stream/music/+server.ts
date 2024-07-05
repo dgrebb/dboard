@@ -1,4 +1,4 @@
-import type { Fetch, GradientResult, NowPlayingData } from '$lib/types';
+import type { Fetch, GradientResult, NowPlayingData, Timer } from '$lib/types';
 import { homeState } from '$lib/stores';
 import { colorThief } from '$utils/colorThief';
 import { timeStringToSeconds } from '$utils/strings';
@@ -7,7 +7,20 @@ import type { RequestEvent } from '@sveltejs/kit';
 
 export const prerender = false;
 
-let refreshInterval = 1000;
+/**
+ * Refresh interval for fetching data.
+ */
+let refreshInterval: number = 1000; // 1 second
+
+/**
+ * Timeout ID for retrying fetch on error.
+ */
+let retryTimeout: number | undefined;
+
+/**
+ * Retry count for exponential backoff.
+ */
+let retryCount = 0;
 
 const clients: Set<{
   controller: ReadableStreamDefaultController<Uint8Array>;
@@ -91,71 +104,79 @@ const sendInitialState = async (
   }
 };
 
-const startInterval = (fetch: Fetch) => {
+/**
+ * Starts the interval for fetching and broadcasting media information.
+ * @param fetch - The fetch function to use for the API requests.
+ */
+const startInterval = (fetch: Fetch): void => {
   if (interval) return;
 
   interval = setInterval(async () => {
     try {
-      let gradientResult: GradientResult | boolean;
-      const data = await fetchMediaInfo(fetch);
+      // Fetch data from the API
+      let data = await fetchMediaInfo(fetch);
+
+      // Retry if art is empty
+      if (!data.art) {
+        const retryData = await fetchMediaInfo(fetch);
+        if (retryData.art) data = retryData;
+      }
+
       const { totalTime, relativeTimePosition } = data;
       const total = timeStringToSeconds(totalTime);
       const relative = timeStringToSeconds(relativeTimePosition);
-      if (total && relative) {
-        refreshInterval = total;
-      }
+
+      // Update refresh interval
+      if (total && relative) refreshInterval = total;
+
       const shouldBroadcast =
         (data && previousState?.title !== data.title) ||
         (previousState?.loved !== data.loved && relative < 30);
 
       if (shouldBroadcast) {
         const timestamp = Date.now();
-        let art = data.art ? data.art : '/missing-album-art.png';
-        let backgroundGradient: string | undefined;
-        let foregroundGradient: string | undefined;
-        if (!data.art) {
-          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-          console.log(
-            '🚀 ~ Updating art not found in WiiM Response:',
-            data.art
-          );
-          console.log('🚀 ~ interval=setInterval ~ art:', art);
-          console.log('🚀 ~ Full data object:');
-          console.log(data);
-          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-          console.log('🚀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-        }
+        let art = data.art || '/missing-album-art.png';
 
-        if (previousState.album !== data.album) {
+        if (previousState?.album !== data.album) {
           art = `${art}?ts=${timestamp}`;
         }
 
-        if (previousState.title !== data.title) {
-          gradientResult = (await createGradient(art)) || false;
+        let backgroundGradient: string | undefined;
+        let foregroundGradient: string | undefined;
 
+        // Create gradient if the title has changed
+        if (previousState?.title !== data.title) {
+          const gradientResult = await createGradient(art);
           if (gradientResult && typeof gradientResult !== 'boolean') {
             ({ backgroundGradient, foregroundGradient } = gradientResult);
           }
         }
 
+        // Prepare now playing data
         const nowPlaying: NowPlayingData = {
           ...previousState,
           ...data,
           art,
-          ...(typeof backgroundGradient === 'string'
-            ? { backgroundGradient }
-            : {}),
-          ...(typeof foregroundGradient === 'string'
-            ? { foregroundGradient }
-            : {}),
+          ...(backgroundGradient ? { backgroundGradient } : {}),
+          ...(foregroundGradient ? { foregroundGradient } : {}),
         };
+
+        // Broadcast the now playing data
         const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
         broadcast(new TextEncoder().encode(stream));
         previousState = nowPlaying;
       }
     } catch (error) {
       console.error('Error fetching or broadcasting data:', error);
+
+      // Retry connection with exponential backoff
+      retryCount++;
+      const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 30000);
+      if (retryTimeout) clearTimeout(retryTimeout);
+      retryTimeout = window.setTimeout(
+        () => startInterval(fetch),
+        retryDelay
+      ) as unknown as number;
     }
   }, refreshInterval);
 };
