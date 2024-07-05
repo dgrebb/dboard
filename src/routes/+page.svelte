@@ -1,7 +1,6 @@
 <script lang="ts">
   '@hmr:keep-all';
   import updateBackgroundColorGradient from '$lib/layout/background';
-  import legTime from '$lib/stores/legTime';
   import {
     isSteptaNextToArriveDataArray,
     type WidgetSettings,
@@ -35,11 +34,6 @@
       updateBackgroundColorGradient(LATITUDE, LONGITUDE);
       // seconds = 0;
     }, refreshInterval);
-
-    setInterval(() => {
-      let now = new Date();
-      $legTime = now.getHours() * 60 + now.getMinutes();
-    }, 1000);
 
     for (const widget of widgets) {
       if (!components[widget.type]) {

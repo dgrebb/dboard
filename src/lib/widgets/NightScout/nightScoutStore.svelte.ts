@@ -21,7 +21,7 @@ export const createNightScoutWidget = function createWidget(
       upstreamAPIURL,
       refreshInterval,
     },
-    data: false,
+    data: undefined,
   });
 
   const getColors = () => {

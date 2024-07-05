@@ -1,6 +1,6 @@
 import { SECRET_NIGHTSCOUT_TOKEN } from '$env/static/private';
-import type { FetchOptions } from '$lib/types';
-import { json, type RequestHandler } from '@sveltejs/kit';
+import type { Fetch, FetchOptions, Timer } from '$lib/types';
+import { json, type HandleFetch, type RequestHandler } from '@sveltejs/kit';
 
 const secrets: { [key: string]: string } = {
   SECRET_NIGHTSCOUT_TOKEN: SECRET_NIGHTSCOUT_TOKEN,
@@ -18,9 +18,17 @@ const requestOptions: FetchOptions = {
   redirect: 'follow',
 };
 
-const fetchData = async (upstreamAPIURL: string): Promise<unknown> => {
+const fetchData = async (
+  upstreamAPIURL: string,
+  svelteFetch: Fetch | undefined = undefined
+): Promise<unknown> => {
   try {
-    const response = await fetch(upstreamAPIURL, requestOptions);
+    let response;
+    if (svelteFetch) {
+      response = await svelteFetch(upstreamAPIURL, requestOptions);
+    } else {
+      response = await fetch(upstreamAPIURL, requestOptions);
+    }
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -31,7 +39,7 @@ const fetchData = async (upstreamAPIURL: string): Promise<unknown> => {
   }
 };
 
-export const GET = (async ({ url }) => {
+export const GET = (async ({ fetch, url }) => {
   const upstreamAPIURLTemplate = url.searchParams.get('upstreamAPIURL') || '';
   const evaluatedUpstreamAPIURL = resolveSecret(
     decodeURIComponent(upstreamAPIURLTemplate)
@@ -50,7 +58,7 @@ export const GET = (async ({ url }) => {
         const fetchDataAndEnqueue = async () => {
           try {
             if (controllerClosed) return;
-            const data = await fetchData(URL);
+            const data = await fetchData(URL, fetch);
             const stream = `data: ${JSON.stringify(data)}\n\n`;
             controller.enqueue(encoder.encode(stream));
           } catch (error) {
