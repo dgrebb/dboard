@@ -176,11 +176,11 @@ export const isDailyWeatherData = (data: unknown): data is DailyWeatherData => {
 /**
  * Interface representing weather data response.
  */
-export interface WeatherData {
+export type WeatherData = {
   success: boolean;
   current: CurrentWeatherData;
   daily: DailyWeatherData;
-}
+};
 
 /**
  * Type guard function to check if data is WeatherData.
