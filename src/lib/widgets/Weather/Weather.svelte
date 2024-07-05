@@ -17,7 +17,7 @@
   import { onDestroy, onMount } from 'svelte';
   import { blur, fade } from 'svelte/transition';
   import WeatherIcon from './WeatherIcon.svelte';
-  import '$widgets/weather/weather.css';
+  import '$widgets/Weather/weather.css';
 
   type Props = {
     settings: WeatherSettings;
