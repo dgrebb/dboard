@@ -173,7 +173,6 @@
     if (e instanceof MouseEvent && e.button === 2) return;
     e.preventDefault();
     e.stopPropagation();
-    console.log('you are making a new gradient. wow!');
   };
 
   $effect(() => {

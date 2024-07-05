@@ -8,8 +8,10 @@ import type {
 // import { counter } from '$root/routes/runes/location.svelte';
 
 export const createOldManWeather = function createWeather() {
-  let weather: WeatherData = $state({
+  let weather = $state({
     success: false,
+    current: undefined,
+    daily: undefined,
   });
   let tempoId: number | Timer | null;
 
