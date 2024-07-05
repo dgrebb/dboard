@@ -176,6 +176,8 @@
 
 <style lang="postcss">
   .bg-value {
+    position: absolute;
+    bottom: 0;
     z-index: 10;
     transition: color 3s ease-in;
     color: var(--mainColor);

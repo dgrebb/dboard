@@ -6,8 +6,8 @@
   import { onMount } from 'svelte';
   import { blur, fade } from 'svelte/transition';
   import './current-weather.css';
-  import fahrenheitToColorShade from './tempColor';
-  import WeatherIcon from './WeatherIcon.svelte';
+  import fahrenheitToColorShade from '$utils/temperatureColor';
+  import WeatherIcon from '$widgets/CurrentWeather/WeatherIcon.svelte';
 
   let highlightColor = fahrenheitToColorShade(77);
   let pushing = $state(false);
@@ -152,25 +152,27 @@
           />
         </span>
       {/key}
-      {#key current.temperature_2m}
-        <h1
-          class="dboard__card--value-lg current-temperature mt-auto justify-end text-9xl text-[var(--mainColor)] brightness-50 dark:brightness-150 dark:saturate-200"
-          in:blur={{ duration: 333, delay: 335 }}
-          out:blur={{ duration: 333, delay: 0 }}
-        >
-          {Math.round(current.temperature_2m)}<span
-            class="dboard__card__value-symbol text-[var(--mainColor)] brightness-125 dark:brightness-150"
-            >&deg;</span
+      <div class="lower-card">
+        {#key current.temperature_2m}
+          <h1
+            class="dboard__card--value-lg current-temperature text-9xl text-[var(--mainColor)] brightness-50 dark:brightness-150 dark:saturate-200"
+            in:blur={{ duration: 333, delay: 335 }}
+            out:blur={{ duration: 333, delay: 0 }}
           >
-        </h1>
-        {#if location.primary === false}
-          <div
-            class="local-time text-[var(--mainColor)] brightness-50 dark:brightness-150 dark:saturate-200"
-          >
-            {clock}
-          </div>
-        {/if}
-      {/key}
+            {Math.round(current.temperature_2m)}<span
+              class="dboard__card__value-symbol text-[var(--mainColor)] brightness-125 dark:brightness-150"
+              >&deg;</span
+            >
+          </h1>
+          {#if location.primary === false}
+            <div
+              class="local-time text-[var(--mainColor)] brightness-50 dark:brightness-150 dark:saturate-200"
+            >
+              {clock}
+            </div>
+          {/if}
+        {/key}
+      </div>
     </div>
   {/if}
 </div>
