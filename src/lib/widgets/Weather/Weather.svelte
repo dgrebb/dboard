@@ -182,9 +182,7 @@
 >
   {#if current}
     <div
-      class="{current?.is_day === 0
-        ? 'night'
-        : 'day'} dboard__card border-none bg-transparent"
+      class={`dboard__card border-none bg-transparent ${current?.is_day === 0 ? 'night' : 'day'}`}
       class:pushing
       class:refreshed
       transition:fade
