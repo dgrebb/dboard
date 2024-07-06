@@ -10,8 +10,8 @@
   const resubscribeInterval = 3600000; // Resubscribe every hour
 
   let loaded = $state(false);
-  let resubscribeTimeout: Timer;
-  let retryTimeout: Timer;
+  let resubscribeTimeout: number;
+  let retryTimeout: number;
   let retryCount = 0;
   let eventSource: EventSource | null = null;
   let title = $state('');
@@ -28,6 +28,8 @@
     homeState.nowPlayingGradients()
   );
   let modal: ModalState = $state(uiState.modal());
+  let pushing = $state(false);
+  let refreshed = $state(true);
   let difference: string | number = $state('0');
   let direction: string | null = $state('Flat');
   let directionIcon = $state(mapNightScoutDirectionIcon());
@@ -70,7 +72,7 @@
   /**
    * Starts the subscription to the music event source.
    */
-  async function startSubscription() {
+  async function setupEventSource() {
     if (eventSource) {
       eventSource.close();
     }
@@ -110,18 +112,30 @@
       if (retryTimeout) {
         clearTimeout(retryTimeout);
       }
-      retryTimeout = setTimeout(() => {
-        startSubscription();
-      }, retryDelay);
+      retryTimeout = window.setTimeout(() => {
+        setupEventSource();
+      }, retryDelay) as unknown as number;
     };
 
     // Set up periodic resubscription
     if (resubscribeTimeout) {
       clearInterval(resubscribeTimeout);
     }
-    resubscribeTimeout = setInterval(() => {
-      startSubscription();
+    resubscribeTimeout = window.setInterval(() => {
+      setupEventSource();
     }, resubscribeInterval);
+  }
+
+  function stopEventSource() {
+    if (eventSource) {
+      eventSource.close();
+    }
+    if (resubscribeTimeout) {
+      clearInterval(resubscribeTimeout);
+    }
+    if (retryTimeout) {
+      clearTimeout(retryTimeout);
+    }
   }
 
   /**
@@ -151,6 +165,23 @@
       clearTimeout(retryTimeout);
     }
   }
+
+  const handlePushing = (e: MouseEvent | TouchEvent) => {
+    if (e instanceof MouseEvent && e.button === 2) return;
+    pushing = true;
+    refreshed = false;
+  };
+
+  const handleUp = (e: MouseEvent | TouchEvent) => {
+    if (e instanceof MouseEvent && e.button === 2) return;
+    pushing = false;
+
+    // current = weatherWidget.current();
+
+    // Reload EventSource
+    stopEventSource();
+    setupEventSource();
+  };
 
   function toggleModal(e: MouseEvent) {
     e.preventDefault();
@@ -233,7 +264,7 @@
   });
 
   onMount(async () => {
-    await startSubscription();
+    setupEventSource();
     if (localStorage.getItem('musicModal') === 'true') {
       modal.isActive = true;
     }
@@ -256,6 +287,8 @@
 
 {#if loaded}
   <Widget
+    {handlePushing}
+    {handleUp}
     {artist}
     {album}
     {art}
@@ -266,6 +299,8 @@
     {transitionGradient}
     {modal}
     {toggleModal}
+    {pushing}
+    {refreshed}
   />
 
   <Modal
