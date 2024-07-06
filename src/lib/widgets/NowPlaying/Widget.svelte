@@ -7,6 +7,10 @@
   import type { ModalState } from '$root/lib/types';
 
   type Props = {
+    handlePushing: (e: Event) => void;
+    handleUp: (e: Event) => void;
+    pushing: boolean;
+    refreshed: boolean;
     artist: string;
     title: string;
     album: string;
@@ -20,6 +24,10 @@
   };
 
   let {
+    handlePushing,
+    handleUp,
+    pushing,
+    refreshed,
     art,
     artist,
     title,
@@ -33,10 +41,20 @@
   }: Props = $props();
 </script>
 
-<div class="now-playing dboard__grid__item current-music">
+<div
+  class="now-playing dboard__grid__item current-music push-to-refresh"
+  onmousedown={(e) => handlePushing(e)}
+  onmouseup={(e) => handleUp(e)}
+  ontouchstart={(e) => handlePushing(e)}
+  ontouchend={(e) => handleUp(e)}
+  tabindex="-1"
+  role="button"
+>
   <div
     class="dboard__card svelte-1s7u7zs refreshed w-full border-none bg-transparent"
     class:transitionGradient
+    class:pushing
+    class:refreshed
   >
     <div
       class="album-art"
