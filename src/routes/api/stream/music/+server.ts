@@ -173,7 +173,7 @@ const startInterval = (fetch: Fetch): void => {
       retryCount++;
       const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 30000);
       if (retryTimeout) clearTimeout(retryTimeout);
-      retryTimeout = window.setTimeout(
+      retryTimeout = setTimeout(
         () => startInterval(fetch),
         retryDelay
       ) as unknown as number;
