@@ -38,19 +38,6 @@
         },
         "tempo": 900000
       }
-    },
-    {
-      "type": "Weather",
-      "settings": {
-        "location": {
-          "primary": false,
-          "timeZone": "America/New_York",
-          "latitude": 28.5383,
-          "longitude": -81.3792,
-          "name": "Orlando, FL"
-        },
-        "tempo": 900000
-      }
     }
   ]
 }
