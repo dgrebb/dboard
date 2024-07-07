@@ -7,8 +7,8 @@
   import type { ModalState } from '$root/lib/types';
 
   type Props = {
-    handlePushing: (e: Event) => void;
-    handleUp: (e: Event) => void;
+    handlePushing: (e: MouseEvent | TouchEvent) => void;
+    handleUp: (e: MouseEvent | TouchEvent) => void;
     pushing: boolean;
     refreshed: boolean;
     artist: string;
