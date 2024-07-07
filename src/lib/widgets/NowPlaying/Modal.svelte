@@ -84,7 +84,8 @@
     class:transitionGradient
     transition:fade={{ duration: 500 }}
     onclick={(e) => {
-      toggleControls(e);
+      e.stopPropagation();
+      showHud = !showHud;
     }}
   >
     <header>
@@ -177,9 +178,13 @@
       {/key}
     </main>
 
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
     <footer
       class="current-music__modal__info block text-center text-lg"
       transition:blur={{ duration: 500 }}
+      onclick={(e) => {
+        toggleControls(e);
+      }}
     >
       {#key title}
         <div
