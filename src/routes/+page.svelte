@@ -1,13 +1,11 @@
 <script lang="ts">
   '@hmr:keep-all';
-  import updateBackgroundColorGradient from '$lib/layout/background';
   import {
     isTypeOfWidget,
     isWidgetSettings,
     type Settings,
     type WidgetSettings,
   } from '$lib/types';
-  import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
   import rawSettings from '$root/.config/settings.json';
   import NightScout from '$widgets/NightScout/NightScout.svelte';
   import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';
@@ -15,7 +13,6 @@
   import { onMount, type Component } from 'svelte';
   import Board from './(layouts)/Board.svelte';
   let mounted = $state(false);
-  let refreshInterval = DEFAULT_TEMPO;
 
   // NOTE: Mocks
   // import mockSepta from '$root/__fixtures__/septa/nextToArrive.json';
@@ -53,12 +50,6 @@
   let components: Record<string, Component> = {};
 
   onMount(async () => {
-    updateBackgroundColorGradient(LATITUDE, LONGITUDE);
-    setInterval(async () => {
-      updateBackgroundColorGradient(LATITUDE, LONGITUDE);
-      // seconds = 0;
-    }, refreshInterval);
-
     for (const widget of widgets) {
       if (!components[widget.type]) {
         components[widget.type] = (

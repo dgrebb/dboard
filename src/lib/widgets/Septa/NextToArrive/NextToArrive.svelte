@@ -14,7 +14,7 @@
   const path = toCamelCase(widgetName);
   const refreshInterval = 900000;
   const resubscribeInterval = 3600000; // Resubscribe every hour
-  const upstreamAPIURL = `/api/v1/septa`;
+  const upstreamAPIURL = `/api/v2/septa`;
 
   let resubscribeTimeout: number;
   let retryTimeout: number;
