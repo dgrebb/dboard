@@ -38,13 +38,8 @@ export const createWeatherWidget = function createWidget(
       };
     },
 
-    weather: (): WeatherData | undefined => {
-      const { data } = widgetStore;
-      let weatherData = undefined;
-      if (isWeatherData(data)) {
-        weatherData = data;
-      }
-      return weatherData;
+    weather: (): WeatherData => {
+      return widgetStore.data as WeatherData;
     },
 
     current: (): CurrentWeatherData | undefined => {
