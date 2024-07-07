@@ -1,0 +1,28 @@
+{
+  "schedule": [
+    {
+      "orig_train": "Train 123",
+      "orig_line": "Main Line",
+      "orig_departure_time": "08:30",
+      "orig_arrival_time": "09:00",
+      "orig_delay": "On time",
+      "isdirect": "yes"
+    },
+    {
+      "orig_train": "Train 123",
+      "orig_line": "Main Line",
+      "orig_departure_time": "09:30",
+      "orig_arrival_time": "10:00",
+      "orig_delay": "On time",
+      "isdirect": "yes"
+    },
+    {
+      "orig_train": "Train 123",
+      "orig_line": "Main Line",
+      "orig_departure_time": "10:30",
+      "orig_arrival_time": "11:00",
+      "orig_delay": "On time",
+      "isdirect": "yes"
+    }
+  ]
+}
