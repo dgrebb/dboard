@@ -59,7 +59,7 @@
   let refreshed = $state(true);
   let highlightColor = $state(fahrenheitToColorShade(77));
 
-  function setupEventSource() {
+  async function setupEventSource() {
     if (eventSource) {
       eventSource.close();
     }
@@ -111,7 +111,7 @@
   }
 
   onMount(async () => {
-    setupEventSource();
+    await setupEventSource();
     window.addEventListener('beforeunload', handleWindowUnload);
   });
 
