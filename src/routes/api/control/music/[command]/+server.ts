@@ -4,7 +4,7 @@ import { SECRET_AUDIO_CONTROL_IP_ADDRESS } from '$env/static/private';
 import type { RequestHandler } from './$types';
 import type { FetchOptions } from '$lib/types';
 
-export const prerender = false;
+// export const prerender = false;
 
 export const GET = (async ({ fetch, params: { command } }) => {
   const requestOptions: FetchOptions = {

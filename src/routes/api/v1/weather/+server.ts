@@ -3,7 +3,7 @@ import { WEATHER_API, WEATHER_LAT_LONG } from '$root/.config/GLOBALS';
 import type { RequestHandler } from './$types';
 import type { FetchOptions, WeatherData } from '$lib/types';
 
-export const prerender = false;
+// export const prerender = false;
 
 // function setTempo(locals, time) {
 //   setInterval(async function () {
