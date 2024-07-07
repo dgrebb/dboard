@@ -12,7 +12,7 @@ const resolveSecret = (template: string): string => {
   });
 };
 
-export const prerender = false;
+// export const prerender = false;
 const requestOptions: FetchOptions = {
   method: 'GET',
   redirect: 'follow',

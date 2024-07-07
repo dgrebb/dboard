@@ -2,7 +2,7 @@ import { json } from '@sveltejs/kit';
 import type { Fetch } from '$lib/types';
 import type { RequestHandler } from './$types';
 
-export const prerender = false;
+// export const prerender = false;
 
 async function fetchTrackInfo(fetch: Fetch, url: URL) {
   const music = await fetch(`${url.origin}/music.json`);
