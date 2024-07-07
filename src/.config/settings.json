@@ -17,18 +17,6 @@
       "settings": {
         "location": {
           "primary": false,
-          "timeZone": "America/Denver",
-          "latitude": 40.10298,
-          "longitude": -105.34346,
-          "name": "Jamestown, CO"
-        }
-      }
-    },
-    {
-      "type": "Weather",
-      "settings": {
-        "location": {
-          "primary": false,
           "timeZone": "Asia/Kolkata",
           "latitude": 13.0878,
           "longitude": 80.2785,
