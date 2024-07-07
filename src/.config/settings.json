@@ -17,10 +17,10 @@
       "settings": {
         "location": {
           "primary": false,
-          "timeZone": "Asia/Kolkata",
-          "latitude": 13.0878,
-          "longitude": 80.2785,
-          "name": "Chennai, IN"
+          "timeZone": "America/Denver",
+          "latitude": 40.10298,
+          "longitude": -105.34346,
+          "name": "Jamestown, CO"
         }
       }
     }
@@ -35,6 +35,18 @@
           "latitude": 41.85,
           "longitude": -87.65,
           "name": "Chicago, IL"
+        }
+      }
+    },
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "timeZone": "Asia/Kolkata",
+          "latitude": 13.0878,
+          "longitude": 80.2785,
+          "name": "Chennai, IN"
         }
       }
     },
