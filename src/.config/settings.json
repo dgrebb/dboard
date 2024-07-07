@@ -9,8 +9,7 @@
           "timeZone": "America/New_York",
           "latitude": 40.2415,
           "longitude": -75.2838
-        },
-        "tempo": 900000
+        }
       }
     },
     {
@@ -22,8 +21,7 @@
           "latitude": 40.10298,
           "longitude": -105.34346,
           "name": "Jamestown, CO"
-        },
-        "tempo": 900000
+        }
       }
     },
     {
@@ -35,8 +33,33 @@
           "latitude": 13.0878,
           "longitude": 80.2785,
           "name": "Chennai, IN"
-        },
-        "tempo": 900000
+        }
+      }
+    }
+  ],
+  "otherLocations": [
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "timeZone": "America/Chicago",
+          "latitude": 41.85,
+          "longitude": -87.65,
+          "name": "Chicago, IL"
+        }
+      }
+    },
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "timeZone": "America/New_York",
+          "latitude": 26.9762,
+          "longitude": -82.0906,
+          "name": "Port Charlotte, FL"
+        }
       }
     }
   ]
