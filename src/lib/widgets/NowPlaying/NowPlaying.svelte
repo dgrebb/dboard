@@ -47,9 +47,11 @@
   let newArt: string | undefined = $state(undefined);
 
   const imageCache = new Map<string, boolean>();
+  const cacheOrder: string[] = [];
 
   /**
    * Preloads an image and returns a promise that resolves when the image is loaded.
+   * Stores the last three images by default.
    * @param {string} url - The URL of the image to preload.
    * @returns {Promise<void>}
    */
@@ -62,7 +64,18 @@
       const img = new Image();
       img.src = url;
       img.onload = () => {
+        // Add the image URL to the cache
         imageCache.set(url, true);
+        cacheOrder.push(url);
+
+        // Ensure only the last 3 images are stored
+        if (cacheOrder.length > 3) {
+          const oldestUrl = cacheOrder.shift();
+          if (oldestUrl) {
+            imageCache.delete(oldestUrl);
+          }
+        }
+
         resolve();
       };
       img.onerror = (error) => reject(error);
@@ -94,9 +107,10 @@
       let time = totalSeconds - currentSeconds;
       keepTime(time, totalSeconds);
 
-      art = art.includes('/data/AirplayArtWorkData.png')
-        ? art.replace(ipAddressPattern, '')
-        : art;
+      art =
+        (art.includes('/data/AirplayArtWorkData.png')
+          ? art.replace(ipAddressPattern, '')
+          : art) + `?bust=${Math.round(Date.now() / 1000)}`;
 
       await homeState.setNowPlaying(data);
       retryCount = 0;
