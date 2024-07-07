@@ -69,9 +69,9 @@
       `/api/stream/${path}?name=${widgetName}&id=${id}&path=${path}&refreshInterval=${refreshInterval}&upstreamAPIURL=${encodedUpstreamAPIURL}`
     );
 
-    eventSource.onmessage = (event) => {
+    eventSource.onmessage = async (event) => {
       const { weather } = JSON.parse(event.data);
-      weatherWidget.setData(weather);
+      await weatherWidget.setData(weather);
       retryCount = 0; // Reset retry count on successful message
     };
 
