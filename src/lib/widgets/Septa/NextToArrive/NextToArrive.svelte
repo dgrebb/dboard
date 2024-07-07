@@ -1,13 +1,110 @@
 <script lang="ts">
-  import type { SteptaNextToArriveData } from '$lib/types';
+  import {
+    isSeptaNextToArriveDataArray,
+    TypeOfWidget,
+    type SeptaNextToArriveData,
+  } from '$lib/types';
+  import { createWidget } from '$root/lib/stores';
+  import { generateID, toCamelCase } from '$utils/strings';
   import Icon from '@iconify/svelte';
-  type Props = {
-    schedule: SteptaNextToArriveData[];
-  };
-  let { schedule }: Props = $props();
+  import { onDestroy, onMount } from 'svelte';
+
+  const widgetName = 'Septa';
+  const id = generateID(widgetName);
+  const path = toCamelCase(widgetName);
+  const refreshInterval = 900000;
+  const resubscribeInterval = 3600000; // Resubscribe every hour
+  const upstreamAPIURL = `/api/v1/septa`;
+
+  let resubscribeTimeout: number;
+  let retryTimeout: number;
+  let retryCount = 0;
+  let eventSource: EventSource | null = null;
+  const nextToArriveWidget = createWidget(
+    TypeOfWidget.NextToArrive,
+    widgetName,
+    id,
+    path,
+    upstreamAPIURL,
+    refreshInterval
+  );
+
+  let schedule = $state<SeptaNextToArriveData[]>(
+    nextToArriveWidget.getData as SeptaNextToArriveData[]
+  );
+
+  function setupEventSource() {
+    if (eventSource) {
+      eventSource.close();
+    }
+
+    const encodedUpstreamAPIURL = encodeURIComponent(upstreamAPIURL);
+    eventSource = new EventSource(
+      `/api/stream/${path}?name=${widgetName}&id=${id}&path=${path}&refreshInterval=${refreshInterval}&upstreamAPIURL=${encodedUpstreamAPIURL}`
+    );
+
+    eventSource.onmessage = (event) => {
+      const { schedule } = JSON.parse(event.data);
+      nextToArriveWidget.setData(schedule);
+      retryCount = 0; // Reset retry count on successful message
+    };
+
+    eventSource.onerror = (error) => {
+      console.info('EventSource error:', error);
+
+      // Retry connection with exponential backoff
+      retryCount++;
+      const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 30000); // Exponential backoff with cap at 30s
+      if (retryTimeout) {
+        clearTimeout(retryTimeout);
+      }
+      retryTimeout = window.setTimeout(() => {
+        setupEventSource();
+      }, retryDelay) as unknown as number;
+    };
+
+    // Set up periodic resubscription
+    if (resubscribeTimeout) {
+      clearInterval(resubscribeTimeout);
+    }
+    resubscribeTimeout = window.setInterval(() => {
+      setupEventSource();
+    }, resubscribeInterval);
+  }
+
+  function stopEventSource() {
+    if (eventSource) {
+      eventSource.close();
+    }
+    if (resubscribeTimeout) {
+      clearInterval(resubscribeTimeout);
+    }
+    if (retryTimeout) {
+      clearTimeout(retryTimeout);
+    }
+  }
+
+  onMount(async () => {
+    setupEventSource();
+    window.addEventListener('beforeunload', handleWindowUnload);
+  });
+
+  function handleWindowUnload() {
+    console.info('Handling window unload...');
+    stopEventSource();
+  }
+
+  $effect(() => {
+    schedule = nextToArriveWidget.getData as SeptaNextToArriveData[];
+  });
+
+  onDestroy(() => {
+    stopEventSource();
+    window.removeEventListener('beforeunload', handleWindowUnload);
+  });
 </script>
 
-{#if schedule}
+{#if schedule && isSeptaNextToArriveDataArray(schedule)}
   <div class="dboard__grid__item control-widget">
     <div class="dboard__card">
       <Icon

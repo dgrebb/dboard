@@ -178,7 +178,7 @@ export type MusicData = {
 /**
  * Type representing SEPTA next-to-arrive data.
  */
-export type SteptaNextToArriveData = {
+export type SeptaNextToArriveData = {
   orig_train: string;
   orig_line: string;
   orig_departure_time: string;
@@ -187,7 +187,7 @@ export type SteptaNextToArriveData = {
   isdirect: string;
 };
 
-const steptaNextToArriveDataKeys: (keyof SteptaNextToArriveData)[] = [
+const SeptaNextToArriveDataKeys: (keyof SeptaNextToArriveData)[] = [
   'orig_train',
   'orig_line',
   'orig_departure_time',
@@ -196,16 +196,16 @@ const steptaNextToArriveDataKeys: (keyof SteptaNextToArriveData)[] = [
   'isdirect',
 ];
 
-export function isSteptaNextToArriveDataArray(
+export function isSeptaNextToArriveDataArray(
   arr: unknown[]
-): arr is SteptaNextToArriveData[] {
+): arr is SeptaNextToArriveData[] {
   return (
     Array.isArray(arr) &&
     arr.every(
       (obj) =>
         typeof obj === 'object' &&
         obj !== null &&
-        steptaNextToArriveDataKeys.every(
+        SeptaNextToArriveDataKeys.every(
           (key) => typeof obj[key as keyof typeof obj] === 'string'
         )
     )
@@ -266,6 +266,7 @@ export enum TypeOfWidget {
   Weather = 'Weather',
   CurrentWeatherLeg = 'CurrentWeatherLeg',
   Music = 'Music',
+  NextToArrive = 'NextToArrive',
 }
 
 /**
@@ -374,7 +375,7 @@ export type PossibleWidgetData =
   | CurrentWeatherData
   | WeatherData
   | MusicData
-  | SteptaNextToArriveData;
+  | SeptaNextToArriveData[];
 
 /**
  * Type representing a NightScout widget.
