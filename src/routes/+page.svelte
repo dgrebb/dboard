@@ -3,10 +3,13 @@
   import updateBackgroundColorGradient from '$lib/layout/background';
   import {
     isSteptaNextToArriveDataArray,
+    isTypeOfWidget,
+    isWidgetSettings,
+    type Settings,
     type WidgetSettings,
   } from '$lib/types';
   import { DEFAULT_TEMPO, LATITUDE, LONGITUDE } from '$root/.config/GLOBALS';
-  import settings from '$root/.config/settings.json';
+  import rawSettings from '$root/.config/settings.json';
   import NightScout from '$widgets/NightScout/NightScout.svelte';
   import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';
   import SeptaNextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
@@ -23,7 +26,36 @@
     schedule = data.schedule;
   };
 
+  const parseWidget = (widget: unknown): WidgetSettings | null => {
+    if (isWidgetSettings(widget) && isTypeOfWidget(widget.type)) {
+      return {
+        ...widget,
+        type: widget.type,
+      };
+    }
+    return null;
+  };
+
+  const parseSettings = (rawSettings: unknown): Settings => {
+    const raw = rawSettings as {
+      widgets: unknown[];
+      otherLocations: unknown[];
+    };
+    return {
+      widgets: raw.widgets
+        .map(parseWidget)
+        .filter((widget): widget is WidgetSettings => widget !== null),
+      otherLocations: raw.otherLocations
+        .map(parseWidget)
+        .filter((widget): widget is WidgetSettings => widget !== null),
+    };
+  };
+
+  const settings: Settings = parseSettings(rawSettings);
+
   let widgets: WidgetSettings[] = settings.widgets;
+  // let otherLocations: WidgetSettings[] = settings.otherLocations;
+
   let components: Record<string, Component> = {};
 
   onMount(async () => {
