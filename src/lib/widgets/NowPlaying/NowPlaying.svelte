@@ -36,8 +36,6 @@
   let currentValue: number | null = $state(0);
   let locationName: string | null = $derived(homeState.locationName());
 
-  let showAudioPlayer = $state(false);
-  let showHud = $state(false);
   let transitionGradient = $state(false);
   let transitionForegroundGradient = $state(false);
   let timer = $state(0);
@@ -206,20 +204,7 @@
       component: 'music',
     });
     localStorage.setItem('musicModal', active.toString());
-    showAudioPlayer = false;
   }
-
-  const toggleControls = (e: MouseEvent) => {
-    e.preventDefault();
-    showAudioPlayer = !showAudioPlayer;
-    showHud = showAudioPlayer;
-  };
-
-  const setTrackChange = (e: Event) => {
-    e.preventDefault;
-    // Handle track change with controls
-    showAudioPlayer = false;
-  };
 
   const handleGradientRefresh = (e: MouseEvent | TouchEvent) => {
     if (e instanceof MouseEvent && e.button === 2) return;
@@ -323,13 +308,11 @@
     {art}
     {newArt}
     {currentArt}
-    {setTrackChange}
     {previousAlbum}
     {title}
     {loved}
     {timer}
     {totalSeconds}
-    {toggleControls}
     {transitionGradient}
     {transitionForegroundGradient}
     {currentValue}
@@ -337,8 +320,6 @@
     {direction}
     {directionIcon}
     {locationName}
-    {showAudioPlayer}
-    {showHud}
     {handleGradientRefresh}
     {modal}
     {toggleModal}
