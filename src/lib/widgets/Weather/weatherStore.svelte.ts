@@ -31,7 +31,7 @@ export const createWeatherWidget = function createWidget(
   });
 
   return {
-    setData: (data: WeatherData) => {
+    setData: async (data: WeatherData) => {
       widgetStore = {
         ...widgetStore,
         data,

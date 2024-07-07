@@ -94,8 +94,12 @@
       const data = await JSON.parse(event.data);
       ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
 
-      const ipAddressPattern =
-        /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
+      // NOTE: Keep this around - for proxying art if needed
+      // const ipAddressPattern =
+      //   /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
+      // (art.includes('/data/AirplayArtWorkData.png')
+      //   ? art.replace(ipAddressPattern, '')
+      //   : art) + `?bust=${Math.round(Date.now() / 1000)}`;
 
       timer = 0;
       let currentSeconds = timeStringToSeconds(
@@ -105,10 +109,7 @@
       let time = totalSeconds - currentSeconds;
       keepTime(time, totalSeconds);
 
-      art =
-        (art.includes('/data/AirplayArtWorkData.png')
-          ? art.replace(ipAddressPattern, '')
-          : art) + `?bust=${Math.round(Date.now() / 1000)}`;
+      art = art + `?bust=${Math.round(Date.now() / 1000)}`;
 
       await homeState.setNowPlaying(data);
       retryCount = 0;

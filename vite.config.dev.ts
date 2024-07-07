@@ -38,20 +38,7 @@ const SECRET_AUDIO_CONTROL_IP_ADDRESS =
   process.env.SECRET_AUDIO_CONTROL_IP_ADDRESS;
 
 export default defineConfig({
-  plugins: [
-    sveltekit(),
-    {
-      name: 'integratedWebsocketServer',
-      configureServer(server) {
-        createWSSGlobalInstance();
-        server.httpServer?.on('upgrade', onHttpServerUpgrade);
-      },
-      configurePreviewServer(server) {
-        createWSSGlobalInstance();
-        server.httpServer?.on('upgrade', onHttpServerUpgrade);
-      },
-    },
-  ],
+  plugins: [sveltekit()],
   server: {
     https: {
       key: fs.readFileSync(keyPath),
