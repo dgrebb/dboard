@@ -5,7 +5,7 @@ import { timeStringToSeconds } from '$utils/strings';
 import { fetchMediaInfo } from '$utils/wiim';
 import type { RequestEvent } from '@sveltejs/kit';
 
-// export const prerender = false;
+export const prerender = false;
 
 /**
  * Refresh interval for fetching data.
