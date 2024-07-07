@@ -52,7 +52,7 @@
 >
   {#key art}
     <div
-      class="dboard__card svelte-1s7u7zs refreshed w-full border-none bg-transparent"
+      class="dboard__card svelte-1s7u7zs refreshed w-full"
       class:transitionGradient
       class:pushing
       class:refreshed

@@ -1,6 +1,6 @@
 import type { ModalState, TimeZone, UIState } from '../types';
 
-export const createUi = () => {
+export const createUiState = () => {
   const ui: UIState = $state({
     modalState: {
       isActive: false,
@@ -23,16 +23,16 @@ export const createUi = () => {
   };
 };
 
-export const createTime = (initialTime: Date) => {
-  let time = $state(initialTime);
+export const createTimeState = (initialTime: Date) => {
+  let timeStore = $state(initialTime);
 
   return {
     dateTime: () => {
-      return time;
+      return timeStore;
     },
 
     dateTimeString: (timeZone: TimeZone = 'America/New_York') => {
-      return time.toLocaleDateString('en-US', {
+      return timeStore.toLocaleDateString('en-US', {
         timeZone,
         hour12: false,
         hour: '2-digit',
@@ -42,7 +42,7 @@ export const createTime = (initialTime: Date) => {
     },
 
     hoursMinutesString: (timeZone: TimeZone = 'America/New_York'): string => {
-      return time.toLocaleString('en-US', {
+      return timeStore.toLocaleString('en-US', {
         timeZone,
         hour: '2-digit',
         minute: '2-digit',
@@ -58,7 +58,7 @@ export const createTime = (initialTime: Date) => {
         minute: '2-digit',
       };
 
-      const timeString = time.toLocaleString('en-US', options);
+      const timeString = timeStore.toLocaleString('en-US', options);
 
       // Extract hours and minutes from the formatted string
       const [hours, minutes] = timeString.split(':').map(Number);
@@ -77,7 +77,7 @@ export const createTime = (initialTime: Date) => {
       };
 
       // Get the current time in the specified timeZone as a formatted string
-      const timeString = time.toLocaleString('en-US', options);
+      const timeString = timeStore.toLocaleString('en-US', options);
 
       // Extract hours, minutes, and seconds from the formatted string
       const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -96,7 +96,7 @@ export const createTime = (initialTime: Date) => {
       };
 
       // Get the current time in the specified timeZone as a formatted string
-      const timeString = time.toLocaleString('en-US', options);
+      const timeString = timeStore.toLocaleString('en-US', options);
 
       // Extract hours, minutes, and seconds from the formatted string
       const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -106,11 +106,11 @@ export const createTime = (initialTime: Date) => {
     },
 
     set: async (theTime: Date = new Date(Date.now())): Promise<void> => {
-      time = theTime;
+      timeStore = theTime;
     },
   };
 };
 
 // Set up Client States
-export const timeState = createTime(new Date(Date.now()));
-export const uiState = createUi();
+export const timeState = createTimeState(new Date(Date.now()));
+export const uiState = createUiState();
