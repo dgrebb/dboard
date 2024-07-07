@@ -19,11 +19,14 @@
   let refreshInterval = DEFAULT_TEMPO;
   let schedule: SeptaNextToArrive[] | boolean = $state(false);
 
+  // NOTE: Mocks
+  import mockSepta from '$root/__fixtures__/septa/nextToArrive.json';
+
   const fetchSeptaNextToArrive = async () => {
     const data = await fetch('/api/v1/septa', { method: 'GET' })
       .then((res) => res.json())
       .catch((err) => console.error(err));
-    schedule = data.schedule;
+    schedule = data.schedule.length > 0 ? data.schedule : mockSepta.schedule;
   };
 
   const parseWidget = (widget: unknown): WidgetSettings | null => {
