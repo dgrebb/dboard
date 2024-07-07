@@ -76,14 +76,6 @@ export type DBoardItem = {
 };
 
 /**
- * Current Weather widget settings type
- */
-export type WeatherSettings = {
-  location: LocationType;
-  tempo: number;
-};
-
-/**
  * Type representing current weather data.
  */
 export type CurrentWeatherData = {
@@ -258,6 +250,14 @@ export type LocationsType = { [key: string]: LocationType };
 export type LocationStore = LocationType & { key: string };
 
 /**
+ * Type representing global settings.json (or database)
+ */
+export type Settings = {
+  widgets: WidgetSettings[];
+  otherLocations: WidgetSettings[];
+};
+
+/**
  * Enum representing the types of widgets available.
  */
 export enum TypeOfWidget {
@@ -275,14 +275,24 @@ export type WidgetSettings = {
   type: TypeOfWidget;
   name?: string;
   settings?: {
-    location?: {
-      primary: boolean;
-      name: string;
-      timeZone: string;
-      latitude: number;
-      longitude: number;
-    };
+    location?: LocationSettings;
   };
+};
+
+/**
+ * Current Weather widget settings type
+ */
+export type WeatherSettings = {
+  location: LocationType;
+  tempo: number;
+};
+
+export type LocationSettings = {
+  primary: boolean;
+  name: string;
+  timeZone: string;
+  latitude: number;
+  longitude: number;
 };
 
 /**
@@ -291,6 +301,34 @@ export type WidgetSettings = {
 export type WidgetData = WidgetSettings & {
   stream: StreamType;
   data: PossibleWidgetData | undefined;
+};
+
+export const isLocationSettings = (
+  location: unknown
+): location is LocationType => {
+  const loc = location as LocationType;
+  return (
+    typeof loc.primary === 'boolean' &&
+    typeof loc.name === 'string' &&
+    typeof loc.timeZone === 'string' &&
+    typeof loc.latitude === 'number' &&
+    typeof loc.longitude === 'number'
+  );
+};
+
+export const isWidgetSettings = (widget: unknown): widget is WidgetSettings => {
+  const wgt = widget as WidgetSettings;
+  return (
+    typeof wgt.type === 'string' &&
+    (!wgt.name || typeof wgt.name === 'string') &&
+    (!wgt.settings ||
+      (wgt.settings &&
+        (!wgt.settings.location || isLocationSettings(wgt.settings.location))))
+  );
+};
+
+export const isTypeOfWidget = (type: string): type is TypeOfWidget => {
+  return Object.values(TypeOfWidget).includes(type as TypeOfWidget);
 };
 
 /**
