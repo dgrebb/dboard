@@ -24,14 +24,10 @@
     newArt: string | undefined;
     currentArt: string | null;
     loved: boolean;
-    showAudioPlayer: boolean;
-    showHud: boolean;
     timer: number;
     totalSeconds: number;
     transitionForegroundGradient: boolean;
     transitionGradient: boolean;
-    toggleControls: (e: MouseEvent) => void;
-    setTrackChange: (e: Event) => void;
     handleGradientRefresh: (e: MouseEvent | TouchEvent) => void;
     modal: ModalState;
     toggleModal: (e: MouseEvent) => void;
@@ -49,15 +45,11 @@
     title,
     album,
     loved,
-    showAudioPlayer,
-    showHud,
     timer,
     totalSeconds,
     handleGradientRefresh,
     transitionGradient,
     transitionForegroundGradient,
-    toggleControls,
-    setTrackChange,
     toggleModal,
   }: Props = $props();
 
@@ -66,6 +58,26 @@
   );
 
   let modal = $state(uiState.modal());
+  let showControls = $state(false);
+  let showHud = $state(false);
+
+  // Handle track change with controls
+  const setTrackChange = (e: TouchEvent | MouseEvent) => {
+    e.preventDefault;
+    e.stopPropagation();
+    showControls = false;
+  };
+
+  const toggleControls = (e: TouchEvent | MouseEvent) => {
+    e.stopPropagation();
+    showControls = !showControls;
+  };
+
+  const toggleHud = (e: TouchEvent | MouseEvent) => {
+    e.stopPropagation();
+    showHud = !showHud;
+    showHud === false ? (showControls = false) : null;
+  };
 
   $effect(() => {
     modal = uiState.modal();
@@ -83,10 +95,7 @@
     class="current-music__modal"
     class:transitionGradient
     transition:fade={{ duration: 500 }}
-    onclick={(e) => {
-      e.stopPropagation();
-      showHud = !showHud;
-    }}
+    onclick={(e) => toggleHud(e)}
   >
     <header>
       {#key currentValue}
@@ -162,11 +171,11 @@
         >
           <SafeHtml html={addHtmlLineBreaks(album)} />
         </h3>
-        {#if showAudioPlayer === true}
+        {#if showControls === true}
           <div
             transition:fade
             class="audio-player"
-            class:expanded={showAudioPlayer}
+            class:expanded={showControls}
           >
             <PlaybackControls
               buttonSize={33}
