@@ -265,14 +265,15 @@
   });
 
   onMount(async () => {
-    setTimeout(() => {
-      setupEventSource();
-    }, 1000);
+    // setTimeout(async () => {
+    //   await setupEventSource();
+    // }, 1000);
+    await setupEventSource();
     if (localStorage.getItem('musicModal') === 'true') {
       modal.isActive = true;
     }
     window.addEventListener('beforeunload', handleWindowUnload);
-    currentArt = art;
+    // currentArt = art;
   });
 
   onDestroy(() => {

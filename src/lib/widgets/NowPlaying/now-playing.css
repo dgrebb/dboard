@@ -30,7 +30,7 @@
     }
 
     &::after {
-      opacity: 0.67;
+      opacity: 0.8;
       z-index: -1;
       background: var(--previousBackgroundGradient);
     }
@@ -38,7 +38,7 @@
     &.transitionGradient {
       /* background: var(--previousBackgroundGradient); */
       &::before {
-        opacity: 0.67;
+        opacity: 0.8;
       }
       &::after {
         opacity: 0;
@@ -83,12 +83,12 @@
   .track-title {
     display: block;
     z-index: 3;
-    /* background-blend-mode: difference; */
-    /* filter: invert(1); */
+    filter: invert(1);
     background: var(--nextBackgroundGradient);
     background-size: 100vw 100vh;
     background-clip: text;
     -webkit-background-clip: text;
+    background-blend-mode: difference;
     padding: 0.25rem;
     color: transparent;
     text-wrap: balance;
