@@ -50,50 +50,54 @@
   tabindex="-1"
   role="button"
 >
-  <div
-    class="dboard__card svelte-1s7u7zs refreshed w-full border-none bg-transparent"
-    class:transitionGradient
-    class:pushing
-    class:refreshed
-  >
+  {#key art}
     <div
-      class="album-art"
-      out:blur={{ duration: 2000 }}
-      in:blur={{ duration: 2000, delay: 2000 }}
+      class="dboard__card svelte-1s7u7zs refreshed w-full border-none bg-transparent"
+      class:transitionGradient
+      class:pushing
+      class:refreshed
     >
-      <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-      <!-- svelte-ignore a11y_click_events_have_key_events -->
-      <img
-        src={art}
-        alt="{album} Artwork"
-        onclick={(e) => toggleModal(e)}
-        tabindex="-1"
-        role="switch"
-        aria-checked={modal.isActive}
-      />
-      <h3 class="album-title"><SafeHtml html={addHtmlLineBreaks(album)} /></h3>
-      <LovedHeart {loved} size={33} />
-    </div>
-    <div
-      class="track-details"
-      out:blur={{ duration: 1000 }}
-      in:blur={{ duration: 1000, delay: 1000 }}
-    >
-      <span class="track-artist"
-        ><h2 class="artist">
-          <SafeHtml html={addHtmlLineBreaks(artist)} />
-        </h2></span
+      <div
+        class="album-art"
+        out:blur={{ duration: 500 }}
+        in:blur={{ duration: 500, delay: 500 }}
       >
-      <span class="track"
-        ><h3 class="track-time">
-          {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
-              totalSeconds - timer
-            )}{/if}
+        <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
+        <img
+          src={art}
+          alt="{album} Artwork"
+          onclick={(e) => toggleModal(e)}
+          tabindex="-1"
+          role="switch"
+          aria-checked={modal.isActive}
+        />
+        <h3 class="album-title">
+          <SafeHtml html={addHtmlLineBreaks(album)} />
         </h3>
-        <h1 class="track-title">
-          <SafeHtml html={addHtmlLineBreaks(title)} />
-        </h1></span
+        <LovedHeart {loved} size={33} />
+      </div>
+      <div
+        class="track-details"
+        out:blur={{ duration: 500 }}
+        in:blur={{ duration: 500, delay: 500 }}
       >
+        <span class="track-artist"
+          ><h2 class="artist">
+            <SafeHtml html={addHtmlLineBreaks(artist)} />
+          </h2></span
+        >
+        <span class="track"
+          ><h3 class="track-time">
+            {#if timer <= 0}∞{:else}{formatSecondsToMinutes(
+                totalSeconds - timer
+              )}{/if}
+          </h3>
+          <h1 class="track-title">
+            <SafeHtml html={addHtmlLineBreaks(title)} />
+          </h1></span
+        >
+      </div>
     </div>
-  </div>
+  {/key}
 </div>

@@ -263,7 +263,9 @@
   });
 
   onMount(async () => {
-    setupEventSource();
+    setTimeout(() => {
+      setupEventSource();
+    }, 1000);
     if (localStorage.getItem('musicModal') === 'true') {
       modal.isActive = true;
     }

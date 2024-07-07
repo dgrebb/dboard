@@ -9,7 +9,7 @@ export const createWidget = function createWidget(
   upstreamAPIURL: string,
   refreshInterval: number
 ) {
-  let widgetStore: WidgetData = $state({
+  let widgetStore = $state<WidgetData>({
     type,
     name,
     stream: {
@@ -19,7 +19,7 @@ export const createWidget = function createWidget(
       upstreamAPIURL,
       refreshInterval,
     },
-    data: false,
+    data: undefined,
   });
 
   const setData = function setData(data: PossibleWidgetData) {
@@ -34,13 +34,13 @@ export const createWidget = function createWidget(
       return widgetStore.stream;
     },
     get getWidget(): WidgetData {
-      return widgetStore as WidgetData;
+      return widgetStore;
     },
-    get getData(): PossibleWidgetData {
-      return widgetStore.data as PossibleWidgetData;
+    get getData(): PossibleWidgetData | undefined {
+      return widgetStore.data;
     },
     get type(): TypeOfWidget {
-      return widgetStore.type as TypeOfWidget;
+      return widgetStore.type;
     },
     setData,
   };

@@ -2,7 +2,6 @@
   '@hmr:keep-all';
   import updateBackgroundColorGradient from '$lib/layout/background';
   import {
-    isSteptaNextToArriveDataArray,
     isTypeOfWidget,
     isWidgetSettings,
     type Settings,
@@ -12,22 +11,14 @@
   import rawSettings from '$root/.config/settings.json';
   import NightScout from '$widgets/NightScout/NightScout.svelte';
   import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';
-  import SeptaNextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
+  import NextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
   import { onMount, type Component } from 'svelte';
   import Board from './(layouts)/Board.svelte';
   let mounted = $state(false);
   let refreshInterval = DEFAULT_TEMPO;
-  let schedule: SeptaNextToArrive[] | boolean = $state(false);
 
   // NOTE: Mocks
-  import mockSepta from '$root/__fixtures__/septa/nextToArrive.json';
-
-  const fetchSeptaNextToArrive = async () => {
-    const data = await fetch('/api/v1/septa', { method: 'GET' })
-      .then((res) => res.json())
-      .catch((err) => console.error(err));
-    schedule = data.schedule.length > 0 ? data.schedule : mockSepta.schedule;
-  };
+  // import mockSepta from '$root/__fixtures__/septa/nextToArrive.json';
 
   const parseWidget = (widget: unknown): WidgetSettings | null => {
     if (isWidgetSettings(widget) && isTypeOfWidget(widget.type)) {
@@ -63,9 +54,7 @@
 
   onMount(async () => {
     updateBackgroundColorGradient(LATITUDE, LONGITUDE);
-    fetchSeptaNextToArrive();
     setInterval(async () => {
-      fetchSeptaNextToArrive();
       updateBackgroundColorGradient(LATITUDE, LONGITUDE);
       // seconds = 0;
     }, refreshInterval);
@@ -89,13 +78,11 @@
   <Board>
     <NightScout />
     <NowPlaying />
+    <NextToArrive />
     {#if widgets}
       {#each widgets as { type, settings }}
         <svelte:component this={components[type]} {settings} />
       {/each}
-    {/if}
-    {#if typeof schedule !== 'boolean' && isSteptaNextToArriveDataArray(schedule) && schedule.length > 0}
-      <SeptaNextToArrive {schedule} />
     {/if}
     <!-- <NewWidget /> -->
   </Board>
