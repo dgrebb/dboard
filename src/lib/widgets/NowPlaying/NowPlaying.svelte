@@ -193,6 +193,8 @@
     // Reload EventSource
     stopEventSource();
     setupEventSource();
+
+    refreshed = true;
   };
 
   function toggleModal(e: MouseEvent) {

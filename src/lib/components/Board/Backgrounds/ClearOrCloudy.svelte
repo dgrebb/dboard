@@ -3,7 +3,6 @@
   import solar from '$lib/stores/solar';
   import weather from '$lib/stores/weatherLeg';
   import { onMount } from 'svelte';
-  import Clouds from './Clouds.svelte';
 
   export let cloudCover: number = 0;
   let riseMinutes = 7 * 60;
@@ -76,9 +75,7 @@
     style={`opacity: ${twilightOpacity * 10}; --cloudCoverPercent: ${cloudCover / 100}`}
   >
     <div class="noite backdrop-blur-[100rem]"></div>
-    <div class="nuvem">
-      <Clouds />
-    </div>
+    <div class="nuvem"></div>
     <div class="constelacao"></div>
 
     <div class="lua">
