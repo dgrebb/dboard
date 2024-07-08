@@ -132,6 +132,9 @@ importers:
       globals:
         specifier: ^15.8.0
         version: 15.8.0
+      i:
+        specifier: ^0.3.7
+        version: 0.3.7
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
@@ -177,6 +180,9 @@ importers:
       svelte-grid:
         specifier: ^5.1.2
         version: 5.1.2
+      sveltekit-sse:
+        specifier: ^0.13.2
+        version: 0.13.2(@microsoft/fetch-event-source@2.0.1)(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.172)(vite@5.3.3(@types/node@20.14.10)(sugarss@4.0.1(postcss@8.4.39))))(svelte@5.0.0-next.172)(vite@5.3.3(@types/node@20.14.10)(sugarss@4.0.1(postcss@8.4.39))))(svelte@5.0.0-next.172)
       tailwindcss:
         specifier: ^3.4.4
         version: 3.4.4
@@ -470,6 +476,9 @@ packages:
   '@mapbox/node-pre-gyp@1.0.11':
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
     hasBin: true
+
+  '@microsoft/fetch-event-source@2.0.1':
+    resolution: {integrity: sha512-W6CLUJ2eBMw3Rec70qrsEW0jOm/3twwJv21mrmj2yORiaVmVYGS4sSS5yUwvQc1ZlDLYGPnClVWmUUMagKNsfA==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1896,6 +1905,10 @@ packages:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
 
+  i@0.3.7:
+    resolution: {integrity: sha512-FYz4wlXgkQwIPqhzC5TdNMLSE5+GS1IIDJZY/1ZiEPCT2S3COUVZeT5OW4BmW4r5LHLQuOosSwsvnroG9GR59Q==}
+    engines: {node: '>=0.4'}
+
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -3275,6 +3288,13 @@ packages:
     resolution: {integrity: sha512-xnrTBGPjPvUueeXJdGu0s0LB1diYT8YApdyFcbeG8cJmrjoE5xi9DpuppOtrVTbdTeCKyIsCrZlzWuTWjedY+A==}
     engines: {node: '>=18'}
 
+  sveltekit-sse@0.13.2:
+    resolution: {integrity: sha512-blEwtcDJxoLdt3lloiaJyWs9W0iYf7yL2B7FHBz6gKdUXHqaIGVwsVeGSDzlOpvKh/+F1GUXaF7i/EZXthrPaA==}
+    peerDependencies:
+      '@microsoft/fetch-event-source': ^2.0.1
+      '@sveltejs/kit': ^2.0.0
+      svelte: ^4.0.0 || ^5.0.0-next.0
+
   svg.draggable.js@2.2.2:
     resolution: {integrity: sha512-JzNHBc2fLQMzYCZ90KZHN2ohXL0BQJGQimK1kGk6AvSeibuKcIdDX9Kr0dT9+UJ5O8nYA0RB839Lhvk4CY4MZw==}
     engines: {node: '>= 0.8.0'}
@@ -3921,6 +3941,8 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@microsoft/fetch-event-source@2.0.1': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -5543,6 +5565,8 @@ snapshots:
 
   human-signals@5.0.0: {}
 
+  i@0.3.7: {}
+
   iconv-lite@0.4.24:
     dependencies:
       safer-buffer: 2.1.2
@@ -6722,6 +6746,12 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.10
       zimmerframe: 1.1.2
+
+  sveltekit-sse@0.13.2(@microsoft/fetch-event-source@2.0.1)(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.172)(vite@5.3.3(@types/node@20.14.10)(sugarss@4.0.1(postcss@8.4.39))))(svelte@5.0.0-next.172)(vite@5.3.3(@types/node@20.14.10)(sugarss@4.0.1(postcss@8.4.39))))(svelte@5.0.0-next.172):
+    dependencies:
+      '@microsoft/fetch-event-source': 2.0.1
+      '@sveltejs/kit': 2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.172)(vite@5.3.3(@types/node@20.14.10)(sugarss@4.0.1(postcss@8.4.39))))(svelte@5.0.0-next.172)(vite@5.3.3(@types/node@20.14.10)(sugarss@4.0.1(postcss@8.4.39)))
+      svelte: 5.0.0-next.172
 
   svg.draggable.js@2.2.2:
     dependencies:
