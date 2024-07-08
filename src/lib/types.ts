@@ -264,7 +264,6 @@ export enum TypeOfWidget {
   NightScout = 'NightScout',
   NowPlaying = 'NowPlaying',
   Weather = 'Weather',
-  CurrentWeatherLeg = 'CurrentWeatherLeg',
   Music = 'Music',
   NextToArrive = 'NextToArrive',
 }
