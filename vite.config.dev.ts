@@ -14,10 +14,12 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { defineConfig } from 'vitest/config';
-import {
-  createWSSGlobalInstance,
-  onHttpServerUpgrade,
-} from './src/lib/server/webSocketUtils';
+
+// NOTE: When SSE isn't enough...
+// import {
+//   createWSSGlobalInstance,
+//   onHttpServerUpgrade,
+// } from './src/lib/server/webSocketUtils';
 
 // Load environment variables from .env file
 dotenv.config();

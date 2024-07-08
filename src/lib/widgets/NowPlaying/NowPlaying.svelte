@@ -109,7 +109,13 @@
       let time = totalSeconds - currentSeconds;
       keepTime(time, totalSeconds);
 
-      art = art + `?bust=${Math.round(Date.now() / 1000)}`;
+      let cachebust = Math.round(Date.now() / 1000);
+
+      if (art.includes('?')) {
+        art = art + `&bust=${cachebust}`;
+      } else {
+        art = art + `?bust=${cachebust}`;
+      }
 
       await homeState.setNowPlaying(data);
       retryCount = 0;
