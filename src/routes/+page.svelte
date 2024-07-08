@@ -60,15 +60,16 @@
     mounted = true;
   });
 
-  import { source } from 'sveltekit-sse';
-  const svelteSSEValue = $state(
-    source('/api/stream/weather').select('message')
-  );
+  // NOTE: Svelte SSE POC
+  // import { source } from 'sveltekit-sse';
+  // const svelteSSEValue = $state(
+  //   source('/api/stream/weather').select('message')
+  // );
 
-  $effect(() => {
-    // svelteSSEValue
-    console.log('🚀 ~ $effect ~ svelteSSEValue:', $svelteSSEValue);
-  });
+  // $effect(() => {
+  //   // svelteSSEValue
+  //   console.log('🚀 ~ $effect ~ svelteSSEValue:', $svelteSSEValue);
+  // });
 </script>
 
 <svelte:head>
@@ -78,11 +79,11 @@
 {#if mounted}
   <Board>
     <NightScout />
+    <!-- <h1 class="text-orange-400">{$svelteSSEValue}</h1>
     <h1 class="text-orange-400">{$svelteSSEValue}</h1>
     <h1 class="text-orange-400">{$svelteSSEValue}</h1>
     <h1 class="text-orange-400">{$svelteSSEValue}</h1>
-    <h1 class="text-orange-400">{$svelteSSEValue}</h1>
-    <h1 class="text-orange-400">{$svelteSSEValue}</h1>
+    <h1 class="text-orange-400">{$svelteSSEValue}</h1> -->
     <NowPlaying />
     <NextToArrive />
     {#if widgets}
