@@ -142,6 +142,9 @@
     daily = weatherWidget.daily();
     temperature = weatherWidget.currentRoundTemperature() || 77;
     highlightColor = fahrenheitToColorShade(temperature);
+    if (isCurrentWeatherData(current) && isDailyWeatherData(daily)) {
+      background.updateColor(current, daily);
+    }
 
     return () => {
       if (
@@ -149,7 +152,6 @@
         isCurrentWeatherData(current) &&
         isDailyWeatherData(daily)
       ) {
-        background.updateColor(current, daily);
         homeState.setLocation(location);
         homeState.setWeather({
           success: true,
