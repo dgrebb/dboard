@@ -23,6 +23,18 @@
           "name": "Jamestown, CO"
         }
       }
+    },
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "timeZone": "Asia/Kolkata",
+          "latitude": 13.0878,
+          "longitude": 80.2785,
+          "name": "Chennai, IN"
+        }
+      }
     }
   ],
   "otherLocations": [
@@ -35,18 +47,6 @@
           "latitude": 41.85,
           "longitude": -87.65,
           "name": "Chicago, IL"
-        }
-      }
-    },
-    {
-      "type": "Weather",
-      "settings": {
-        "location": {
-          "primary": false,
-          "timeZone": "Asia/Kolkata",
-          "latitude": 13.0878,
-          "longitude": 80.2785,
-          "name": "Chennai, IN"
         }
       }
     },
