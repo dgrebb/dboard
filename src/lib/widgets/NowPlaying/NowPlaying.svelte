@@ -125,7 +125,6 @@
     eventSource.onerror = (error) => {
       console.info('EventSource error:', error);
 
-      // Retry connection with exponential backoff
       retryCount++;
       const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 30000); // Exponential backoff with cap at 30s
       if (retryTimeout) {
@@ -174,15 +173,7 @@
   };
 
   function handleWindowUnload() {
-    if (eventSource) {
-      eventSource.close();
-    }
-    if (resubscribeTimeout) {
-      clearInterval(resubscribeTimeout);
-    }
-    if (retryTimeout) {
-      clearTimeout(retryTimeout);
-    }
+    stopEventSource();
   }
 
   const handlePushing = (e: MouseEvent | TouchEvent) => {
@@ -195,9 +186,6 @@
     if (e instanceof MouseEvent && e.button === 2) return;
     pushing = false;
 
-    // current = weatherWidget.current();
-
-    // Reload EventSource
     stopEventSource();
     setupEventSource();
 
@@ -272,27 +260,15 @@
   });
 
   onMount(async () => {
-    // setTimeout(async () => {
-    //   await setupEventSource();
-    // }, 1000);
     await setupEventSource();
     if (localStorage.getItem('musicModal') === 'true') {
       modal.isActive = true;
     }
     window.addEventListener('beforeunload', handleWindowUnload);
-    // currentArt = art;
   });
 
   onDestroy(() => {
-    if (eventSource) {
-      eventSource.close();
-    }
-    if (resubscribeTimeout) {
-      clearInterval(resubscribeTimeout);
-    }
-    if (retryTimeout) {
-      clearTimeout(retryTimeout);
-    }
+    stopEventSource();
   });
 </script>
 

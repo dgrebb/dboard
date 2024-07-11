@@ -35,9 +35,7 @@
           "name": "Chennai, IN"
         }
       }
-    }
-  ],
-  "otherLocations": [
+    },
     {
       "type": "Weather",
       "settings": {
@@ -47,6 +45,20 @@
           "latitude": 41.85,
           "longitude": -87.65,
           "name": "Chicago, IL"
+        }
+      }
+    }
+  ],
+  "otherLocations": [
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "timeZone": "America/Los_Angeles",
+          "latitude": 32.7157,
+          "longitude": -117.1647,
+          "name": "San Diego, CA"
         }
       }
     },
@@ -59,18 +71,6 @@
           "latitude": 26.9762,
           "longitude": -82.0906,
           "name": "Port Charlotte, FL"
-        }
-      }
-    },
-    {
-      "type": "Weather",
-      "settings": {
-        "location": {
-          "primary": false,
-          "timeZone": "America/Los_Angeles",
-          "latitude": 32.7157,
-          "longitude": -117.1647,
-          "name": "San Diego, CA"
         }
       }
     }
