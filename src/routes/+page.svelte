@@ -12,10 +12,8 @@
   import NextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
   import { onMount, type Component } from 'svelte';
   import Board from './(layouts)/Board.svelte';
-  let mounted = $state(false);
 
-  // NOTE: Mocks
-  // import mockSepta from '$root/__fixtures__/septa/nextToArrive.json';
+  let mounted = $state(false);
 
   const parseWidget = (widget: unknown): WidgetSettings | null => {
     if (isWidgetSettings(widget) && isTypeOfWidget(widget.type)) {
@@ -48,6 +46,7 @@
   // let otherLocations: WidgetSettings[] = settings.otherLocations;
 
   let components: Record<string, Component> = {};
+  let loadedWidgets: WidgetSettings[] = [];
 
   onMount(async () => {
     for (const widget of widgets) {
@@ -56,6 +55,8 @@
           await import(`$widgets/${widget.type}/${widget.type}.svelte`)
         ).default;
       }
+      loadedWidgets.push(widget);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1-second delay between each widget load
     }
     mounted = true;
   });
@@ -86,8 +87,8 @@
     <h1 class="text-orange-400">{$svelteSSEValue}</h1> -->
     <NowPlaying />
     <NextToArrive />
-    {#if widgets}
-      {#each widgets as { type, settings }}
+    {#if loadedWidgets}
+      {#each loadedWidgets as { type, settings }}
         <svelte:component this={components[type]} {settings} />
       {/each}
     {/if}
