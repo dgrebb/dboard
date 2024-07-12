@@ -1,4 +1,10 @@
-import type { Fetch, GradientResult, NowPlayingData, Timer } from '$lib/types';
+import type {
+  CustomError,
+  Fetch,
+  GradientResult,
+  NowPlayingData,
+  Timer,
+} from '$lib/types';
 import { homeState } from '$lib/stores';
 import { colorThief } from '$utils/colorThief';
 import { timeStringToSeconds } from '$utils/strings';
@@ -29,8 +35,6 @@ const clients: Set<{
 }> = new Set();
 let interval: Timer | null = null;
 let previousState: NowPlayingData = homeState.nowPlaying();
-
-// Log the clients in a tabular format
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const logClients = () => {
@@ -74,15 +78,21 @@ const broadcast = (message: Uint8Array) => {
         client.controller.enqueue(message);
       }
     } catch (error) {
-      console.error(`Error broadcasting to client ${client.ip}:`, error);
-      client.isClosed = true;
-      clients.delete(client);
+      if ((error as CustomError).code === 'ERR_INVALID_STATE') {
+        console.warn('Attempted to use a closed controller');
+        client.isClosed = true;
+        clients.delete(client);
+      } else {
+        console.error(`Error broadcasting to client ${client.ip}:`, error);
+        client.isClosed = true;
+        clients.delete(client);
+      }
     }
   });
 };
 
 const sendInitialState = async (
-  client: ReadableStreamDefaultController<Uint8Array>
+  controller: ReadableStreamDefaultController<Uint8Array>
 ) => {
   try {
     const data = await fetchMediaInfo(fetch);
@@ -91,13 +101,13 @@ const sendInitialState = async (
       ...data,
     };
     const stream = `data: ${JSON.stringify(state)}\n\n`;
-    if (client.desiredSize !== null) {
-      client.enqueue(new TextEncoder().encode(stream));
+    if (controller.desiredSize !== null) {
+      controller.enqueue(new TextEncoder().encode(stream));
     }
   } catch (error) {
     console.error('Error sending initial state to client:', error);
     clients.forEach((c) => {
-      if (c.controller === client) {
+      if (c.controller === controller) {
         c.isClosed = true;
       }
     });
@@ -204,10 +214,6 @@ export const GET = async (event: RequestEvent) => {
       await sendInitialState(controller);
 
       clients.add({ controller, isClosed: false, ip: clientIp });
-
-      // Print the client list on new connections
-      // console.info('------------------ CLIENT LIST -----------------');
-      // logClients();
 
       const cleanup = () => {
         const client = Array.from(clients).find(

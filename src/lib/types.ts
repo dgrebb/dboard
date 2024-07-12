@@ -18,6 +18,13 @@ export interface FetchOptions extends RequestInit {
 }
 
 /**
+ * Interface for NodeJS errors from SSE
+ */
+export interface CustomError extends Error {
+  code?: string;
+}
+
+/**
  * A Timer type that works in both Node.js and browser environments.
  * In Node.js, setTimeout and setInterval return an object with
  * additional methods and properties, while in browsers they return a number.

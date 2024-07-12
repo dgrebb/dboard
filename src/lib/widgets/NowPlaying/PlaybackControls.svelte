@@ -7,7 +7,7 @@
     classes: string;
     buttonSize?: number;
     setupEventSource: () => Promise<void>;
-    stopEventSource: () => Promise<void>;
+    stopEventSource: () => void;
   };
 
   let {

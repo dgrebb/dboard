@@ -32,7 +32,7 @@
     modal: ModalState;
     toggleModal: (e: MouseEvent) => void;
     setupEventSource: () => Promise<void>;
-    stopEventSource: () => Promise<void>;
+    stopEventSource: () => void;
   };
 
   let {
