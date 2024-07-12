@@ -43,18 +43,6 @@
       "settings": {
         "location": {
           "primary": false,
-          "timeZone": "America/Denver",
-          "latitude": 40.10298,
-          "longitude": -105.34346,
-          "name": "Jamestown, CO"
-        }
-      }
-    },
-    {
-      "type": "Weather",
-      "settings": {
-        "location": {
-          "primary": false,
           "timeZone": "America/New_York",
           "latitude": 26.9762,
           "longitude": -82.0906,
@@ -71,6 +59,18 @@
           "latitude": 41.85,
           "longitude": -87.65,
           "name": "Chicago, IL"
+        }
+      }
+    },
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "timeZone": "America/Denver",
+          "latitude": 40.10298,
+          "longitude": -105.34346,
+          "name": "Jamestown, CO"
         }
       }
     }

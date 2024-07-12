@@ -31,6 +31,8 @@
     handleGradientRefresh: (e: MouseEvent | TouchEvent) => void;
     modal: ModalState;
     toggleModal: (e: MouseEvent) => void;
+    setupEventSource: () => Promise<void>;
+    stopEventSource: () => Promise<void>;
   };
 
   let {
@@ -51,6 +53,8 @@
     transitionGradient,
     transitionForegroundGradient,
     toggleModal,
+    setupEventSource,
+    stopEventSource,
   }: Props = $props();
 
   let temperature: CurrentWeatherData['temperature_2m'] = $state(
@@ -181,6 +185,8 @@
               buttonSize={33}
               classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
               {setTrackChange}
+              {setupEventSource}
+              {stopEventSource}
             />
           </div>
         {/if}

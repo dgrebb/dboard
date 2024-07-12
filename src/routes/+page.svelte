@@ -46,7 +46,7 @@
   // let otherLocations: WidgetSettings[] = settings.otherLocations;
 
   let components: Record<string, Component> = {};
-  let loadedWidgets: WidgetSettings[] = [];
+  let loadedWidgets: WidgetSettings[] = $state([]);
 
   onMount(async () => {
     for (const widget of widgets) {
@@ -55,8 +55,8 @@
           await import(`$widgets/${widget.type}/${widget.type}.svelte`)
         ).default;
       }
-      loadedWidgets.push(widget);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1-second delay between each widget load
+      loadedWidgets = [...loadedWidgets, widget];
+      // await new Promise((resolve) => setTimeout(resolve, 1000)); // 1-second delay between each widget load
     }
     mounted = true;
   });
@@ -69,7 +69,6 @@
 
   // $effect(() => {
   //   // svelteSSEValue
-  //   console.log('🚀 ~ $effect ~ svelteSSEValue:', $svelteSSEValue);
   // });
 </script>
 
