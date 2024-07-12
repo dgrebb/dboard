@@ -6,9 +6,17 @@
     setTrackChange: (e: MouseEvent | TouchEvent) => void;
     classes: string;
     buttonSize?: number;
+    setupEventSource: () => Promise<void>;
+    stopEventSource: () => Promise<void>;
   };
 
-  let { buttonSize = 50, classes, setTrackChange }: Props = $props();
+  let {
+    buttonSize = 50,
+    classes,
+    setTrackChange,
+    stopEventSource,
+    setupEventSource,
+  }: Props = $props();
 
   /**
    * Send a command to control music playback.
@@ -19,11 +27,17 @@
   const sendCommand = async (e: MouseEvent, command: string) => {
     if (e.button === 2) return;
     e.stopPropagation();
+    console.log('🚀 ~ sendCommand ~ command:', command);
+
+    stopEventSource(); // Pause the SSE stream
+
     try {
       await fetch(`/api/control/music/${command}`, { method: 'POST' });
     } catch (e) {
       console.info(`Error processing the music control:`);
       console.error(e);
+    } finally {
+      await setupEventSource(); // Resume the SSE stream
     }
   };
 

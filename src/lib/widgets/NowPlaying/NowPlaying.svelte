@@ -116,7 +116,7 @@
     };
 
     eventSource.onerror = (error) => {
-      console.info('EventSource error:', error);
+      console.error('EventSource error:', error);
 
       retryCount++;
       const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 30000); // Exponential backoff with cap at 30s
@@ -127,6 +127,15 @@
         setupEventSource();
       }, retryDelay) as unknown as number;
     };
+
+    eventSource.onopen = () => {
+      console.log('EventSource connection opened.');
+      retryCount = 0;
+    };
+
+    eventSource.addEventListener('heartbeat', () => {
+      console.log('Received heartbeat from server');
+    });
 
     // Set up periodic resubscription
     if (resubscribeTimeout) {
@@ -304,5 +313,7 @@
     {handleGradientRefresh}
     {modal}
     {toggleModal}
+    {setupEventSource}
+    {stopEventSource}
   />
 {/if}
