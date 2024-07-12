@@ -144,11 +144,11 @@ const startInterval = (fetch: Fetch): void => {
         // NOTE: Proxying image URL is currently blocked by SSE mishandling
         // TODO: Fix image-blocking SSE
         // Proxy insecure WiiM Certificate URL
-        // const ipAddressPattern =
-        //   /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
-        // art = art.includes('/data/AirplayArtWorkData.png')
-        //   ? art.replace(ipAddressPattern, '')
-        //   : art;
+        const ipAddressPattern =
+          /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
+        art = art.includes('/data/AirplayArtWorkData.png')
+          ? art.replace(ipAddressPattern, '')
+          : art;
 
         if (previousState?.album !== data.album) {
           art = `${art}?ts=${timestamp}`;
