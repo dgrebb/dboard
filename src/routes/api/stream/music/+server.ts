@@ -135,7 +135,20 @@ const startInterval = (fetch: Fetch): void => {
 
       if (shouldBroadcast) {
         const timestamp = Date.now();
+
         let art = data.art || '/missing-album-art.png';
+
+        // Store the unaltered image source URL
+        const gradientArt = art;
+
+        // NOTE: Proxying image URL is currently blocked by SSE mishandling
+        // TODO: Fix image-blocking SSE
+        // Proxy insecure WiiM Certificate URL
+        // const ipAddressPattern =
+        //   /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
+        // art = art.includes('/data/AirplayArtWorkData.png')
+        //   ? art.replace(ipAddressPattern, '')
+        //   : art;
 
         if (previousState?.album !== data.album) {
           art = `${art}?ts=${timestamp}`;
@@ -146,7 +159,7 @@ const startInterval = (fetch: Fetch): void => {
 
         // Create gradient if the title has changed
         if (previousState?.title !== data.title) {
-          const gradientResult = await createGradient(art);
+          const gradientResult = await createGradient(gradientArt);
           if (gradientResult && typeof gradientResult !== 'boolean') {
             ({ backgroundGradient, foregroundGradient } = gradientResult);
           }
