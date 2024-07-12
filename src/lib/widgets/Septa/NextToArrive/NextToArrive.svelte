@@ -104,14 +104,14 @@
   });
 </script>
 
-{#if schedule && isSeptaNextToArriveDataArray(schedule)}
+{#if isSeptaNextToArriveDataArray(schedule)}
   <div class="dboard__grid__item control-widget">
     <div class="dboard__card">
       <Icon
         icon="mynaui:train"
-        height={300}
+        height={88}
         color="red"
-        class="absolute right-[-6rem] top-[-3rem] opacity-65"
+        class="absolute bottom-4 right-4 opacity-30"
       />
       <table class="septa">
         <tbody>
