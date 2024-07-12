@@ -17,34 +17,10 @@
       "settings": {
         "location": {
           "primary": false,
-          "timeZone": "America/Denver",
-          "latitude": 40.10298,
-          "longitude": -105.34346,
-          "name": "Jamestown, CO"
-        }
-      }
-    },
-    {
-      "type": "Weather",
-      "settings": {
-        "location": {
-          "primary": false,
           "timeZone": "Asia/Kolkata",
           "latitude": 13.0878,
           "longitude": 80.2785,
           "name": "Chennai, IN"
-        }
-      }
-    },
-    {
-      "type": "Weather",
-      "settings": {
-        "location": {
-          "primary": false,
-          "timeZone": "America/Chicago",
-          "latitude": 41.85,
-          "longitude": -87.65,
-          "name": "Chicago, IL"
         }
       }
     }
@@ -67,10 +43,34 @@
       "settings": {
         "location": {
           "primary": false,
+          "timeZone": "America/Denver",
+          "latitude": 40.10298,
+          "longitude": -105.34346,
+          "name": "Jamestown, CO"
+        }
+      }
+    },
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": false,
           "timeZone": "America/New_York",
           "latitude": 26.9762,
           "longitude": -82.0906,
           "name": "Port Charlotte, FL"
+        }
+      }
+    },
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": false,
+          "timeZone": "America/Chicago",
+          "latitude": 41.85,
+          "longitude": -87.65,
+          "name": "Chicago, IL"
         }
       }
     }
