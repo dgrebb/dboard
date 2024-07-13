@@ -396,7 +396,6 @@ export type NightScoutWidget = {
  */
 export type HomeData = {
   location: LocationType;
-  nowPlaying: NowPlayingData;
   lights?: unknown;
   weather?: WeatherData;
   time?: {
