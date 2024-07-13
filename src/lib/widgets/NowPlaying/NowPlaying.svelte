@@ -46,6 +46,12 @@
   const imageCache = new Map<string, boolean>();
   const cacheOrder: string[] = [];
 
+  /**
+   * Preloads an image and returns a promise that resolves when the image is loaded.
+   * Stores the last three images by default.
+   * @param {string} url - The URL of the image to preload.
+   * @returns {Promise<void>}
+   */
   const preloadImage = (url: string): Promise<void> => {
     if (imageCache.has(url)) {
       return Promise.resolve();
@@ -152,6 +158,11 @@
     }
   }
 
+  /**
+   * Keeps track of the remaining time for the track and updates the timer.
+   * @param {number} timeRemaining - The time remaining for the track in seconds.
+   * @param {number} totalTime - The total time of the track in seconds.
+   */
   const keepTime = (timeRemaining: number, totalTime: number) => {
     timer = timeRemaining < 5 ? totalTime : timeRemaining;
     if (timeInterval) {
