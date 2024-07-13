@@ -3,7 +3,6 @@ import type {
   GradientResult,
   HomeData,
   LocationType,
-  NowPlayingData,
   WeatherData,
 } from '$lib/types';
 
@@ -16,36 +15,10 @@ export const createHomeState = () => {
       latitude: 0,
       longitude: 0,
     },
-    nowPlaying: {
-      status: 'unknown',
-      artist: '',
-      album: '',
-      art: '/missing-album-art.png',
-      backgroundGradient: 'radial-gradient(at right top, darkblue, #1f1f1f)',
-      foregroundGradient: 'radial-gradient(at right top, #FFFF74, #E0E0E0)',
-      loved: false,
-      relativeTimePosition: '00:00:00',
-      title: '',
-      totalTime: '00:00:00',
-    },
+    weather: undefined,
   });
 
   return {
-    nowPlaying: () => {
-      return homeStore.nowPlaying;
-    },
-
-    nowPlayingArt: () => {
-      return homeStore.nowPlaying.art;
-    },
-
-    nowPlayingGradients: (): GradientResult => {
-      return {
-        backgroundGradient: homeStore.nowPlaying.backgroundGradient,
-        foregroundGradient: homeStore.nowPlaying.foregroundGradient,
-      };
-    },
-
     weather: () => {
       return homeStore.weather;
     },
@@ -81,17 +54,6 @@ export const createHomeState = () => {
         ...homeStore,
         location,
       };
-    },
-
-    setNowPlaying: async (nowPlaying: NowPlayingData) => {
-      const state = {
-        ...homeStore,
-        nowPlaying: {
-          ...homeStore.nowPlaying,
-          ...nowPlaying,
-        },
-      };
-      homeStore = state;
     },
 
     setWeather: async (weather: WeatherData) => {
