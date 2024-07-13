@@ -2,6 +2,7 @@
   import type {
     CurrentWeatherData,
     DailyWeatherData,
+    Timer,
     WeatherSettings,
   } from '$lib/types';
   import {
@@ -51,13 +52,15 @@
 
   let current: CurrentWeatherData | undefined = $state(weatherWidget.current());
   let daily: DailyWeatherData | undefined = $state(weatherWidget.daily());
-  let temperature: CurrentWeatherData['temperature_2m'] | undefined = $state(
-    weatherWidget.currentRoundTemperature()
+  let temperature: CurrentWeatherData['temperature_2m'] = $state(
+    weatherWidget.currentRoundTemperature() || 77
   );
   let clock: string = $state(timeState.hoursMinutesString(timeZone));
   let pushing = $state(false);
+  let pushed = $state(false);
   let refreshed = $state(true);
   let highlightColor = $state(fahrenheitToColorShade(77));
+  let pushingTimeout: Timer;
 
   async function setupEventSource() {
     if (eventSource) {
@@ -71,6 +74,22 @@
 
     eventSource.onmessage = async (event) => {
       const { weather } = JSON.parse(event.data);
+      ({ current, daily } = weather);
+
+      highlightColor = fahrenheitToColorShade(temperature);
+      if (
+        location.primary === true &&
+        isCurrentWeatherData(current) &&
+        isDailyWeatherData(daily)
+      ) {
+        homeState.setLocation(location);
+        homeState.setWeather({
+          success: true,
+          current,
+          daily,
+        });
+        background.updateColor(current, daily);
+      }
       await weatherWidget.setData(weather);
       retryCount = 0; // Reset retry count on successful message
     };
@@ -120,47 +139,48 @@
     stopEventSource();
   }
 
-  const handlePushing = (e: MouseEvent | TouchEvent) => {
-    if (e instanceof MouseEvent && e.button === 2) return;
-    pushing = true;
-    refreshed = false;
+  const handleMouseUp = () => {
+    clearTimeout(pushingTimeout);
+    pushing = false;
+    pushed = false;
+    refreshed = true;
   };
 
-  const handleUp = (e: MouseEvent | TouchEvent) => {
+  const handlePushing = (e: MouseEvent | TouchEvent) => {
     if (e instanceof MouseEvent && e.button === 2) return;
-    pushing = false;
+    e.preventDefault();
+    pushing = true;
+    pushingTimeout = setTimeout(() => {
+      pushing = false;
+      pushed = true;
+    }, 500);
+    refreshed = false;
+    handlePushed();
+  };
 
-    current = weatherWidget.current();
+  function handleTouchEnd() {
+    clearTimeout(pushingTimeout);
+    pushing = false;
+    pushed = false;
+    refreshed = true;
+  }
+
+  const handlePushed = () => {
+    pushed = true;
+    pushing = false;
 
     // Reload EventSource
     stopEventSource();
     setupEventSource();
-  };
 
-  $effect(() => {
     current = weatherWidget.current();
     daily = weatherWidget.daily();
-    temperature = weatherWidget.currentRoundTemperature() || 77;
-    highlightColor = fahrenheitToColorShade(temperature);
-    if (isCurrentWeatherData(current) && isDailyWeatherData(daily)) {
+    if (isCurrentWeatherData(current) && isDailyWeatherData(daily))
       background.updateColor(current, daily);
-    }
+    refreshed = true;
+  };
 
-    return () => {
-      if (
-        location.primary === true &&
-        isCurrentWeatherData(current) &&
-        isDailyWeatherData(daily)
-      ) {
-        homeState.setLocation(location);
-        homeState.setWeather({
-          success: true,
-          current,
-          daily,
-        });
-      }
-    };
-  });
+  $effect(() => {});
 
   $effect(() => {
     clock = timeState.hoursMinutesString(timeZone);
@@ -172,11 +192,13 @@
   });
 </script>
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
   onmousedown={(e) => handlePushing(e)}
-  onmouseup={(e) => handleUp(e)}
+  onmouseup={() => handleMouseUp()}
   ontouchstart={(e) => handlePushing(e)}
-  ontouchend={(e) => handleUp(e)}
+  ontouchend={() => handleTouchEnd()}
+  onclick={(e) => e.stopImmediatePropagation()}
   tabindex="-1"
   role="button"
   style={`--mainColor: ${highlightColor}`}
@@ -185,6 +207,7 @@
   {#if current}
     <div
       class={`dboard__card border-none bg-transparent ${current?.is_day === 0 ? 'night' : 'day'}`}
+      class:pushed
       class:pushing
       class:refreshed
       transition:fade
