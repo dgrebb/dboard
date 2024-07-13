@@ -101,7 +101,7 @@ const startServer = async () => {
 
   // Start HTTP/2 server
   httpServer.listen(443, () => {
-    console.log('HTTP/2 server running on https://localhost:443');
+    console.info('HTTP/2 server running on https://localhost:443');
   });
 };
 
