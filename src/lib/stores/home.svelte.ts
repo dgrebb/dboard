@@ -1,6 +1,5 @@
 import type {
   CurrentWeatherData,
-  GradientResult,
   HomeData,
   LocationType,
   WeatherData,
