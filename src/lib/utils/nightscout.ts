@@ -46,7 +46,7 @@ export const mapNightScoutColors = (currentReading: number) => {
       backgroundColor = '#9eb04c';
       break;
     case currentReading < 160:
-      mainColor = '#056e00';
+      mainColor = '#003e0d';
       backgroundColor = '#00d115';
       break;
     case currentReading < 190:

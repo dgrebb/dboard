@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { musicState } from '$lib/stores';
   import { healthState, homeState, uiState } from '$lib/stores';
   import type { GradientResult, ModalState, Timer } from '$lib/types';
   import { mapNightScoutDirectionIcon } from '$utils/nightscout';
@@ -25,7 +26,7 @@
   let playState = $state('loading');
   let art = $state('/missing-album-art.png');
   let { backgroundGradient, foregroundGradient }: GradientResult = $state(
-    homeState.nowPlayingGradients()
+    musicState.nowPlayingGradients()
   );
   let modal: ModalState = $state(uiState.modal());
   let pushing = $state(false);
@@ -41,7 +42,7 @@
   let timer = $state(0);
   let timeInterval: Timer | null = $state(null);
   let previousAlbum = $state('Unknown');
-  let currentArt: string | null = $state(homeState.nowPlayingArt());
+  let currentArt: string | null = $state(musicState.nowPlayingArt());
   let newArt: string | undefined = $state(undefined);
 
   const imageCache = new Map<string, boolean>();
@@ -110,7 +111,7 @@
         art = art + `?bust=${cachebust}`;
       }
 
-      await homeState.setNowPlaying(data);
+      await musicState.setNowPlaying(data);
       retryCount = 0;
       loaded = true;
     };
@@ -224,7 +225,7 @@
     const body = document.body;
     const delay = 3333;
     ({ backgroundGradient, foregroundGradient } =
-      homeState.nowPlayingGradients());
+      musicState.nowPlayingGradients());
     body.style.setProperty('--nextBackgroundGradient', backgroundGradient);
     body.style.setProperty('--nextForegroundGradient', foregroundGradient);
     playState = 'starting';

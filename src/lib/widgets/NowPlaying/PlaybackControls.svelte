@@ -6,17 +6,9 @@
     setTrackChange: (e: MouseEvent | TouchEvent) => void;
     classes: string;
     buttonSize?: number;
-    setupEventSource: () => Promise<void>;
-    stopEventSource: () => void;
   };
 
-  let {
-    buttonSize = 50,
-    classes,
-    setTrackChange,
-    stopEventSource,
-    setupEventSource,
-  }: Props = $props();
+  let { buttonSize = 50, classes, setTrackChange }: Props = $props();
 
   /**
    * Send a command to control music playback.
@@ -24,32 +16,29 @@
    * @param event - The mouse event triggered by the button click.
    * @param command - The command to send (e.g., 'prev', 'resume', 'pause', 'next').
    */
-  const sendCommand = async (e: MouseEvent, command: string) => {
-    if (e.button === 2) return;
+  const sendCommand = async (e: MouseEvent | TouchEvent, command: string) => {
+    if (e instanceof MouseEvent && e.button === 2) return;
     e.stopPropagation();
-    console.log('🚀 ~ sendCommand ~ command:', command);
-
-    stopEventSource(); // Pause the SSE stream
 
     try {
-      await fetch(`/api/control/music/${command}`, { method: 'POST' });
-    } catch (e) {
-      console.info(`Error processing the music control:`);
-      console.error(e);
-    } finally {
-      await setupEventSource(); // Resume the SSE stream
+      await fetch(`/api/stream/music?command=${command}`, { method: 'POST' });
+    } catch (error) {
+      console.error(
+        `Error processing the music control command: ${command}`,
+        error
+      );
     }
   };
 
-  const handleNext = (e: MouseEvent) => {
-    if (e.button === 2) return;
+  const handleNext = (e: MouseEvent | TouchEvent) => {
+    if (e instanceof MouseEvent && e.button === 2) return;
     e.preventDefault();
     setTrackChange(e);
     sendCommand(e, 'next');
   };
 
-  const handlePrev = (e: MouseEvent) => {
-    if (e.button === 2) return;
+  const handlePrev = (e: MouseEvent | TouchEvent) => {
+    if (e instanceof MouseEvent && e.button === 2) return;
     e.preventDefault();
     setTrackChange(e);
     sendCommand(e, 'prev');
@@ -68,7 +57,9 @@
 </script>
 
 <div class={classes}>
-  <button class="bounce-ui prev" onclick={(e: MouseEvent) => handlePrev(e)}
+  <button
+    class="bounce-ui prev"
+    onclick={(e: MouseEvent | TouchEvent) => handlePrev(e)}
     ><Icon
       icon="majesticons:next-circle"
       height={buttonSize}
@@ -77,21 +68,25 @@
   >
   <button
     class="bounce-ui"
-    onclick={(e: MouseEvent) => sendCommand(e, 'resume')}
+    onclick={(e: MouseEvent | TouchEvent) => sendCommand(e, 'resume')}
     ><Icon
       icon="majesticons:play-circle"
       height={buttonSize}
       width={buttonSize}
     /></button
   >
-  <button class="bounce-ui" onclick={(e: MouseEvent) => sendCommand(e, 'pause')}
+  <button
+    class="bounce-ui"
+    onclick={(e: MouseEvent | TouchEvent) => sendCommand(e, 'pause')}
     ><Icon
       icon="bi:pause-circle-fill"
       height={buttonSize}
       width={buttonSize}
     /></button
   >
-  <button class="bounce-ui" onclick={(e: MouseEvent) => handleNext(e)}
+  <button
+    class="bounce-ui"
+    onclick={(e: MouseEvent | TouchEvent) => handleNext(e)}
     ><Icon
       icon="majesticons:next-circle"
       height={buttonSize}
