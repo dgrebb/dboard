@@ -251,7 +251,7 @@ const handleGradientGeneration = async (): Promise<
         backgroundGradient: previousState.backgroundGradient,
         foregroundGradient: previousState.foregroundGradient,
       });
-      broadcast(new TextEncoder().encode(message));
+      broadcast(new TextEncoder().encode(`data: ${message}\n\n`));
 
       return gradientResult;
     }
