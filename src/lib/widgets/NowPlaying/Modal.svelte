@@ -53,8 +53,6 @@
     transitionGradient,
     transitionForegroundGradient,
     toggleModal,
-    setupEventSource,
-    stopEventSource,
   }: Props = $props();
 
   let temperature: CurrentWeatherData['temperature_2m'] = $state(
@@ -99,7 +97,7 @@
     class="current-music__modal"
     class:transitionGradient
     transition:fade={{ duration: 500 }}
-    onclick={(e) => toggleHud(e)}
+    onclick={(e) => handleGradientRefresh(e)}
   >
     <header>
       {#key currentValue}
@@ -168,10 +166,12 @@
         </div>
       </div>
       {#key album}
+        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
         <h3
           class="album-title text-fuchsia-200"
           out:fade={{ duration: 500 }}
           in:fade={{ duration: 500, delay: 500 }}
+          onclick={(e) => toggleHud(e)}
         >
           <SafeHtml html={addHtmlLineBreaks(album)} />
         </h3>
@@ -185,8 +185,6 @@
               buttonSize={33}
               classes="playback-controls md:w-[33%] justify-center z-10 flex pt-9 py-3 md:pb-3 md:flex-col md:items-end flex-wrap"
               {setTrackChange}
-              {setupEventSource}
-              {stopEventSource}
             />
           </div>
         {/if}

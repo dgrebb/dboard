@@ -22,8 +22,6 @@
   let totalTime: string | number = $state(0);
   let totalSeconds = $state(0);
   let relativeTimePosition: string | number = $state(0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let playState = $state('loading');
   let art = $state('/missing-album-art.png');
   let { backgroundGradient, foregroundGradient }: GradientResult = $state(
     musicState.nowPlayingGradients()
@@ -48,12 +46,6 @@
   const imageCache = new Map<string, boolean>();
   const cacheOrder: string[] = [];
 
-  /**
-   * Preloads an image and returns a promise that resolves when the image is loaded.
-   * Stores the last three images by default.
-   * @param {string} url - The URL of the image to preload.
-   * @returns {Promise<void>}
-   */
   const preloadImage = (url: string): Promise<void> => {
     if (imageCache.has(url)) {
       return Promise.resolve();
@@ -63,11 +55,9 @@
       const img = new Image();
       img.src = url;
       img.onload = () => {
-        // Add the image URL to the cache
         imageCache.set(url, true);
         cacheOrder.push(url);
 
-        // Ensure only the last 3 images are stored
         if (cacheOrder.length > 3) {
           const oldestUrl = cacheOrder.shift();
           if (oldestUrl) {
@@ -81,9 +71,6 @@
     });
   };
 
-  /**
-   * Starts the subscription to the music event source.
-   */
   async function setupEventSource() {
     if (eventSource) {
       eventSource.close();
@@ -93,27 +80,34 @@
 
     eventSource.onmessage = async (event) => {
       const data = await JSON.parse(event.data);
-      ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
+      if (data.artist && data.album && data.title) {
+        ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
 
-      timer = 0;
-      let currentSeconds = timeStringToSeconds(
-        relativeTimePosition?.toString()
-      );
-      totalSeconds = timeStringToSeconds(totalTime?.toString());
-      let time = totalSeconds - currentSeconds;
-      keepTime(time, totalSeconds);
+        timer = 0;
+        let currentSeconds = timeStringToSeconds(
+          relativeTimePosition?.toString()
+        );
+        totalSeconds = timeStringToSeconds(totalTime?.toString());
+        let time = totalSeconds - currentSeconds;
+        keepTime(time, totalSeconds);
 
-      let cachebust = Math.round(Date.now() / 1000);
+        let cachebust = Math.round(Date.now() / 1000);
 
-      if (art.includes('?')) {
-        art = art + `&bust=${cachebust}`;
-      } else {
-        art = art + `?bust=${cachebust}`;
+        if (art.includes('?')) {
+          art = art + `&bust=${cachebust}`;
+        } else {
+          art = art + `?bust=${cachebust}`;
+        }
+
+        await musicState.setNowPlaying(data);
+        retryCount = 0;
+        loaded = true;
+      } else if (data.backgroundGradient && data.foregroundGradient) {
+        musicState.setNowPlayingGradients({
+          backgroundGradient: data.backgroundGradient,
+          foregroundGradient: data.foregroundGradient,
+        });
       }
-
-      await musicState.setNowPlaying(data);
-      retryCount = 0;
-      loaded = true;
     };
 
     eventSource.onerror = (error) => {
@@ -130,15 +124,14 @@
     };
 
     eventSource.onopen = () => {
-      console.log('EventSource connection opened.');
+      console.info('EventSource connection opened.');
       retryCount = 0;
     };
 
     eventSource.addEventListener('heartbeat', () => {
-      console.log('Received heartbeat from server');
+      console.info('Received heartbeat from server');
     });
 
-    // Set up periodic resubscription
     if (resubscribeTimeout) {
       clearInterval(resubscribeTimeout);
     }
@@ -159,11 +152,6 @@
     }
   }
 
-  /**
-   * Keeps track of the remaining time for the track and updates the timer.
-   * @param {number} timeRemaining - The time remaining for the track in seconds.
-   * @param {number} totalTime - The total time of the track in seconds.
-   */
   const keepTime = (timeRemaining: number, totalTime: number) => {
     timer = timeRemaining < 5 ? totalTime : timeRemaining;
     if (timeInterval) {
@@ -189,15 +177,17 @@
     if (e instanceof MouseEvent && e.button === 2) return;
     pushing = false;
 
+    handleGradientRefresh(e);
+
     stopEventSource();
     setupEventSource();
 
     refreshed = true;
   };
 
-  function toggleModal(e: MouseEvent) {
-    e.preventDefault();
+  function toggleModal(e: MouseEvent | TouchEvent) {
     e.stopPropagation();
+    e.stopImmediatePropagation();
     const active = !uiState.modal().isActive;
     uiState.setModal({
       isActive: active,
@@ -206,10 +196,18 @@
     localStorage.setItem('musicModal', active.toString());
   }
 
-  const handleGradientRefresh = (e: MouseEvent | TouchEvent) => {
+  const handleGradientRefresh = async (e: MouseEvent | TouchEvent) => {
     if (e instanceof MouseEvent && e.button === 2) return;
-    e.preventDefault();
-    e.stopPropagation();
+    e.stopImmediatePropagation();
+    try {
+      const response = await fetch('/api/stream/music?generateGradient=true');
+      const result = await response.json();
+      if (result.success && result.gradient) {
+        musicState.setNowPlayingGradients(result.gradient);
+      }
+    } catch (error) {
+      console.error('Failed to generate gradient:', error);
+    }
   };
 
   $effect(() => {
@@ -228,7 +226,6 @@
       musicState.nowPlayingGradients());
     body.style.setProperty('--nextBackgroundGradient', backgroundGradient);
     body.style.setProperty('--nextForegroundGradient', foregroundGradient);
-    playState = 'starting';
 
     preloadImage(art)
       .then(() => {
