@@ -3,7 +3,7 @@
   import { Button } from 'flowbite-svelte';
   import { clickOutside } from '$lib/actions/clickOutside';
 
-  import { homeState } from '$lib/stores';
+  import { musicState } from '$lib/stores';
   import Icon from '@iconify/svelte';
 
   // Define the state variables
@@ -23,7 +23,7 @@
     relativeTimePosition,
     title,
     totalTime,
-  } = $state(homeState.nowPlaying());
+  } = $state(musicState.nowPlaying());
 
   // Function to toggle controls visibility
   const toggleControls = (): void => {
@@ -56,7 +56,7 @@
       relativeTimePosition,
       title,
       totalTime,
-    } = homeState.nowPlaying());
+    } = musicState.nowPlaying());
   });
 </script>
 

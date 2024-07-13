@@ -1,31 +1,22 @@
+import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import type {
   CustomError,
   Fetch,
+  FetchOptions,
   GradientResult,
   NowPlayingData,
   Timer,
 } from '$lib/types';
-import { homeState } from '$lib/stores';
+import { SECRET_AUDIO_CONTROL_IP_ADDRESS } from '$env/static/private';
 import { colorThief } from '$utils/colorThief';
 import { timeStringToSeconds } from '$utils/strings';
 import { fetchMediaInfo } from '$utils/wiim';
-import type { RequestEvent } from '@sveltejs/kit';
 
 export const prerender = false;
 
-/**
- * Refresh interval for fetching data.
- */
 let refreshInterval: number = 1000; // 1 second
-
-/**
- * Timeout ID for retrying fetch on error.
- */
 let retryTimeout: number | undefined;
-
-/**
- * Retry count for exponential backoff.
- */
 let retryCount = 0;
 
 const clients: Set<{
@@ -34,15 +25,16 @@ const clients: Set<{
   ip: string;
 }> = new Set();
 let interval: Timer | null = null;
-let previousState: NowPlayingData = homeState.nowPlaying();
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const logClients = () => {
-  const clientArray = Array.from(clients).map((client) => ({
-    ip: client.ip,
-    isClosed: client.isClosed,
-  }));
-  console.table(clientArray);
+let previousState: NowPlayingData = {
+  artist: '',
+  album: '',
+  title: '',
+  art: '',
+  totalTime: '',
+  relativeTimePosition: '',
+  loved: false,
+  backgroundGradient: '',
+  foregroundGradient: '',
 };
 
 const createGradient = async (
@@ -70,7 +62,6 @@ const createGradient = async (
 };
 
 // Broadcast the current state to all clients
-
 const broadcast = (message: Uint8Array) => {
   clients.forEach((client) => {
     try {
@@ -92,7 +83,8 @@ const broadcast = (message: Uint8Array) => {
 };
 
 const sendInitialState = async (
-  controller: ReadableStreamDefaultController<Uint8Array>
+  controller: ReadableStreamDefaultController<Uint8Array>,
+  fetch: Fetch
 ) => {
   try {
     const data = await fetchMediaInfo(fetch);
@@ -114,19 +106,13 @@ const sendInitialState = async (
   }
 };
 
-/**
- * Starts the interval for fetching and broadcasting media information.
- * @param fetch - The fetch function to use for the API requests.
- */
 const startInterval = (fetch: Fetch): void => {
   if (interval) return;
 
   interval = setInterval(async () => {
     try {
-      // Fetch data from the API
       let data = await fetchMediaInfo(fetch);
 
-      // Retry if art is empty
       if (!data.art) {
         const retryData = await fetchMediaInfo(fetch);
         if (retryData.art) data = retryData;
@@ -136,7 +122,6 @@ const startInterval = (fetch: Fetch): void => {
       const total = timeStringToSeconds(totalTime);
       const relative = timeStringToSeconds(relativeTimePosition);
 
-      // Update refresh interval
       if (total && relative) refreshInterval = total;
 
       const shouldBroadcast =
@@ -147,13 +132,8 @@ const startInterval = (fetch: Fetch): void => {
         const timestamp = Date.now();
 
         let art = data.art || '/missing-album-art.png';
-
-        // Store the unaltered image source URL
         const gradientArt = art;
 
-        // NOTE: Proxying image URL is currently blocked by SSE mishandling
-        // TODO: Fix image-blocking SSE
-        // Proxy insecure WiiM Certificate URL
         const ipAddressPattern =
           /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
         art = art.includes('/data/AirplayArtWorkData.png')
@@ -167,7 +147,6 @@ const startInterval = (fetch: Fetch): void => {
         let backgroundGradient: string | undefined;
         let foregroundGradient: string | undefined;
 
-        // Create gradient if the title has changed
         if (previousState?.title !== data.title) {
           const gradientResult = await createGradient(gradientArt);
           if (gradientResult && typeof gradientResult !== 'boolean') {
@@ -175,7 +154,6 @@ const startInterval = (fetch: Fetch): void => {
           }
         }
 
-        // Prepare now playing data
         const nowPlaying: NowPlayingData = {
           ...previousState,
           ...data,
@@ -184,15 +162,12 @@ const startInterval = (fetch: Fetch): void => {
           ...(foregroundGradient ? { foregroundGradient } : {}),
         };
 
-        // Broadcast the now playing data
         const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
         broadcast(new TextEncoder().encode(stream));
         previousState = nowPlaying;
       }
     } catch (error) {
       console.error('Error fetching or broadcasting data:', error);
-
-      // Retry connection with exponential backoff
       retryCount++;
       const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 30000);
       if (retryTimeout) clearTimeout(retryTimeout);
@@ -204,15 +179,113 @@ const startInterval = (fetch: Fetch): void => {
   }, refreshInterval);
 };
 
-export const GET = async (event: RequestEvent) => {
+const handlePlayerCommand = async (
+  command: string,
+  fetch: Fetch
+): Promise<void> => {
+  const requestOptions: FetchOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
+
+  await fetch(
+    `https://${SECRET_AUDIO_CONTROL_IP_ADDRESS}/httpapi.asp?command=setPlayerCmd:${command}`,
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => console.info(result))
+    .catch((error) => console.error(error));
+
+  // Fetch updated media info and broadcast to clients
+  const data = await fetchMediaInfo(fetch);
+
+  let art = data.art || '/missing-album-art.png';
+  const timestamp = Date.now();
+  const ipAddressPattern =
+    /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
+  art = art.includes('/data/AirplayArtWorkData.png')
+    ? art.replace(ipAddressPattern, '')
+    : art;
+
+  if (previousState?.album !== data.album) {
+    art = `${art}?ts=${timestamp}`;
+  }
+
+  let backgroundGradient: string | undefined;
+  let foregroundGradient: string | undefined;
+
+  if (previousState?.title !== data.title) {
+    const gradientResult = await createGradient(art);
+    if (gradientResult && typeof gradientResult !== 'boolean') {
+      ({ backgroundGradient, foregroundGradient } = gradientResult);
+    }
+  }
+
+  const nowPlaying: NowPlayingData = {
+    ...previousState,
+    ...data,
+    art,
+    ...(backgroundGradient ? { backgroundGradient } : {}),
+    ...(foregroundGradient ? { foregroundGradient } : {}),
+  };
+
+  previousState = nowPlaying;
+
+  const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
+  broadcast(new TextEncoder().encode(stream));
+};
+
+const handleGradientGeneration = async (): Promise<
+  GradientResult | boolean
+> => {
+  try {
+    const gradientResult = await createGradient(previousState.art);
+    if (gradientResult && typeof gradientResult !== 'boolean') {
+      previousState.backgroundGradient =
+        gradientResult.backgroundGradient || '';
+      previousState.foregroundGradient =
+        gradientResult.foregroundGradient || '';
+
+      // Broadcast the new gradient to all clients
+      const message = JSON.stringify({
+        backgroundGradient: previousState.backgroundGradient,
+        foregroundGradient: previousState.foregroundGradient,
+      });
+      broadcast(new TextEncoder().encode(message));
+
+      return gradientResult;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error generating gradient:', error);
+    return false;
+  }
+};
+
+export const GET: RequestHandler = async (event: RequestEvent) => {
   const fetch = event.fetch as Fetch;
   const clientIp = event.getClientAddress();
+  const command = event.url.searchParams.get('command');
+  const generateGradient = event.url.searchParams.get('generateGradient');
+
+  if (command) {
+    // Handle the command and return the result
+    await handlePlayerCommand(command, fetch);
+    return json({ success: true });
+  }
+
+  if (generateGradient) {
+    const gradient = await handleGradientGeneration();
+    if (gradient) {
+      return json({ success: true, gradient });
+    } else {
+      return json({ success: false, message: 'Failed to generate gradient' });
+    }
+  }
 
   const readable = new ReadableStream<Uint8Array>({
     async start(controller) {
-      // Send initial state to the new client
-      await sendInitialState(controller);
-
+      await sendInitialState(controller, fetch);
       clients.add({ controller, isClosed: false, ip: clientIp });
 
       const cleanup = () => {
@@ -229,7 +302,6 @@ export const GET = async (event: RequestEvent) => {
         }
       };
 
-      // Handle client disconnection
       event.request.signal.addEventListener('abort', cleanup);
 
       if (clients.size === 1) {
@@ -253,4 +325,13 @@ export const GET = async (event: RequestEvent) => {
       Connection: 'keep-alive',
     },
   });
+};
+
+export const POST: RequestHandler = async ({ fetch, url }) => {
+  const command = url.searchParams.get('command');
+  if (command) {
+    await handlePlayerCommand(command, fetch);
+    return json({ success: true });
+  }
+  return json({ success: false, message: 'No command provided' });
 };
