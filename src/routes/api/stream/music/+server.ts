@@ -282,7 +282,6 @@ const handleGradientGeneration = async (): Promise<
   GradientResult | boolean
 > => {
   try {
-    console.log('🚀   HIHJIHIHIHIHIHIH');
     const gradientResult = await createGradient(previousState.art);
     if (gradientResult && typeof gradientResult !== 'boolean') {
       previousState.backgroundGradient =

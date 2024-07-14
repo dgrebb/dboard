@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { musicState } from '$lib/stores';
-  import { healthState, homeState, uiState } from '$lib/stores';
-  import type { GradientResult, ModalState, Timer } from '$lib/types';
+  import { healthState, homeState, musicState, uiState } from '$lib/stores';
+  import type { ModalState, Timer } from '$lib/types';
   import { mapNightScoutDirectionIcon } from '$utils/nightscout';
   import { timeStringToSeconds } from '$utils/strings';
   import { onDestroy, onMount } from 'svelte';
@@ -23,9 +22,6 @@
   let totalSeconds = $state(0);
   let relativeTimePosition: string | number = $state(0);
   let art = $state('/missing-album-art.png');
-  let { backgroundGradient, foregroundGradient }: GradientResult = $state(
-    musicState.gradients()
-  );
   let modal: ModalState = $state(uiState.modal());
   let pushing = $state(false);
   let refreshed = $state(true);
@@ -87,16 +83,7 @@
     eventSource.onmessage = async (event) => {
       const data = await JSON.parse(event.data);
       if (data.artist && data.album && data.title) {
-        ({
-          artist,
-          album,
-          title,
-          art,
-          totalTime,
-          foregroundGradient,
-          backgroundGradient,
-          relativeTimePosition,
-        } = data);
+        ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
 
         timer = 0;
         let currentSeconds = timeStringToSeconds(
@@ -128,7 +115,6 @@
         loved = data.loved;
         musicState.setLoved(data.loved);
       } else if (data.backgroundGradient && data.foregroundGradient) {
-        console.log('🚀 ~ eventSource.onmessage= ~ data:', data);
         musicState.setGradients({
           backgroundGradient: data.backgroundGradient,
           foregroundGradient: data.foregroundGradient,
@@ -184,17 +170,25 @@
     transitionForegroundGradient = true;
     const back = musicState.gradients().backgroundGradient.toString();
     const fore = musicState.gradients().foregroundGradient.toString();
-    setGradientCSSVars('next', back, fore);
-    console.log('🚀 ~ $effect ~ back:', back);
+    setGradientCSSVars('next', 'Fore', fore);
+    setGradientCSSVars('next', 'Back', back);
 
-    setTimeout(() => {
-      setGradientCSSVars('previous', back, fore);
+    let foreTimeout = setTimeout(() => {
+      setGradientCSSVars('previous', 'Fore', fore);
+    }, delay / 4.25);
+    loaded = true;
+    let backTimeout = setTimeout(() => {
+      setGradientCSSVars('previous', 'Back', back);
       currentArt = art;
       transitionGradient = false;
       transitionForegroundGradient = false;
       newArt = undefined;
     }, delay);
-    loaded = true;
+
+    return () => {
+      clearTimeout(foreTimeout);
+      clearTimeout(backTimeout);
+    };
   });
 
   $effect(() => {
@@ -215,13 +209,15 @@
   });
 
   const setGradientCSSVars = (
-    which: 'next' | 'previous',
-    back: string,
-    fore: string
+    whichState: 'next' | 'previous',
+    whichGround: 'Fore' | 'Back',
+    gradient: string
   ) => {
     const body = document.body;
-    body.style.setProperty(`--${which}BackgroundGradient`, back);
-    body.style.setProperty(`--${which}ForegroundGradient`, fore);
+    body.style.setProperty(
+      `--${whichState}${whichGround}groundGradient`,
+      gradient
+    );
   };
 
   /**
@@ -277,6 +273,7 @@
     e.stopPropagation();
     e.stopImmediatePropagation();
     if (e instanceof MouseEvent && e.button === 2) return;
+    if (transitionGradient === true) return;
     try {
       const response = await fetch('/api/stream/music?generateGradient=true');
       const result = await response.json();
