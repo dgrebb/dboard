@@ -50,7 +50,7 @@
   tabindex="-1"
   role="button"
 >
-  {#key art}
+  {#key title}
     <div
       class="dboard__card svelte-1s7u7zs refreshed w-full"
       class:transitionGradient
