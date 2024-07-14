@@ -8,7 +8,6 @@ export interface NowPlayingAPI {
   art: string;
   totalTime: string;
   relativeTimePosition: string;
-  loved: boolean;
 }
 
 export interface MediaInfo {
@@ -22,7 +21,6 @@ export interface MediaInfo {
   playMedium: string | null;
   recordMedium: string | null;
   writeStatus: string | null;
-  loved: boolean;
 }
 
 export interface PositionInfo {
