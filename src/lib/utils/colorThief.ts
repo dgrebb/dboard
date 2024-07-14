@@ -12,6 +12,8 @@ const seedRandom = () => {
   };
 };
 
+const getRandomAngle = () => Math.floor(Math.random() * 361);
+
 // Function to adjust color components randomly
 const randomizeColorComponent = (
   component: number,
@@ -126,8 +128,8 @@ export const colorThief = async (
     }
 
     // Create gradient strings using the captured and randomized colors
-    const backgroundGradient = `linear-gradient(45deg, ${backgroundColors.join(', ')})`;
-    const foregroundGradient = `linear-gradient(45deg, ${foregroundColors.join(', ')})`;
+    const backgroundGradient = `linear-gradient(${getRandomAngle()}deg, ${backgroundColors.join(', ')})`;
+    const foregroundGradient = `linear-gradient(${getRandomAngle()}deg, ${foregroundColors.join(', ')})`;
     return { backgroundGradient, foregroundGradient };
   } catch (error) {
     console.error(error);

@@ -1,133 +1,11 @@
 @import './controls.css';
-
-.now-playing {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  .dboard__card {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    /* background: var(--previousBackgroundGradient); */
-    min-height: auto;
-
-    &::after,
-    &::before {
-      display: block;
-      position: absolute;
-      filter: saturate(1.2);
-      transition: opacity 3s ease-in-out;
-      inset: 0;
-      content: '';
-    }
-
-    &::before {
-      opacity: 0;
-      z-index: 0;
-      transition-delay: 1s;
-      background: var(--nextBackgroundGradient);
-    }
-
-    &::after {
-      opacity: 0.8;
-      z-index: -1;
-      background: var(--previousBackgroundGradient);
-    }
-
-    &.transitionGradient {
-      /* background: var(--previousBackgroundGradient); */
-      &::before {
-        opacity: 0.8;
-      }
-      &::after {
-        opacity: 0;
-      }
-    }
-
-    & + .dboard__card {
-      display: none;
-    }
-  }
-
-  .album-art,
-  .track-details {
-    display: flex;
-    flex-direction: column;
-    z-index: 5;
-  }
-
-  .album-art {
-    justify-content: space-between;
-    margin-right: 1rem;
-    height: 100%;
-
-    img {
-      max-width: 200px;
-      max-height: 200px;
-    }
-
-    & + .album-art {
-      display: none;
-    }
-  }
-
-  .album-title {
-    margin-top: 1rem;
-    text-wrap: balance;
-  }
-
-  .album-title,
-  .track-artist,
-  .track-time,
-  .track-title {
-    display: block;
-    z-index: 3;
-    filter: invert(1);
-    background: var(--nextBackgroundGradient);
-    background-size: 100vw 100vh;
-    background-clip: text;
-    -webkit-background-clip: text;
-    background-blend-mode: difference;
-    padding: 0.25rem;
-    color: transparent;
-    text-wrap: balance;
-  }
-
-  .track-details {
-    justify-content: space-between;
-    height: 100%;
-
-    span {
-      display: block;
-    }
-
-    .track-artist,
-    .track-time,
-    .track-title {
-      text-align: right;
-    }
-
-    & + .track-details {
-      display: none;
-    }
-  }
-
-  html.dark & {
-    .album-title,
-    .track-details {
-      filter: invert(1);
-    }
-  }
-}
+@import './now-playing-widget.css';
 
 .now-playing,
 .current-music__modal {
   .loved {
     display: flex;
     position: absolute;
-    right: -0.5rem;
-    bottom: -0.5rem;
     justify-content: center;
     align-items: center;
     z-index: 30;
@@ -299,6 +177,11 @@
       /* display: none; */
       position: absolute;
     }
+  }
+
+  .loved {
+    right: -0.5rem;
+    bottom: -0.5rem;
   }
 
   .loved-heart {

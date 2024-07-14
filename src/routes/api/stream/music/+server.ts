@@ -5,6 +5,7 @@ import type {
   Fetch,
   FetchOptions,
   GradientResult,
+  NowPlayingAPI,
   NowPlayingData,
   Timer,
 } from '$lib/types';
@@ -106,6 +107,42 @@ const sendInitialState = async (
   }
 };
 
+const fetchLovedStatus = async (fetch: Fetch, wiiMData: NowPlayingAPI) => {
+  const maxAttempts = 3;
+  let attempt = 0;
+
+  const tryFetch = async (): Promise<boolean> => {
+    attempt++;
+    if (attempt > maxAttempts) return previousState.loved; // Stop after 3 attempts and return previous state
+
+    try {
+      const response = await fetch('/api/static/music');
+      const text = await response.text();
+      const data = JSON.parse(text);
+
+      if (
+        data.artist === wiiMData.artist &&
+        data.album === wiiMData.album &&
+        data.title === wiiMData.title
+      ) {
+        const stream = `data: ${JSON.stringify({ loved: data.loved })}\n\n`;
+        broadcast(new TextEncoder().encode(stream));
+
+        return data.loved;
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 15000)); // Wait for 15 seconds
+        return tryFetch();
+      }
+    } catch (error) {
+      console.error('Error fetching favorite status:', error);
+      await new Promise((resolve) => setTimeout(resolve, 15000)); // Wait for 15 seconds
+      return tryFetch();
+    }
+  };
+
+  return tryFetch();
+};
+
 const startInterval = (fetch: Fetch): void => {
   if (interval) return;
 
@@ -162,9 +199,15 @@ const startInterval = (fetch: Fetch): void => {
           ...(foregroundGradient ? { foregroundGradient } : {}),
         };
 
+        // Fetch the loved status if it's a new track
+        const staticLove = await fetchLovedStatus(fetch, data);
+
         const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
         broadcast(new TextEncoder().encode(stream));
-        previousState = nowPlaying;
+        previousState = {
+          ...nowPlaying,
+          loved: staticLove,
+        };
       }
     } catch (error) {
       console.error('Error fetching or broadcasting data:', error);
@@ -239,6 +282,7 @@ const handleGradientGeneration = async (): Promise<
   GradientResult | boolean
 > => {
   try {
+    console.log('🚀   HIHJIHIHIHIHIHIH');
     const gradientResult = await createGradient(previousState.art);
     if (gradientResult && typeof gradientResult !== 'boolean') {
       previousState.backgroundGradient =

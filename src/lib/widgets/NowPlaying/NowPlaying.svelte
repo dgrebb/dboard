@@ -24,7 +24,7 @@
   let relativeTimePosition: string | number = $state(0);
   let art = $state('/missing-album-art.png');
   let { backgroundGradient, foregroundGradient }: GradientResult = $state(
-    musicState.nowPlayingGradients()
+    musicState.gradients()
   );
   let modal: ModalState = $state(uiState.modal());
   let pushing = $state(false);
@@ -87,7 +87,16 @@
     eventSource.onmessage = async (event) => {
       const data = await JSON.parse(event.data);
       if (data.artist && data.album && data.title) {
-        ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
+        ({
+          artist,
+          album,
+          title,
+          art,
+          totalTime,
+          foregroundGradient,
+          backgroundGradient,
+          relativeTimePosition,
+        } = data);
 
         timer = 0;
         let currentSeconds = timeStringToSeconds(
@@ -105,11 +114,22 @@
           art = art + `?bust=${cachebust}`;
         }
 
+        preloadImage(art)
+          .then(() => {
+            newArt = art;
+          })
+          .catch((error) => {
+            console.error('Image failed to load', error);
+          });
+
         await musicState.setNowPlaying(data);
         retryCount = 0;
-        loaded = true;
+      } else if (data.loved !== undefined) {
+        loved = data.loved;
+        musicState.setLoved(data.loved);
       } else if (data.backgroundGradient && data.foregroundGradient) {
-        musicState.setNowPlayingGradients({
+        console.log('🚀 ~ eventSource.onmessage= ~ data:', data);
+        musicState.setGradients({
           backgroundGradient: data.backgroundGradient,
           foregroundGradient: data.foregroundGradient,
         });
@@ -157,6 +177,52 @@
       clearTimeout(retryTimeout);
     }
   }
+
+  $effect(() => {
+    const delay = 3300;
+    transitionGradient = true;
+    transitionForegroundGradient = true;
+    const back = musicState.gradients().backgroundGradient.toString();
+    const fore = musicState.gradients().foregroundGradient.toString();
+    setGradientCSSVars('next', back, fore);
+    console.log('🚀 ~ $effect ~ back:', back);
+
+    setTimeout(() => {
+      setGradientCSSVars('previous', back, fore);
+      currentArt = art;
+      transitionGradient = false;
+      transitionForegroundGradient = false;
+      newArt = undefined;
+    }, delay);
+    loaded = true;
+  });
+
+  $effect(() => {
+    return () => {
+      transitionGradient = false;
+      transitionForegroundGradient = false;
+      previousAlbum = album;
+    };
+  });
+
+  $effect(() => {
+    const currentHealthData = healthState.getCurrentData() || false;
+    if (currentHealthData !== false) {
+      directionIcon = healthState.getDirectionIcon();
+      ({ direction, sgv: currentValue } = currentHealthData);
+      difference = healthState.getDifference();
+    }
+  });
+
+  const setGradientCSSVars = (
+    which: 'next' | 'previous',
+    back: string,
+    fore: string
+  ) => {
+    const body = document.body;
+    body.style.setProperty(`--${which}BackgroundGradient`, back);
+    body.style.setProperty(`--${which}ForegroundGradient`, fore);
+  };
 
   /**
    * Keeps track of the remaining time for the track and updates the timer.
@@ -208,67 +274,19 @@
   }
 
   const handleGradientRefresh = async (e: MouseEvent | TouchEvent) => {
-    if (e instanceof MouseEvent && e.button === 2) return;
+    e.stopPropagation();
     e.stopImmediatePropagation();
+    if (e instanceof MouseEvent && e.button === 2) return;
     try {
       const response = await fetch('/api/stream/music?generateGradient=true');
       const result = await response.json();
       if (result.success && result.gradient) {
-        musicState.setNowPlayingGradients(result.gradient);
+        musicState.setGradients(result.gradient);
       }
     } catch (error) {
       console.error('Failed to generate gradient:', error);
     }
   };
-
-  $effect(() => {
-    const currentHealthData = healthState.getCurrentData() || false;
-    if (currentHealthData !== false) {
-      directionIcon = healthState.getDirectionIcon();
-      ({ direction, sgv: currentValue } = currentHealthData);
-      difference = healthState.getDifference();
-    }
-  });
-
-  $effect(() => {
-    const body = document.body;
-    const delay = 3333;
-    ({ backgroundGradient, foregroundGradient } =
-      musicState.nowPlayingGradients());
-    body.style.setProperty('--nextBackgroundGradient', backgroundGradient);
-    body.style.setProperty('--nextForegroundGradient', foregroundGradient);
-
-    preloadImage(art)
-      .then(() => {
-        newArt = art;
-      })
-      .catch((error) => {
-        console.error('Image failed to load', error);
-      });
-
-    transitionGradient = true;
-    transitionForegroundGradient = true;
-
-    body.style.setProperty('--previousForegroundGradient', foregroundGradient);
-    return () => {
-      loaded = true;
-      previousAlbum = album;
-      setTimeout(() => {
-        transitionForegroundGradient = false;
-      }, 500);
-      setTimeout(() => {
-        currentArt = art;
-        transitionGradient = false;
-        body.style.setProperty(
-          '--previousBackgroundGradient',
-          backgroundGradient
-        );
-      }, delay);
-      setTimeout(() => {
-        newArt = undefined;
-      }, delay + 1000);
-    };
-  });
 
   onMount(async () => {
     await setupEventSource();
