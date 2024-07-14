@@ -2,7 +2,7 @@
   import { selfOffsetBackground } from '$actions/selfOffsetBackground';
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
   import SafeHtml from '$components/SafeHTML.svelte';
-  import { homeState, uiState } from '$lib/stores';
+  import { homeState, uiState } from '$stores';
   import type { CurrentWeatherData, ModalState } from '$types';
   import { addHtmlLineBreaks } from '$utils/strings';
   import Icon from '@iconify/svelte';

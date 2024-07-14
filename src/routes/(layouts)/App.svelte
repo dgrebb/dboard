@@ -5,7 +5,7 @@
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
   import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
   import Controls from '$lib/components/Controls/Controls.svelte';
-  import { timeState, uiState } from '$lib/stores';
+  import { timeState, uiState } from '$stores';
   import type { Snippet } from 'svelte';
   import { onDestroy } from 'svelte';
 

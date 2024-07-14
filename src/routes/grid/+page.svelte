@@ -4,7 +4,7 @@
   import BackgroundFrame from '$lib/components/Board/BackgroundFrame.svelte';
   import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
   import ForegroundFrame from '$lib/components/Board/ForegroundFrame.svelte';
-  import updateBackgroundColorGradient from '$lib/stores/background.svelte';
+  import updateBackgroundColorGradient from '$stores/background.svelte';
   import { onMount } from 'svelte';
   import Grid from 'svelte-grid';
   import gridHelp from 'svelte-grid/build/helper/index.mjs';

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import legTime from '$lib/stores/legTime';
-  import solar from '$lib/stores/solar';
-  import weather from '$lib/stores/weatherLeg';
+  import legTime from '$stores/legTime';
+  import solar from '$stores/solar';
+  import weather from '$stores/weatherLeg';
   import { onMount } from 'svelte';
 
   export let cloudCover: number = 0;
