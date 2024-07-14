@@ -162,8 +162,7 @@ const startInterval = (fetch: Fetch): void => {
       if (total && relative) refreshInterval = total;
 
       const shouldBroadcast =
-        (data && previousState?.title !== data.title) ||
-        (previousState?.loved !== data.loved && relative < 30);
+        (data && previousState?.title !== data.title) || relative < 30;
 
       if (shouldBroadcast) {
         const timestamp = Date.now();
@@ -201,12 +200,12 @@ const startInterval = (fetch: Fetch): void => {
 
         const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
         broadcast(new TextEncoder().encode(stream));
-        fetchLovedStatus(fetch, data);
+        const staticLove = await fetchLovedStatus(fetch, data);
 
         // Fetch the loved status if it's a new track
         previousState = {
           ...nowPlaying,
-          // loved: staticLove,
+          loved: staticLove,
         };
       }
     } catch (error) {

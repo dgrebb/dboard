@@ -2,7 +2,7 @@ import {
   SECRET_AUDIO_CONTROL_IP_ADDRESS,
   SECRET_WIIM_SOAP_API_PORT,
 } from '$env/static/private';
-import type { Fetch, MediaInfo, PositionInfo, NowPlayingAPI } from '$types';
+import type { Fetch, MediaInfo, NowPlayingAPI, PositionInfo } from '$types';
 import { DOMParser } from 'xmldom';
 
 const createSoapEnvelope = (
@@ -57,11 +57,6 @@ const extractValue = (xmlDoc: Document, tagName: string): string | null => {
 const parseMediaInfoResponse = (responseXml: string): MediaInfo => {
   const xmlDoc = parseXmlResponse(responseXml);
 
-  const extractBoolean = (tagName: string): boolean => {
-    const value = extractValue(xmlDoc, tagName);
-    return value === '1' || value?.toLowerCase() === 'true';
-  };
-
   return {
     nrTracks: extractValue(xmlDoc, 'NrTracks'),
     mediaDuration: extractValue(xmlDoc, 'MediaDuration'),
@@ -73,7 +68,6 @@ const parseMediaInfoResponse = (responseXml: string): MediaInfo => {
     playMedium: extractValue(xmlDoc, 'PlayMedium'),
     recordMedium: extractValue(xmlDoc, 'RecordMedium'),
     writeStatus: extractValue(xmlDoc, 'WriteStatus'),
-    loved: extractBoolean('Favorite'),
   };
 };
 
@@ -123,7 +117,6 @@ export const fetchMediaInfo = async (fetch: Fetch): Promise<NowPlayingAPI> => {
       artist: extractDIDLValue('upnp:artist') || '',
       title: extractDIDLValue('dc:title') || '',
       art: extractDIDLValue('upnp:albumArtURI') || '',
-      loved: mediaInfo.loved,
       totalTime: positionInfo.totalTime || '00:00:00',
       relativeTimePosition: positionInfo.relativeTimePosition || '00:00:00',
     };
