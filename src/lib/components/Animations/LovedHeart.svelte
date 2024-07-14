@@ -37,7 +37,7 @@
   }
 </script>
 
-{#if loved}
+{#if loved === true}
   <div class="loved" in:bounceIn out:bounceOut>
     <Icon
       icon="emojione-monotone:heart-decoration"

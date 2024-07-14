@@ -18,6 +18,7 @@ export const createMusicState = () => {
     nowPlaying: () => {
       return musicStore;
     },
+
     setNowPlaying: async (nowPlaying: NowPlayingData) => {
       musicStore = {
         ...musicStore,
@@ -29,17 +30,24 @@ export const createMusicState = () => {
       return musicStore.art;
     },
 
-    nowPlayingGradients: (): GradientResult => {
+    gradients: (): GradientResult => {
       return {
         backgroundGradient: musicStore.backgroundGradient,
         foregroundGradient: musicStore.foregroundGradient,
       };
     },
 
-    setNowPlayingGradients: (gradients: GradientResult) => {
+    setGradients: (gradients: GradientResult) => {
       musicStore = {
         ...musicStore,
         ...gradients,
+      };
+    },
+
+    setLoved: (loved: boolean) => {
+      musicStore = {
+        ...musicStore,
+        loved,
       };
     },
   };

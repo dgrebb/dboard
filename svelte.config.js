@@ -24,6 +24,7 @@ const config = {
       $layouts: 'src/routes/(layouts)',
       $assets: 'static',
       $root: 'src',
+      $types: 'src/lib/types.ts',
     },
   },
 };

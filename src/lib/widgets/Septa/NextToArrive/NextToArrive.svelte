@@ -104,7 +104,7 @@
   });
 </script>
 
-{#if isSeptaNextToArriveDataArray(schedule)}
+{#if isSeptaNextToArriveDataArray(schedule) && schedule.length > 0}
   <div class="dboard__grid__item control-widget">
     <div class="dboard__card">
       <Icon
