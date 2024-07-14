@@ -1,3 +1,5 @@
+import type { WeatherIconComponent } from '$components/WeatherIcons';
+
 export * from '$root/lib/types/WiiM';
 
 /**
@@ -227,6 +229,7 @@ export function isSeptaNextToArriveDataArray(
  */
 export type IconProps = {
   icon: string;
+  component?: WeatherIconComponent | false;
   color: string;
   name: string;
 };

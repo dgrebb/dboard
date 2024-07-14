@@ -87,7 +87,7 @@ html.light {
     }
 
     svg {
-      animation: float 5s infinite;
+      /* animation: float 5s infinite; */
       will-change: transform;
 
       path {
