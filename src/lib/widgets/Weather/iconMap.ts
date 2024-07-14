@@ -63,31 +63,37 @@ export const dayIconMap: IconMap = {
   },
   61: {
     icon: 'fluent:weather-rain-20-filled',
+    component: 'LightRain',
     color: lightBlue,
     name: 'Light Rain',
   },
   63: {
     icon: 'fluent:weather-rain-20-filled',
+    component: 'Rain',
     color: lightBlue,
     name: 'Rain',
   },
   65: {
     icon: 'fluent:weather-rain-20-filled',
+    component: 'Rain',
     color: lightBlue,
     name: 'Heavy Rain',
   },
   80: {
     icon: 'fluent:weather-rain-showers-day-20-filled',
+    component: 'Rain',
     color: lightBlue,
     name: 'Light Showers',
   },
   81: {
     icon: 'fluent:weather-rain-showers-day-20-filled',
+    component: 'Rain',
     color: lightBlue,
     name: 'Moderate Showers',
   },
   82: {
     icon: 'fluent:weather-rain-showers-day-20-filled',
+    component: 'Rain',
     color: lightBlue,
     name: 'Violent Showers',
   },
@@ -159,25 +165,30 @@ export const nightIconMap: IconMap = {
   },
   63: {
     icon: 'fluent:weather-rain-20-filled',
+    component: 'Rain',
     color: darkBlue,
     name: 'Rain',
   },
   65: {
     icon: 'fluent:weather-rain-20-filled',
+    component: 'Rain',
     color: darkBlue,
     name: 'Heavy Rain',
   },
   80: {
     icon: 'fluent:weather-rain-showers-night-20-filled',
+    component: 'Rain',
     color: lightBlue,
     name: 'Light Showers',
   },
   81: {
     icon: 'fluent:weather-rain-showers-night-20-filled',
+    component: 'Rain',
     color: lightBlue,
     name: 'Moderate Showers',
   },
   82: {
+    component: 'Rain',
     icon: 'fluent:weather-rain-showers-night-20-filled',
     color: lightBlue,
     name: 'Violent Showers',
@@ -207,7 +218,7 @@ function mapWeatherIcon(weatherCode: number, isDay: number): IconProps {
     component:
       (isDay === 1
         ? dayIconMap[weatherCode].component
-        : nightIconMap[weatherCode].component) || false,
+        : nightIconMap[weatherCode].component) || 'IconNotFound',
     name:
       isDay === 1
         ? dayIconMap[weatherCode].name

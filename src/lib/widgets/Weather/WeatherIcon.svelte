@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import type { Component } from 'svelte';
-  import Icon from '@iconify/svelte';
-  import mapWeatherIcon from '$widgets/Weather/iconMap';
   import components, {
     type WeatherIconComponent,
   } from '$components/WeatherIcons';
+  import mapWeatherIcon from '$widgets/Weather/iconMap';
+  import type { Component } from 'svelte';
+  import { onMount } from 'svelte';
 
   /**
    * A map of component names to their corresponding Svelte components.
@@ -27,30 +26,26 @@
   };
 
   let { weatherCode, isDay }: Props = $props();
-  let icon: string | undefined = $state(undefined);
-  let color = $state('#85aba0');
-  let component: WeatherIconComponent | false = $state(false);
+  let component: WeatherIconComponent = $state('IconNotFound');
   let name = $state('Loading');
+  // let icon: string | undefined = $state(undefined);
+  // let color = $state('#85aba0');
 
   onMount(() => {
     const mappedIcon = mapWeatherIcon(weatherCode, isDay);
-    icon = mappedIcon.icon;
-    color = mappedIcon.color;
-    component = mappedIcon.component || false; // Ensure component is either string or false
+    component = mappedIcon.component; // Ensure component is either string or false
     name = mappedIcon.name;
+    // icon = mappedIcon.icon;
+    // color = mappedIcon.color;
   });
 </script>
 
 <div class="big-icon-wow right-0 flex flex-col items-end">
-  {#if typeof component === 'string'}
-    <div class="w-[9rem]">
-      <svelte:component this={weatherIconComponents[component]} />
-    </div>
-  {:else if icon !== undefined}
-    <p class="absolute self-end p-3 text-slate-500">{name}</p>
-    <Icon {icon} {color} width={200} class="self-end" />
-  {:else}
-    <Icon icon="meteocons:not-available-fill" width={200} />
-    <p>{weatherCode}</p>
-  {/if}
+  <div class="w-[9rem]">
+    <svelte:component
+      this={weatherIconComponents[component]}
+      {weatherCode}
+      {name}
+    />
+  </div>
 </div>
