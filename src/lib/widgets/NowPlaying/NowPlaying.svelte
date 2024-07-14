@@ -175,7 +175,7 @@
 
   $effect(() => {
     const delay = 3300;
-    if (foreTimeout || backTimeout) return;
+    // if (foreTimeout || backTimeout) return;
     transitionGradient = true;
     transitionForegroundGradient = true;
     ({ backgroundGradient, foregroundGradient } = musicState.gradients());

@@ -22,6 +22,8 @@
 
     try {
       await fetch(`/api/stream/music?command=${command}`, { method: 'POST' });
+      // Immediately fetch new track info after a command
+      setTrackChange(e);
     } catch (error) {
       console.error(
         `Error processing the music control command: ${command}`,
@@ -33,14 +35,12 @@
   const handleNext = (e: MouseEvent | TouchEvent) => {
     if (e instanceof MouseEvent && e.button === 2) return;
     e.preventDefault();
-    setTrackChange(e);
     sendCommand(e, 'next');
   };
 
   const handlePrev = (e: MouseEvent | TouchEvent) => {
     if (e instanceof MouseEvent && e.button === 2) return;
     e.preventDefault();
-    setTrackChange(e);
     sendCommand(e, 'prev');
   };
 
@@ -60,37 +60,37 @@
   <button
     class="bounce-ui prev"
     onclick={(e: MouseEvent | TouchEvent) => handlePrev(e)}
-    ><Icon
+  >
+    <Icon
       icon="majesticons:next-circle"
       height={buttonSize}
       width={buttonSize}
-    /></button
-  >
+    />
+  </button>
   <button
     class="bounce-ui"
     onclick={(e: MouseEvent | TouchEvent) => sendCommand(e, 'resume')}
-    ><Icon
+  >
+    <Icon
       icon="majesticons:play-circle"
       height={buttonSize}
       width={buttonSize}
-    /></button
-  >
+    />
+  </button>
   <button
     class="bounce-ui"
     onclick={(e: MouseEvent | TouchEvent) => sendCommand(e, 'pause')}
-    ><Icon
-      icon="bi:pause-circle-fill"
-      height={buttonSize}
-      width={buttonSize}
-    /></button
   >
+    <Icon icon="bi:pause-circle-fill" height={buttonSize} width={buttonSize} />
+  </button>
   <button
     class="bounce-ui"
     onclick={(e: MouseEvent | TouchEvent) => handleNext(e)}
-    ><Icon
+  >
+    <Icon
       icon="majesticons:next-circle"
       height={buttonSize}
       width={buttonSize}
-    /></button
-  >
+    />
+  </button>
 </div>
