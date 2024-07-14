@@ -30,7 +30,7 @@
     transitionGradient: boolean;
     handleGradientRefresh: (e: MouseEvent | TouchEvent) => Promise<void>;
     modal: ModalState;
-    toggleModal: (e: MouseEvent) => void;
+    toggleModal: (e: MouseEvent | TouchEvent) => void;
     setupEventSource: () => Promise<void>;
     stopEventSource: () => void;
   };
@@ -53,6 +53,8 @@
     transitionGradient,
     transitionForegroundGradient,
     toggleModal,
+    stopEventSource,
+    setupEventSource,
   }: Props = $props();
 
   let temperature: CurrentWeatherData['temperature_2m'] = $state(
@@ -65,8 +67,10 @@
 
   // Handle track change with controls
   const setTrackChange = (e: TouchEvent | MouseEvent) => {
-    e.preventDefault;
+    e.preventDefault();
     e.stopPropagation();
+    stopEventSource();
+    setupEventSource();
     showControls = false;
   };
 
@@ -145,7 +149,7 @@
         role="switch"
         tabindex="-1"
         aria-checked={modal.isActive}
-        onclick={(e) => toggleModal(e)}
+        onclick={(e: MouseEvent | TouchEvent) => toggleModal(e)}
       >
         <LovedHeart {loved} size={56} />
         <div class="image-container">
@@ -171,7 +175,7 @@
           class="album-title text-fuchsia-200"
           out:fade={{ duration: 500 }}
           in:fade={{ duration: 500, delay: 500 }}
-          onclick={(e) => toggleHud(e)}
+          onclick={(e: MouseEvent | TouchEvent) => toggleHud(e)}
         >
           <SafeHtml html={addHtmlLineBreaks(album)} />
         </h3>
@@ -195,7 +199,7 @@
     <footer
       class="current-music__modal__info block text-center text-lg"
       transition:blur={{ duration: 500 }}
-      onclick={(e) => {
+      onclick={(e: MouseEvent | TouchEvent) => {
         toggleControls(e);
       }}
     >
