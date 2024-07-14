@@ -6,7 +6,7 @@
   import { generateID, toCamelCase } from '$utils/strings';
   import { createNightScoutWidget } from './nightScoutStore.svelte';
   import NightscoutLineGraph from '$lib/widgets/NightScout/NightScoutLineGraph.svelte';
-  import { healthState } from '$lib/stores/health.svelte';
+  import { healthState } from '$stores/health.svelte';
 
   let label = 'mg/dL';
   const name = 'NightScout';

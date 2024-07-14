@@ -3,7 +3,7 @@
   import { Button } from 'flowbite-svelte';
   import { clickOutside } from '$lib/actions/clickOutside';
 
-  import { musicState } from '$lib/stores';
+  import { musicState } from '$stores';
   import Icon from '@iconify/svelte';
 
   // Define the state variables
