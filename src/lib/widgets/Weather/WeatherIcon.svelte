@@ -33,7 +33,7 @@
 
   onMount(() => {
     const mappedIcon = mapWeatherIcon(weatherCode, isDay);
-    component = mappedIcon.component; // Ensure component is either string or false
+    component = mappedIcon.component || component; // Ensure component is either string or false
     name = mappedIcon.name;
     // icon = mappedIcon.icon;
     // color = mappedIcon.color;

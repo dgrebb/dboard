@@ -49,9 +49,6 @@ html.light {
     .current-weather__wind {
       filter: invert(1);
     }
-    .big-icon-wow {
-      filter: brightness(133);
-    }
 
     .local-time {
       filter: invert(1);

@@ -4,16 +4,16 @@
   viewBox="0 0 512 512"
 >
   <defs>
-    <linearGradient id="a" x1="150" x2="234" y1="119" y2="265">
+    <linearGradient id="DayClear_a" x1="150" x2="234" y1="119" y2="265">
       <stop offset="0" stop-color="#fbbf24" />
       <stop offset="1" stop-color="#f59e0b" />
     </linearGradient>
-    <symbol id="b" viewBox="0 0 384 384">
+    <symbol id="DayClear_b" viewBox="0 0 384 384">
       <circle
         cx="192"
         cy="192"
         r="84"
-        fill="url(#a)"
+        fill="url(#DayClear_a)"
         stroke="#f8af18"
         stroke-miterlimit="10"
         stroke-width="6"
@@ -37,5 +37,10 @@
       </path>
     </symbol>
   </defs>
-  <use xlink:href="#b" width="384" height="384" transform="translate(64 64)" />
+  <use
+    xlink:href="#DayClear_b"
+    width="384"
+    height="384"
+    transform="translate(64 64)"
+  />
 </svg>

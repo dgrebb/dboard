@@ -7,6 +7,18 @@
   viewBox="0 0 512 512"
 >
   <defs>
+    <linearGradient id="DayOvercast_a" x1="100" x2="230" y1="30" y2="260">
+      <stop offset="0" stop-color="#f3f7fe" />
+      <stop offset="1" stop-color="#deeafb" />
+    </linearGradient>
+    <linearGradient id="DayOvercast_b" x1="52.7" x2="133.4" y1="9.6" y2="149.3">
+      <stop offset="0" stop-color="#9ca3af" />
+      <stop offset="1" stop-color="#6b7280" />
+    </linearGradient>
+    <linearGradient id="DayOvercast_c" x1="78" x2="118" y1="63.4" y2="132.7">
+      <stop offset="0" stop-color="#fbbf24" />
+      <stop offset="1" stop-color="#f59e0b" />
+    </linearGradient>
     <symbol id="DayOvercast_e" viewBox="0 0 196 196">
       <circle
         cx="98"
@@ -88,18 +100,6 @@
         transform="translate(12.84 36)"
       />
     </symbol>
-    <linearGradient id="DayOvercast_a" x1="100" x2="230" y1="30" y2="260">
-      <stop offset="0" stop-color="#f3f7fe" />
-      <stop offset="1" stop-color="#deeafb" />
-    </linearGradient>
-    <linearGradient id="DayOvercast_b" x1="52.7" x2="133.4" y1="9.6" y2="149.3">
-      <stop offset="0" stop-color="#9ca3af" />
-      <stop offset="1" stop-color="#6b7280" />
-    </linearGradient>
-    <linearGradient id="DayOvercast_c" x1="78" x2="118" y1="63.4" y2="132.7">
-      <stop offset="0" stop-color="#fbbf24" />
-      <stop offset="1" stop-color="#f59e0b" />
-    </linearGradient>
   </defs>
   <use
     xlink:href="#DayOvercast_d"

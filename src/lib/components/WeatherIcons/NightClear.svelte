@@ -26,7 +26,7 @@
     </linearGradient>
   </defs>
   <path
-    fill="url(#a)"
+    fill="url(#NightClear_a)"
     stroke="#fcd34d"
     stroke-linecap="round"
     stroke-linejoin="round"
@@ -41,7 +41,7 @@
     />
   </path>
   <path
-    fill="url(#b)"
+    fill="url(#NightClear_b)"
     stroke="#fcd34d"
     stroke-linecap="round"
     stroke-linejoin="round"
@@ -57,7 +57,7 @@
     />
   </path>
   <path
-    fill="url(#c)"
+    fill="url(#NightClear_c)"
     stroke="#fcd34d"
     stroke-linecap="round"
     stroke-linejoin="round"
@@ -73,7 +73,7 @@
     />
   </path>
   <path
-    fill="url(#d)"
+    fill="url(#NightClear_d)"
     stroke="#72b9d5"
     stroke-linecap="round"
     stroke-linejoin="round"
