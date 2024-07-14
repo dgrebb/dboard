@@ -1,4 +1,4 @@
-import { type WeatherData } from '$lib/types';
+import { type WeatherData } from '$types';
 import { nightDay } from '../utils/nightDay';
 
 // Function to calculate the background color gradient based on current time, sunrise, and sunset

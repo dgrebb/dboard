@@ -4,7 +4,7 @@
   import { formatSecondsToMinutes } from '$utils/strings';
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
   import SafeHtml from '$components/SafeHTML.svelte';
-  import type { ModalState } from '$root/lib/types';
+  import type { ModalState } from '$types';
 
   type Props = {
     handlePushing: (e: MouseEvent | TouchEvent) => void;

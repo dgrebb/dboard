@@ -1,7 +1,7 @@
 import { FastAverageColor } from 'fast-average-color';
 import { createCanvas, loadImage } from 'canvas';
 import { PUBLIC_HOST_URL } from '$env/static/public';
-import type { GradientResult } from '../types';
+import type { GradientResult } from '$types';
 
 // Simple seeded random number generator
 const seedRandom = () => {

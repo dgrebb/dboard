@@ -3,7 +3,7 @@ import {
   type HealthData,
   type NightScoutData,
   type NightScoutReading,
-} from '../types';
+} from '$types';
 
 export const createHealthState = () => {
   let healthStore: HealthData = $state({

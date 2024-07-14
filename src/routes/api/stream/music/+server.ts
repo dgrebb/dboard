@@ -8,7 +8,7 @@ import type {
   NowPlayingAPI,
   NowPlayingData,
   Timer,
-} from '$lib/types';
+} from '$types';
 import { SECRET_AUDIO_CONTROL_IP_ADDRESS } from '$env/static/private';
 import { colorThief } from '$utils/colorThief';
 import { timeStringToSeconds } from '$utils/strings';
