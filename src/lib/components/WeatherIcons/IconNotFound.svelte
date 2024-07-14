@@ -3,11 +3,12 @@
 
   type Props = {
     weatherCode: number;
+    name: string;
   };
 
-  let { weatherCode } = <Props>$props();
+  let { weatherCode, name } = <Props>$props();
 </script>
 
-<p class="absolute self-end p-3 text-slate-500">{name}</p>
+<h1 class="absolute self-end p-3 text-white mix-blend-difference">{name}</h1>
 <Icon icon="meteocons:not-available-fill" width={200} />
 <p>{weatherCode}</p>

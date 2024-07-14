@@ -21,6 +21,7 @@ export const dayIconMap: IconMap = {
   },
   1: {
     icon: 'material-symbols-light:partly-cloudy-day',
+    component: 'DayClear',
     color: paleGreen,
     name: 'Mainly clear',
   },
@@ -118,6 +119,7 @@ export const nightIconMap: IconMap = {
   },
   1: {
     icon: 'fluent:weather-partly-cloudy-night-20-filled',
+    component: 'NightOvercast',
     color: lightYellowGray,
     name: 'Mainly clear',
   },
@@ -129,7 +131,7 @@ export const nightIconMap: IconMap = {
   },
   3: {
     icon: 'fluent:weather-cloudy-20-filled',
-    component: 'DayOvercast',
+    component: 'NightOvercast',
     color: paleBlueGreenGray,
     name: 'Overcast',
   },
