@@ -1,3 +1,5 @@
+export * from '$root/lib/types/WiiM';
+
 /**
  * A custom fetch function type.
  *
@@ -180,6 +182,7 @@ export type MusicData = {
   album: string;
   artist: string;
   title: string;
+  loved: boolean;
 };
 
 /**

@@ -2,40 +2,8 @@ import {
   SECRET_AUDIO_CONTROL_IP_ADDRESS,
   SECRET_WIIM_SOAP_API_PORT,
 } from '$env/static/private';
-import type { Fetch } from '../types';
+import type { Fetch, MediaInfo, PositionInfo, NowPlayingAPI } from '$types';
 import { DOMParser } from 'xmldom';
-
-/**
- * WiiM API interface.
- */
-interface NowPlayingAPI {
-  album: string;
-  artist: string;
-  title: string;
-  art: string;
-  totalTime: string;
-  relativeTimePosition: string;
-  loved: boolean;
-}
-
-interface MediaInfo {
-  nrTracks: string | null;
-  mediaDuration: string | null;
-  currentURI: string | null;
-  currentURIMetaData: string | null;
-  nextURI: string | null;
-  nextURIMetaData: string | null;
-  trackSource: string | null;
-  playMedium: string | null;
-  recordMedium: string | null;
-  writeStatus: string | null;
-  loved: boolean;
-}
-
-interface PositionInfo {
-  totalTime: string | null;
-  relativeTimePosition: string | null;
-}
 
 const createSoapEnvelope = (
   action: string,

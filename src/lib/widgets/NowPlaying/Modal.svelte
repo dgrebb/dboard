@@ -147,7 +147,7 @@
         aria-checked={modal.isActive}
         onclick={(e) => toggleModal(e)}
       >
-        <LovedHeart {loved} size={77} />
+        <LovedHeart {loved} size={56} />
         <div class="image-container">
           {#key newArt}
             <img
