@@ -122,7 +122,9 @@
 
   html.dark & {
     .album-title,
-    .track-details {
+    .track-artist,
+    .track-time,
+    .track-title {
       filter: invert(1);
     }
   }

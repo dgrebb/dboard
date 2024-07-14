@@ -172,11 +172,11 @@
     const fore = musicState.gradients().foregroundGradient.toString();
     setGradientCSSVars('next', 'Fore', fore);
     setGradientCSSVars('next', 'Back', back);
+    loaded = true;
 
     let foreTimeout = setTimeout(() => {
       setGradientCSSVars('previous', 'Fore', fore);
     }, delay / 4.25);
-    loaded = true;
     let backTimeout = setTimeout(() => {
       setGradientCSSVars('previous', 'Back', back);
       currentArt = art;
