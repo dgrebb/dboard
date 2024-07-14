@@ -149,7 +149,6 @@ const startInterval = (fetch: Fetch): void => {
   interval = setInterval(async () => {
     try {
       let data = await fetchMediaInfo(fetch);
-      console.log('🚀 ~ interval=setInterval ~ data:', data);
 
       if (!data.art) {
         const retryData = await fetchMediaInfo(fetch);
