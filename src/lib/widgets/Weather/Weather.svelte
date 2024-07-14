@@ -4,12 +4,12 @@
     DailyWeatherData,
     Timer,
     WeatherSettings,
-  } from '$lib/types';
+  } from '$types';
   import {
     isCurrentWeatherData,
     isDailyWeatherData,
     TypeOfWidget,
-  } from '$lib/types';
+  } from '$types';
   import { createWeatherWidget } from '$lib/widgets/Weather/weatherStore.svelte';
   import { background, homeState, timeState } from '$root/lib/stores';
   import { generateID, toCamelCase } from '$utils/strings';

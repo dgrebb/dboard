@@ -25,6 +25,7 @@ const config = {
       $assets: 'static',
       $root: 'src',
       $types: 'src/lib/types.ts',
+      $stores: 'src/lib/stores',
     },
   },
 };

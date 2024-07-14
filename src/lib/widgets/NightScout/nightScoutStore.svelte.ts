@@ -1,5 +1,5 @@
-import type { NightScoutData, TypeOfWidget, WidgetData } from '$lib/types';
-import { isNightScoutData } from '$lib/types';
+import type { NightScoutData, TypeOfWidget, WidgetData } from '$types';
+import { isNightScoutData } from '$types';
 import { mapNightScoutDirectionIcon } from '$utils/nightscout';
 import { mapNightScoutColors } from '$utils/nightscout';
 

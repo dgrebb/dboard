@@ -1,8 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { WEATHER_API } from '$root/.config/GLOBALS';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { FetchOptions } from '$lib/types';
-import type { WeatherType } from '$lib/stores';
+import type { FetchOptions, WeatherData } from '$types';
 
 export const GET = (async ({ url, params }) => {
   const query: string = url.search;
@@ -12,7 +11,7 @@ export const GET = (async ({ url, params }) => {
     redirect: 'follow',
   };
 
-  const weather: WeatherType = await fetch(
+  const weather: WeatherData = await fetch(
     `${WEATHER_API}/${endpoint}${query}`,
     requestOptions
   )

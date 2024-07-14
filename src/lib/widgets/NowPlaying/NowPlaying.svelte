@@ -1,6 +1,6 @@
 <script lang="ts">
   import { healthState, homeState, musicState, uiState } from '$lib/stores';
-  import type { ModalState, Timer } from '$lib/types';
+  import type { ModalState, Timer } from '$types';
   import { mapNightScoutDirectionIcon } from '$utils/nightscout';
   import { timeStringToSeconds } from '$utils/strings';
   import { onDestroy, onMount } from 'svelte';

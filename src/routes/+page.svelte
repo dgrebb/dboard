@@ -5,7 +5,7 @@
     isWidgetSettings,
     type Settings,
     type WidgetSettings,
-  } from '$lib/types';
+  } from '$types';
   import rawSettings from '$root/.config/settings.json';
   import NightScout from '$widgets/NightScout/NightScout.svelte';
   import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';

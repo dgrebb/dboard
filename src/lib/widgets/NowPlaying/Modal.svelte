@@ -3,7 +3,7 @@
   import LovedHeart from '$components/Animations/LovedHeart.svelte';
   import SafeHtml from '$components/SafeHTML.svelte';
   import { homeState, uiState } from '$lib/stores';
-  import type { CurrentWeatherData, ModalState } from '$lib/types';
+  import type { CurrentWeatherData, ModalState } from '$types';
   import { addHtmlLineBreaks } from '$utils/strings';
   import Icon from '@iconify/svelte';
   import { blur, fade } from 'svelte/transition';
