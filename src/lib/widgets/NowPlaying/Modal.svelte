@@ -28,7 +28,7 @@
     totalSeconds: number;
     transitionForegroundGradient: boolean;
     transitionGradient: boolean;
-    handleGradientRefresh: (e: MouseEvent | TouchEvent) => void;
+    handleGradientRefresh: (e: MouseEvent | TouchEvent) => Promise<void>;
     modal: ModalState;
     toggleModal: (e: MouseEvent) => void;
     setupEventSource: () => Promise<void>;
@@ -97,7 +97,7 @@
     class="current-music__modal"
     class:transitionGradient
     transition:fade={{ duration: 500 }}
-    onclick={(e) => handleGradientRefresh(e)}
+    onclick={async (e) => await handleGradientRefresh(e)}
   >
     <header>
       {#key currentValue}
@@ -206,12 +206,6 @@
           out:blur={{ duration: 500 }}
           class:transitionForegroundGradient
         >
-          <button
-            class="refresh-gradient"
-            onclick={(e: MouseEvent) => handleGradientRefresh(e)}
-          >
-            <Icon icon="solar:soundwave-bold-duotone" width={50} /></button
-          >
           <h2 class="artist" use:selfOffsetBackground>
             <SafeHtml html={addHtmlLineBreaks(artist)} />
           </h2>
