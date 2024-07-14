@@ -149,6 +149,7 @@ const startInterval = (fetch: Fetch): void => {
   interval = setInterval(async () => {
     try {
       let data = await fetchMediaInfo(fetch);
+      console.log('🚀 ~ interval=setInterval ~ data:', data);
 
       if (!data.art) {
         const retryData = await fetchMediaInfo(fetch);
@@ -199,14 +200,14 @@ const startInterval = (fetch: Fetch): void => {
           ...(foregroundGradient ? { foregroundGradient } : {}),
         };
 
-        // Fetch the loved status if it's a new track
-        const staticLove = await fetchLovedStatus(fetch, data);
-
         const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
         broadcast(new TextEncoder().encode(stream));
+        fetchLovedStatus(fetch, data);
+
+        // Fetch the loved status if it's a new track
         previousState = {
           ...nowPlaying,
-          loved: staticLove,
+          // loved: staticLove,
         };
       }
     } catch (error) {
