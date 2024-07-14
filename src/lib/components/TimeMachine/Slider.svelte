@@ -1,5 +1,5 @@
 <script lang="ts">
-  import legTime from '$lib/stores/legTime';
+  import legTime from '$stores/legTime';
   import { Range } from 'flowbite-svelte';
 
   let minutesPerDay = 24 * 60;

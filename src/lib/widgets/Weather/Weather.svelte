@@ -11,7 +11,7 @@
     TypeOfWidget,
   } from '$types';
   import { createWeatherWidget } from '$lib/widgets/Weather/weatherStore.svelte';
-  import { background, homeState, timeState } from '$root/lib/stores';
+  import { background, homeState, timeState } from '$stores';
   import { generateID, toCamelCase } from '$utils/strings';
   import fahrenheitToColorShade from '$utils/temperatureColor';
   import Icon from '@iconify/svelte';

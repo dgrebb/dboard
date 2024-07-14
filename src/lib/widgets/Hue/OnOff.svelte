@@ -2,7 +2,7 @@
   import { PUBLIC_HUE_USERNAME as username } from '$env/static/public';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  // import lights from '$lib/stores/solar';
+  // import lights from '$stores/solar';
   import { hue } from '$root/.config/settings';
   import type { FetchOptions } from '$types';
 
