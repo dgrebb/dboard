@@ -1,4 +1,4 @@
-import type { IconMap } from '$lib/types';
+import type { IconMap, IconProps } from '$lib/types';
 
 const lightYellowGray = '#fbf1de';
 // const brightGreen = '#37cc37';
@@ -15,6 +15,7 @@ const daySprinkle = 'rgb(104, 70, 240)';
 export const dayIconMap: IconMap = {
   0: {
     icon: 'fluent:weather-sunny-20-filled',
+    component: 'DayClear',
     color: brightYellow,
     name: 'Clear',
   },
@@ -25,11 +26,13 @@ export const dayIconMap: IconMap = {
   },
   2: {
     icon: 'fluent:weather-partly-cloudy-day-20-filled',
+    component: 'Cloudy',
     color: paleBlueGreenGray,
     name: 'Partly Cloudy',
   },
   3: {
     icon: 'fluent:weather-cloudy-20-filled',
+    component: 'DayOvercast',
     color: '#62788d',
     name: 'Overcast',
   },
@@ -103,6 +106,7 @@ export const dayIconMap: IconMap = {
 export const nightIconMap: IconMap = {
   0: {
     icon: 'fluent:weather-moon-20-filled',
+    component: 'NightClear',
     color: paleYellow,
     name: 'Clear',
   },
@@ -113,11 +117,13 @@ export const nightIconMap: IconMap = {
   },
   2: {
     icon: 'fluent:weather-partly-cloudy-night-20-filled',
+    component: 'Cloudy',
     color: paleBlueGreenGray,
     name: 'Partly Cloudy',
   },
   3: {
     icon: 'fluent:weather-cloudy-20-filled',
+    component: 'DayOvercast',
     color: paleBlueGreenGray,
     name: 'Overcast',
   },
@@ -188,7 +194,7 @@ export const nightIconMap: IconMap = {
   },
 };
 
-function mapWeatherIcon(weatherCode: number, isDay: number) {
+function mapWeatherIcon(weatherCode: number, isDay: number): IconProps {
   return {
     icon:
       isDay === 1
@@ -198,6 +204,10 @@ function mapWeatherIcon(weatherCode: number, isDay: number) {
       isDay === 1
         ? dayIconMap[weatherCode].color
         : nightIconMap[weatherCode].color,
+    component:
+      (isDay === 1
+        ? dayIconMap[weatherCode].component
+        : nightIconMap[weatherCode].component) || false,
     name:
       isDay === 1
         ? dayIconMap[weatherCode].name
