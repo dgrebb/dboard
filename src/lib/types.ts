@@ -229,7 +229,7 @@ export function isSeptaNextToArriveDataArray(
  */
 export type IconProps = {
   icon: string;
-  component?: WeatherIconComponent | false;
+  component?: WeatherIconComponent;
   color: string;
   name: string;
 };
