@@ -43,6 +43,8 @@
 
   const imageCache = new Map<string, boolean>();
   const cacheOrder: string[] = [];
+  let foreTimeout: Timer | null = null;
+  let backTimeout: Timer | null = null;
 
   /**
    * Preloads an image and returns a promise that resolves when the image is loaded.
@@ -117,6 +119,11 @@
         loved = data.loved;
         musicState.setLoved(data.loved);
       } else if (data.backgroundGradient && data.foregroundGradient) {
+        if (
+          transitionForegroundGradient === true ||
+          transitionGradient === true
+        )
+          return;
         musicState.setGradients({
           backgroundGradient: data.backgroundGradient,
           foregroundGradient: data.foregroundGradient,
@@ -168,8 +175,6 @@
 
   $effect(() => {
     const delay = 3300;
-    let foreTimeout: Timer | null = null;
-    let backTimeout: Timer | null = null;
     if (foreTimeout || backTimeout) return;
     transitionGradient = true;
     transitionForegroundGradient = true;
