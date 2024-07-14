@@ -7,7 +7,7 @@ import {
   type TypeOfWidget,
   type WeatherData,
   type WidgetData,
-} from '$lib/types';
+} from '$types';
 
 export const createWeatherWidget = function createWidget(
   type: TypeOfWidget,

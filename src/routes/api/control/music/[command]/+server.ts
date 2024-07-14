@@ -2,7 +2,7 @@ import { json } from '@sveltejs/kit';
 import { SECRET_AUDIO_CONTROL_IP_ADDRESS } from '$env/static/private';
 
 import type { RequestHandler } from './$types';
-import type { FetchOptions } from '$lib/types';
+import type { FetchOptions } from '$types';
 
 export const prerender = false;
 

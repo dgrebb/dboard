@@ -3,8 +3,8 @@
     isSeptaNextToArriveDataArray,
     TypeOfWidget,
     type SeptaNextToArriveData,
-  } from '$lib/types';
-  import { createWidget } from '$root/lib/stores';
+  } from '$types';
+  import { createWidget } from '$stores';
   import { generateID, toCamelCase } from '$utils/strings';
   import Icon from '@iconify/svelte';
   import { onDestroy, onMount } from 'svelte';

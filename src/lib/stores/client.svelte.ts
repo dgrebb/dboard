@@ -1,4 +1,4 @@
-import type { ModalState, TimeZone, UIState } from '../types';
+import type { ModalState, TimeZone, UIState } from '$types';
 
 export const createUiState = () => {
   const ui: UIState = $state({

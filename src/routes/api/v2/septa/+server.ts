@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import type { FetchOptions, SeptaNextToArriveData } from '$lib/types';
+import type { FetchOptions, SeptaNextToArriveData } from '$types';
 
 export const GET = (async ({ url }) => {
   const headers = new Headers();

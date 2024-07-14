@@ -2,7 +2,7 @@ import {
   isNightScoutData,
   type ChartSeriesGlucose,
   type NightScoutData,
-} from '../types';
+} from '$types';
 
 export const mapNightScoutDirectionIcon = (
   data: NightScoutData | false = false

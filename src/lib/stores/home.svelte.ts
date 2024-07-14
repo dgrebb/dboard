@@ -3,7 +3,7 @@ import type {
   HomeData,
   LocationType,
   WeatherData,
-} from '$lib/types';
+} from '$types';
 
 export const createHomeState = () => {
   let homeStore: HomeData = $state({
