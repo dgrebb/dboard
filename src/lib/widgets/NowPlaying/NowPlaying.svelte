@@ -30,7 +30,9 @@
   let directionIcon = $state(mapNightScoutDirectionIcon());
   let currentValue: number | null = $state(0);
   let locationName: string | null = $derived(homeState.locationName());
-
+  let { backgroundGradient, foregroundGradient } = $state(
+    musicState.gradients()
+  );
   let transitionGradient = $state(false);
   let transitionForegroundGradient = $state(false);
   let timer = $state(0);
@@ -166,19 +168,21 @@
 
   $effect(() => {
     const delay = 3300;
+    let foreTimeout: Timer | null = null;
+    let backTimeout: Timer | null = null;
+    if (foreTimeout || backTimeout) return;
     transitionGradient = true;
     transitionForegroundGradient = true;
-    const back = musicState.gradients().backgroundGradient.toString();
-    const fore = musicState.gradients().foregroundGradient.toString();
-    setGradientCSSVars('next', 'Fore', fore);
-    setGradientCSSVars('next', 'Back', back);
+    ({ backgroundGradient, foregroundGradient } = musicState.gradients());
+    setGradientCSSVars('next', 'Fore', foregroundGradient);
+    setGradientCSSVars('next', 'Back', backgroundGradient);
     loaded = true;
 
-    let foreTimeout = setTimeout(() => {
-      setGradientCSSVars('previous', 'Fore', fore);
+    foreTimeout = setTimeout(() => {
+      setGradientCSSVars('previous', 'Fore', foregroundGradient);
     }, delay / 4.25);
-    let backTimeout = setTimeout(() => {
-      setGradientCSSVars('previous', 'Back', back);
+    backTimeout = setTimeout(() => {
+      setGradientCSSVars('previous', 'Back', backgroundGradient);
       currentArt = art;
       transitionGradient = false;
       transitionForegroundGradient = false;
@@ -186,8 +190,10 @@
     }, delay);
 
     return () => {
-      clearTimeout(foreTimeout);
-      clearTimeout(backTimeout);
+      if (foreTimeout) clearTimeout(foreTimeout);
+      if (backTimeout) clearTimeout(backTimeout);
+      foreTimeout = null;
+      backTimeout = null;
     };
   });
 
