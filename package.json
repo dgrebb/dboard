@@ -105,28 +105,5 @@
     "vite": "^5.3.3",
     "vitest": "^2.0.2"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog",
-      "types": {
-        "feat": {
-          "title": "feat",
-          "description": "New feature."
-        },
-        "wip": {
-          "title": "wip",
-          "description": "Work in progress."
-        },
-        "refactor": {
-          "title": "refactor",
-          "description": "Change the way something previously worked."
-        },
-        "chore": {
-          "title": "chore",
-          "description": "Maintenance and chores."
-        }
-      }
-    }
-  },
   "type": "module"
 }
