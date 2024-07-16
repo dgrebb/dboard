@@ -6,7 +6,9 @@ import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
 import express from 'express';
 import { sveltekit } from '@sveltejs/kit/vite';
-import { createProxyServer } from 'http-proxy';
+
+import pkg from 'http-proxy';
+const { createProxyServer } = pkg;
 
 dotenv.config();
 

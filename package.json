@@ -50,7 +50,6 @@
     "canvas": "^2.11.2",
     "express": "^4.19.2",
     "fast-average-color": "^9.4.0",
-    "http-proxy": "^1.18.1",
     "ws": "^8.18.0",
     "xmldom": "^0.6.0"
   },
@@ -84,6 +83,7 @@
     "flowbite": "^2.4.1",
     "flowbite-svelte": "^0.46.15",
     "globals": "^15.8.0",
+    "http-proxy": "^1.18.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.7",
     "nanoid": "^5.0.7",
