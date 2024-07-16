@@ -161,8 +161,7 @@ const startInterval = (fetch: Fetch): void => {
 
       if (total && relative) refreshInterval = total;
 
-      const shouldBroadcast =
-        (data && previousState?.title !== data.title) || relative < 30;
+      const shouldBroadcast = data && previousState?.title !== data.title;
 
       if (shouldBroadcast) {
         const timestamp = Date.now();
@@ -200,13 +199,13 @@ const startInterval = (fetch: Fetch): void => {
 
         const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
         broadcast(new TextEncoder().encode(stream));
-        const staticLove = await fetchLovedStatus(fetch, data);
 
-        // Fetch the loved status if it's a new track
         previousState = {
           ...nowPlaying,
-          loved: staticLove,
         };
+
+        // Fetch the loved status if it's a new track
+        await fetchLovedStatus(fetch, data);
       }
     } catch (error) {
       console.error('Error fetching or broadcasting data:', error);
