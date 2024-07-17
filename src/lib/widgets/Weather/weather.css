@@ -72,7 +72,7 @@ html.light {
     top: 0;
     right: 0;
     opacity: 0;
-    z-index: 0;
+    z-index: 3;
     mix-blend-mode: hard-light;
 
     body.ready & {
@@ -102,6 +102,24 @@ html.light {
     svg {
       margin: 0;
       padding: 0;
+    }
+  }
+}
+
+/* QA STYLES */
+.current-weather {
+  span[data-test='weather-icon-code'] {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0;
+    height: 0;
+    color: white;
+  }
+  &:hover {
+    span[data-test='weather-icon-code'] {
+      opacity: 1;
+      height: auto;
     }
   }
 }
