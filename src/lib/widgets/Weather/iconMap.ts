@@ -54,11 +54,13 @@ export const dayIconMap: IconMap = {
   },
   53: {
     icon: 'fluent:weather-drizzle-20-filled',
+    component: 'DayModerateDrizzle',
     color: daySprinkle,
     name: 'Moderate Drizzle',
   },
   55: {
     icon: 'fluent:weather-drizzle-20-filled',
+    component: 'DayDenseDrizzle',
     color: daySprinkle,
     name: 'Dense Drizzle',
   },

@@ -1,0 +1,248 @@
+<script>
+</script>
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 512 512"
+>
+  <defs>
+    <linearGradient
+      id="DayModerateDrizzle_a"
+      x1="100"
+      x2="233"
+      y1="31"
+      y2="261"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#f3f7fe" />
+      <stop offset="1" stop-color="#deeafb" />
+    </linearGradient>
+    <linearGradient
+      id="DayModerateDrizzle_b"
+      x1="53"
+      x2="133"
+      y1="10"
+      y2="149"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#9ca3af" />
+      <stop offset="1" stop-color="#6b7280" />
+    </linearGradient>
+    <linearGradient
+      id="DayModerateDrizzle_c"
+      x1="1381"
+      x2="1399"
+      y1="-1145"
+      y2="-1097"
+      gradientTransform="rotate(-9 8003 8233)"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#0b65ed" />
+      <stop offset="1" stop-color="#0950bc" />
+    </linearGradient>
+    <linearGradient
+      xlink:href="#DayModerateDrizzle_c"
+      id="DayModerateDrizzle_d"
+      x1="1437"
+      x2="1455"
+      y1="-1137"
+      y2="-1090"
+      gradientTransform="rotate(-9 8010 8233)"
+    />
+    <linearGradient
+      xlink:href="#DayModerateDrizzle_c"
+      id="DayModerateDrizzle_e"
+      x1="1492"
+      x2="1510"
+      y1="-1129"
+      y2="-1082"
+      gradientTransform="rotate(-9 8017 8233)"
+    />
+    <linearGradient
+      id="DayModerateDrizzle_f"
+      x1="78"
+      x2="118"
+      y1="63"
+      y2="133"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#fbbf24" />
+      <stop offset="1" stop-color="#f59e0b" />
+    </linearGradient>
+    <symbol id="DayModerateDrizzle_h" viewBox="0 0 196 196">
+      <circle
+        cx="98"
+        cy="98"
+        r="40"
+        fill="url(#DayModerateDrizzle_f)"
+        stroke="#f8af18"
+        stroke-miterlimit="10"
+        stroke-width="4"
+      />
+      <path
+        fill="none"
+        stroke="#fbbf24"
+        stroke-linecap="round"
+        stroke-miterlimit="10"
+        stroke-width="12"
+        d="M98 31.4V6m0 184v-25.4M145.1 51l18-17.9M33 163l18-17.9M51 51 33 33m130.1 130.1-18-18M6 98h25.4M190 98h-25.4"
+      >
+        <animateTransform
+          additive="sum"
+          attributeName="transform"
+          dur="12s"
+          repeatCount="indefinite"
+          type="rotate"
+          values="0 98 98; 45 98 98"
+        />
+      </path>
+    </symbol>
+    <symbol id="DayModerateDrizzle_j" viewBox="0 0 200.3 126.1">
+      <path
+        fill="url(#DayModerateDrizzle_b)"
+        stroke="#848b98"
+        stroke-miterlimit="10"
+        d="M.5 93.2a32 32 0 0032.4 32.4h130v-.1a35 35 0 006.5-68.9 32 32 0 00-48.5-33 49 49 0 00-88.6 37h-1.5A32 32 0 00.5 93Z"
+      />
+    </symbol>
+    <symbol id="DayModerateDrizzle_k" viewBox="0 0 350 222">
+      <path
+        fill="url(#DayModerateDrizzle_a)"
+        stroke="#e6effc"
+        stroke-miterlimit="10"
+        stroke-width="6"
+        d="m291 107-2.5.1A84 84 0 00136 43a56 56 0 00-85 48 60 60 0 001 9 60 60 0 0012 121h224a56 56 0 000-112Z"
+      />
+    </symbol>
+    <symbol id="DayModerateDrizzle_i" overflow="visible" viewBox="0 0 398 222">
+      <use
+        xlink:href="#DayModerateDrizzle_j"
+        width="200.3"
+        height="126.1"
+        transform="translate(198 27)"
+      >
+        <animateTransform
+          additive="sum"
+          attributeName="transform"
+          dur="12s"
+          repeatCount="indefinite"
+          type="translate"
+          values="-9 0; 9 0; -9 0"
+        />
+      </use>
+      <use xlink:href="#DayModerateDrizzle_k" width="350" height="222">
+        <animateTransform
+          additive="sum"
+          attributeName="transform"
+          dur="12s"
+          repeatCount="indefinite"
+          type="translate"
+          values="-18 0; 18 0; -18 0"
+        />
+      </use>
+    </symbol>
+    <symbol
+      id="DayModerateDrizzle_g"
+      overflow="visible"
+      viewBox="0 0 410.8 258"
+    >
+      <use xlink:href="#DayModerateDrizzle_h" width="196" height="196" />
+      <use
+        xlink:href="#DayModerateDrizzle_i"
+        width="398"
+        height="222"
+        transform="translate(12.84 36)"
+      />
+    </symbol>
+    <symbol id="DayModerateDrizzle_l" overflow="visible" viewBox="0 0 129 57">
+      <path
+        fill="url(#DayModerateDrizzle_c)"
+        stroke="#0a5ad4"
+        stroke-miterlimit="10"
+        d="M8.5 56.5a8 8 0 01-8-8v-40a8 8 0 0116 0v40a8 8 0 01-8 8Z"
+        opacity="0"
+      >
+        <animateTransform
+          id="DayModerateDrizzle_x1"
+          additive="sum"
+          attributeName="transform"
+          begin="0s; x1.end+1s"
+          dur="1s"
+          type="translate"
+          values="0 -60; 0 60"
+        />
+        <animate
+          id="DayModerateDrizzle_y1"
+          attributeName="opacity"
+          begin="0s; y1.end+1s"
+          dur="1s"
+          keyTimes="0; .25; 1"
+          values="0; 1; 0"
+        />
+      </path>
+      <path
+        fill="url(#DayModerateDrizzle_d)"
+        stroke="#0a5ad4"
+        stroke-miterlimit="10"
+        d="M64.5 56.5a8 8 0 01-8-8v-40a8 8 0 0116 0v40a8 8 0 01-8 8Z"
+        opacity="0"
+      >
+        <animateTransform
+          id="DayModerateDrizzle_x2"
+          additive="sum"
+          attributeName="transform"
+          begin="1s; x2.end+1s"
+          dur="1s"
+          type="translate"
+          values="0 -60; 0 60"
+        />
+        <animate
+          id="DayModerateDrizzle_y2"
+          attributeName="opacity"
+          begin="1s; y2.end+1s"
+          dur="1s"
+          keyTimes="0; .25; 1"
+          values="0; 1; 0"
+        />
+      </path>
+      <path
+        fill="url(#DayModerateDrizzle_e)"
+        stroke="#0a5ad4"
+        stroke-miterlimit="10"
+        d="M120.5 56.5a8 8 0 01-8-8v-40a8 8 0 0116 0v40a8 8 0 01-8 8Z"
+        opacity="0"
+      >
+        <animateTransform
+          id="DayModerateDrizzle_x3"
+          additive="sum"
+          attributeName="transform"
+          begin="-1s; x3.end+1s"
+          dur="1s"
+          type="translate"
+          values="0 -60; 0 60"
+        />
+        <animate
+          id="DayModerateDrizzle_y3"
+          attributeName="opacity"
+          begin="-1s; y3.end+1s"
+          dur="1s"
+          keyTimes="0; .25; 1"
+          values="0; 1; 0"
+        />
+      </path>
+    </symbol>
+  </defs>
+  <use
+    xlink:href="#DayModerateDrizzle_g"
+    width="410.8"
+    height="258"
+    transform="translate(56 109)"
+  />
+  <use
+    xlink:href="#DayModerateDrizzle_l"
+    width="129"
+    height="57"
+    transform="translate(191.5 343.5)"
+  />
+</svg>
