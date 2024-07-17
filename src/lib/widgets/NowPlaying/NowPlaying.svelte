@@ -27,7 +27,7 @@
   let refreshed = $state(true);
   let difference: string | number = $state('0');
   let direction: string | null = $state('Flat');
-  let directionIcon = $state(mapNightScoutDirectionIcon());
+  let directionIcon = $state('Flat');
   let currentValue: number | null = $state(0);
   let locationName: string | null = $derived(homeState.locationName());
   let { backgroundGradient, foregroundGradient } = $state(
