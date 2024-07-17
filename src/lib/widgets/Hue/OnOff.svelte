@@ -1,30 +1,27 @@
 <script lang="ts">
+  /* global RequestInit */
+  /* global RequestRedirect */
   import { PUBLIC_HUE_USERNAME as username } from '$env/static/public';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
   // import lights from '$stores/solar';
   import { hue } from '$root/.config/settings';
-  import type { FetchOptions } from '$types';
+  import { isHueActionType, type HueActionType } from '$types';
 
-  $: ({ actions } = hue);
+  let { actions } = $state(hue);
 
-  enum ActionType {
-    lights = 'lights',
-    groups = 'groups',
-  }
-
-  function lightSwitch(actionType: ActionType, id: number) {
+  function lightSwitch(actionType: HueActionType, id: number) {
     const actionIndex = actions.findIndex((action) => action.light.id === id);
     const lightState = !actions[actionIndex].light.on;
     const headers = new Headers();
     const apiPath = actionType === 'groups' ? 'action' : 'state';
     const raw = `{"on":${lightState}}`;
     headers.append('Content-Type', 'text/plain');
-    const requestOptions: FetchOptions = {
+    const requestOptions: RequestInit = {
       method: 'PUT',
       headers,
       body: raw,
-      redirect: 'follow',
+      redirect: 'follow' as RequestRedirect,
     };
     fetch(
       `http://192.168.50.227/api/${username}/${actionType}/${id}/${apiPath}`,
@@ -44,9 +41,9 @@
   }
 
   onMount(async () => {
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: 'GET',
-      redirect: 'follow',
+      redirect: 'follow' as RequestRedirect,
     };
     actions.forEach(async (action, i) => {
       const actionState = await fetch(
@@ -58,10 +55,12 @@
         .catch((error) => {
           return console.error(error);
         });
-      actions[i].light.on =
-        action.light.actionType === 'groups'
-          ? actionState.state.any_on
-          : actionState.state.on;
+      if (actionState) {
+        actions[i].light.on =
+          action.light.actionType === 'groups'
+            ? actionState.state.any_on
+            : actionState.state.on;
+      }
     });
   });
 </script>
@@ -69,17 +68,19 @@
 {#key actions}
   <div class="hue-button-container flex h-full flex-col overflow-y-scroll">
     {#each actions as { light: { name, id, on, actionType } }}
-      <Button
-        type="button"
-        size="xl"
-        on:click={() => {
-          lightSwitch(actionType, id);
-        }}
-        on:keydown={() => {
-          lightSwitch(actionType, id);
-        }}
-        color={on ? 'yellow' : 'dark'}>{name}</Button
-      >
+      {#if isHueActionType(actionType)}
+        <Button
+          type="button"
+          size="xl"
+          onclick={() => {
+            lightSwitch(actionType, id);
+          }}
+          onkeydown={() => {
+            lightSwitch(actionType, id);
+          }}
+          color={on ? 'yellow' : 'dark'}>{name}</Button
+        >
+      {/if}
     {/each}
   </div>
 {/key}

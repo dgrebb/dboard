@@ -49,6 +49,8 @@ export default [
     languageOptions: {
       globals: {
         ...globals.node,
+        RequestInit: true,
+        RequestRedirect: true,
       },
       parserOptions: {
         ecmaVersion: 2020,

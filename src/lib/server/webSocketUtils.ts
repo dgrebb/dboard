@@ -1,22 +1,18 @@
 import { parse } from 'url';
-import { WebSocketServer } from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 import { nanoid } from 'nanoid';
-import type { Server, WebSocket as WebSocketBase } from 'ws';
 import type { IncomingMessage } from 'http';
 import type { Duplex } from 'stream';
 import { uuidv4 } from '../utils/uuidv4';
 
 export const GlobalThisWSS = Symbol.for('sveltekit.wss');
 
-export interface ExtendedWebSocket extends WebSocketBase {
+export interface ExtendedWebSocket extends WebSocket {
   socketId: string;
   // userId: string;
 }
 
-// You can define server-wide functions or class instances here
-// export interface ExtendedServer extends Server<ExtendedWebSocket> {};
-
-export type ExtendedWebSocketServer = Server<ExtendedWebSocket>;
+export type ExtendedWebSocketServer = WebSocketServer;
 
 export type ExtendedGlobal = typeof globalThis & {
   [GlobalThisWSS]: ExtendedWebSocketServer;
@@ -33,9 +29,10 @@ export const onHttpServerUpgrade = (
   const wss = (globalThis as ExtendedGlobal)[GlobalThisWSS];
 
   wss.handleUpgrade(req, sock, head, (ws) => {
-    console.info('[handleUpgrade] creating new connecttion');
-    ws.id = uuidv4();
-    wss.emit('connection', ws, req);
+    const extendedWs = ws as ExtendedWebSocket;
+    console.info('[handleUpgrade] creating new connection');
+    extendedWs.socketId = uuidv4();
+    wss.emit('connection', extendedWs, req);
   });
 };
 
@@ -47,11 +44,12 @@ export const createWSSGlobalInstance = () => {
   (globalThis as ExtendedGlobal)[GlobalThisWSS] = wss;
 
   wss.on('connection', (ws) => {
-    ws.socketId = nanoid();
-    console.info(`[wss:global] client connected (${ws.socketId})`);
+    const extendedWs = ws as ExtendedWebSocket;
+    extendedWs.socketId = nanoid();
+    console.info(`[wss:global] client connected (${extendedWs.socketId})`);
 
-    ws.on('close', () => {
-      console.info(`[wss:global] client disconnected (${ws.socketId})`);
+    extendedWs.on('close', () => {
+      console.info(`[wss:global] client disconnected (${extendedWs.socketId})`);
     });
   });
 

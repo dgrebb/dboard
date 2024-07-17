@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as echarts from 'echarts';
   import { onMount } from 'svelte';
-  import type { EChartOption } from 'echarts';
+  import type { EChartsOption } from 'echarts';
 
   type Props = {
     series: number[];
@@ -14,7 +14,7 @@
 
   let nightScoutGraph: echarts.ECharts;
 
-  let option: EChartOption = $derived({
+  let option: EChartsOption = $derived({
     grid: {
       left: '0',
       right: '0',
