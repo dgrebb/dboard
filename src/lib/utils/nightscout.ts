@@ -4,11 +4,12 @@ import {
   type NightScoutData,
 } from '$types';
 
+// Updated type for mapNightScoutDirectionIcon to accept NightScoutData | false
 export const mapNightScoutDirectionIcon = (
   data: NightScoutData | false = false
 ): string => {
-  let icon = 'iconamoon:cloud-error-light';
-  if (isNightScoutData(data)) {
+  let icon: string = 'iconamoon:cloud-error-light';
+  if (data !== false && isNightScoutData(data)) {
     switch (data[0].direction) {
       case 'SingleUp':
         icon = 'ph:arrow-up-right-light';
@@ -28,7 +29,11 @@ export const mapNightScoutDirectionIcon = (
       case 'FortyFiveDown':
         icon = 'ph:arrow-bend-right-down-light';
         break;
+      default:
+        icon = 'iconamoon:cloud-error-light';
     }
+  } else {
+    icon = 'iconamoon:cloud-error-light';
   }
   return icon;
 };

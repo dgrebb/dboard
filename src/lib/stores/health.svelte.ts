@@ -41,11 +41,9 @@ export const createHealthState = () => {
     }
   };
 
-  const getDirectionIcon = function getDirectionIcon(): string {
-    const data = healthStore.nightScout;
-    let icon = 'iconamoon:cloud-error-light';
-    icon = mapNightScoutDirectionIcon(data);
-    return icon;
+  const getDirectionIcon = (): string => {
+    const data: NightScoutData | false = healthStore.nightScout || false;
+    return mapNightScoutDirectionIcon(data);
   };
 
   return {

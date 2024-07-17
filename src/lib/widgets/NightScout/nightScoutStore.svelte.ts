@@ -37,16 +37,16 @@ export const createNightScoutWidget = function createWidget(
     const { data } = widgetStore;
     let series: number[] = [];
     if (Array.isArray(data) && data.length) {
-      series = data.map((reading) => reading.sgv);
+      series = (data as NightScoutData).map((reading) => reading.sgv);
     }
     return series;
   };
 
-  const getChronologicalSeries = function getSeries() {
+  const getChronologicalSeries = function getChronologicalSeries(): number[] {
     const { data } = widgetStore;
     let series: number[] = [];
     if (Array.isArray(data) && data.length) {
-      series = data.map((reading) => reading.sgv);
+      series = (data as NightScoutData).map((reading) => reading.sgv);
     }
     return series.reverse();
   };

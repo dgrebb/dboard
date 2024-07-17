@@ -89,15 +89,18 @@
     {#each playlist as video, index}
       <video
         playsinline
-        src={`/video/${isDay === 1 ? 'day' : 'night'}/clear/${video.file}`}
         autoplay
         loop
         muted
-        type="video/mp4"
         class="player relative bottom-0 h-full w-full object-cover opacity-75"
         class:visible={index === currentVideo}
         id={`video${index}`}
-      ></video>
+      >
+        <source
+          type="video/mp4"
+          src={`/video/${isDay === 1 ? 'day' : 'night'}/clear/${video.file}`}
+        />
+      </video>
     {/each}
   </div>
 {/key}
