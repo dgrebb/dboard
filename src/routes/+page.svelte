@@ -70,12 +70,12 @@
   <Board>
     <NightScout />
     <NowPlaying />
-    <NextToArrive />
     {#if loadedWidgets}
       {#each loadedWidgets as { type, settings }}
         <svelte:component this={components[type]} {settings} />
       {/each}
     {/if}
+    <NextToArrive />
     <!-- <NewWidget /> -->
   </Board>
 {/if}
