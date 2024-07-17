@@ -32,7 +32,7 @@
   // let color = $state('#85aba0');
 
   onMount(() => {
-    const mappedIcon = mapWeatherIcon(weatherCode, isDay);
+    const mappedIcon = mapWeatherIcon(3, isDay);
     component = mappedIcon.component || component; // Ensure component is either string or false
     name = mappedIcon.name;
     // icon = mappedIcon.icon;
@@ -40,8 +40,9 @@
   });
 </script>
 
-<div class="big-icon-wow right-0 flex flex-col items-end">
-  <div class="w-[9rem]">
+<div class="big-icon-wow">
+  <div class="h-auto w-[10rem]">
+    <span data-test="weather-icon-code">{weatherCode}</span>
     <svelte:component
       this={weatherIconComponents[component]}
       {weatherCode}

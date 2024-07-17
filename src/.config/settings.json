@@ -5,10 +5,10 @@
       "settings": {
         "location": {
           "primary": true,
-          "name": "Lansdale, PA",
+          "name": "North Wales, PA",
           "timeZone": "America/New_York",
-          "latitude": 40.2415,
-          "longitude": -75.2838
+          "latitude": 40.2109,
+          "longitude": -75.2782
         }
       }
     },
@@ -26,6 +26,18 @@
     }
   ],
   "otherLocations": [
+    {
+      "type": "Weather",
+      "settings": {
+        "location": {
+          "primary": true,
+          "name": "Lansdale, PA",
+          "timeZone": "America/New_York",
+          "latitude": 40.2415,
+          "longitude": -75.2838
+        }
+      }
+    },
     {
       "type": "Weather",
       "settings": {
