@@ -1,4 +1,14 @@
 /**
+ * Type representing music data.
+ */
+export type MusicData = {
+  album: string;
+  artist: string;
+  title: string;
+  loved: boolean;
+};
+
+/**
  * WiiM API interface.
  */
 export interface NowPlayingAPI {
@@ -27,3 +37,24 @@ export interface PositionInfo {
   totalTime: string | null;
   relativeTimePosition: string | null;
 }
+
+/**
+ * Type representing now playing data.
+ */
+export type NowPlayingData = {
+  status?: string;
+  artist: string;
+  album: string;
+  art: string;
+  backgroundGradient: string;
+  foregroundGradient: string;
+  loved: boolean;
+  relativeTimePosition: string;
+  title: string;
+  totalTime: string;
+};
+
+export type GradientResult = {
+  backgroundGradient: string;
+  foregroundGradient: string;
+};

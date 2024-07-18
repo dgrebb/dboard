@@ -6,7 +6,8 @@
   import { onMount } from 'svelte';
   // import lights from '$stores/solar';
   import { hue } from '$root/.config/settings';
-  import { isHueActionType, type HueActionType } from '$types';
+  import { type HueActionType } from '$types';
+  import { isHueActionType } from '$guards';
 
   let { actions } = $state(hue);
 

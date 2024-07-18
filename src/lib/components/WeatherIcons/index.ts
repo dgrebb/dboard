@@ -31,21 +31,16 @@ for (const path in componentFiles) {
  * Gets the component by name or returns the default component.
  *
  * @param {string | false} componentName - The name of the component to get.
- * @returns {Component<object>} - The Svelte component.
+ * @returns {Promise<Component<object>>} - The Svelte component.
  */
 export async function getComponent(
   componentName: string | false
 ): Promise<Component<object>> {
   if (!componentName || !components[componentName]) {
-    const { IconNotFound } = await import('./IconNotFound.svelte');
-    return IconNotFound;
+    const mod = await import('./IconNotFound.svelte');
+    return (mod as { default: Component<object> }).default;
   }
   return components[componentName];
 }
-
-/**
- * Type representing the available weather icon components.
- */
-export type WeatherIconComponent = keyof typeof components;
 
 export default components;
