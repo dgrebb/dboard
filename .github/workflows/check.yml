@@ -31,6 +31,16 @@ jobs:
           NODE_VERSION: ${{ vars.NODE_VERSION}}
           PNPM_VERSION: ${{ vars.PNPM_VERSION}}
 
+      - name: 🎛️ Environment Configuration
+        uses: ./.github/actions/set-env
+        with:
+          SECRET_NIGHTSCOUT_TOKEN: ${{ secrets.SECRET_NIGHTSCOUT_TOKEN }}
+          PUBLIC_HUE_USERNAME: ${{ secrets.PUBLIC_HUE_USERNAME }}
+          SECRET_NEST_CLIENT: ${{ secrets.SECRET_NEST_CLIENT }}
+          SECRET_NEST_CLIENT_SECRET: ${{ secrets.SECRET_NEST_CLIENT_SECRET }}
+          SECRET_AUDIO_CONTROL_IP_ADDRESS: ${{ secrets.SECRET_AUDIO_CONTROL_IP_ADDRESS }}
+          SECRET_WIIM_SOAP_API_PORT: ${{ secrets.SECRET_WIIM_SOAP_API_PORT }}
+          PUBLIC_HOST_URL: ${{ secrets.PUBLIC_HOST_URL }}
+
       - name: 🧐 Check
-        continue-on-error: true
         run: pnpm check
