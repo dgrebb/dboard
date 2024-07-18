@@ -1,7 +1,6 @@
 <script lang="ts">
-  import components, {
-    type WeatherIconComponent,
-  } from '$components/WeatherIcons';
+  import components from '$components/WeatherIcons';
+  import { type WeatherIconComponent } from '$components/WeatherIcons/WeatherIcons.types';
   import mapWeatherIcon from '$widgets/Weather/iconMap';
   import type { Component } from 'svelte';
   import { onMount } from 'svelte';
