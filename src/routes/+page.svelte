@@ -1,11 +1,7 @@
 <script lang="ts">
   '@hmr:keep-all';
-  import {
-    isTypeOfWidget,
-    isWidgetSettings,
-    type Settings,
-    type WidgetSettings,
-  } from '$types';
+  import { type Settings, type WidgetSettings } from '$types';
+  import { isTypeOfWidget, isWidgetSettings } from '$guards';
   import rawSettings from '$root/.config/settings.json';
   import NightScout from '$widgets/NightScout/NightScout.svelte';
   import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';

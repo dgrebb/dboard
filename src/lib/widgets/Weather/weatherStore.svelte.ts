@@ -1,13 +1,15 @@
 import {
-  isCurrentWeatherData,
-  isDailyWeatherData,
-  isWeatherData,
   type CurrentWeatherData,
   type DailyWeatherData,
   type TypeOfWidget,
   type WeatherData,
   type WidgetData,
 } from '$types';
+import {
+  isCurrentWeatherData,
+  isDailyWeatherData,
+  isWeatherData,
+} from '$guards';
 
 export const createWeatherWidget = function createWidget(
   type: TypeOfWidget,

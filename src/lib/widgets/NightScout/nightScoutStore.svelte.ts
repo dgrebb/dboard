@@ -1,7 +1,9 @@
 import type { NightScoutData, TypeOfWidget, WidgetData } from '$types';
-import { isNightScoutData } from '$types';
-import { mapNightScoutDirectionIcon } from '$utils/nightscout';
-import { mapNightScoutColors } from '$utils/nightscout';
+import { isNightScoutData } from '$guards';
+import {
+  mapNightScoutColors,
+  mapNightScoutDirectionIcon,
+} from '$utils/nightscout';
 
 export const createNightScoutWidget = function createWidget(
   type: TypeOfWidget,

@@ -76,6 +76,8 @@ export default defineConfig({
       $routes: path.resolve('./src/routes/'),
       $components: path.resolve('./src/lib/components'),
       $layouts: path.resolve('./src/routes/(layouts)'),
+      $types: path.resolve('./src/lib/types'),
+      $guards: path.resolve('./src/lib/guards'),
       $root: path.resolve('./src'),
     },
   },
