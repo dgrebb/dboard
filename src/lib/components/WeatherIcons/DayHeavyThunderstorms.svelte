@@ -1,5 +1,4 @@
-<script>
-</script>
+<script lang="ts"></script>
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
@@ -8,74 +7,90 @@
 >
   <defs>
     <linearGradient
-      id="DayModerateDrizzle_a"
-      x1="100"
-      x2="233"
-      y1="31"
-      y2="261"
+      id="gradient_a_1122uvwx"
+      x1="99.5"
+      x2="232.6"
+      y1="30.7"
+      y2="261.4"
       gradientUnits="userSpaceOnUse"
     >
       <stop offset="0" stop-color="#f3f7fe" />
+      <stop offset=".5" stop-color="#f3f7fe" />
       <stop offset="1" stop-color="#deeafb" />
     </linearGradient>
     <linearGradient
-      id="DayModerateDrizzle_b"
-      x1="53"
-      x2="133"
-      y1="10"
-      y2="149"
+      id="gradient_b_1122uvwx"
+      x1="52.7"
+      x2="133.4"
+      y1="9.6"
+      y2="149.3"
       gradientUnits="userSpaceOnUse"
     >
       <stop offset="0" stop-color="#9ca3af" />
+      <stop offset=".5" stop-color="#9ca3af" />
       <stop offset="1" stop-color="#6b7280" />
     </linearGradient>
     <linearGradient
-      id="DayModerateDrizzle_c"
-      x1="1381"
-      x2="1399"
-      y1="-1145"
-      y2="-1097"
-      gradientTransform="rotate(-9 8003 8233)"
+      id="gradient_c_1122uvwx"
+      x1="8.7"
+      x2="80.9"
+      y1="17.1"
+      y2="142.1"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#f7b23b" />
+      <stop offset=".5" stop-color="#f7b23b" />
+      <stop offset="1" stop-color="#f59e0b" />
+    </linearGradient>
+    <linearGradient
+      id="gradient_d_1122uvwx"
+      x1="1381.3"
+      x2="1399.5"
+      y1="-1144.7"
+      y2="-1097.4"
+      gradientTransform="rotate(-9 8002.567 8233.063)"
       gradientUnits="userSpaceOnUse"
     >
       <stop offset="0" stop-color="#0b65ed" />
+      <stop offset=".5" stop-color="#0a5ad4" />
       <stop offset="1" stop-color="#0950bc" />
     </linearGradient>
     <linearGradient
-      xlink:href="#DayModerateDrizzle_c"
-      id="DayModerateDrizzle_d"
-      x1="1437"
-      x2="1455"
+      xlink:href="#gradient_d_1122uvwx"
+      id="gradient_e_1122uvwx"
+      x1="1436.7"
+      x2="1454.9"
       y1="-1137"
-      y2="-1090"
-      gradientTransform="rotate(-9 8010 8233)"
+      y2="-1089.7"
+      gradientTransform="rotate(-9 8009.537 8233.037)"
     />
     <linearGradient
-      xlink:href="#DayModerateDrizzle_c"
-      id="DayModerateDrizzle_e"
-      x1="1492"
-      x2="1510"
-      y1="-1129"
-      y2="-1082"
-      gradientTransform="rotate(-9 8017 8233)"
+      xlink:href="#gradient_d_1122uvwx"
+      id="gradient_f_1122uvwx"
+      x1="1492.1"
+      x2="1510.3"
+      y1="-1129.3"
+      y2="-1082.1"
+      gradientTransform="rotate(-9 8016.566 8233.078)"
     />
     <linearGradient
-      id="DayModerateDrizzle_f"
+      id="gradient_g_1122uvwx"
       x1="78"
       x2="118"
-      y1="63"
-      y2="133"
+      y1="63.4"
+      y2="132.7"
       gradientUnits="userSpaceOnUse"
     >
       <stop offset="0" stop-color="#fbbf24" />
+      <stop offset=".5" stop-color="#fbbf24" />
       <stop offset="1" stop-color="#f59e0b" />
     </linearGradient>
-    <symbol id="DayModerateDrizzle_h" viewBox="0 0 196 196">
+    <symbol id="symbol_i_1122uvwx" viewBox="0 0 196 196">
       <circle
         cx="98"
         cy="98"
         r="40"
-        fill="url(#DayModerateDrizzle_f)"
+        fill="url(#gradient_g_1122uvwx)"
         stroke="#f8af18"
         stroke-miterlimit="10"
         stroke-width="4"
@@ -91,33 +106,33 @@
         <animateTransform
           additive="sum"
           attributeName="transform"
-          dur="12s"
+          dur="6s"
           repeatCount="indefinite"
           type="rotate"
           values="0 98 98; 45 98 98"
         />
       </path>
     </symbol>
-    <symbol id="DayModerateDrizzle_j" viewBox="0 0 200.3 126.1">
+    <symbol id="symbol_k_1122uvwx" viewBox="0 0 200.3 126.1">
       <path
-        fill="url(#DayModerateDrizzle_b)"
+        fill="url(#gradient_b_1122uvwx)"
         stroke="#848b98"
         stroke-miterlimit="10"
-        d="M.5 93.2a32 32 0 0032.4 32.4h130v-.1a35 35 0 006.5-68.9 32 32 0 00-48.5-33 49 49 0 00-88.6 37h-1.5A32 32 0 00.5 93Z"
+        d="M.5 93.2a32.4 32.4 0 0032.4 32.4h129.8v-.1l2.3.1a34.8 34.8 0 006.5-68.9 32.4 32.4 0 00-48.5-33 48.6 48.6 0 00-88.6 37.1h-1.5A32.4 32.4 0 00.5 93.1Z"
       />
     </symbol>
-    <symbol id="DayModerateDrizzle_k" viewBox="0 0 350 222">
+    <symbol id="symbol_l_1122uvwx" viewBox="0 0 350 222">
       <path
-        fill="url(#DayModerateDrizzle_a)"
+        fill="url(#gradient_a_1122uvwx)"
         stroke="#e6effc"
         stroke-miterlimit="10"
         stroke-width="6"
-        d="m291 107-2.5.1A84 84 0 00136 43a56 56 0 00-85 48 60 60 0 001 9 60 60 0 0012 121h224a56 56 0 000-112Z"
+        d="m291 107-2.5.1A83.9 83.9 0 00135.6 43 56 56 0 0051 91a56.6 56.6 0 00.8 9A60 60 0 0063 219l4-.2v.2h224a56 56 0 000-112Z"
       />
     </symbol>
-    <symbol id="DayModerateDrizzle_i" overflow="visible" viewBox="0 0 398 222">
+    <symbol id="symbol_j_1122uvwx" overflow="visible" viewBox="0 0 398 222">
       <use
-        xlink:href="#DayModerateDrizzle_j"
+        xlink:href="#symbol_k_1122uvwx"
         width="200.3"
         height="126.1"
         transform="translate(198 27)"
@@ -125,124 +140,144 @@
         <animateTransform
           additive="sum"
           attributeName="transform"
-          dur="12s"
+          dur="6s"
           repeatCount="indefinite"
           type="translate"
           values="-9 0; 9 0; -9 0"
         />
       </use>
-      <use xlink:href="#DayModerateDrizzle_k" width="350" height="222">
+      <use xlink:href="#symbol_l_1122uvwx" width="350" height="222">
         <animateTransform
           additive="sum"
           attributeName="transform"
-          dur="12s"
+          dur="6s"
           repeatCount="indefinite"
           type="translate"
           values="-18 0; 18 0; -18 0"
         />
       </use>
     </symbol>
-    <symbol
-      id="DayModerateDrizzle_g"
-      overflow="visible"
-      viewBox="0 0 410.8 258"
-    >
-      <use xlink:href="#DayModerateDrizzle_h" width="196" height="196" />
+    <symbol id="symbol_h_1122uvwx" overflow="visible" viewBox="0 0 410.8 258">
+      <use xlink:href="#symbol_i_1122uvwx" width="196" height="196" />
       <use
-        xlink:href="#DayModerateDrizzle_i"
+        xlink:href="#symbol_j_1122uvwx"
         width="398"
         height="222"
         transform="translate(12.84 36)"
       />
     </symbol>
-    <symbol id="DayModerateDrizzle_l" overflow="visible" viewBox="0 0 129 57">
+    <symbol id="symbol_m_1122uvwx" overflow="visible" viewBox="0 0 129 57">
       <path
-        fill="url(#DayModerateDrizzle_c)"
+        fill="url(#gradient_d_1122uvwx)"
         stroke="#0a5ad4"
         stroke-miterlimit="10"
         d="M8.5 56.5a8 8 0 01-8-8v-40a8 8 0 0116 0v40a8 8 0 01-8 8Z"
         opacity="0"
       >
         <animateTransform
-          id="DayModerateDrizzle_x1"
+          id="anim_x1_1122uvwx"
           additive="sum"
           attributeName="transform"
-          begin="0s; x1.end+1s"
-          dur="1s"
+          begin="0s; anim_x1_1122uvwx.end+.33s"
+          dur=".67s"
           type="translate"
           values="0 -60; 0 60"
         />
         <animate
-          id="DayModerateDrizzle_y1"
+          id="anim_y1_1122uvwx"
           attributeName="opacity"
-          begin="0s; y1.end+1s"
-          dur="1s"
+          begin="0s; anim_y1_1122uvwx.end+.33s"
+          dur=".67s"
           keyTimes="0; .25; 1"
           values="0; 1; 0"
         />
       </path>
       <path
-        fill="url(#DayModerateDrizzle_d)"
+        fill="url(#gradient_e_1122uvwx)"
         stroke="#0a5ad4"
         stroke-miterlimit="10"
         d="M64.5 56.5a8 8 0 01-8-8v-40a8 8 0 0116 0v40a8 8 0 01-8 8Z"
         opacity="0"
       >
         <animateTransform
-          id="DayModerateDrizzle_x2"
+          id="anim_x2_1122uvwx"
           additive="sum"
           attributeName="transform"
-          begin="1s; x2.end+1s"
-          dur="1s"
+          begin=".33s; anim_x2_1122uvwx.end+.33s"
+          dur=".67s"
           type="translate"
           values="0 -60; 0 60"
         />
         <animate
-          id="DayModerateDrizzle_y2"
+          id="anim_y2_1122uvwx"
           attributeName="opacity"
-          begin="1s; y2.end+1s"
-          dur="1s"
+          begin=".33s; anim_y2_1122uvwx.end+.33s"
+          dur=".67s"
           keyTimes="0; .25; 1"
           values="0; 1; 0"
         />
       </path>
       <path
-        fill="url(#DayModerateDrizzle_e)"
+        fill="url(#gradient_f_1122uvwx)"
         stroke="#0a5ad4"
         stroke-miterlimit="10"
         d="M120.5 56.5a8 8 0 01-8-8v-40a8 8 0 0116 0v40a8 8 0 01-8 8Z"
         opacity="0"
       >
         <animateTransform
-          id="DayModerateDrizzle_x3"
+          id="anim_x3_1122uvwx"
           additive="sum"
           attributeName="transform"
-          begin="-1s; x3.end+1s"
-          dur="1s"
+          begin="-.33s; anim_x3_1122uvwx.end+.33s"
+          dur=".67s"
           type="translate"
           values="0 -60; 0 60"
         />
         <animate
-          id="DayModerateDrizzle_y3"
+          id="anim_y3_1122uvwx"
           attributeName="opacity"
-          begin="-1s; y3.end+1s"
-          dur="1s"
+          begin="-.33s; anim_y3_1122uvwx.end+.33s"
+          dur=".67s"
           keyTimes="0; .25; 1"
           values="0; 1; 0"
         />
       </path>
     </symbol>
+    <symbol id="symbol_n_1122uvwx" viewBox="0 0 102.7 186.8">
+      <path
+        fill="url(#gradient_c_1122uvwx)"
+        stroke="#f6a823"
+        stroke-miterlimit="10"
+        stroke-width="4"
+        d="m34.8 2-32 96h32l-16 80 80-112h-48l32-64h-48z"
+      >
+        <animate
+          id="anim_x1_1122uvwx"
+          attributeName="opacity"
+          begin="0s; anim_x1_1122uvwx.end+.67s"
+          dur="1.33s"
+          keyTimes="0; .38; .5; .63; .75; .86; .94; 1"
+          values="1; 1; 0; 1; 0; 1; 0; 1"
+        />
+      </path>
+    </symbol>
   </defs>
   <use
-    xlink:href="#DayModerateDrizzle_g"
+    xlink:href="#symbol_h_1122uvwx"
     width="410.8"
     height="258"
     transform="translate(56 109)"
   />
   <use
-    xlink:href="#DayModerateDrizzle_l"
+    xlink:href="#symbol_m_1122uvwx"
     width="129"
     height="57"
     transform="translate(191.5 343.5)"
+  />
+  <use
+    xlink:href="#symbol_n_1122uvwx"
+    width="102.7"
+    height="186.7"
+    transform="translate(205.23 291)"
   />
 </svg>
