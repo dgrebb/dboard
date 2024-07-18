@@ -8,7 +8,7 @@
 >
   <defs>
     <linearGradient
-      id="gradient_a_7890abcd"
+      id="NightDrizzle_a"
       x1="99.5"
       x2="232.6"
       y1="30.7"
@@ -20,7 +20,7 @@
       <stop offset="1" stop-color="#deeafb" />
     </linearGradient>
     <linearGradient
-      id="gradient_b_7890abcd"
+      id="NightDrizzle_b"
       x1="52.7"
       x2="133.4"
       y1="9.6"
@@ -32,7 +32,7 @@
       <stop offset="1" stop-color="#6b7280" />
     </linearGradient>
     <linearGradient
-      id="gradient_c_7890abcd"
+      id="NightDrizzle_c"
       x1="34.7"
       x2="119.2"
       y1="18.6"
@@ -44,7 +44,7 @@
       <stop offset="1" stop-color="#5eafcf" />
     </linearGradient>
     <linearGradient
-      id="gradient_d_7890abcd"
+      id="NightDrizzle_d"
       x1="1381.3"
       x2="1399.5"
       y1="-1144.7"
@@ -57,8 +57,8 @@
       <stop offset="1" stop-color="#0950bc" />
     </linearGradient>
     <linearGradient
-      xlink:href="#gradient_d_7890abcd"
-      id="gradient_e_7890abcd"
+      xlink:href="#NightDrizzle_d"
+      id="NightDrizzle_e"
       x1="1436.7"
       x2="1454.9"
       y1="-1137"
@@ -66,17 +66,17 @@
       gradientTransform="rotate(-9 8009.537 8233.037)"
     />
     <linearGradient
-      xlink:href="#gradient_d_7890abcd"
-      id="gradient_f_7890abcd"
+      xlink:href="#NightDrizzle_d"
+      id="NightDrizzle_f"
       x1="1492.1"
       x2="1510.3"
       y1="-1129.3"
       y2="-1082.1"
       gradientTransform="rotate(-9 8016.566 8233.078)"
     />
-    <symbol id="symbol_h_7890abcd" viewBox="0 0 172 172">
+    <symbol id="NightDrizzle_h" viewBox="0 0 172 172">
       <path
-        fill="url(#gradient_c_7890abcd)"
+        fill="url(#NightDrizzle_c)"
         stroke="#72b9d5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -93,26 +93,26 @@
         />
       </path>
     </symbol>
-    <symbol id="symbol_j_7890abcd" viewBox="0 0 200.3 126.1">
+    <symbol id="NightDrizzle_j" viewBox="0 0 200.3 126.1">
       <path
-        fill="url(#gradient_b_7890abcd)"
+        fill="url(#NightDrizzle_b)"
         stroke="#848b98"
         stroke-miterlimit="10"
         d="M.5 93.2a32.4 32.4 0 0032.4 32.4h129.8v-.1l2.3.1a34.8 34.8 0 006.5-68.9 32.4 32.4 0 00-48.5-33 48.6 48.6 0 00-88.6 37.1h-1.5A32.4 32.4 0 00.5 93.1Z"
       />
     </symbol>
-    <symbol id="symbol_k_7890abcd" viewBox="0 0 350 222">
+    <symbol id="NightDrizzle_k" viewBox="0 0 350 222">
       <path
-        fill="url(#gradient_a_7890abcd)"
+        fill="url(#NightDrizzle_a)"
         stroke="#e6effc"
         stroke-miterlimit="10"
         stroke-width="6"
         d="m291 107-2.5.1A83.9 83.9 0 00135.6 43 56 56 0 0051 91a56.6 56.6 0 00.8 9A60 60 0 0063 219l4-.2v.2h224a56 56 0 000-112Z"
       />
     </symbol>
-    <symbol id="symbol_i_7890abcd" overflow="visible" viewBox="0 0 398 222">
+    <symbol id="NightDrizzle_i" overflow="visible" viewBox="0 0 398 222">
       <use
-        xlink:href="#symbol_j_7890abcd"
+        xlink:href="#NightDrizzle_j"
         width="200.3"
         height="126.1"
         transform="translate(198 27)"
@@ -126,7 +126,7 @@
           values="-9 0; 9 0; -9 0"
         />
       </use>
-      <use xlink:href="#symbol_k_7890abcd" width="350" height="222">
+      <use xlink:href="#NightDrizzle_k" width="350" height="222">
         <animateTransform
           additive="sum"
           attributeName="transform"
@@ -137,86 +137,86 @@
         />
       </use>
     </symbol>
-    <symbol id="symbol_g_7890abcd" overflow="visible" viewBox="0 0 398.8 246">
-      <use xlink:href="#symbol_h_7890abcd" width="172" height="172" />
+    <symbol id="NightDrizzle_g" overflow="visible" viewBox="0 0 398.8 246">
+      <use xlink:href="#NightDrizzle_h" width="172" height="172" />
       <use
-        xlink:href="#symbol_i_7890abcd"
+        xlink:href="#NightDrizzle_i"
         width="398"
         height="222"
         transform="translate(.84 24)"
       />
     </symbol>
-    <symbol id="symbol_l_7890abcd" overflow="visible" viewBox="0 0 129 57">
+    <symbol id="NightDrizzle_l" overflow="visible" viewBox="0 0 129 57">
       <path
-        fill="url(#gradient_d_7890abcd)"
+        fill="url(#NightDrizzle_d)"
         stroke="#0a5ad4"
         stroke-miterlimit="10"
         d="M8.5 56.5a8 8 0 01-8-8v-40a8 8 0 0116 0v40a8 8 0 01-8 8Z"
         opacity="0"
       >
         <animateTransform
-          id="anim_x1_7890abcd"
+          id="NightDrizzle_x1"
           additive="sum"
           attributeName="transform"
-          begin="0s; anim_x1_7890abcd.end+.33s"
+          begin="0s; NightDrizzle_x1.end+.33s"
           dur=".67s"
           type="translate"
           values="0 -60; 0 60"
         />
         <animate
-          id="anim_y1_7890abcd"
+          id="NightDrizzle_y1"
           attributeName="opacity"
-          begin="0s; anim_y1_7890abcd.end+.33s"
+          begin="0s; NightDrizzle_y1.end+.33s"
           dur=".67s"
           keyTimes="0; .25; 1"
           values="0; 1; 0"
         />
       </path>
       <path
-        fill="url(#gradient_e_7890abcd)"
+        fill="url(#NightDrizzle_e)"
         stroke="#0a5ad4"
         stroke-miterlimit="10"
         d="M64.5 56.5a8 8 0 01-8-8v-40a8 8 0 0116 0v40a8 8 0 01-8 8Z"
         opacity="0"
       >
         <animateTransform
-          id="anim_x2_7890abcd"
+          id="NightDrizzle_x2"
           additive="sum"
           attributeName="transform"
-          begin=".33s; anim_x2_7890abcd.end+.33s"
+          begin=".33s; NightDrizzle_x2.end+.33s"
           dur=".67s"
           type="translate"
           values="0 -60; 0 60"
         />
         <animate
-          id="anim_y2_7890abcd"
+          id="NightDrizzle_y2"
           attributeName="opacity"
-          begin=".33s; anim_y2_7890abcd.end+.33s"
+          begin=".33s; NightDrizzle_y2.end+.33s"
           dur=".67s"
           keyTimes="0; .25; 1"
           values="0; 1; 0"
         />
       </path>
       <path
-        fill="url(#gradient_f_7890abcd)"
+        fill="url(#NightDrizzle_f)"
         stroke="#0a5ad4"
         stroke-miterlimit="10"
         d="M120.5 56.5a8 8 0 01-8-8v-40a8 8 0 0116 0v40a8 8 0 01-8 8Z"
         opacity="0"
       >
         <animateTransform
-          id="anim_x3_7890abcd"
+          id="NightDrizzle_x3"
           additive="sum"
           attributeName="transform"
-          begin="-.33s; anim_x3_7890abcd.end+.33s"
+          begin="-.33s; NightDrizzle_x3.end+.33s"
           dur=".67s"
           type="translate"
           values="0 -60; 0 60"
         />
         <animate
-          id="anim_y3_7890abcd"
+          id="NightDrizzle_y3"
           attributeName="opacity"
-          begin="-.33s; anim_y3_7890abcd.end+.33s"
+          begin="-.33s; NightDrizzle_y3.end+.33s"
           dur=".67s"
           keyTimes="0; .25; 1"
           values="0; 1; 0"
@@ -225,13 +225,13 @@
     </symbol>
   </defs>
   <use
-    xlink:href="#symbol_g_7890abcd"
+    xlink:href="#NightDrizzle_g"
     width="398.8"
     height="246"
     transform="translate(68 121)"
   />
   <use
-    xlink:href="#symbol_l_7890abcd"
+    xlink:href="#NightDrizzle_l"
     width="129"
     height="57"
     transform="translate(191.5 343.5)"
