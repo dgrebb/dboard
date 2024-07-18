@@ -40,12 +40,10 @@
 </script>
 
 <div class="big-icon-wow">
-  <div class="h-auto w-[10rem]">
-    <span data-test="weather-icon-code">{weatherCode}</span>
-    <svelte:component
-      this={weatherIconComponents[component]}
-      {weatherCode}
-      {name}
-    />
-  </div>
+  <span data-test="weather-icon-code">{weatherCode}</span>
+  <svelte:component
+    this={weatherIconComponents[component]}
+    {weatherCode}
+    {name}
+  />
 </div>

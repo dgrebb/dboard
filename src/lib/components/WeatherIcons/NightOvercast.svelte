@@ -1,4 +1,5 @@
-<script></script>
+<script lang="ts">
+</script>
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
@@ -6,14 +7,79 @@
   viewBox="0 0 512 512"
 >
   <defs>
-    <symbol id="NightOvercast_e" viewBox="0 0 172 172">
+    <linearGradient
+      id="NightDrizzle_d"
+      x1="99.5"
+      x2="232.6"
+      y1="30.7"
+      y2="261.4"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#f3f7fe" />
+      <stop offset=".5" stop-color="#f3f7fe" />
+      <stop offset="1" stop-color="#deeafb" />
+    </linearGradient>
+    <linearGradient
+      id="NightDrizzle_c"
+      x1="52.7"
+      x2="133.4"
+      y1="9.6"
+      y2="149.3"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#9ca3af" />
+      <stop offset=".5" stop-color="#9ca3af" />
+      <stop offset="1" stop-color="#6b7280" />
+    </linearGradient>
+    <linearGradient
+      id="NightDrizzle_b"
+      x1="34.7"
+      x2="119.2"
+      y1="18.6"
+      y2="165"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#86c3db" />
+      <stop offset=".5" stop-color="#86c3db" />
+      <stop offset="1" stop-color="#5eafcf" />
+    </linearGradient>
+    <linearGradient
+      id="NightDrizzle_a"
+      x1="1243.8"
+      x2="1253.3"
+      y1="161.8"
+      y2="186.4"
+      gradientTransform="rotate(-9 1918.027 6929.573)"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#0b65ed" />
+      <stop offset=".5" stop-color="#0a5ad4" />
+      <stop offset="1" stop-color="#0950bc" />
+    </linearGradient>
+    <linearGradient
+      xlink:href="#NightDrizzle_a"
+      id="NightDrizzle_l"
+      x1="1299.1"
+      x2="1308.6"
+      y1="170.5"
+      y2="195.2"
+    />
+    <linearGradient
+      xlink:href="#NightDrizzle_a"
+      id="NightDrizzle_m"
+      x1="1354.4"
+      x2="1363.9"
+      y1="179.3"
+      y2="203.9"
+    />
+    <symbol id="NightDrizzle_g" viewBox="0 0 172 172">
       <path
-        fill="url(#NightOvercast_c)"
+        fill="url(#NightDrizzle_b)"
         stroke="#72b9d5"
         stroke-linecap="round"
         stroke-linejoin="round"
         stroke-width="4"
-        d="M160.6 107.4a84.8 84.8 0 01-85.4-84.3A83.3 83.3 0 0178 2 84.7 84.7 0 002 85.7 84.8 84.8 0 0087.4 170a85.2 85.2 0 0082.6-63.1 88 88 0 01-9.4.5Z"
+        d="M160.6 107.4a84.8 84.8 0 0 1-85.4-84.3A83.3 83.3 0 0 1 78 2 84.7 84.7 0 0 0 2 85.7 84.8 84.8 0 0 0 87.4 170a85.2 85.2 0 0 0 82.6-63.1 88 88 0 0 1-9.4.5Z"
       >
         <animateTransform
           additive="sum"
@@ -25,26 +91,26 @@
         />
       </path>
     </symbol>
-    <symbol id="NightOvercast_g" viewBox="0 0 200.3 126.1">
+    <symbol id="NightDrizzle_e" viewBox="0 0 200.3 126.1">
       <path
-        fill="url(#NightOvercast_b)"
+        fill="url(#NightDrizzle_c)"
         stroke="#848b98"
         stroke-miterlimit="10"
-        d="M.5 93.2a32.4 32.4 0 0032.4 32.4h129.8v-.1l2.3.1a34.8 34.8 0 006.5-68.9 32.4 32.4 0 00-48.5-33 48.6 48.6 0 00-88.6 37.1h-1.5A32.4 32.4 0 00.5 93.1Z"
+        d="M.5 93.2a32.4 32.4 0 0 0 32.4 32.4h129.8v-.1l2.3.1a34.8 34.8 0 0 0 6.5-68.9 32.4 32.4 0 0 0-48.5-33 48.6 48.6 0 0 0-88.6 37.1h-1.5A32.4 32.4 0 0 0 .5 93.1Z"
       />
     </symbol>
-    <symbol id="NightOvercast_h" viewBox="0 0 350 222">
+    <symbol id="NightDrizzle_f" viewBox="0 0 350 222">
       <path
-        fill="url(#NightOvercast_a)"
+        fill="url(#NightDrizzle_d)"
         stroke="#e6effc"
         stroke-miterlimit="10"
         stroke-width="6"
-        d="m291 107-2.5.1A83.9 83.9 0 00135.6 43 56 56 0 0051 91a56.6 56.6 0 00.8 9A60 60 0 0063 219l4-.2v.2h224a56 56 0 000-112Z"
+        d="m291 107-2.5.1A83.9 83.9 0 0 0 135.6 43 56 56 0 0 0 51 91a56.6 56.6 0 0 0 .8 9A60 60 0 0 0 63 219l4-.2v.2h224a56 56 0 0 0 0-112Z"
       />
     </symbol>
-    <symbol id="NightOvercast_f" overflow="visible" viewBox="0 0 398 222">
+    <symbol id="NightDrizzle_h" overflow="visible" viewBox="0 0 398 222">
       <use
-        xlink:href="#NightOvercast_g"
+        xlink:href="#NightDrizzle_e"
         width="200.3"
         height="126.1"
         transform="translate(198 27)"
@@ -58,7 +124,7 @@
           values="-9 0; 9 0; -9 0"
         />
       </use>
-      <use xlink:href="#NightOvercast_h" width="350" height="222">
+      <use xlink:href="#NightDrizzle_f" width="350" height="222">
         <animateTransform
           additive="sum"
           attributeName="transform"
@@ -69,54 +135,18 @@
         />
       </use>
     </symbol>
-    <symbol id="NightOvercast_d" overflow="visible" viewBox="0 0 398.8 246">
-      <use xlink:href="#NightOvercast_e" width="172" height="172" />
+    <symbol id="NightDrizzle_i" overflow="visible" viewBox="0 0 398.8 246">
+      <use xlink:href="#NightDrizzle_g" width="172" height="172" />
       <use
-        xlink:href="#NightOvercast_f"
+        xlink:href="#NightDrizzle_h"
         width="398"
         height="222"
         transform="translate(.84 24)"
       />
     </symbol>
-    <linearGradient
-      id="NightOvercast_a"
-      x1="99.5"
-      x2="232.6"
-      y1="30.7"
-      y2="261.4"
-      gradientUnits="userSpaceOnUse"
-    >
-      <stop offset="0" stop-color="#f3f7fe" />
-      <stop offset=".5" stop-color="#f3f7fe" />
-      <stop offset="1" stop-color="#deeafb" />
-    </linearGradient>
-    <linearGradient
-      id="NightOvercast_b"
-      x1="52.7"
-      x2="133.4"
-      y1="9.6"
-      y2="149.3"
-      gradientUnits="userSpaceOnUse"
-    >
-      <stop offset="0" stop-color="#9ca3af" />
-      <stop offset=".5" stop-color="#9ca3af" />
-      <stop offset="1" stop-color="#6b7280" />
-    </linearGradient>
-    <linearGradient
-      id="NightOvercast_c"
-      x1="34.7"
-      x2="119.2"
-      y1="18.6"
-      y2="165"
-      gradientUnits="userSpaceOnUse"
-    >
-      <stop offset="0" stop-color="#86c3db" />
-      <stop offset=".5" stop-color="#86c3db" />
-      <stop offset="1" stop-color="#5eafcf" />
-    </linearGradient>
   </defs>
   <use
-    xlink:href="#NightOvercast_d"
+    xlink:href="#NightDrizzle_i"
     width="398.8"
     height="246"
     transform="translate(68 121)"
