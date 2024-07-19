@@ -1,3 +1,5 @@
+<script lang="ts"></script>
+
 <div class="current-music__modal__audio-animation audio">
   <div class="sound-icon disabled">
     <div class="sound-wave">
