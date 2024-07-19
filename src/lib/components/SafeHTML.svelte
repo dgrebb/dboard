@@ -1,4 +1,3 @@
-<!-- src/lib/components/SafeHtml.svelte -->
 <script lang="ts">
   import { onMount } from 'svelte';
 
