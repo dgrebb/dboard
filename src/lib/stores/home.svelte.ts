@@ -18,6 +18,10 @@ export const createHomeState = () => {
   });
 
   return {
+    state: () => {
+      return homeStore;
+    },
+
     weather: () => {
       return homeStore.weather;
     },

@@ -11,3 +11,4 @@ export * from '../widgets/Hue/Hue.types';
 export * from '../widgets/NightScout/NightScout.types';
 export * from '../widgets/Septa/Septa.types';
 export * from '../widgets/Weather/Weather.types';
+export * from '../components/Debugger/Debugger.types';

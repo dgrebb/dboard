@@ -6,7 +6,7 @@
     name: string;
   };
 
-  let { weatherCode, name } = <Props>$props();
+  let { weatherCode, name }: Props = $props();
 </script>
 
 <h1 class="absolute self-end p-3 text-white mix-blend-difference">{name}</h1>
