@@ -166,7 +166,8 @@ const processMediaInfo = async (fetch: Fetch) => {
   try {
     let data = await fetchMediaInfo(fetch);
 
-    if (previousState?.title === data.title) return; // Early return if title hasn't changed
+    // return if track is unchanged
+    if (previousState?.title === data.title && data.title !== '') return;
 
     if (!data.art) {
       const retryData = await fetchMediaInfo(fetch);
