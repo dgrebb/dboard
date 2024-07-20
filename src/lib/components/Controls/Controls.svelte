@@ -1,9 +1,9 @@
 <script lang="ts">
-  import './controls.css';
   import { Button } from 'flowbite-svelte';
-  import { clickOutside } from '$lib/actions/clickOutside';
+  import './controls.css';
 
-  import { musicState } from '$stores';
+  import Debugger from '$components/Debugger/Debugger.svelte';
+  import { musicState, homeState } from '$stores';
   import Icon from '@iconify/svelte';
 
   // Define the state variables
@@ -13,17 +13,8 @@
 
   let iconSize = 27;
 
-  let {
-    status,
-    artist,
-    album,
-    art,
-    backgroundGradient,
-    loved,
-    relativeTimePosition,
-    title,
-    totalTime,
-  } = $state(musicState.nowPlaying());
+  let musicDebug = $state(musicState.nowPlaying());
+  let homeDebug = $state(homeState.state());
 
   // Function to toggle controls visibility
   const toggleControls = (): void => {
@@ -31,10 +22,10 @@
   };
 
   // Function to hide controls
-  const hideControls = (e: Event): void => {
-    e.preventDefault();
-    open = false;
-  };
+  // const hideControls = (e: Event): void => {
+  //   e.preventDefault();
+  //   open = false;
+  // };
 
   // Function to refresh the dashboard
   const refreshDboard = (): void => {
@@ -46,25 +37,13 @@
   };
 
   $effect(() => {
-    ({
-      status,
-      artist,
-      album,
-      art,
-      backgroundGradient,
-      loved,
-      relativeTimePosition,
-      title,
-      totalTime,
-    } = musicState.nowPlaying());
+    musicDebug = musicState.nowPlaying();
+    homeDebug = homeState.state();
   });
 </script>
 
 <!-- Component Template -->
-<div
-  use:clickOutside={(e: Event) => hideControls(e)}
-  class="controls-container flex h-1/3 w-full"
->
+<div class="controls-container flex h-1/3 w-full">
   <Button
     size="sm"
     color="light"
@@ -84,34 +63,6 @@
 
   {#if open}
     <div class="controls absolute left-3 top-3 z-10 w-4/5">
-      <!-- <Button
-        size="sm"
-        disabled={!webSocketEstablished}
-        color="dark"
-        class="control border-opacity-0 bg-opacity-25 text-green-500 bg-blend-overlay mix-blend-difference"
-        on:click={closeSocket}
-      >
-        <Icon
-          icon="solar:plug-circle-outline"
-          height={iconSize}
-          width={iconSize}
-        />
-      </Button>
-
-      <Button
-        size="sm"
-        disabled={webSocketEstablished}
-        color="dark"
-        class="control border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
-        on:click={establishWebSocket}
-      >
-        <Icon
-          icon="solar:plug-circle-outline"
-          height={iconSize}
-          width={iconSize}
-        />
-      </Button> -->
-
       <Button
         size="sm"
         color="dark"
@@ -122,20 +73,6 @@
       </Button>
 
       <div class="version-selector relative">
-        <!-- <Button
-          size="sm"
-          color="dark"
-          class="control border-opacity-0 bg-opacity-25 bg-blend-overlay mix-blend-difference"
-          on:click={toggleVersions}
-        >
-          <Icon
-            icon="solar:branching-paths-down-outline"
-            height={iconSize}
-            width={iconSize}
-            class="mr-3"
-          />
-          Version
-        </Button> -->
         <Button
           size="sm"
           color="dark"
@@ -165,58 +102,8 @@
 </div>
 
 {#if showStateDebug}
-  <dl class="state-list absolute left-9 top-20 block bg-blend-difference">
-    <dt>status:</dt>
-    <dd>{status}</dd>
-    <dt>artist:</dt>
-    <dd>{artist}</dd>
-    <dt>album:</dt>
-    <dd>{album}</dd>
-    <dt>art:</dt>
-    <dd>{art}</dd>
-    <dt>gradient:</dt>
-    <dd>{backgroundGradient}</dd>
-    <dt>loved:</dt>
-    <dd>{loved}</dd>
-    <dt>relativeTimePosition:</dt>
-    <dd>{relativeTimePosition}</dd>
-    <dt>title:</dt>
-    <dd>{title}</dd>
-    <dt>totalTime:</dt>
-    <dd>{totalTime}</dd>
-  </dl>
+  <div class="debug-data">
+    <Debugger debugData={musicDebug} title="Music" />
+    <Debugger debugData={homeDebug} title="Home" />
+  </div>
 {/if}
-
-<style lang="postcss">
-  .state-list {
-    display: inline-block;
-    text-color: white;
-    mix-blend-mode: difference;
-
-    &::before {
-      display: table;
-      content: ' ';
-    }
-
-    &::after {
-      clear: both;
-    }
-
-    dt {
-      display: inline-block;
-      float: left;
-      clear: left;
-      margin-right: 5px;
-    }
-
-    dd {
-      display: inline-block;
-      float: left;
-      margin-left: 0;
-      padding-left: 0;
-    }
-    dt {
-      font-weight: bold;
-    }
-  }
-</style>
