@@ -13,3 +13,5 @@ static/music.json
 static/video
 .vscode/*
 .config/ssl/*
+static/tomorrow.json
+static/today.json
