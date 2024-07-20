@@ -38,20 +38,22 @@ let previousState: NowPlayingData = {
   foregroundGradient: '',
 };
 
+/**
+ * Creates a gradient from the provided image URL.
+ * @param {string} image - The image URL.
+ * @returns {Promise<GradientResult | boolean>} - The gradient result or false if an error occurs.
+ */
 const createGradient = async (
   image: string
 ): Promise<GradientResult | boolean> => {
   if (typeof image !== 'string') return false;
-
   try {
     const gradientResult = await colorThief(image);
     let backgroundGradient: string | undefined;
     let foregroundGradient: string | undefined;
-
     if (gradientResult && typeof gradientResult !== 'boolean') {
       ({ backgroundGradient, foregroundGradient } = gradientResult);
     }
-
     return {
       backgroundGradient: backgroundGradient || '',
       foregroundGradient: foregroundGradient || '',
@@ -62,7 +64,10 @@ const createGradient = async (
   }
 };
 
-// Broadcast the current state to all clients
+/**
+ * Broadcasts a message to all connected clients.
+ * @param {Uint8Array} message - The message to broadcast.
+ */
 const broadcast = (message: Uint8Array) => {
   clients.forEach((client) => {
     try {
@@ -83,16 +88,18 @@ const broadcast = (message: Uint8Array) => {
   });
 };
 
+/**
+ * Sends the initial state to a new client.
+ * @param {ReadableStreamDefaultController<Uint8Array>} controller - The stream controller.
+ * @param {Fetch} fetch - The fetch function.
+ */
 const sendInitialState = async (
   controller: ReadableStreamDefaultController<Uint8Array>,
   fetch: Fetch
 ) => {
   try {
     const data = await fetchMediaInfo(fetch);
-    const state = {
-      ...previousState,
-      ...data,
-    };
+    const state = { ...previousState, ...data };
     const stream = `data: ${JSON.stringify(state)}\n\n`;
     if (controller.desiredSize !== null) {
       controller.enqueue(new TextEncoder().encode(stream));
@@ -107,13 +114,22 @@ const sendInitialState = async (
   }
 };
 
-const fetchLovedStatus = async (fetch: Fetch, wiiMData: NowPlayingAPI) => {
-  const maxAttempts = 3;
+/**
+ * Fetches the loved status of the current track.
+ * @param {Fetch} fetch - The fetch function.
+ * @param {NowPlayingAPI} wiiMData - The current track data.
+ * @returns {Promise<boolean>} - The loved status.
+ */
+const fetchLovedStatus = async (
+  fetch: Fetch,
+  wiiMData: NowPlayingAPI
+): Promise<boolean> => {
+  const maxAttempts = 2; // Reduce number of attempts to 2
   let attempt = 0;
 
   const tryFetch = async (): Promise<boolean> => {
     attempt++;
-    if (attempt > maxAttempts) return previousState.loved; // Stop after 3 attempts and return previous state
+    if (attempt > maxAttempts) return false;
 
     try {
       const response = await fetch('/api/static/music');
@@ -127,15 +143,14 @@ const fetchLovedStatus = async (fetch: Fetch, wiiMData: NowPlayingAPI) => {
       ) {
         const stream = `data: ${JSON.stringify({ loved: data.loved })}\n\n`;
         broadcast(new TextEncoder().encode(stream));
-
         return data.loved;
       } else {
-        await new Promise((resolve) => setTimeout(resolve, 15000)); // Wait for 15 seconds
+        await new Promise((resolve) => setTimeout(resolve, 10000)); // Reduce wait time to 10 seconds
         return tryFetch();
       }
     } catch (error) {
       console.error('Error fetching favorite status:', error);
-      await new Promise((resolve) => setTimeout(resolve, 15000)); // Wait for 15 seconds
+      await new Promise((resolve) => setTimeout(resolve, 10000)); // Reduce wait time to 10 seconds
       return tryFetch();
     }
   };
@@ -143,83 +158,88 @@ const fetchLovedStatus = async (fetch: Fetch, wiiMData: NowPlayingAPI) => {
   return tryFetch();
 };
 
-const startInterval = (fetch: Fetch): void => {
-  if (interval) return;
+/**
+ * Processes the media information and broadcasts updates if necessary.
+ * @param {Fetch} fetch - The fetch function.
+ */
+const processMediaInfo = async (fetch: Fetch) => {
+  try {
+    let data = await fetchMediaInfo(fetch);
 
-  interval = setInterval(async () => {
-    try {
-      let data = await fetchMediaInfo(fetch);
+    if (previousState?.title === data.title) return; // Early return if title hasn't changed
 
-      if (!data.art) {
-        const retryData = await fetchMediaInfo(fetch);
-        if (retryData.art) data = retryData;
-      }
-
-      const { totalTime, relativeTimePosition } = data;
-      const total = timeStringToSeconds(totalTime);
-      const relative = timeStringToSeconds(relativeTimePosition);
-
-      if (total && relative) refreshInterval = total;
-
-      const shouldBroadcast = data && previousState?.title !== data.title;
-
-      if (shouldBroadcast) {
-        const timestamp = Date.now();
-
-        let art = data.art || '/missing-album-art.png';
-        const gradientArt = art;
-
-        const ipAddressPattern =
-          /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
-        art = art.includes('/data/AirplayArtWorkData.png')
-          ? art.replace(ipAddressPattern, '')
-          : art;
-
-        if (previousState?.album !== data.album) {
-          art = `${art}?ts=${timestamp}`;
-        }
-
-        let backgroundGradient: string | undefined;
-        let foregroundGradient: string | undefined;
-
-        if (previousState?.title !== data.title) {
-          const gradientResult = await createGradient(gradientArt);
-          if (gradientResult && typeof gradientResult !== 'boolean') {
-            ({ backgroundGradient, foregroundGradient } = gradientResult);
-          }
-        }
-
-        const nowPlaying: NowPlayingData = {
-          ...previousState,
-          ...data,
-          art,
-          ...(backgroundGradient ? { backgroundGradient } : {}),
-          ...(foregroundGradient ? { foregroundGradient } : {}),
-        };
-
-        const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
-        broadcast(new TextEncoder().encode(stream));
-
-        previousState = {
-          ...nowPlaying,
-        };
-
-        // Fetch the loved status if it's a new track
-        await fetchLovedStatus(fetch, data);
-      }
-    } catch (error) {
-      console.error('Error fetching or broadcasting data:', error);
-      retryCount++;
-      const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 30000);
-      if (retryTimeout) clearTimeout(retryTimeout);
-      retryTimeout = setTimeout(
-        () => startInterval(fetch),
-        retryDelay
-      ) as unknown as number;
+    if (!data.art) {
+      const retryData = await fetchMediaInfo(fetch);
+      if (retryData.art) data = retryData;
     }
-  }, refreshInterval);
+    const { totalTime, relativeTimePosition } = data;
+    const total = timeStringToSeconds(totalTime);
+    const relative = timeStringToSeconds(relativeTimePosition);
+
+    if (total && relative) refreshInterval = total;
+
+    const timestamp = Date.now();
+    let art = data.art || '/missing-album-art.png';
+    const gradientArt = art;
+
+    const ipAddressPattern =
+      /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
+    art = art.includes('/data/AirplayArtWorkData.png')
+      ? art.replace(ipAddressPattern, '')
+      : art;
+
+    if (previousState?.album !== data.album) {
+      art = `${art}?ts=${timestamp}`;
+    }
+
+    let backgroundGradient: string | undefined;
+    let foregroundGradient: string | undefined;
+
+    if (previousState?.title !== data.title) {
+      const gradientResult = await createGradient(gradientArt);
+      if (gradientResult && typeof gradientResult !== 'boolean') {
+        ({ backgroundGradient, foregroundGradient } = gradientResult);
+      }
+    }
+
+    const nowPlaying: NowPlayingData = {
+      ...previousState,
+      ...data,
+      art,
+      ...(backgroundGradient ? { backgroundGradient } : {}),
+      ...(foregroundGradient ? { foregroundGradient } : {}),
+    };
+
+    previousState = nowPlaying;
+    const stream = `data: ${JSON.stringify(nowPlaying)}\n\n`;
+    broadcast(new TextEncoder().encode(stream));
+    await fetchLovedStatus(fetch, data);
+  } catch (error) {
+    console.error('Error fetching or broadcasting data:', error);
+    retryCount++;
+    const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 30000);
+    if (retryTimeout) clearTimeout(retryTimeout);
+    retryTimeout = setTimeout(
+      () => startInterval(fetch),
+      retryDelay
+    ) as unknown as number;
+  }
 };
 
+/**
+ * Starts the interval for fetching and broadcasting media information.
+ * @param {Fetch} fetch - The fetch function.
+ */
+const startInterval = (fetch: Fetch): void => {
+  if (interval) return;
+  interval = setInterval(() => processMediaInfo(fetch), refreshInterval);
+};
+
+/**
+ * Handles a player command by sending it to the audio control API.
+ * @param {string} command - The player command.
+ * @param {Fetch} fetch - The fetch function.
+ */
 const handlePlayerCommand = async (
   command: string,
   fetch: Fetch
@@ -276,6 +296,10 @@ const handlePlayerCommand = async (
   broadcast(new TextEncoder().encode(stream));
 };
 
+/**
+ * Handles gradient generation for the current track's artwork.
+ * @returns {Promise<GradientResult | boolean>} - The gradient result or false if an error occurs.
+ */
 const handleGradientGeneration = async (): Promise<
   GradientResult | boolean
 > => {
