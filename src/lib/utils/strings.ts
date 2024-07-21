@@ -90,6 +90,47 @@ export const formatSecondsToMinutes = (seconds: number): string => {
 };
 
 /**
+ * Converts a total number of seconds to a formatted string.
+ * If total minutes are more than 60, formats to "Nh Xm".
+ * Otherwise, formats to "mm:ss".
+ *
+ * @param {number} seconds - The total number of seconds.
+ * @returns {string} The formatted time string.
+ */
+export const formatSecondsToDuration = (seconds: number): string => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (minutes >= 60) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`;
+  }
+
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+  return `${formattedMinutes}:${formattedSeconds}`;
+};
+
+/**
+ * Converts a total number of minutes to a formatted string.
+ * If total minutes are more than 60, formats to "Nh Xm".
+ * Otherwise, formats to "mm:ss".
+ *
+ * @param {number} minutes - The total number of minutes.
+ * @returns {string} The formatted time string.
+ */
+export const formatMinutesToDuration = (minutes: number): string => {
+  if (minutes >= 60) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`.trim();
+  }
+
+  return `${minutes}m`;
+};
+
+/**
  * Processes a string to add HTML line break entities before certain characters,
  * ensuring no breaks are added within bracketed contexts.
  *

@@ -9,7 +9,7 @@
   import { uiState } from '$stores';
   import { timeState } from '$stores';
   import type { Snippet } from 'svelte';
-  import { onDestroy } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
 
   // TODO: Kiosk Prop Implementation
   // import { browser } from '$app/environment';
@@ -69,6 +69,10 @@
 
   $effect(() => {
     modalActive = uiState.modalActive();
+  });
+
+  onMount(() => {
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
   });
 
   onDestroy(() => {
