@@ -9,9 +9,7 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 static/album*.png
-static/music.json
+static/*.json
 static/video
 .vscode/*
 .config/ssl/*
-static/tomorrow.json
-static/today.json

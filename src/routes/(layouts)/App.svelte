@@ -5,7 +5,9 @@
   import { pullToRefresh } from '$lib/actions/pullToRefresh';
   import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
   import Controls from '$lib/components/Controls/Controls.svelte';
-  import { timeState, uiState } from '$stores';
+  import type { QuarterHours } from '$types';
+  import { uiState } from '$stores';
+  import { timeState } from '$stores';
   import type { Snippet } from 'svelte';
   import { onDestroy } from 'svelte';
 
@@ -40,10 +42,20 @@
 
   let clock = $state(timeState.hoursMinutesString());
   let modalActive = $state(uiState.modalActive());
+  let quarterHours: QuarterHours = $state(1);
+  let counter: number = 1;
 
   const appTime = setInterval(() => {
     const now = new Date(Date.now());
-    timeState.set(now);
+    counter++;
+    timeState.setTime(now);
+    // if the 15s interval has run 60 times (15 min)
+    if (counter === 60) {
+      quarterHours++;
+      timeState.setQuarter(quarterHours);
+      counter = 1;
+    }
+    if (quarterHours === 4) quarterHours = 1;
   }, 15000);
 
   // function refresh() {
