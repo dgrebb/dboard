@@ -108,6 +108,7 @@ export const formatSecondsToDuration = (seconds: number): string => {
   }
 
   const formattedMinutes = String(minutes).padStart(2, '0');
+  ``;
   const formattedSeconds = String(remainingSeconds).padStart(2, '0');
   return `${formattedMinutes}:${formattedSeconds}`;
 };
@@ -128,6 +129,22 @@ export const formatMinutesToDuration = (minutes: number): string => {
   }
 
   return `${minutes}m`;
+};
+
+/**
+ * Formats a date to "Day. Mon. D" format.
+ *
+ * @param {Date} date - The date to format.
+ * @returns {string} The formatted date string.
+ */
+export const formatDateShort = (date: Date): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  };
+  const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+  return formattedDate.replace(/,/, '.');
 };
 
 /**
