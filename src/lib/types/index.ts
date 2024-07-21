@@ -6,6 +6,7 @@ export * from '../stores/health.types';
 export * from '../stores/solar.types';
 export * from '../stores/widget.types';
 export * from '../stores/music.types';
+export * from '../stores/time.types';
 export * from '../stores/ui.types';
 export * from '../widgets/Hue/Hue.types';
 export * from '../widgets/NightScout/NightScout.types';
