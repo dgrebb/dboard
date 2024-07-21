@@ -2,10 +2,11 @@
   import FlyTransition from '$components/Transitions/FlyTransition.svelte';
   import { timeState } from '$stores';
   import type { CalendarEvent, ScheduleItem } from '$types';
-  import { formatDateMMDD, formatMinutesToDuration } from '$utils';
+  import { formatDateShort, formatMinutesToDuration } from '$utils';
   import { onMount } from 'svelte';
   import type { Action } from 'svelte/action';
   import './schedule.css';
+  import Icon from '@iconify/svelte';
 
   // Create calendar widget state
   const createCalendarWidget = () => {
@@ -151,8 +152,12 @@
 
 <div class="dboard__grid__item schedule push-to-refresh">
   <div class="navigation-controls">
-    <button onclick={prevPage} class="border-10 border-red-100">&lt;</button>
-    <button onclick={nextPage} class="border-10 border-red-100">&gt;</button>
+    <button onclick={prevPage} class="date-back border-10 border-red-100"
+      >&lt;</button
+    >
+    <button onclick={nextPage} class="date-forward border-10 border-red-100"
+      >&gt;</button
+    >
   </div>
   <div class="dboard__card">
     <div
@@ -164,13 +169,9 @@
         transitionKey={scheduleItems}
         direction={dateChangeDirection}
       >
-        <div class="controls">
-          <div class="zoom-controls">
-            <button onclick={zoomIn}>Zoom In</button>
-            <button onclick={zoomOut}>Zoom Out</button>
-          </div>
-          <h1 class="text-white mix-blend-exclusion">{formatDateMMDD(date)}</h1>
-        </div>
+        <h1 class="text-white mix-blend-exclusion">
+          {formatDateShort(date)}
+        </h1>
         <div class="schedule-grid" use:scrollToCurrentTime>
           {#each Array.from({ length: 24 }, (_, i) => i) as i}
             <div class="time-block" style="height: {60 * zoomLevel}px;">
@@ -214,6 +215,24 @@
           {/each}
         </div>
       </FlyTransition>
+      <div class="controls">
+        <div class="zoom-controls">
+          <button onclick={zoomIn}
+            ><Icon
+              icon="fluent:zoom-in-24-regular"
+              width={24}
+              height={24}
+            /></button
+          >
+          <button onclick={zoomOut}
+            ><Icon
+              icon="fluent:zoom-out-24-regular"
+              width={24}
+              height={24}
+            /></button
+          >
+        </div>
+      </div>
     </div>
   </div>
 </div>

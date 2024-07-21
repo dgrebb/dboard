@@ -1,5 +1,3 @@
-import type { FocusEventHandler } from 'svelte/elements';
-
 export type CalendarEvent = {
   title: string;
   calendar: string;
