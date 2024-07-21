@@ -1,0 +1,11 @@
+.fly-transition {
+  &-wrapper {
+    transition: height 333ms ease-in;
+    height: 100%;
+    overflow-x: hidden;
+
+    & + .fly-transition-wrapper {
+      max-height: 0;
+    }
+  }
+}
