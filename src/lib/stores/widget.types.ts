@@ -17,6 +17,7 @@ export enum TypeOfWidget {
   Weather = 'Weather',
   Music = 'Music',
   NextToArrive = 'NextToArrive',
+  Schedule = 'Schedule',
 }
 
 /**
