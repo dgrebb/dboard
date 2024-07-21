@@ -2,7 +2,7 @@
   import FlyTransition from '$components/Transitions/FlyTransition.svelte';
   import { timeState } from '$stores';
   import type { CalendarEvent, ScheduleItem } from '$types';
-  import { formatDateMMDD } from '$utils';
+  import { formatDateMMDD, formatMinutesToDuration } from '$utils';
   import { onMount } from 'svelte';
   import type { Action } from 'svelte/action';
   import './schedule.css';
@@ -132,20 +132,6 @@
     }
   };
 
-  const eventTooltip = (node: HTMLElement) => {
-    console.log('🚀 ~ eventTooltip ~ node:', node);
-    node.addEventListener('mouseover', () => {
-      setTimeout(() => {
-        node.classList.toggle('detail', true);
-      }, 333);
-    });
-    node.addEventListener('mouseout', () => {
-      setTimeout(() => {
-        node.classList.toggle('detail', false);
-      }, 1000);
-    });
-  };
-
   $effect(() => {
     events = calendarWidget.events();
   });
@@ -213,15 +199,15 @@
                 class="event border-10 border-blue-600"
                 style="top: {event.top * zoomLevel}px; height: {event.height *
                   zoomLevel}px;"
-                use:eventTooltip
               >
-                {event.title}
-                {event.start_at}
+                <h2 class="title">{event.title}</h2>
+                <h3 class="start">{event.start_at}</h3>
                 <ul class="event-details">
-                  <li><h3>{event.title} | {event.duration}</h3></li>
-                  <li>{event.start_at}</li>
-                  <li>{event.end_at}</li>
-                  <li>{event.calendar}</li>
+                  <li class="duration">
+                    {formatMinutesToDuration(event.duration)}
+                  </li>
+                  <li class="times">{event.start_at} &rarr; {event.end_at}</li>
+                  <li class="calendar">{event.calendar}</li>
                 </ul>
               </div>
             {/if}
