@@ -17,7 +17,6 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  margin-bottom: 1rem;
   inset: 0;
   overflow: hidden;
 }
@@ -25,33 +24,50 @@
 .controls {
   display: flex;
   justify-content: space-between;
-  z-index: 10;
-  padding: 0.5em;
-}
-
-.zoom-controls button,
-.navigation-controls button {
-  margin: 0 0.25em;
-  html.dark & {
-    color: rgba(var(--lightblueRGB, 0.7));
-  }
-}
-
-.navigation-controls {
-  position: absolute;
-  top: 0;
+  align-items: center;
   z-index: 11;
-  width: 100%;
-  .date-forward {
-    position: absolute;
-    right: 0;
+  padding: 0 0 1rem 0;
+  color: rgba(var(--lightblueRGB), 0.8);
+}
+
+.schedule-widget-date {
+  font-size: 1.25rem;
+  & + .schedule-widget-date {
+    display: none;
+    height: 0;
   }
 }
 
-.zoom-controls {
-  position: absolute;
-  bottom: 0;
-  z-index: 10;
+.zoom-controls,
+.navigation-controls {
+  button {
+    margin: 0;
+    border: thin solid rgba(var(--lightblueRGB), 0.3);
+    background-color: purple;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+
+    &:first-of-type {
+      border-right: 0;
+      border-top-left-radius: 0.5rem;
+      border-bottom-left-radius: 0.5rem;
+    }
+    &:last-of-type {
+      border-top-right-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+    }
+
+    html.dark & {
+      background-color: yellow;
+      color: rgba(var(--lightblueRGB, 0.7));
+    }
+  }
+}
+
+.date-back {
+  span {
+    display: inline-block;
+  }
 }
 
 .fly-transition-wrapper {
@@ -74,8 +90,10 @@
   padding: 0.25rem;
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: none;
   scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
   scrollbar-gutter: transparent;
+  scrollbar-width: none;
   color: rgba(255, 167, 167, 0.67);
 
   .event {

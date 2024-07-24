@@ -5,8 +5,8 @@
   import { formatDateShort, formatMinutesToDuration } from '$utils';
   import { onMount } from 'svelte';
   import type { Action } from 'svelte/action';
+  import { fade } from 'svelte/transition';
   import './schedule.css';
-  import Icon from '@iconify/svelte';
 
   // Create calendar widget state
   const createCalendarWidget = () => {
@@ -62,12 +62,17 @@
   };
 
   const zoomOut = () => {
-    zoomLevel = Math.min(zoomLevel - 0.1, 0.5);
+    zoomLevel = Math.max(zoomLevel - 0.1, 0.5);
   };
 
   const nextPage = () => {
     dateChangeDirection = 'forward';
     currentPage = currentPage + 1;
+  };
+
+  const todayPage = () => {
+    dateChangeDirection = currentPage > 0 ? 'backward' : 'forward';
+    currentPage = 0;
   };
 
   const prevPage = () => {
@@ -151,15 +156,32 @@
 </script>
 
 <div class="dboard__grid__item schedule push-to-refresh">
-  <div class="navigation-controls">
-    <button onclick={prevPage} class="date-back border-10 border-red-100"
-      >&lt;</button
-    >
-    <button onclick={nextPage} class="date-forward border-10 border-red-100"
-      >&gt;</button
-    >
-  </div>
   <div class="dboard__card">
+    <div class="controls">
+      {#key date}
+        <button onclick={todayPage} class="schedule-widget-date"
+          ><h1
+            class="text-white mix-blend-exclusion"
+            in:fade={{ duration: 111, delay: 111 }}
+            out:fade={{ duration: 111 }}
+          >
+            {formatDateShort(date)}
+          </h1></button
+        >
+      {/key}
+      <div class="zoom-controls">
+        <button onclick={zoomOut}>&#8722;</button><button onclick={zoomIn}
+          >&#43;</button
+        >
+      </div>
+      <div class="navigation-controls">
+        <button onclick={prevPage} class="date-back"
+          ><span class="rotate-180">&#10132;</span></button
+        ><button onclick={nextPage} class="date-forward"
+          ><span>&#10132;</span></button
+        >
+      </div>
+    </div>
     <div
       class="schedule-container"
       ontouchstart={handleTouchStart}
@@ -169,9 +191,6 @@
         transitionKey={scheduleItems}
         direction={dateChangeDirection}
       >
-        <h1 class="text-white mix-blend-exclusion">
-          {formatDateShort(date)}
-        </h1>
         <div class="schedule-grid" use:scrollToCurrentTime>
           {#each Array.from({ length: 24 }, (_, i) => i) as i}
             <div class="time-block" style="height: {60 * zoomLevel}px;">
@@ -215,24 +234,6 @@
           {/each}
         </div>
       </FlyTransition>
-      <div class="controls">
-        <div class="zoom-controls">
-          <button onclick={zoomIn}
-            ><Icon
-              icon="fluent:zoom-in-24-regular"
-              width={24}
-              height={24}
-            /></button
-          >
-          <button onclick={zoomOut}
-            ><Icon
-              icon="fluent:zoom-out-24-regular"
-              width={24}
-              height={24}
-            /></button
-          >
-        </div>
-      </div>
     </div>
   </div>
 </div>
