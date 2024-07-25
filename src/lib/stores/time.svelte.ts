@@ -90,7 +90,6 @@ export const createTimeState = (initialTime: Date) => {
     },
 
     setQuarter: (quarter: number) => {
-      console.log('🚀 ~ createTimeState ~ quarter:', quarter);
       timeStore.quarter = quarter;
     },
 

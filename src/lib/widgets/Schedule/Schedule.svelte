@@ -101,10 +101,13 @@
   ): { top: number; height: number } => {
     const start = parseTime(event.start_at);
     const end = parseTime(event.end_at);
+    const top = start.hours * 60 + start.minutes;
+    const height =
+      (end.hours - start.hours) * 60 + (end.minutes - start.minutes);
 
     return {
-      top: start.hours * 60 + start.minutes,
-      height: (end.hours - start.hours) * 60 + (end.minutes - start.minutes),
+      top,
+      height,
     };
   };
 
@@ -114,11 +117,25 @@
     if (!timeString) {
       return { hours: 0, minutes: 0 }; // Default to 00:00 if timeString is null or undefined
     }
+    let hours = 0,
+      minutes = 0;
 
-    let [time, modifier] = [timeString.slice(0, -2), timeString.slice(-2)];
-    let [hours, minutes] = time.split(':').map(Number);
-    if (modifier === 'pm' && hours < 12) hours += 12;
-    if (modifier === 'am' && hours === 12) hours = 0;
+    // Check if the time string ends with 'am' or 'pm'
+    const is12HourFormat = /am|pm/i.test(timeString);
+
+    if (is12HourFormat) {
+      // Extract time and modifier
+      let [time, modifier] = [timeString.slice(0, -2), timeString.slice(-2)];
+      [hours, minutes] = time.split(':').map(Number);
+
+      // Adjust hours based on am/pm
+      if (modifier.toLowerCase() === 'pm' && hours < 12) hours += 12;
+      if (modifier.toLowerCase() === 'am' && hours === 12) hours = 0;
+    } else {
+      // Assume 24-hour format
+      [hours, minutes] = timeString.split(':').map(Number);
+    }
+
     return { hours, minutes };
   };
 
@@ -217,6 +234,7 @@
             {#if event}
               <div
                 class="event border-10 border-blue-600"
+                data-calendar-name={event.calendar}
                 style="top: {event.top * zoomLevel}px; height: {event.height *
                   zoomLevel}px;"
               >

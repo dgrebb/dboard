@@ -1,5 +1,10 @@
 .dboard__grid__item.schedule {
+  --calColor1: 96, 87, 223; /* blue */
+  --calColor2: 47, 218, 0; /* green */
+  --calColor3: 139, 0, 0; /* red */
+  --calColor4: 193, 211, 0; /* yellow */
   --lightblueRGB: 200, 200, 255;
+  --darkblueRGB: 22, 22, 88;
   --deepYellowRGB: 173, 187, 24;
   --blueRGB: 0, 123, 255;
   --whiteRGB: 255, 255, 255;
@@ -31,7 +36,13 @@
 }
 
 .schedule-widget-date {
+  opacity: 0.8;
+  transition: 111ms opacity linear;
   font-size: 1.25rem;
+  &:hover {
+    opacity: 1;
+  }
+
   & + .schedule-widget-date {
     display: none;
     height: 0;
@@ -41,9 +52,12 @@
 .zoom-controls,
 .navigation-controls {
   button {
+    mix-blend-mode: darken;
+    filter: brightness(1);
+    transition: 111ms filter linear;
     margin: 0;
     border: thin solid rgba(var(--lightblueRGB), 0.3);
-    background-color: purple;
+    background-color: rgba(var(--darkblueRGB), 0.4);
     padding: 0.25rem 0.75rem;
     font-size: 0.75rem;
 
@@ -56,10 +70,14 @@
       border-top-right-radius: 0.5rem;
       border-bottom-right-radius: 0.5rem;
     }
+    &:hover {
+      filter: brightness(9);
+    }
+  }
 
-    html.dark & {
-      background-color: yellow;
-      color: rgba(var(--lightblueRGB, 0.7));
+  html.dark & {
+    button {
+      mix-blend-mode: lighten;
     }
   }
 }
@@ -86,8 +104,8 @@
   z-index: 10;
   clip-path: inset(0 round 0.5rem);
   border-radius: 0.5rem;
-  background-color: rgba(22, 22, 88, 0.4);
-  padding: 0.25rem;
+  background-color: rgba(var(--darkblueRGB), 0.4);
+  padding: 0.25rem 0.5rem;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: none;
@@ -108,11 +126,11 @@
     transition-property: background-color, color, max-width;
     transition-timing-function: ease-in;
     box-sizing: border-box;
-    border: 1px solid rgba(var(--blueRGB), 0.5);
     border-radius: 0.5rem;
     background-clip: border-box;
     background-color: rgba(var(--blueRGB), 0.5);
     padding: 0.25rem 0.5rem;
+    width: 100%;
     max-width: 70%;
     /* min-width: 100%; */
     color: rgba(var(--whiteRGB), 0.5);
@@ -124,10 +142,33 @@
       transition-duration: 55ms;
       transition-timing-function: ease-out;
       cursor: pointer;
-      background-color: rgba(var(--blueRGB), 0.9);
-      min-width: 100%;
       max-width: 100%;
       color: rgba(var(--whiteRGB), 1);
+    }
+
+    &[data-calendar-name='Calendar'] {
+      background-color: rgba(var(--calColor4), 0.5);
+      &:hover {
+        background-color: rgba(var(--calColor4), 0.8);
+      }
+    }
+    &[data-calendar-name='Personal'] {
+      background-color: rgba(var(--calColor1), 0.5);
+      &:hover {
+        background-color: rgba(var(--calColor1), 0.8);
+      }
+    }
+    &[data-calendar-name='Appointments'] {
+      background-color: rgba(var(--calColor3), 0.5);
+      &:hover {
+        background-color: rgba(var(--calColor3), 0.8);
+      }
+    }
+    &[data-calendar-name='Business'] {
+      background-color: rgba(var(--calColor2), 0.5);
+      &:hover {
+        background-color: rgba(var(--calColor2), 0.8);
+      }
     }
 
     .event-details,
@@ -187,11 +228,11 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
 }
 
 .time-label {
-  padding-left: 0.5em;
+  padding-left: 0.25em;
 }
 
 .quarter-block {
