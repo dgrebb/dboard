@@ -26,3 +26,12 @@ export type ScheduleWidget = {
   type: 'Schedule';
   data: ScheduleData;
 };
+
+export type CalendarSettings = {
+  id: string;
+  display: boolean;
+};
+
+export type ScheduleSettingsType = {
+  calendars: CalendarSettings[];
+};

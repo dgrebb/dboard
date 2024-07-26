@@ -1,0 +1,50 @@
+.dboard__card,
+.dboard__card--settings {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  height: 100%;
+  min-height: 277px;
+  overflow: hidden;
+
+  &:after {
+    position: absolute;
+    opacity: 0.45;
+    z-index: -1;
+    transition: colors 500ms ease-in-out;
+    inset: 0;
+    border-radius: 0.5rem;
+    background-color: var(--skyBaseColor);
+    content: '';
+  }
+
+  + .dboard__card {
+    display: none;
+  }
+}
+
+.dboard__card {
+  &--settings {
+    * {
+      z-index: 11;
+    }
+  }
+}
+
+.settings-toggle {
+  position: absolute;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  opacity: 0;
+  z-index: 10;
+  mix-blend-mode: difference;
+  transition: 150ms opacity linear 2s;
+  color: rgba(255, 255, 255, 0.8);
+
+  .dboard__grid__item:hover & {
+    opacity: 1;
+    transition: 1s opacity linear 0;
+  }
+}

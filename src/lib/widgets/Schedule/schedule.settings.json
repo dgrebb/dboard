@@ -1,0 +1,20 @@
+{
+  "calendars": [
+    {
+      "id": "Personal",
+      "display": true
+    },
+    {
+      "id": "Calendar",
+      "display": true
+    },
+    {
+      "id": "Appointments",
+      "display": true
+    },
+    {
+      "id": "Business",
+      "display": true
+    }
+  ]
+}
