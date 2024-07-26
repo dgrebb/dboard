@@ -147,15 +147,15 @@
     }
 
     &[data-calendar-name='Calendar'] {
-      background-color: rgba(var(--calColor4), 0.5);
-      &:hover {
-        background-color: rgba(var(--calColor4), 0.8);
-      }
-    }
-    &[data-calendar-name='Personal'] {
       background-color: rgba(var(--calColor1), 0.5);
       &:hover {
         background-color: rgba(var(--calColor1), 0.8);
+      }
+    }
+    &[data-calendar-name='Personal'] {
+      background-color: rgba(var(--calColor4), 0.5);
+      &:hover {
+        background-color: rgba(var(--calColor4), 0.8);
       }
     }
     &[data-calendar-name='Appointments'] {

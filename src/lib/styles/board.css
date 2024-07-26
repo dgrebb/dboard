@@ -75,30 +75,4 @@
       }
     }
   }
-
-  &__card {
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    height: 100%;
-    min-height: 277px;
-    overflow: hidden;
-
-    &:after {
-      position: absolute;
-      opacity: 0.45;
-      z-index: -1;
-      transition: colors 500ms ease-in-out;
-      inset: 0;
-      border-radius: 0.5rem;
-      background-color: var(--skyBaseColor);
-      content: '';
-    }
-
-    + .dboard__card {
-      display: none;
-    }
-  }
 }
