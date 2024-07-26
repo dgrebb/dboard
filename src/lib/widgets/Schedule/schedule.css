@@ -114,37 +114,37 @@
   scrollbar-width: none;
   color: rgba(255, 167, 167, 0.67);
 
+  &:has(.event:hover) {
+    .event:hover {
+      opacity: 1;
+      color: white;
+    }
+    .event:hover ~ .event,
+    .event:not(:hover) {
+      opacity: 0.2;
+      background-color: rgba(200, 200, 200, 0.4);
+    }
+  }
+
   .event {
     display: flex;
     position: absolute;
     right: 0;
     flex-direction: column;
     justify-content: center;
+    opacity: 0.8;
     z-index: 1;
-    transition-delay: 111ms;
-    transition-duration: 555ms;
-    transition-property: background-color, color, max-width;
-    transition-timing-function: ease-in;
+    transition: opacity 55ms ease-out;
     box-sizing: border-box;
     border-radius: 0.5rem;
-    background-clip: border-box;
     background-color: rgba(var(--blueRGB), 0.5);
     padding: 0.25rem 0.5rem;
     width: 100%;
     max-width: 70%;
-    /* min-width: 100%; */
     color: rgba(var(--whiteRGB), 0.5);
     font-weight: 100;
     font-size: 0.75rem;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-      'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    &:hover {
-      transition-duration: 55ms;
-      transition-timing-function: ease-out;
-      cursor: pointer;
-      max-width: 100%;
-      color: rgba(var(--whiteRGB), 1);
-    }
+    font-family: 'Lucida Sans', Geneva, Verdana, sans-serif;
 
     &[data-calendar-name='Calendar'] {
       background-color: rgba(var(--calColor1), 0.5);

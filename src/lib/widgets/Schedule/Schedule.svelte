@@ -185,7 +185,7 @@
         node.scrollTo({
           behavior: 'smooth',
           left: 0,
-          top: minutesSinceMidnight * zoomLevel,
+          top: (currentPage === 0 ? minutesSinceMidnight : 480) * zoomLevel,
         });
       }, 0);
     } else {
