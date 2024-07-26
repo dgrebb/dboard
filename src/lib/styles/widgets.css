@@ -27,8 +27,22 @@
 
 .dboard__card {
   &--settings {
+    color: rgba(255, 255, 255, 0.8);
     * {
       z-index: 11;
+    }
+    .setting {
+      font-size: 1.25rem;
+      &-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+      }
+      &-toggle-label {
+        flex-grow: 1;
+        text-align: right;
+      }
     }
   }
 }
