@@ -10,17 +10,17 @@
 </script>
 
 <div class="dboard__card dboard__card--settings" transition:fade>
-  <h3 class="setting">Display</h3>
-  {#each settings.calendars as { id, display }, i}
-    {#if display === true}
-      <h4>{id}</h4>
+  <h3 class="setting">Visible Calendars</h3>
+  {#each settings.calendars as { id }, i}
+    <div class="setting-row">
       <input
+        class="setting-toggle"
         type="checkbox"
         name="{id}-display"
         id="{id}-display"
         bind:checked={settings.calendars[i].display}
       />
-      <label for="{id}-display">Display this calendar?</label>
-    {/if}
+      <label class="setting-toggle-label" for="{id}-display">{id}</label>
+    </div>
   {/each}
 </div>

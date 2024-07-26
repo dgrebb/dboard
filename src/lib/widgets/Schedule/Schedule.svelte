@@ -34,6 +34,17 @@
       setCalendarDisplay: (calendar: number, display: boolean) => {
         settingsState.calendars[calendar].display = display;
       },
+      getCalendarDisplay: (name: string) => {
+        const calendarSettings = settingsState.calendars.find(
+          (calendar) => calendar.id === name
+        );
+
+        if (calendarSettings) {
+          return calendarSettings.display;
+        }
+
+        return true;
+      },
     };
   };
 
@@ -276,14 +287,16 @@
               </div>
             {/each}
             {#each scheduleItems as event}
-              {#if event}
+              {#if event && scheduleWidget.getCalendarDisplay(event.calendar) === true}
                 <div
                   class="event border-10 border-blue-600"
                   data-calendar-name={event.calendar}
                   style="top: {event.top * zoomLevel}px; height: {event.height *
                     zoomLevel}px;"
                 >
-                  <h2 class="title">{event.title}</h2>
+                  <h2 class="title">
+                    {event.title}
+                  </h2>
                   <h3 class="start">{event.start_at}</h3>
                   <ul class="event-details">
                     <li class="duration">
