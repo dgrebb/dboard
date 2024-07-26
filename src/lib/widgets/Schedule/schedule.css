@@ -109,6 +109,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: none;
+  overscroll-behavior-block: none;
   scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
   scrollbar-gutter: transparent;
   scrollbar-width: none;
@@ -237,4 +238,12 @@
 
 .quarter-block {
   height: 15px;
+}
+
+.current-time-line {
+  position: absolute;
+  z-index: 1;
+  animation: phase 11s ease-in-out infinite;
+  border-top: 1px dashed cornflowerblue;
+  width: 100%;
 }

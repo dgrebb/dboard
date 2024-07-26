@@ -149,6 +149,12 @@
     };
   };
 
+  const drawCurrentTimeLine = () => {
+    const now = new Date();
+    const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
+    return minutesSinceMidnight * zoomLevel;
+  };
+
   const parseTime = (
     timeString: string | null
   ): { hours: number; minutes: number } => {
@@ -310,6 +316,12 @@
                 </div>
               {/if}
             {/each}
+            {#if currentPage === 0}
+              <div
+                class="current-time-line"
+                style="top: {drawCurrentTimeLine()}px;"
+              ></div>
+            {/if}
           </div>
         </FlyTransition>
       </div>
