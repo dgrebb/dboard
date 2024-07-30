@@ -2,19 +2,35 @@
   "calendars": [
     {
       "id": "Personal",
-      "display": true
+      "display": true,
+      "scheduledDisplay": {
+        "on": "00:00",
+        "off": "23:59"
+      }
     },
     {
       "id": "Calendar",
-      "display": true
+      "display": true,
+      "scheduledDisplay": {
+        "on": "00:00",
+        "off": "23:59"
+      }
     },
     {
       "id": "Appointments",
-      "display": true
+      "display": true,
+      "scheduledDisplay": {
+        "on": "00:00",
+        "off": "23:59"
+      }
     },
     {
       "id": "Business",
-      "display": true
+      "display": true,
+      "scheduledDisplay": {
+        "on": "00:00",
+        "off": "23:59"
+      }
     }
   ]
 }
