@@ -3,17 +3,18 @@
   import { timeState } from '$stores';
   import type {
     CalendarEvent,
+    CalendarSettings,
     ScheduleItem,
     ScheduleSettingsType,
   } from '$types';
-  import { formatDateShort, formatMinutesToDuration } from '$utils';
+  import { formatMinutesToDuration } from '$utils';
+  import scheduleSettings from '$widgets/Schedule/schedule.settings.json';
+  import Icon from '@iconify/svelte';
   import { onMount } from 'svelte';
   import type { Action } from 'svelte/action';
   import { fade } from 'svelte/transition';
-  import scheduleSettings from '$widgets/Schedule/schedule.settings.json';
   import './schedule.css';
   import ScheduleSettings from './ScheduleSettings.svelte';
-  import Icon from '@iconify/svelte';
 
   // Create calendar widget state
   const createScheduleWidget = () => {
@@ -45,6 +46,38 @@
 
         return true;
       },
+      setCalendarDisplaySchedule: (
+        name: string,
+        schedule: CalendarSettings['scheduledDisplay']
+      ) => {
+        let calendarSettings = settingsState.calendars.find(
+          (calendar) => calendar.id === name
+        );
+        if (calendarSettings) {
+          calendarSettings.scheduledDisplay = schedule;
+          settingsState = {
+            ...settingsState,
+            calendars: {
+              ...settingsState.calendars,
+              ...calendarSettings,
+            },
+          };
+        } else {
+          console.error(
+            `Couldn't set the ${name} calendar's display schedule.`
+          );
+        }
+      },
+      getCalendarDisplaySchedule: (name: string) => {
+        let calendarSettings = settingsState.calendars.find(
+          (calendar) => calendar.id === name
+        );
+        if (calendarSettings) {
+          return calendarSettings.scheduledDisplay;
+        } else {
+          return { on: '00:00', off: '23:59' };
+        }
+      },
     };
   };
 
@@ -70,10 +103,28 @@
     )
   );
 
+  const shouldDisplayCalendar = (
+    scheduledDisplay: CalendarSettings['scheduledDisplay']
+  ) => {
+    const nowMinutes = timeState.minutesPastMidnight();
+    const [onHours, onMinutes] = scheduledDisplay.on.split(':').map(Number);
+    const [offHours, offMinutes] = scheduledDisplay.off.split(':').map(Number);
+
+    const onMinutesTotal = onHours * 60 + onMinutes;
+    const offMinutesTotal = offHours * 60 + offMinutes;
+
+    return nowMinutes >= onMinutesTotal && nowMinutes <= offMinutesTotal;
+  };
+
   let currentEvents: CalendarEvent[] = $derived(
     events.filter((event) => {
       const eventDate = new Date(event.date + 'T00:00:00');
+      const calendarSettings = settings.calendars.find(
+        (calendar) => calendar.id === event.calendar
+      );
+
       return (
+        calendarSettings?.display &&
         eventDate.getFullYear() === date.getFullYear() &&
         eventDate.getMonth() === date.getMonth() &&
         eventDate.getDate() === date.getDate()
@@ -244,7 +295,7 @@
               in:fade={{ duration: 111, delay: 111 }}
               out:fade={{ duration: 111 }}
             >
-              {formatDateShort(date)}
+              <!-- {formatDateShort(date)} -->
             </h1></button
           >
         {/key}
@@ -293,7 +344,7 @@
               </div>
             {/each}
             {#each scheduleItems as event}
-              {#if event && scheduleWidget.getCalendarDisplay(event.calendar) === true}
+              {#if event && scheduleWidget.getCalendarDisplay(event.calendar) === true && shouldDisplayCalendar(scheduleWidget.getCalendarDisplaySchedule(event.calendar))}
                 <div
                   class="event border-10 border-blue-600"
                   data-calendar-name={event.calendar}
