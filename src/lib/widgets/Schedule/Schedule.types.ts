@@ -30,6 +30,10 @@ export type ScheduleWidget = {
 export type CalendarSettings = {
   id: string;
   display: boolean;
+  scheduledDisplay: {
+    on: string; // Time format "HH:MM"
+    off: string; // Time format "HH:MM"
+  };
 };
 
 export type ScheduleSettingsType = {

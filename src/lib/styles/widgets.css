@@ -23,6 +23,13 @@
   + .dboard__card {
     display: none;
   }
+
+  input[type='time'] {
+    margin-left: 0.25rem;
+    padding: 0.25rem;
+    color: darkblue;
+    font-size: 1rem;
+  }
 }
 
 .dboard__card {
@@ -39,9 +46,17 @@
         align-items: center;
         padding: 0.5rem 0;
       }
+
       &-toggle-label {
         flex-grow: 1;
         text-align: right;
+      }
+    }
+
+    summary.setting-row {
+      cursor: pointer;
+      &:hover {
+        color: white;
       }
     }
   }

@@ -27,7 +27,16 @@ body {
   overflow-y: hidden;
   scrollbar-width: none;
   font-family: var(--font-nasa) !important;
-  user-select: none;
+}
+
+@media (hover: none),
+  (hover: on-demand),
+  (-moz-touch-enabled: 1),
+  (pointer: coarse) {
+  html,
+  body {
+    user-select: none;
+  }
 }
 
 body {

@@ -22,5 +22,24 @@
       />
       <label class="setting-toggle-label" for="{id}-display">{id}</label>
     </div>
+    <details>
+      <summary class="setting-row">Schedule</summary>
+      <div class="setting-row setting-row--collapsed">
+        <label for="{id}-on">On</label>
+        {#if settings.calendars[i].scheduledDisplay}
+          <input
+            type="time"
+            id="{id}-on"
+            bind:value={settings.calendars[i].scheduledDisplay.on}
+          />
+          <label for="{id}-off">Off</label>
+          <input
+            type="time"
+            id="{id}-off"
+            bind:value={settings.calendars[i].scheduledDisplay.off}
+          />
+        {/if}
+      </div>
+    </details>
   {/each}
 </div>
