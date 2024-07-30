@@ -193,6 +193,7 @@
     .start,
     .times,
     .calendar {
+      align-self: flex-end;
       width: 100%;
       text-align: right;
       text-transform: capitalize;
@@ -209,6 +210,9 @@
       min-width: 100%;
       max-width: 100%;
       height: auto;
+    }
+    .title {
+      max-width: 70%;
     }
     .duration {
       display: inline;
