@@ -10,6 +10,7 @@
   import { timeState } from '$stores';
   import type { Snippet } from 'svelte';
   import { onDestroy, onMount } from 'svelte';
+  import { isTouchDevice } from '$utils';
 
   // TODO: Kiosk Prop Implementation
   // import { browser } from '$app/environment';
@@ -72,7 +73,10 @@
   });
 
   onMount(() => {
-    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    // NOTE: Disable Right Click. user-select, oncontextmenu, pointer-event
+    if (isTouchDevice()) {
+      document.addEventListener('contextmenu', (e) => e.preventDefault());
+    }
   });
 
   onDestroy(() => {
