@@ -7,6 +7,13 @@
   padding: 1rem;
   height: 100%;
   min-height: 277px;
+
+  + .dboard__card {
+    display: none;
+  }
+}
+
+.dboard__card {
   overflow: hidden;
 
   &:after {
@@ -20,20 +27,11 @@
     content: '';
   }
 
-  + .dboard__card {
-    display: none;
-  }
-
-  input[type='time'] {
-    margin-left: 0.25rem;
-    padding: 0.25rem;
-    color: darkblue;
-    font-size: 1rem;
-  }
-}
-
-.dboard__card {
   &--settings {
+    background-color: rgba(255, 255, 255, 0.2);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: none;
     color: rgba(255, 255, 255, 0.8);
     * {
       z-index: 11;
@@ -59,6 +57,17 @@
         color: white;
       }
     }
+
+    input[type='time'] {
+      margin-left: 0.25rem;
+      padding: 0.25rem;
+      color: darkblue;
+      font-size: 1rem;
+    }
+
+    input[type='time']:disabled {
+      color: lightblue;
+    }
   }
 }
 
@@ -75,5 +84,22 @@
   .dboard__grid__item:hover & {
     opacity: 1;
     transition: 1s opacity linear 0;
+  }
+}
+
+.settings-edit {
+  transition: 333ms background-color ease-out;
+  border-radius: 1rem;
+  background-color: transparent;
+  padding: 0.5rem;
+  &:hover {
+    background-color: yellow;
+    color: darkred;
+  }
+  &.saved {
+    background-color: green;
+    &:hover {
+      background-color: light-green;
+    }
   }
 }
