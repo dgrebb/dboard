@@ -6,7 +6,7 @@
   import NightScout from '$widgets/NightScout/NightScout.svelte';
   import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';
   import NextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
-  import { onMount, type Component } from 'svelte';
+  import { onMount, tick, type Component } from 'svelte';
   import Board from './(layouts)/Board.svelte';
   import Schedule from '$widgets/Schedule/Schedule.svelte';
 
@@ -55,7 +55,14 @@
       loadedWidgets = [...loadedWidgets, widget];
       // await new Promise((resolve) => setTimeout(resolve, 1000)); // 1-second delay between each widget load
     }
+
     mounted = true;
+
+    await tick();
+    // NOTE: Silly animation trick
+    document.querySelectorAll('.dboard__grid__item').forEach((el, i) => {
+      (el as HTMLElement).style.setProperty('--i', i.toString());
+    });
   });
 </script>
 
@@ -67,11 +74,9 @@
   <Board>
     <NightScout />
     <NowPlaying />
-    {#if loadedWidgets}
-      {#each loadedWidgets as { type, settings }}
-        <svelte:component this={components[type]} {settings} />
-      {/each}
-    {/if}
+    {#each loadedWidgets as { type, settings }}
+      <svelte:component this={components[type]} {settings} />
+    {/each}
     <NextToArrive />
     <Schedule />
     <!-- <NewWidget /> -->

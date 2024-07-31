@@ -74,14 +74,17 @@ body {
     }
   }
   .dboard {
-    opacity: 0;
     z-index: 9;
-    transition-duration: 1s;
-    transition-property: opacity;
+    &__grid__item {
+      opacity: 0;
+    }
   }
   &.ready {
     .dboard {
-      opacity: 1;
+      &__grid__item {
+        animation: fade-in 500ms forwards;
+        animation-delay: calc(0.11s * var(--i));
+      }
     }
     &:after {
       opacity: 1;

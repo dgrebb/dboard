@@ -101,8 +101,8 @@
   });
 </script>
 
-{#if isSeptaNextToArriveDataArray(schedule) && schedule.length > 0}
-  <div class="dboard__grid__item control-widget">
+<div class="dboard__grid__item">
+  {#if isSeptaNextToArriveDataArray(schedule) && schedule.length > 0}
     <div class="dboard__card">
       <Icon
         icon="mynaui:train"
@@ -126,8 +126,8 @@
         </tbody>
       </table>
     </div>
-  </div>
-{/if}
+  {/if}
+</div>
 
 <style>
   .septa {
