@@ -3,17 +3,26 @@
   import Icon from '@iconify/svelte';
   import { fade } from 'svelte/transition';
 
+  /**
+   * Type definition for the component props.
+   */
   type Props = {
+    /**
+     * The schedule settings for the calendars.
+     */
     settings: ScheduleSettingsType;
   };
 
+  /**
+   * The properties for the component.
+   */
   let { settings = $bindable() }: Props = $props();
 
-  let schedulesDisabled = $state(
-    settings.calendars.map(() => {
-      return true;
-    })
-  );
+  /**
+   * Array indicating whether the schedule editing is disabled for each calendar.
+   * Each element corresponds to a calendar in the `settings.calendars` array.
+   */
+  let schedulesDisabled = $state(settings.calendars.map(() => true));
 </script>
 
 <div class="dboard__card dboard__card--settings" transition:fade>
@@ -53,12 +62,13 @@
             onclick={() => {
               schedulesDisabled[i] = !schedulesDisabled[i];
             }}
-            >{#if schedulesDisabled[i]}<Icon
-                icon="fluent:edit-12-filled"
-              />{:else}<Icon
-                icon="fluent:checkmark-circle-12-regular"
-              />{/if}</button
           >
+            {#if schedulesDisabled[i]}
+              <Icon icon="fluent:edit-12-filled" />
+            {:else}
+              <Icon icon="fluent:checkmark-circle-12-regular" />
+            {/if}
+          </button>
         {/if}
       </div>
     </details>

@@ -4,7 +4,6 @@
   import type {
     CalendarEvent,
     CalendarSettings,
-    ScheduleItem,
     ScheduleSettingsType,
   } from '$types';
   import { formatMinutesToDuration } from '$utils';
@@ -16,7 +15,10 @@
   import './schedule.css';
   import ScheduleSettings from './ScheduleSettings.svelte';
 
-  // Create calendar widget state
+  /**
+   * Creates and manages the state of the schedule widget, including events and settings.
+   * @returns {{events: () => CalendarEvent[], setEvents: (events: CalendarEvent[]) => void, settings: () => ScheduleSettingsType, updateSettings: (settings: ScheduleSettingsType) => void, setCalendarDisplay: (calendar: number, display: boolean) => void, getCalendarDisplay: (name: string) => boolean, setCalendarDisplaySchedule: (name: string, schedule: CalendarSettings['scheduledDisplay']) => void, getCalendarDisplaySchedule: (name: string) => CalendarSettings['scheduledDisplay']}}
+   */
   const createScheduleWidget = () => {
     let calendarState: CalendarEvent[] = $state([]);
     let settingsState: ScheduleSettingsType = $state(scheduleSettings);
@@ -26,9 +28,7 @@
       setEvents: (events: CalendarEvent[]) => {
         calendarState = events;
       },
-      settings: () => {
-        return settingsState;
-      },
+      settings: () => settingsState,
       updateSettings: (settings: ScheduleSettingsType) => {
         settingsState = settings;
       },
@@ -39,28 +39,22 @@
         const calendarSettings = settingsState.calendars.find(
           (calendar) => calendar.id === name
         );
-
-        if (calendarSettings) {
-          return calendarSettings.display;
-        }
-
-        return true;
+        return calendarSettings ? calendarSettings.display : true;
       },
       setCalendarDisplaySchedule: (
         name: string,
         schedule: CalendarSettings['scheduledDisplay']
       ) => {
-        let calendarSettings = settingsState.calendars.find(
+        const calendarSettings = settingsState.calendars.find(
           (calendar) => calendar.id === name
         );
         if (calendarSettings) {
           calendarSettings.scheduledDisplay = schedule;
           settingsState = {
             ...settingsState,
-            calendars: {
-              ...settingsState.calendars,
-              ...calendarSettings,
-            },
+            calendars: settingsState.calendars.map((calendar) =>
+              calendar.id === name ? calendarSettings : calendar
+            ),
           };
         } else {
           console.error(
@@ -69,32 +63,37 @@
         }
       },
       getCalendarDisplaySchedule: (name: string) => {
-        let calendarSettings = settingsState.calendars.find(
+        const calendarSettings = settingsState.calendars.find(
           (calendar) => calendar.id === name
         );
-        if (calendarSettings) {
-          return calendarSettings.scheduledDisplay;
-        } else {
-          return { on: '00:00', off: '23:59' };
-        }
+        return calendarSettings
+          ? calendarSettings.scheduledDisplay
+          : { on: '00:00', off: '23:59' };
       },
     };
   };
 
   const scheduleWidget = createScheduleWidget();
 
-  // Zoom level and current page stores
+  /** Zoom level for the calendar view */
   let zoomLevel = $state(1);
+  /** Events currently displayed in the calendar */
   let events = $state(scheduleWidget.events());
+  /** Current settings for the schedule widget */
   let settings = $state(scheduleWidget.settings());
+  /** Key for storing settings in local storage */
   const settingsKey = 'dboardScheduleSettings';
+  /** Flag to track if settings are loaded from storage */
   let loadedSettings = $state(false);
 
+  /** Current quarter hour */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let quarter = $state(timeState.quarter());
+  /** Index of the current page displayed in the calendar */
   let currentPage: number = $state(0);
+  /** Today's date */
   const today = new Date();
-
+  /** The date currently displayed on the calendar */
   let date = $derived(
     new Date(
       today.getFullYear(),
@@ -103,6 +102,11 @@
     )
   );
 
+  /**
+   * Determines if a calendar should be displayed based on its schedule.
+   * @param {CalendarSettings['scheduledDisplay']} scheduledDisplay - Schedule settings of the calendar
+   * @returns {boolean} - True if the calendar should be displayed
+   */
   const shouldDisplayCalendar = (
     scheduledDisplay: CalendarSettings['scheduledDisplay']
   ) => {
@@ -116,13 +120,13 @@
     return nowMinutes >= onMinutesTotal && nowMinutes <= offMinutesTotal;
   };
 
-  let currentEvents: CalendarEvent[] = $derived(
+  /** List of current events filtered by display settings and date */
+  let currentEvents = $derived(
     events.filter((event) => {
       const eventDate = new Date(event.date + 'T00:00:00');
       const calendarSettings = settings.calendars.find(
         (calendar) => calendar.id === event.calendar
       );
-
       return (
         calendarSettings?.display &&
         eventDate.getFullYear() === date.getFullYear() &&
@@ -132,45 +136,62 @@
     })
   );
 
-  let scheduleItems: ScheduleItem[] = $derived(
+  /** Schedule items derived from current events with calculated positions */
+  let scheduleItems = $derived(
     currentEvents.map((event) => {
       const { top, height } = calculateEventPosition(event);
       return { ...event, top, height };
     })
   );
 
+  /** Flag to display the widget settings */
   let displayWidgetSettings = $state(false);
 
+  /** Increases the zoom level */
   const zoomIn = () => {
     zoomLevel = Math.min(zoomLevel + 0.1, 2);
   };
 
+  /** Decreases the zoom level */
   const zoomOut = () => {
     zoomLevel = Math.max(zoomLevel - 0.1, 0.5);
   };
 
+  /** Advances to the next page of the calendar */
   const nextPage = () => {
     dateChangeDirection = 'forward';
-    currentPage = currentPage + 1;
+    currentPage += 1;
   };
 
+  /** Returns to today's page */
   const todayPage = () => {
     dateChangeDirection = currentPage > 0 ? 'backward' : 'forward';
     currentPage = 0;
   };
 
+  /** Goes to the previous page of the calendar */
   const prevPage = () => {
     dateChangeDirection = 'backward';
-    currentPage = currentPage - 1;
+    currentPage -= 1;
   };
 
+  /** Starting X position for touch events */
   let startX = 0;
+  /** Direction of date change, either 'forward' or 'backward' */
   let dateChangeDirection: 'forward' | 'backward' = $state('forward');
 
+  /**
+   * Handles the start of a touch event
+   * @param {TouchEvent} event - The touch start event
+   */
   const handleTouchStart = (event: TouchEvent) => {
     startX = event.touches[0].clientX;
   };
 
+  /**
+   * Handles the end of a touch event
+   * @param {TouchEvent} event - The touch end event
+   */
   const handleTouchEnd = (event: TouchEvent) => {
     const endX = event.changedTouches[0].clientX;
     if (startX - endX > 50) {
@@ -180,11 +201,20 @@
     }
   };
 
+  /**
+   * Toggles the display of the widget settings
+   * @param {TouchEvent | MouseEvent} event - The event triggering the toggle
+   */
   const toggleWidgetSettings = (event: TouchEvent | MouseEvent) => {
     event.stopPropagation();
     displayWidgetSettings = !displayWidgetSettings;
   };
 
+  /**
+   * Calculates the position of an event in the schedule
+   * @param {CalendarEvent} event - The event to calculate the position for
+   * @returns {{top: number, height: number}} - The top and height positions
+   */
   const calculateEventPosition = (
     event: CalendarEvent
   ): { top: number; height: number } => {
@@ -193,47 +223,48 @@
     const top = start.hours * 60 + start.minutes;
     const height =
       (end.hours - start.hours) * 60 + (end.minutes - start.minutes);
-
-    return {
-      top,
-      height,
-    };
+    return { top, height };
   };
 
+  /**
+   * Draws the current time line based on the current time
+   * @returns {number} - The position of the current time line
+   */
   const drawCurrentTimeLine = () => {
     const now = new Date();
     const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
     return minutesSinceMidnight * zoomLevel;
   };
 
+  /**
+   * Parses a time string into hours and minutes
+   * @param {string | null} timeString - The time string to parse
+   * @returns {{hours: number, minutes: number}} - The parsed hours and minutes
+   */
   const parseTime = (
     timeString: string | null
   ): { hours: number; minutes: number } => {
-    if (!timeString) {
-      return { hours: 0, minutes: 0 }; // Default to 00:00 if timeString is null or undefined
-    }
-    let hours = 0,
-      minutes = 0;
-
-    // Check if the time string ends with 'am' or 'pm'
+    if (!timeString) return { hours: 0, minutes: 0 };
+    let [hours, minutes] = [0, 0];
     const is12HourFormat = /am|pm/i.test(timeString);
 
     if (is12HourFormat) {
-      // Extract time and modifier
       let [time, modifier] = [timeString.slice(0, -2), timeString.slice(-2)];
       [hours, minutes] = time.split(':').map(Number);
-
-      // Adjust hours based on am/pm
       if (modifier.toLowerCase() === 'pm' && hours < 12) hours += 12;
       if (modifier.toLowerCase() === 'am' && hours === 12) hours = 0;
     } else {
-      // Assume 24-hour format
       [hours, minutes] = timeString.split(':').map(Number);
     }
 
     return { hours, minutes };
   };
 
+  /**
+   * Scrolls the schedule container to the current time
+   * @type {Action}
+   * @param {HTMLElement} node - The DOM node to scroll
+   */
   const scrollToCurrentTime: Action = (node: HTMLElement) => {
     const now = new Date();
     const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
@@ -245,11 +276,12 @@
           top: (currentPage === 0 ? minutesSinceMidnight : 480) * zoomLevel,
         });
       }, 0);
-    } else {
-      console.log('Node not found');
     }
   };
 
+  /**
+   * Fetches and applies the saved schedule settings from local storage
+   */
   const getSettings = async () => {
     const settingsString = localStorage.getItem(settingsKey);
     if (settingsString) {
@@ -285,29 +317,29 @@
 </script>
 
 <div class="dboard__grid__item schedule push-to-refresh">
-  {#if displayWidgetSettings === false}
+  {#if !displayWidgetSettings}
     <div class="dboard__card" transition:fade>
       <div class="controls">
         {#key date}
-          <button onclick={todayPage} class="schedule-widget-date"
-            ><h1
+          <button onclick={todayPage} class="schedule-widget-date">
+            <h1
               class="text-white mix-blend-exclusion"
               in:fade={{ duration: 111, delay: 111 }}
               out:fade={{ duration: 111 }}
             >
               <!-- {formatDateShort(date)} -->
-            </h1></button
-          >
+            </h1>
+          </button>
         {/key}
         <div class="zoom-controls">
-          <button onclick={zoomOut}>&#8722;</button><button onclick={zoomIn}
-            >&#43;</button
-          >
+          <button onclick={zoomOut}>&#8722;</button>
+          <button onclick={zoomIn}>&#43;</button>
         </div>
         <div class="navigation-controls">
           <button onclick={prevPage} class="date-back"
             ><span class="rotate-180">&#10132;</span></button
-          ><button onclick={nextPage} class="date-forward"
+          >
+          <button onclick={nextPage} class="date-forward"
             ><span>&#10132;</span></button
           >
         </div>
@@ -344,16 +376,14 @@
               </div>
             {/each}
             {#each scheduleItems as event}
-              {#if event && scheduleWidget.getCalendarDisplay(event.calendar) === true && shouldDisplayCalendar(scheduleWidget.getCalendarDisplaySchedule(event.calendar))}
+              {#if event && scheduleWidget.getCalendarDisplay(event.calendar) && shouldDisplayCalendar(scheduleWidget.getCalendarDisplaySchedule(event.calendar))}
                 <div
                   class="event border-10 border-blue-600"
                   data-calendar-name={event.calendar}
                   style="top: {event.top * zoomLevel}px; height: {event.height *
                     zoomLevel}px;"
                 >
-                  <h2 class="title">
-                    {event.title}
-                  </h2>
+                  <h2 class="title">{event.title}</h2>
                   <h3 class="start">{event.start_at}</h3>
                   <ul class="event-details">
                     <li class="duration">
@@ -378,10 +408,10 @@
       </div>
     </div>
   {/if}
-  {#if displayWidgetSettings === true}
+  {#if displayWidgetSettings}
     <ScheduleSettings bind:settings />
   {/if}
-  <button class="settings-toggle" onclick={toggleWidgetSettings}
-    ><Icon icon="fluent:settings-16-filled" /></button
-  >
+  <button class="settings-toggle" onclick={toggleWidgetSettings}>
+    <Icon icon="fluent:settings-16-filled" />
+  </button>
 </div>
