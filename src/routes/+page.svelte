@@ -77,8 +77,8 @@
     {#each loadedWidgets as { type, settings }}
       <svelte:component this={components[type]} {settings} />
     {/each}
-    <NextToArrive />
     <Schedule />
+    <NextToArrive />
     <!-- <NewWidget /> -->
   </Board>
 {/if}
