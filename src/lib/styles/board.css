@@ -73,6 +73,10 @@
       &.flowover {
         overflow: visible;
       }
+
+      &.hide {
+        display: none;
+      }
     }
   }
 }
