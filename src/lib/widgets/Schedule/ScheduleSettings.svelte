@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { ScheduleSettingsType } from '$types';
+  import Icon from '@iconify/svelte';
   import { fade } from 'svelte/transition';
 
   type Props = {
@@ -7,6 +8,12 @@
   };
 
   let { settings = $bindable() }: Props = $props();
+
+  let schedulesDisabled = $state(
+    settings.calendars.map(() => {
+      return true;
+    })
+  );
 </script>
 
 <div class="dboard__card dboard__card--settings" transition:fade>
@@ -31,13 +38,27 @@
             type="time"
             id="{id}-on"
             bind:value={settings.calendars[i].scheduledDisplay.on}
+            disabled={schedulesDisabled[i]}
           />
           <label for="{id}-off">Off</label>
           <input
             type="time"
             id="{id}-off"
             bind:value={settings.calendars[i].scheduledDisplay.off}
+            disabled={schedulesDisabled[i]}
           />
+          <button
+            class="settings-edit"
+            class:saved={!schedulesDisabled[i]}
+            onclick={() => {
+              schedulesDisabled[i] = !schedulesDisabled[i];
+            }}
+            >{#if schedulesDisabled[i]}<Icon
+                icon="fluent:edit-12-filled"
+              />{:else}<Icon
+                icon="fluent:checkmark-circle-12-regular"
+              />{/if}</button
+          >
         {/if}
       </div>
     </details>
