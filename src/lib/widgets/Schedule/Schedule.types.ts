@@ -1,4 +1,8 @@
 export type CalendarEvent = {
+  left: number;
+  width: number;
+  height: number;
+  top: number;
   title: string;
   calendar: string;
   date: string;
@@ -12,6 +16,17 @@ export type CalendarEvent = {
 export type ScheduleItem = CalendarEvent & {
   top: number;
   height: number;
+  width: number;
+  left: number;
+};
+
+export type CalendarSettings = {
+  id: string;
+  display: boolean;
+  scheduledDisplay: {
+    on: string; // Time format "HH:MM"
+    off: string; // Time format "HH:MM"
+  };
 };
 
 /**
@@ -25,15 +40,6 @@ export type ScheduleData = CalendarEvent[];
 export type ScheduleWidget = {
   type: 'Schedule';
   data: ScheduleData;
-};
-
-export type CalendarSettings = {
-  id: string;
-  display: boolean;
-  scheduledDisplay: {
-    on: string; // Time format "HH:MM"
-    off: string; // Time format "HH:MM"
-  };
 };
 
 export type ScheduleSettingsType = {

@@ -4,6 +4,7 @@
   import type {
     CalendarEvent,
     CalendarSettings,
+    ScheduleItem,
     ScheduleSettingsType,
   } from '@types';
   import { formatDateShort, formatMinutesToDuration } from '@utils';
@@ -227,6 +228,69 @@
   };
 
   /**
+   * Groups overlapping events together.
+   * @param {CalendarEvent[]} events - List of events to group by overlap.
+   * @returns {CalendarEvent[][]} - An array of event groups.
+   */
+  const groupOverlappingEvents = (
+    events: CalendarEvent[]
+  ): CalendarEvent[][] => {
+    let groupedEvents: CalendarEvent[][] = [];
+    let currentGroup: CalendarEvent[] = [];
+
+    events.forEach((event, index) => {
+      if (index === 0) {
+        currentGroup.push(event);
+      } else {
+        const previousEvent = currentGroup[currentGroup.length - 1];
+        const prevEnd = parseTime(previousEvent.end_at);
+        const currentStart = parseTime(event.start_at);
+
+        if (
+          currentStart.hours < prevEnd.hours ||
+          (currentStart.hours === prevEnd.hours &&
+            currentStart.minutes < prevEnd.minutes)
+        ) {
+          currentGroup.push(event);
+        } else {
+          groupedEvents.push(currentGroup);
+          currentGroup = [event];
+        }
+      }
+    });
+
+    if (currentGroup.length > 0) {
+      groupedEvents.push(currentGroup);
+    }
+
+    return groupedEvents;
+  };
+
+  /**
+   * Calculate the position and dimensions of each event for rendering.
+   * @param {CalendarEvent[]} events - List of events.
+   * @returns {CalendarEvent[]} - Events with updated position and dimension properties.
+   */
+  const calculateEventStyles = (events: unknown): ScheduleItem[] => {
+    let groupedEvents = groupOverlappingEvents(events as ScheduleItem[]);
+
+    groupedEvents.forEach((group) => {
+      group.forEach((event, index) => {
+        const { top, height } = calculateEventPosition(event);
+        const width = 100 / group.length;
+        const left = width * index;
+
+        event.top = top;
+        event.height = height;
+        event.width = width;
+        event.left = left;
+      });
+    });
+
+    return events as ScheduleItem[];
+  };
+
+  /**
    * Draws the current time line based on the current time
    * @returns {number} - The position of the current time line
    */
@@ -305,6 +369,7 @@
   $effect(() => {
     quarter = timeState.quarter();
     events = scheduleWidget.events();
+    calculateEventStyles(events);
   });
 
   onMount(async () => {
@@ -381,7 +446,7 @@
                   class="event border-10 border-blue-600"
                   data-calendar-name={event.calendar}
                   style="top: {event.top * zoomLevel}px; height: {event.height *
-                    zoomLevel}px;"
+                    zoomLevel}px; width: {event.width}%; left: {event.left}%;"
                 >
                   <h2 class="title">{event.title}</h2>
                   <h3 class="start">{event.start_at}</h3>
