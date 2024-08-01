@@ -42,7 +42,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.5rem 0;
       }
 
       &-toggle-label {
@@ -71,6 +70,13 @@
   }
 }
 
+.settings-table {
+  &-wrap {
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    scrollbar-width: thin;
+  }
+}
+
 .settings-toggle {
   position: absolute;
   right: -0.5rem;
@@ -84,22 +90,5 @@
   .dboard__grid__item:hover & {
     opacity: 1;
     transition: 1s opacity linear 0;
-  }
-}
-
-.settings-edit {
-  transition: 333ms background-color ease-out;
-  border-radius: 1rem;
-  background-color: transparent;
-  padding: 0.5rem;
-  &:hover {
-    background-color: yellow;
-    color: darkred;
-  }
-  &.saved {
-    background-color: green;
-    &:hover {
-      background-color: light-green;
-    }
   }
 }
