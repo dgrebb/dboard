@@ -1,5 +1,5 @@
 <script lang="ts">
-  import weather from '$stores/weatherLeg';
+  import weather from '@stores/weatherLeg';
   import { onMount } from 'svelte';
   let isDay: number;
 

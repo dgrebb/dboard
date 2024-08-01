@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { TypeOfWidget, type SeptaNextToArriveData } from '$types';
-  import { isSeptaNextToArriveDataArray } from '$guards';
-  import { createWidget } from '$stores';
-  import { generateID, toCamelCase } from '$utils/strings';
+  import { TypeOfWidget, type SeptaNextToArriveData } from '@types';
+  import { isSeptaNextToArriveDataArray } from '@guards';
+  import { createWidget } from '@stores';
+  import { generateID, toCamelCase } from '@utils/strings';
   import Icon from '@iconify/svelte';
   import { onDestroy, onMount } from 'svelte';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { DebugData } from '$types';
+  import type { DebugData } from '@types';
   import './debugger.css';
 
   type Props = {

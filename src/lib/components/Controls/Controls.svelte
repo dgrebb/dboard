@@ -2,8 +2,8 @@
   import { Button } from 'flowbite-svelte';
   import './controls.css';
 
-  import Debugger from '$components/Debugger/Debugger.svelte';
-  import { musicState, homeState } from '$stores';
+  import Debugger from '@components/Debugger/Debugger.svelte';
+  import { musicState, homeState } from '@stores';
   import Icon from '@iconify/svelte';
 
   // Define the state variables

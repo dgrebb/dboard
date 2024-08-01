@@ -6,7 +6,7 @@ import type {
   SeptaNextToArriveData,
   StreamType,
   WeatherData,
-} from '$types';
+} from '@types';
 
 /**
  * Enum representing the types of widgets available.

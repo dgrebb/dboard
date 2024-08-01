@@ -1,4 +1,4 @@
-import type { SeptaNextToArriveData } from '$types';
+import type { SeptaNextToArriveData } from '@types';
 
 const SeptaNextToArriveDataKeys: (keyof SeptaNextToArriveData)[] = [
   'orig_train',

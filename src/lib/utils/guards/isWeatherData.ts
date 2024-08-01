@@ -1,4 +1,4 @@
-import type { WeatherData, WidgetData } from '$types';
+import type { WeatherData, WidgetData } from '@types';
 
 /**
  * Type guard function to check if data is WeatherData.

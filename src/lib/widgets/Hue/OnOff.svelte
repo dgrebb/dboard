@@ -4,10 +4,10 @@
   import { PUBLIC_HUE_USERNAME as username } from '$env/static/public';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  // import lights from '$stores/solar';
-  import { hue } from '$root/.config/settings';
-  import { type HueActionType } from '$types';
-  import { isHueActionType } from '$guards';
+  // import lights from '@stores/solar';
+  import { hue } from '@root/.config/settings';
+  import { type HueActionType } from '@types';
+  import { isHueActionType } from '@guards';
 
   let { actions } = $state(hue);
 

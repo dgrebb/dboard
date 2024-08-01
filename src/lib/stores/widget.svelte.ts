@@ -1,5 +1,5 @@
-// $stores/widget.svelte.ts
-import type { PossibleWidgetData, TypeOfWidget, WidgetData } from '$types';
+// @stores/widget.svelte.ts
+import type { PossibleWidgetData, TypeOfWidget, WidgetData } from '@types';
 
 export const createWidget = function createWidget(
   type: TypeOfWidget,

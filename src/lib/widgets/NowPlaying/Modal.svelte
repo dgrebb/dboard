@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { selfOffsetBackground } from '$actions/selfOffsetBackground';
-  import LovedHeart from '$components/Animations/LovedHeart.svelte';
-  import SafeHtml from '$components/SafeHTML.svelte';
-  import { homeState, uiState } from '$stores';
-  import type { CurrentWeatherData, ModalState } from '$types';
-  import { addHtmlLineBreaks } from '$utils/strings';
+  import { selfOffsetBackground } from '@actions/selfOffsetBackground';
+  import LovedHeart from '@components/Animations/LovedHeart.svelte';
+  import SafeHtml from '@components/SafeHTML.svelte';
+  import { homeState, uiState } from '@stores';
+  import type { CurrentWeatherData, ModalState } from '@types';
+  import { addHtmlLineBreaks } from '@utils/strings';
   import Icon from '@iconify/svelte';
   import { blur, fade } from 'svelte/transition';
   import PlaybackControls from './PlaybackControls.svelte';

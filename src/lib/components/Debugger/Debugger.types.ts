@@ -4,7 +4,7 @@ import type {
   WidgetData,
   WeatherData,
   NowPlayingData,
-} from '$types';
+} from '@types';
 
 export type DebugData =
   | NightScoutData

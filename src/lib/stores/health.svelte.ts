@@ -1,9 +1,9 @@
-import { mapNightScoutDirectionIcon } from '$utils/nightscout';
+import { mapNightScoutDirectionIcon } from '@utils/nightscout';
 import {
   type HealthData,
   type NightScoutData,
   type NightScoutReading,
-} from '$types';
+} from '@types';
 
 export const createHealthState = () => {
   let healthStore: HealthData = $state({
