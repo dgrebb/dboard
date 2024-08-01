@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ScheduleSettingsType } from '$types';
+  import type { ScheduleSettingsType } from '@types';
   import Icon from '@iconify/svelte';
   import { fade } from 'svelte/transition';
 

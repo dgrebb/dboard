@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import type { WeatherData } from '$types';
-  import mapWeatherIcon from '$widgets/Weather/iconMap';
+  import type { WeatherData } from '@types';
+  import mapWeatherIcon from '@widgets/Weather/iconMap';
   import { fade } from 'svelte/transition';
   import { dayOfWeek } from '$lib/utils/dayOfWeek';
   type Props = {

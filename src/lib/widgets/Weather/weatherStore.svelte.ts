@@ -4,12 +4,12 @@ import {
   type TypeOfWidget,
   type WeatherData,
   type WidgetData,
-} from '$types';
+} from '@types';
 import {
   isCurrentWeatherData,
   isDailyWeatherData,
   isWeatherData,
-} from '$guards';
+} from '@guards';
 
 export const createWeatherWidget = function createWidget(
   type: TypeOfWidget,

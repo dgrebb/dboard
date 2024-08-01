@@ -1,5 +1,5 @@
 import { SECRET_NIGHTSCOUT_TOKEN } from '$env/static/private';
-import type { Fetch, FetchOptions, Timer } from '$types';
+import type { Fetch, FetchOptions, Timer } from '@types';
 import { json, type RequestHandler } from '@sveltejs/kit';
 
 const secrets: { [key: string]: string } = {

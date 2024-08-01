@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
-import { WEATHER_API } from '$root/.config/GLOBALS';
+import { WEATHER_API } from '@root/.config/GLOBALS';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { FetchOptions, WeatherData } from '$types';
+import type { FetchOptions, WeatherData } from '@types';
 
 export const GET = (async ({ url, params }) => {
   const query: string = url.search;

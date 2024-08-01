@@ -1,14 +1,14 @@
 <script lang="ts">
   '@hmr:keep-all';
-  import { type Settings, type WidgetSettings } from '$types';
-  import { isTypeOfWidget, isWidgetSettings } from '$guards';
-  import rawSettings from '$root/.config/settings.json';
-  import NightScout from '$widgets/NightScout/NightScout.svelte';
-  import NowPlaying from '$widgets/NowPlaying/NowPlaying.svelte';
-  import NextToArrive from '$widgets/Septa/NextToArrive/NextToArrive.svelte';
+  import { type Settings, type WidgetSettings } from '@types';
+  import { isTypeOfWidget, isWidgetSettings } from '@guards';
+  import rawSettings from '@root/.config/settings.json';
+  import NightScout from '@widgets/NightScout/NightScout.svelte';
+  import NowPlaying from '@widgets/NowPlaying/NowPlaying.svelte';
+  import NextToArrive from '@widgets/Septa/NextToArrive/NextToArrive.svelte';
   import { onMount, tick, type Component } from 'svelte';
   import Board from './(layouts)/Board.svelte';
-  import Schedule from '$widgets/Schedule/Schedule.svelte';
+  import Schedule from '@widgets/Schedule/Schedule.svelte';
 
   let mounted = $state(false);
 
@@ -49,7 +49,7 @@
     for (const widget of widgets) {
       if (!components[widget.type]) {
         components[widget.type] = (
-          await import(`$widgets/${widget.type}/${widget.type}.svelte`)
+          await import(`@widgets/${widget.type}/${widget.type}.svelte`)
         ).default;
       }
       loadedWidgets = [...loadedWidgets, widget];

@@ -1,4 +1,4 @@
-import type { GradientResult, NowPlayingData } from '$types';
+import type { GradientResult, NowPlayingData } from '@types';
 
 export const createMusicState = () => {
   let musicStore: NowPlayingData = $state({

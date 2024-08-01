@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { StreamsType } from '$types';
-  // import { generateID } from '$utils/strings';
-  import { streams } from '$stores/streams.svelte';
+  import type { StreamsType } from '@types';
+  // import { generateID } from '@utils/strings';
+  import { streams } from '@stores/streams.svelte';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
 

@@ -1,4 +1,4 @@
-import type { WeatherIconComponent } from '$types';
+import type { WeatherIconComponent } from '@types';
 
 /**
  * Type representing icon properties.

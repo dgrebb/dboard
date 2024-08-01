@@ -1,5 +1,5 @@
-import type { WidgetSettings } from '$types';
-import { isLocationSettings } from '$guards';
+import type { WidgetSettings } from '@types';
+import { isLocationSettings } from '@guards';
 
 export const isWidgetSettings = (widget: unknown): widget is WidgetSettings => {
   const wgt = widget as WidgetSettings;

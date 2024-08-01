@@ -4,18 +4,18 @@
     DailyWeatherData,
     Timer,
     WeatherSettings,
-  } from '$types';
-  import { TypeOfWidget } from '$types';
-  import { isCurrentWeatherData, isDailyWeatherData } from '$guards';
+  } from '@types';
+  import { TypeOfWidget } from '@types';
+  import { isCurrentWeatherData, isDailyWeatherData } from '@guards';
   import { createWeatherWidget } from '$lib/widgets/Weather/weatherStore.svelte';
-  import { background, homeState, timeState } from '$stores';
-  import { generateID, toCamelCase } from '$utils/strings';
-  import fahrenheitToColorShade from '$utils/temperatureColor';
+  import { background, homeState, timeState } from '@stores';
+  import { generateID, toCamelCase } from '@utils/strings';
+  import fahrenheitToColorShade from '@utils/temperatureColor';
   import Icon from '@iconify/svelte';
   import { onDestroy, onMount } from 'svelte';
   import { blur, fade } from 'svelte/transition';
   import WeatherIcon from './WeatherIcon.svelte';
-  import '$widgets/Weather/weather.css';
+  import '@widgets/Weather/weather.css';
 
   type Props = {
     settings: WeatherSettings;
