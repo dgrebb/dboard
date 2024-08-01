@@ -1,0 +1,18 @@
+<script lang="ts">
+  import type { HTMLTableAttributes } from 'svelte/elements';
+  import { cn } from '@utils';
+
+  type $$Props = HTMLTableAttributes;
+
+  let className: $$Props['class'] = undefined;
+  export { className as class };
+</script>
+
+<div class="settings-table-wrap relative w-full overflow-y-auto">
+  <table
+    class={cn('w-full caption-bottom text-sm', className)}
+    {...$$restProps}
+  >
+    <slot />
+  </table>
+</div>

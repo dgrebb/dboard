@@ -1,0 +1,14 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema.json",
+  "style": "default",
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "src/lib/styles/global.pcss",
+    "baseColor": "stone"
+  },
+  "aliases": {
+    "components": "@components",
+    "utils": "@utils"
+  },
+  "typescript": true
+}

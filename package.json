@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "warning": "echo 'WARNING: Setting NODE_TLS_REJECT_UNAUTHORIZED to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification. This should only be used in a trusted local development environment. Do not use this setting in production environments as it exposes the application to security vulnerabilities.'",
-    "warnings": "echo 'REPEAT ------------ ' && npm run warning",
+    "warnings": "echo 'REPEAT ------------ ' && pnpm run warning",
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=dboard.server PORT=443 vite dev --config vite.config.dev.ts --host --port 443",
     "start": "sudo NODE_TLS_REJECT_UNAUTHORIZED=0 PORT=443 HOST=dboard.server node server.js",
     "build": "NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=dboard.server PORT=443 vite build --config vite.config.prod.ts",
@@ -17,11 +17,12 @@
     "build.test": "vite build --config vite.config.test.ts",
     "preview": "NODE_TLS_REJECT_UNAUTHORIZED=0 vite preview --config vite.config.prod.ts --host --port 443",
     "preview.test": "vite preview --config vite.config.test.ts --host",
-    "test": "npm run test:integration && npm run test:unit",
+    "test": "pnpm run test:integration && pnpm run test:unit",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check.watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
-    "watch": "chokidar './src/**/*.{js,ts,svelte,json}' -c 'npm run lint'",
+    "lint.watch": "chokidar './src/**/*.{js,ts,svelte,json}' -c 'pnpm eslint .'",
+    "watch": "chokidar './src/**/*.{js,ts,svelte,json}' -c 'pnpm run lint'",
     "format": "prettier --write .",
     "sync": "svelte-kit sync",
     "test.integration": "playwright test",
@@ -29,7 +30,8 @@
     "trash": "rm -rf .svelte-kit build",
     "prepare": "husky",
     "release": "standard-version --no-verify",
-    "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm i"
+    "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm i",
+    "chokidar": "chokidar-cli"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -47,9 +49,13 @@
     ]
   },
   "dependencies": {
+    "bits-ui": "^0.21.13",
     "canvas": "^2.11.2",
+    "clsx": "^2.1.1",
     "express": "^4.19.2",
     "fast-average-color": "^9.4.0",
+    "tailwind-merge": "^2.4.0",
+    "tailwind-variants": "^0.2.1",
     "ws": "^8.18.0",
     "xmldom": "^0.6.0"
   },
@@ -73,6 +79,7 @@
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "autoprefixer": "^10.4.19",
+    "chokidar-cli": "^3.0.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^16.4.5",
@@ -100,9 +107,11 @@
     "svelte-check": "^3.8.5",
     "svelte-grid": "^5.1.2",
     "tailwindcss": "^3.4.7",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.18.0",
     "vite": "^5.3.5",
+    "vite-plugin-eslint": "^1.8.1",
     "vitest": "^2.0.4"
   },
   "type": "module"
