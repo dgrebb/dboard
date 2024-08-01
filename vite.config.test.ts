@@ -53,7 +53,7 @@ export default defineConfig({
   resolve: {
     alias: {
       $lib: path.resolve('./src/lib'),
-      '@utils': path.resolve('./src/utils'),
+      '@utils': path.resolve('./src/lib/utils'),
       '@assets': path.resolve('./static'),
       '@actions': path.resolve('./src/lib/actions'),
       '@widgets': path.resolve('./src/lib/widgets'),
