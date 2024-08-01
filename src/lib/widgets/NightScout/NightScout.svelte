@@ -2,11 +2,11 @@
   import { onDestroy, onMount } from 'svelte';
   import { fade, blur } from 'svelte/transition';
   import Icon from '@iconify/svelte';
-  import { TypeOfWidget } from '$types';
-  import { generateID, toCamelCase } from '$utils/strings';
+  import { TypeOfWidget } from '@types';
+  import { generateID, toCamelCase } from '@utils/strings';
   import { createNightScoutWidget } from './nightScoutStore.svelte';
   import NightscoutLineGraph from '$lib/widgets/NightScout/NightScoutLineGraph.svelte';
-  import { healthState } from '$stores/health.svelte';
+  import { healthState } from '@stores/health.svelte';
 
   let label = 'mg/dL';
   const name = 'NightScout';

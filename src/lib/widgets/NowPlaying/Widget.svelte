@@ -1,10 +1,10 @@
 <script lang="ts">
   import { blur } from 'svelte/transition';
-  import { addHtmlLineBreaks } from '$utils/strings';
-  import { formatSecondsToMinutes } from '$utils/strings';
-  import LovedHeart from '$components/Animations/LovedHeart.svelte';
-  import SafeHtml from '$components/SafeHTML.svelte';
-  import type { ModalState } from '$types';
+  import { addHtmlLineBreaks } from '@utils/strings';
+  import { formatSecondsToMinutes } from '@utils/strings';
+  import LovedHeart from '@components/Animations/LovedHeart.svelte';
+  import SafeHtml from '@components/SafeHTML.svelte';
+  import type { ModalState } from '@types';
 
   type Props = {
     handlePushing: (e: MouseEvent | TouchEvent) => void;

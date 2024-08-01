@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { selfOffsetBackground } from '$actions/selfOffsetBackground';
-  import { formatSecondsToMinutes } from '$utils/strings';
+  import { selfOffsetBackground } from '@actions/selfOffsetBackground';
+  import { formatSecondsToMinutes } from '@utils/strings';
 
   type Props = {
     total: number;

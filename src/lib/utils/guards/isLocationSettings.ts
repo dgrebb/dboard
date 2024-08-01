@@ -1,4 +1,4 @@
-import type { LocationType } from '$root/lib/types';
+import type { LocationType } from '@root/lib/types';
 
 export const isLocationSettings = (
   location: unknown

@@ -1,5 +1,5 @@
-import { type ChartSeriesGlucose, type NightScoutData } from '$types';
-import { isNightScoutData } from '$guards';
+import { type ChartSeriesGlucose, type NightScoutData } from '@types';
+import { isNightScoutData } from '@guards';
 
 // Updated type for mapNightScoutDirectionIcon to accept NightScoutData | false
 export const mapNightScoutDirectionIcon = (

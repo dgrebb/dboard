@@ -1,4 +1,4 @@
-import type { CalendarEvent } from '$widgets/Schedule/Schedule.types';
+import type { CalendarEvent } from '@widgets/Schedule/Schedule.types';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 

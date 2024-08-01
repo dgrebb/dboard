@@ -1,4 +1,4 @@
-import type { DailyWeatherData } from '$types';
+import type { DailyWeatherData } from '@types';
 
 /**
  * Type guard function to check if data is DailyWeatherData.

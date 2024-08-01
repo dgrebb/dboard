@@ -1,4 +1,4 @@
-import type { WidgetSettings, ChartSeriesGlucose } from '$types';
+import type { WidgetSettings, ChartSeriesGlucose } from '@types';
 
 /**
  * Type representing global settings.json (or database)

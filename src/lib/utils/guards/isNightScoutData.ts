@@ -1,4 +1,4 @@
-import type { WidgetData, NightScoutReading } from '$types';
+import type { WidgetData, NightScoutReading } from '@types';
 
 /**
  * Type guard function to check if data is NightScoutData.

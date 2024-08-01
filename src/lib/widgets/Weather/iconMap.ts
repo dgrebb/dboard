@@ -1,4 +1,4 @@
-import type { IconMap, IconProps } from '$types';
+import type { IconMap, IconProps } from '@types';
 
 const lightYellowGray = '#fbf1de';
 // const brightGreen = '#37cc37';

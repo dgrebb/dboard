@@ -1,7 +1,7 @@
 /* global RequestInit */
 /* global RequestRedirect */
 import { SECRET_NIGHTSCOUT_TOKEN } from '$env/static/private';
-import type { FetchOptions } from '$types';
+import type { FetchOptions } from '@types';
 
 export async function load() {
   // call server for data

@@ -1,4 +1,4 @@
-import type { TimeZone } from '$types';
+import type { TimeZone } from '@types';
 
 export const createTimeState = (initialTime: Date) => {
   const timeStore = $state({

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NewWidget from '$components/Composer/NewWidget.svelte';
+  import NewWidget from '@components/Composer/NewWidget.svelte';
   import type { Snippet } from 'svelte';
 
   type Props = {

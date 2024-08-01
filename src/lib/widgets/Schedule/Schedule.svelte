@@ -1,13 +1,13 @@
 <script lang="ts">
-  import FlyTransition from '$components/Transitions/FlyTransition.svelte';
-  import { timeState } from '$stores';
+  import FlyTransition from '@components/Transitions/FlyTransition.svelte';
+  import { timeState } from '@stores';
   import type {
     CalendarEvent,
     CalendarSettings,
     ScheduleSettingsType,
-  } from '$types';
-  import { formatMinutesToDuration } from '$utils';
-  import scheduleSettings from '$widgets/Schedule/schedule.settings.json';
+  } from '@types';
+  import { formatMinutesToDuration } from '@utils';
+  import scheduleSettings from '@widgets/Schedule/schedule.settings.json';
   import Icon from '@iconify/svelte';
   import { onMount } from 'svelte';
   import type { Action } from 'svelte/action';

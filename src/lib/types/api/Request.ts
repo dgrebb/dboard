@@ -1,4 +1,4 @@
-export * from '$types';
+export * from '@types';
 
 /**
  * A custom fetch function type.

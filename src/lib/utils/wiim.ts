@@ -2,7 +2,7 @@ import {
   SECRET_AUDIO_CONTROL_IP_ADDRESS,
   SECRET_WIIM_SOAP_API_PORT,
 } from '$env/static/private';
-import type { Fetch, MediaInfo, NowPlayingAPI, PositionInfo } from '$types';
+import type { Fetch, MediaInfo, NowPlayingAPI, PositionInfo } from '@types';
 import { DOMParser } from 'xmldom';
 
 const createSoapEnvelope = (

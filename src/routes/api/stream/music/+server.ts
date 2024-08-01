@@ -8,11 +8,11 @@ import type {
   NowPlayingAPI,
   NowPlayingData,
   Timer,
-} from '$types';
+} from '@types';
 import { SECRET_AUDIO_CONTROL_IP_ADDRESS } from '$env/static/private';
-import { colorThief } from '$utils/colorThief';
-import { timeStringToSeconds } from '$utils/strings';
-import { fetchMediaInfo } from '$utils/wiim';
+import { colorThief } from '@utils/colorThief';
+import { timeStringToSeconds } from '@utils/strings';
+import { fetchMediaInfo } from '@utils/wiim';
 
 export const prerender = false;
 
