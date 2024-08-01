@@ -6,7 +6,7 @@
     CalendarSettings,
     ScheduleSettingsType,
   } from '@types';
-  import { formatMinutesToDuration } from '@utils';
+  import { formatDateShort, formatMinutesToDuration } from '@utils';
   import scheduleSettings from '@widgets/Schedule/schedule.settings.json';
   import Icon from '@iconify/svelte';
   import { onMount } from 'svelte';
@@ -327,7 +327,7 @@
               in:fade={{ duration: 111, delay: 111 }}
               out:fade={{ duration: 111 }}
             >
-              <!-- {formatDateShort(date)} -->
+              {formatDateShort(date)}
             </h1>
           </button>
         {/key}

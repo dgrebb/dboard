@@ -18,6 +18,7 @@ const config = {
     alias: {
       $lib: 'src/lib',
       '@utils': 'src/lib/utils',
+      utils: '@utils',
       '@actions': 'src/lib/actions',
       '@widgets': 'src/lib/widgets',
       '@routes': 'src/routes/',
@@ -28,7 +29,6 @@ const config = {
       '@types': 'src/lib/types',
       '@guards': 'src/lib/utils/guards',
       '@stores': 'src/lib/stores',
-      '@': './path/to/lib/*',
     },
   },
 };

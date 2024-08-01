@@ -1,7 +1,12 @@
 <script lang="ts">
+  import * as Table from '$lib/components/ui/table/index.js';
   import type { ScheduleSettingsType } from '@types';
-  import Icon from '@iconify/svelte';
+  import { Label } from '$lib/components/ui/label/index.js';
+  import { Switch } from '$lib/components/ui/switch/index.js';
   import { fade } from 'svelte/transition';
+  import Icon from '@iconify/svelte';
+  import { Toggle } from '$lib/components/ui/toggle/index.js';
+  import { Input } from '$lib/components/ui/input/index.js';
 
   /**
    * Type definition for the component props.
@@ -23,54 +28,76 @@
    * Each element corresponds to a calendar in the `settings.calendars` array.
    */
   let schedulesDisabled = $state(settings.calendars.map(() => true));
+  let showSchedule = $state(settings.calendars.map(() => false));
 </script>
 
 <div class="dboard__card dboard__card--settings" transition:fade>
-  <h3 class="setting">Visible Calendars</h3>
-  {#each settings.calendars as { id }, i}
-    <div class="setting-row">
-      <input
-        class="setting-toggle"
-        type="checkbox"
-        name="{id}-display"
-        id="{id}-display"
-        bind:checked={settings.calendars[i].display}
-      />
-      <label class="setting-toggle-label" for="{id}-display">{id}</label>
-    </div>
-    <details>
-      <summary class="setting-row">Schedule</summary>
-      <div class="setting-row setting-row--collapsed">
-        <label for="{id}-on">On</label>
-        {#if settings.calendars[i].scheduledDisplay}
-          <input
-            type="time"
-            id="{id}-on"
-            bind:value={settings.calendars[i].scheduledDisplay.on}
-            disabled={schedulesDisabled[i]}
-          />
-          <label for="{id}-off">Off</label>
-          <input
-            type="time"
-            id="{id}-off"
-            bind:value={settings.calendars[i].scheduledDisplay.off}
-            disabled={schedulesDisabled[i]}
-          />
-          <button
-            class="settings-edit"
-            class:saved={!schedulesDisabled[i]}
-            onclick={() => {
-              schedulesDisabled[i] = !schedulesDisabled[i];
-            }}
+  <Table.Root class="settings-table">
+    <Table.Caption>Calendar Settings</Table.Caption>
+    <Table.Body>
+      {#each settings.calendars as { id }, i}
+        <Table.Row class="setting-row">
+          <Table.Cell>
+            <Label for="{id}-display">{id}</Label>
+          </Table.Cell>
+          <Table.Cell class="text-right">
+            <Switch
+              name="{id}-display"
+              id="{id}-display"
+              bind:checked={settings.calendars[i].display}
+            />
+          </Table.Cell>
+          <Table.Cell class="text-right"
+            ><Icon
+              icon="fluent:clock-24-regular"
+              onclick={() => (showSchedule[i] = !showSchedule[i])}
+            /></Table.Cell
           >
-            {#if schedulesDisabled[i]}
-              <Icon icon="fluent:edit-12-filled" />
-            {:else}
-              <Icon icon="fluent:checkmark-circle-12-regular" />
-            {/if}
-          </button>
+        </Table.Row>
+        {#if showSchedule[i]}
+          <Table.Row
+            class={`setting-row ${showSchedule[i] ? 'setting-row--collapsed' : null}`}
+          >
+            <Table.Cell>
+              <Label for="{id}-on">On</Label>
+              <Input
+                type="time"
+                id="{id}-on"
+                bind:value={settings.calendars[i].scheduledDisplay.on}
+                disabled={schedulesDisabled[i]}
+              />
+            </Table.Cell>
+            <Table.Cell>
+              <Label for="{id}-off">Off</Label>
+              <Input
+                type="time"
+                id="{id}-off"
+                bind:value={settings.calendars[i].scheduledDisplay.off}
+                disabled={schedulesDisabled[i]}
+              />
+            </Table.Cell>
+            <Table.Cell>
+              <Toggle
+                aria-label="Toggle edit mode"
+                variant="outline"
+                onclick={() => {
+                  schedulesDisabled[i] = !schedulesDisabled[i];
+                }}
+                >{#if schedulesDisabled[i]}<Icon
+                    icon="fluent:edit-12-filled"
+                    class="h-4 w-4"
+                  />
+                {:else}
+                  <Icon
+                    icon="fluent:checkmark-circle-12-regular"
+                    class="h-4 w-4"
+                  />
+                {/if}
+              </Toggle>
+            </Table.Cell>
+          </Table.Row>
         {/if}
-      </div>
-    </details>
-  {/each}
+      {/each}
+    </Table.Body>
+  </Table.Root>
 </div>
