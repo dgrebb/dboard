@@ -67,6 +67,7 @@ export default [
       'static/kiosk_functions.js',
       'src/routes/grid/*',
       '.env.*',
+      '.release-please*',
     ],
   },
 ];
