@@ -1,5 +1,5 @@
-name: Release
-run-name: "Release`${{ github.head_ref || github.ref_name }}`"
+name: 🏷️ Release
+run-name: "Releasing `${{ github.head_ref || github.ref_name }}`"
 
 on:
   push:
@@ -22,9 +22,4 @@ jobs:
           config-file: .config/release/config.json
           manifest-file: .config/release/.manifest.json
           target-branch: main
-          draft: true
-          draft-pull-request: true
-          release-label: "autorelease: tagged"
-          extra-label: "RELEASE"
-          include-v-in-tags: false
           include-component-in-tag: false
