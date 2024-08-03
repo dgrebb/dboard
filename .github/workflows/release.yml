@@ -24,5 +24,7 @@ jobs:
           target-branch: main
           draft: true
           draft-pull-request: true
-          release-label: "autorelease: tagged, RELEASE"
+          release-label: "autorelease: tagged"
+          extra-label: "RELEASE"
+          include-v-in-tags: false
           include-component-in-tag: false
