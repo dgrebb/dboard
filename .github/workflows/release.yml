@@ -1,10 +1,11 @@
-name: Release
-run-name: "Release`${{ github.head_ref || github.ref_name }}`"
+name: 🚥 Release
+run-name: "Releasing `${{ github.head_ref || github.ref_name }}`"
 
 on:
   push:
-    branches:
-      - main
+    branches: [release/*]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -13,11 +14,14 @@ permissions:
 
 jobs:
   release-please:
+    name: "Generating release notes and PR for `${{ github.head_ref || github.ref_name }}`"
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
         with:
           release-type: node
           token: ${{ secrets.GH_TOKEN }}
-          config-file: .config/release/release-config.json
-          manifest-file: .config/release/.release-manifest.json
+          config-file: .config/release/config.json
+          manifest-file: .config/release/.manifest.json
+          target-branch: main
+          include-component-in-tag: false
