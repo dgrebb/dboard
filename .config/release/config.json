@@ -3,6 +3,8 @@
     ".": {
       "changelog-path": "CHANGELOG.md",
       "repo-url": "dgrebb/dboard",
+      "extra-label": "RELEASE",
+      "target-branch": "main",
       "release-type": "node",
       "config-file": ".config/release/config.json",
       "manifest-file": ".config/release/.manifest.json",
@@ -10,7 +12,6 @@
       "bump-patch-for-minor-pre-major": false,
       "draft": true,
       "draft-pull-request": true,
-      "release-label": "autorelease: tagged, RELEASE",
       "include-v-in-tags": false,
       "prerelease": false,
       "extra-files": ["./.cz.json"]
