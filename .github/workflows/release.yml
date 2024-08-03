@@ -19,5 +19,10 @@ jobs:
         with:
           release-type: node
           token: ${{ secrets.GH_TOKEN }}
-          config-file: .config/release/release-config.json
-          manifest-file: .config/release/.release-manifest.json
+          config-file: .config/release/config.json
+          manifest-file: .config/release/.manifest.json
+          target-branch: main
+          draft: true
+          draft-pull-request: true
+          release-label: "autorelease: tagged, RELEASE"
+          include-component-in-tag: false
