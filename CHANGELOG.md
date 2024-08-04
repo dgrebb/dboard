@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/dgrebb/dboard/compare/1.0.0...1.1.0) (2024-08-04)
+
+
+### Features
+
+* **ci:** automate release PR, changelog, and tags ([#139](https://github.com/dgrebb/dboard/issues/139)) ([3c3c312](https://github.com/dgrebb/dboard/commit/3c3c312065b3f49704cf966b289a05a2172ca3e5))
+* **ci:** further detail relese in `run-name` ([13c2747](https://github.com/dgrebb/dboard/commit/13c2747c4321d5e2a595f6fdc1614e25445312d7))
+* **music:** improve album gradient vibrancy and direction variance ([#142](https://github.com/dgrebb/dboard/issues/142)) ([#153](https://github.com/dgrebb/dboard/issues/153)) ([aee344a](https://github.com/dgrebb/dboard/commit/aee344a896c114dbf960eb9443bbf0a19d70b545))
+
+
+### Bug Fixes
+
+* **ci:** `release-please` configuration and workflow updates ([#156](https://github.com/dgrebb/dboard/issues/156)) ([39f33f2](https://github.com/dgrebb/dboard/commit/39f33f26e5bf99db058d2b1c39b576deab67928e))
+
 ## 1.0.0 (2024-08-03)
 
 
