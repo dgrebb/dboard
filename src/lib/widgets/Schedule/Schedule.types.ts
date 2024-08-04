@@ -1,4 +1,4 @@
-export type CalendarEvent = {
+export interface CalendarEvent {
   left: number;
   width: number;
   height: number;
@@ -11,7 +11,7 @@ export type CalendarEvent = {
   end_at: string;
   duration: number;
   urls: string[];
-};
+}
 
 export type ScheduleItem = CalendarEvent & {
   top: number;
@@ -20,14 +20,14 @@ export type ScheduleItem = CalendarEvent & {
   left: number;
 };
 
-export type CalendarSettings = {
+export interface CalendarSettings {
   id: string;
   display: boolean;
   scheduledDisplay: {
     on: string; // Time format "HH:MM"
     off: string; // Time format "HH:MM"
   };
-};
+}
 
 /**
  * Type representing an array of Schedule readings.
@@ -37,11 +37,11 @@ export type ScheduleData = CalendarEvent[];
 /**
  * Type representing a Schedule widget.
  */
-export type ScheduleWidget = {
+export interface ScheduleWidget {
   type: 'Schedule';
   data: ScheduleData;
-};
+}
 
-export type ScheduleSettingsType = {
+export interface ScheduleSettingsType {
   calendars: CalendarSettings[];
-};
+}

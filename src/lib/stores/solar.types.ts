@@ -1,8 +1,8 @@
 /**
  * Type representing solar data with sunrise and sunset times.
  */
-export type SolarData = {
+export interface SolarData {
   sunrise: Date[];
   sunset: Date[];
   isDay: number;
-};
+}

@@ -1,8 +1,8 @@
-export type UIState = {
+export interface UIState {
   modalState: ModalState;
-};
+}
 
-export type ModalState = {
+export interface ModalState {
   isActive: boolean;
   component: 'music' | 'nightscout' | 'weather' | undefined;
-};
+}

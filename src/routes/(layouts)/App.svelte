@@ -35,16 +35,16 @@
   //   KioskShouldDisableIdleTimer();
   // };
 
-  type Props = {
+  interface Props {
     children: Snippet;
-  };
+  }
 
   let { children }: Props = $props();
 
   let clock = $state(timeState.hoursMinutesString());
   let modalActive = $state(uiState.modalActive());
   let quarterHours: QuarterHours = $state(1);
-  let counter: number = 1;
+  let counter = 1;
 
   const appTime = setInterval(() => {
     const now = new Date(Date.now());

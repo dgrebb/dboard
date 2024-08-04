@@ -16,15 +16,15 @@ import { fetchMediaInfo } from '@utils/wiim';
 
 export const prerender = false;
 
-let refreshInterval: number = 1000; // 1 second
+let refreshInterval = 1000; // 1 second
 let retryTimeout: number | undefined;
 let retryCount = 0;
 
-const clients: Set<{
+const clients = new Set<{
   controller: ReadableStreamDefaultController<Uint8Array>;
   isClosed: boolean;
   ip: string;
-}> = new Set();
+}>();
 let interval: Timer | null = null;
 let previousState: NowPlayingData = {
   artist: '',

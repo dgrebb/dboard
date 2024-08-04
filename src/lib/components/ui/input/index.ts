@@ -3,7 +3,7 @@ import Root from './input.svelte';
 export type FormInputEvent<T extends Event = Event> = T & {
   currentTarget: EventTarget & HTMLInputElement;
 };
-export type InputEvents = {
+export interface InputEvents {
   blur: FormInputEvent<FocusEvent>;
   change: FormInputEvent<Event>;
   click: FormInputEvent<MouseEvent>;
@@ -20,7 +20,7 @@ export type InputEvents = {
   paste: FormInputEvent<ClipboardEvent>;
   input: FormInputEvent<InputEvent>;
   wheel: FormInputEvent<WheelEvent>;
-};
+}
 
 export {
   Root,

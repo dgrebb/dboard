@@ -3,24 +3,22 @@ import type { WeatherIconComponent } from '@types';
 /**
  * Type representing icon properties.
  */
-export type IconProps = {
+export interface IconProps {
   icon: string;
   component?: WeatherIconComponent;
   color: string;
   name: string;
-};
+}
 
 /**
  * Interface representing a map of icon properties indexed by number.
  */
-export interface IconMap {
-  [index: number]: IconProps;
-}
+export type IconMap = Record<number, IconProps>;
 
 /**
  * Type representing current weather data.
  */
-export type CurrentWeatherData = {
+export interface CurrentWeatherData {
   time?: string;
   interval?: number;
   apparent_temperature?: number;
@@ -31,25 +29,25 @@ export type CurrentWeatherData = {
   wind_speed_10m: number;
   wind_direction_10m: number;
   wind_gusts_10m: number;
-};
+}
 
 /**
  * Type representing daily weather data.
  */
-export type DailyWeatherData = {
+export interface DailyWeatherData {
   apparent_temperature_max: number[];
   apparent_temperature_min: number[];
   sunrise: string[];
   sunset: string[];
   time: string[];
   weather_code: number[];
-};
+}
 
 /**
  * Interface representing weather data response.
  */
-export type WeatherData = {
+export interface WeatherData {
   success: boolean;
   current: CurrentWeatherData;
   daily: DailyWeatherData;
-};
+}
