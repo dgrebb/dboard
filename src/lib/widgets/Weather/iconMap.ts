@@ -162,13 +162,13 @@ export const nightIconMap: IconMap = {
   },
   53: {
     icon: 'fluent:weather-drizzle-20-filled',
-    component: 'NightDrizzle',
+    component: 'Drizzle',
     color: moonSprinkle,
     name: 'Moderate Drizzle',
   },
   55: {
     icon: 'fluent:weather-drizzle-20-filled',
-    component: 'NightDrizzle',
+    component: 'Drizzle',
     color: moonSprinkle,
     name: 'Dense Drizzle',
   },
