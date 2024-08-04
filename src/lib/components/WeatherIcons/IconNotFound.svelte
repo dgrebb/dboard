@@ -1,10 +1,10 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
 
-  type Props = {
+  interface Props {
     weatherCode: number;
     name: string;
-  };
+  }
 
   let { weatherCode, name }: Props = $props();
 </script>

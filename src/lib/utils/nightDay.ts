@@ -1,4 +1,4 @@
-export const nightDay = async function nightDay(isDay: number = 0) {
+export const nightDay = async function nightDay(isDay = 0) {
   if (isDay !== undefined) {
     switch (isDay) {
       case 1:

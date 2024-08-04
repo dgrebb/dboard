@@ -3,12 +3,12 @@
   import { onMount } from 'svelte';
   import type { EChartsOption } from 'echarts';
 
-  type Props = {
+  interface Props {
     series: number[];
     mainColor: string;
     backgroundColor: string;
     maxMeasurable: number;
-  };
+  }
 
   let { maxMeasurable, series, backgroundColor }: Props = $props();
 
@@ -73,7 +73,9 @@
     const chartDom = renderPoint as HTMLDivElement | HTMLCanvasElement;
     nightScoutGraph = echarts.init(chartDom, 'dark');
 
-    option && nightScoutGraph.setOption(option);
+    if (option) {
+      nightScoutGraph.setOption(option);
+    }
 
     window.addEventListener('resize', function () {
       nightScoutGraph.resize();

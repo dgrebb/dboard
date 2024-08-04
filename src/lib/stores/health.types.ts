@@ -3,6 +3,6 @@ import type { NightScoutData } from '../types';
 /**
  * Type representing health data.
  */
-export type HealthData = {
+export interface HealthData {
   nightScout?: false | NightScoutData;
-};
+}

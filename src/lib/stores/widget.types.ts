@@ -23,13 +23,13 @@ export enum TypeOfWidget {
 /**
  * Type representing Widgets as defined by settings
  */
-export type WidgetSettings = {
+export interface WidgetSettings {
   type: TypeOfWidget;
   name?: string;
   settings?: {
     location?: LocationSettings;
   };
-};
+}
 
 /**
  * Type representing widget data.
