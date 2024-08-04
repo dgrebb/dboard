@@ -5,7 +5,7 @@ import { isNightScoutData } from '@guards';
 export const mapNightScoutDirectionIcon = (
   data: NightScoutData | false = false
 ): string => {
-  let icon: string = 'iconamoon:cloud-error-light';
+  let icon = 'iconamoon:cloud-error-light';
   if (data !== false && isNightScoutData(data)) {
     switch (data[0].direction) {
       case 'SingleUp':

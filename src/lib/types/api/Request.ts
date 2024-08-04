@@ -41,13 +41,13 @@ export type ObjectOrArray = Record<string, unknown> | unknown[];
 /**
  * Type representing a stream configuration.
  */
-export type StreamType = {
+export interface StreamType {
   id: string;
   name: string;
   path: string;
   upstreamAPIURL: string;
   refreshInterval: number;
-};
+}
 
 /**
  * Type representing an array of stream configurations.

@@ -4,9 +4,9 @@
   import mapWeatherIcon from '@widgets/Weather/iconMap';
   import { fade } from 'svelte/transition';
   import { dayOfWeek } from '$lib/utils/dayOfWeek';
-  type Props = {
+  interface Props {
     daily: WeatherData['daily'];
-  };
+  }
   let { daily }: Props = $props();
 </script>
 

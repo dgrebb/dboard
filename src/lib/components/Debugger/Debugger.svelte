@@ -2,10 +2,10 @@
   import type { DebugData } from '@types';
   import './debugger.css';
 
-  type Props = {
+  interface Props {
     debugData: DebugData;
     title: string;
-  };
+  }
 
   let { debugData, title }: Props = $props();
 

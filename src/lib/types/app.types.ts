@@ -3,31 +3,31 @@ import type { WidgetSettings, ChartSeriesGlucose } from '@types';
 /**
  * Type representing global settings.json (or database)
  */
-export type Settings = {
+export interface Settings {
   widgets: WidgetSettings[];
   otherLocations: WidgetSettings[];
-};
+}
 
 /**
  * Current Weather widget settings type
  */
-export type WeatherSettings = {
+export interface WeatherSettings {
   location: LocationType;
   tempo: number;
-};
+}
 
-export type LocationSettings = {
+export interface LocationSettings {
   primary: boolean;
   name: string;
   timeZone: string;
   latitude: number;
   longitude: number;
-};
+}
 
 /**
  * Type representing a dashboard item.
  */
-export type DBoardItem = {
+export interface DBoardItem {
   requestInterval: number;
   title: string;
   content: {
@@ -45,7 +45,7 @@ export type DBoardItem = {
     };
   };
   series: ChartSeriesGlucose[];
-};
+}
 
 // NOTE: Maintain as needed
 export type TimeZone =
@@ -65,18 +65,18 @@ export type TimeZone =
 /**
  * Type representing location data.
  */
-export type LocationType = {
+export interface LocationType {
   primary?: boolean;
   name: string;
   timeZone: TimeZone;
   latitude: number;
   longitude: number;
-};
+}
 
 /**
  * Type representing a collection of location data indexed by string keys.
  */
-export type LocationsType = { [key: string]: LocationType };
+export type LocationsType = Record<string, LocationType>;
 
 /**
  * Type representing a location store which includes a key.

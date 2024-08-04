@@ -1,4 +1,4 @@
-import components from './';
+import type components from './';
 
 /**
  * Type representing the available weather icon components.

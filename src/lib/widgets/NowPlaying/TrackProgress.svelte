@@ -2,11 +2,11 @@
   import { selfOffsetBackground } from '@actions/selfOffsetBackground';
   import { formatSecondsToMinutes } from '@utils/strings';
 
-  type Props = {
+  interface Props {
     total: number;
     current: number;
     showHud: boolean;
-  };
+  }
 
   let { total, current, showHud }: Props = $props();
   let percent: number = $derived(Math.round(100 - (current / total) * 100));

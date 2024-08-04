@@ -10,7 +10,7 @@
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './TrackProgress.svelte';
 
-  type Props = {
+  interface Props {
     currentValue: number | null;
     difference: string | number;
     direction: string | null;
@@ -33,7 +33,7 @@
     toggleModal: (e: MouseEvent | TouchEvent) => void;
     setupEventSource: () => Promise<void>;
     stopEventSource: () => void;
-  };
+  }
 
   let {
     currentValue,
@@ -82,7 +82,9 @@
   const toggleHud = (e: TouchEvent | MouseEvent) => {
     e.stopPropagation();
     showHud = !showHud;
-    showHud === false ? (showControls = false) : null;
+    if (showHud === false) {
+      showControls = false;
+    }
   };
 
   $effect(() => {
