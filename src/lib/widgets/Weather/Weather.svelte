@@ -17,9 +17,9 @@
   import WeatherIcon from './WeatherIcon.svelte';
   import '@widgets/Weather/weather.css';
 
-  type Props = {
+  interface Props {
     settings: WeatherSettings;
-  };
+  }
 
   const { settings }: Props = $props();
   const {
@@ -176,8 +176,6 @@
       background.updateColor(current, daily);
     refreshed = true;
   };
-
-  $effect(() => {});
 
   $effect(() => {
     clock = timeState.hoursMinutesString(timeZone);

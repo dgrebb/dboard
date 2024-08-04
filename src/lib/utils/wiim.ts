@@ -8,7 +8,7 @@ import { DOMParser } from 'xmldom';
 const createSoapEnvelope = (
   action: string,
   service: string,
-  instanceId: number = 0
+  instanceId = 0
 ): string => `<?xml version="1.0" encoding="utf-8"?>
 <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
   <s:Body>
@@ -23,7 +23,7 @@ const performSoapAction = async (
   url: string,
   action: string,
   service: string,
-  instanceId: number = 0
+  instanceId = 0
 ): Promise<string> => {
   const soapEnvelope = createSoapEnvelope(action, service, instanceId);
 

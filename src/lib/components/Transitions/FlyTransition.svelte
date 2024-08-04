@@ -12,14 +12,14 @@
   import { fly } from 'svelte/transition';
   import './transitions.css';
 
-  type Props = {
+  interface Props {
     transitionKey: unknown;
     classList?: false | string;
     duration?: number;
     delay?: number;
     children: Snippet;
     direction: 'forward' | 'backward';
-  };
+  }
 
   let {
     transitionKey,

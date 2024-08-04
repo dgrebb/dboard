@@ -7,6 +7,8 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 export default [
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+  ...tseslint.configs.strict,
+  ...tseslint.configs.stylistic,
   ...eslintPluginSvelte.configs['flat/recommended'],
   eslintConfigPrettier,
   {
@@ -37,14 +39,6 @@ export default [
     },
   },
   {
-    files: ['tsconfig.json', 'jsconfig.json'],
-    languageOptions: {
-      parserOptions: {
-        parser: 'jsonc',
-      },
-    },
-  },
-  {
     files: ['**/*.cjs'],
     languageOptions: {
       globals: {
@@ -68,6 +62,7 @@ export default [
       'src/routes/grid/*',
       '.env.*',
       '.release-please*',
+      'tsconfig.json',
     ],
   },
 ];

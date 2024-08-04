@@ -1,4 +1,5 @@
 <script lang="ts">
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   '@hmr:keep-all';
   import { type Settings, type WidgetSettings } from '@types';
   import { isTypeOfWidget, isWidgetSettings } from '@guards';

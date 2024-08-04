@@ -31,9 +31,9 @@
       response
         .json()
         .then(() => {
-          typeof actionIndex === 'number'
-            ? (actions[actionIndex].light.on = lightState)
-            : false;
+          if (typeof actionIndex === 'number') {
+            actions[actionIndex].light.on = lightState;
+          }
         })
         .catch((e) => {
           console.error(e);
@@ -54,7 +54,7 @@
         .then((response) => response.json())
         .then((result) => result)
         .catch((error) => {
-          return console.error(error);
+          console.error(error);
         });
       if (actionState) {
         actions[i].light.on =

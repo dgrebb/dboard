@@ -19,10 +19,10 @@
    * @property {number} weatherCode - The weather code representing the weather condition.
    * @property {number} isDay - Indicates whether it is day (1) or night (0).
    */
-  type Props = {
+  interface Props {
     weatherCode: number;
     isDay: number;
-  };
+  }
 
   let { weatherCode, isDay }: Props = $props();
   let component: WeatherIconComponent = $state('IconNotFound');

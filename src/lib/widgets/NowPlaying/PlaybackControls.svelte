@@ -2,11 +2,11 @@
   import Icon from '@iconify/svelte';
   import { onMount } from 'svelte';
 
-  type Props = {
+  interface Props {
     setTrackChange: (e: MouseEvent | TouchEvent) => void;
     classes: string;
     buttonSize?: number;
-  };
+  }
 
   let { buttonSize = 50, classes, setTrackChange }: Props = $props();
 
@@ -46,11 +46,13 @@
 
   onMount(() => {
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-      const nope = () => {};
+      const enableActiveState = () => {
+        // No-op function to enable :active styles on iOS Safari
+      };
       document
         .querySelectorAll('button')
         .forEach((button) =>
-          button.addEventListener('touchstart', nope, false)
+          button.addEventListener('touchstart', enableActiveState, false)
         );
     }
   });

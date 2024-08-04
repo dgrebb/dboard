@@ -3,8 +3,8 @@ import type { LocationType, WeatherData } from '../types';
 /**
  * Type representing home data.
  */
-export type HomeData = {
+export interface HomeData {
   location: LocationType;
   lights?: unknown;
   weather?: WeatherData;
-};
+}

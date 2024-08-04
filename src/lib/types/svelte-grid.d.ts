@@ -21,8 +21,8 @@ declare module 'svelte-grid' {
     max?: Size;
   }
 
-  export type Item<T> = T & { [width: number]: ItemLayout };
-  export type FilledItem<T> = T & { [width: number]: Required<ItemLayout> };
+  export type Item<T> = T & Record<number, ItemLayout>;
+  export type FilledItem<T> = T & Record<number, Required<ItemLayout>>;
 
   export interface Props<T> {
     fillSpace?: boolean;

@@ -1,10 +1,10 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
 
-  type Props = {
+  interface Props {
     loved: boolean;
     size: number;
-  };
+  }
 
   let { loved, size = 33 }: Props = $props();
 

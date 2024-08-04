@@ -6,7 +6,7 @@
   import SafeHtml from '@components/SafeHTML.svelte';
   import type { ModalState } from '@types';
 
-  type Props = {
+  interface Props {
     handlePushing: (e: MouseEvent | TouchEvent) => void;
     handleUp: (e: MouseEvent | TouchEvent) => void;
     pushing: boolean;
@@ -21,7 +21,7 @@
     transitionGradient: boolean;
     modal: ModalState;
     toggleModal: (e: MouseEvent) => void;
-  };
+  }
 
   let {
     handlePushing,

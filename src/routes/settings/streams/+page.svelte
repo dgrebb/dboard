@@ -7,9 +7,7 @@
 
   let streamList: StreamsType = $state(streams.getAll);
   let newStreamName = $state('');
-  let result: {
-    [key: string]: string;
-  } = $state({});
+  let result: Record<string, string> = $state({});
   let newStreamPath: string = $state('');
   let newStreamInterval: number = $state(900000);
   let newStreamAPIURL: string = $state('');

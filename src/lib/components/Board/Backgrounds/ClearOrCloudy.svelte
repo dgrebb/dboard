@@ -4,7 +4,7 @@
   import weather from '@stores/weatherLeg';
   import { onMount } from 'svelte';
 
-  export let cloudCover: number = 0;
+  export let cloudCover = 0;
   let riseMinutes = 7 * 60;
   let setMinutes = 19 * 60;
 

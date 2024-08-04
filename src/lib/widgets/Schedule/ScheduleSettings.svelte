@@ -11,12 +11,12 @@
   /**
    * Type definition for the component props.
    */
-  type Props = {
+  interface Props {
     /**
      * The schedule settings for the calendars.
      */
     settings: ScheduleSettingsType;
-  };
+  }
 
   /**
    * The properties for the component.
