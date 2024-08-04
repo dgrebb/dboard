@@ -1,5 +1,5 @@
-name: 🔀 Release PR
-run-name: "${{ steps.release.outputs.prs_created && 'Created' || 'Creating' }} Release PR from `${{ github.head_ref || github.ref_name }}`"
+name: 🚥 Release PR
+run-name: "🔖 Create release PR from `${{ github.head_ref || github.ref_name }}`."
 
 on:
   push:
@@ -12,10 +12,14 @@ permissions:
 
 jobs:
   release-please:
-    name: "${{ steps.release.outputs.prs_created && 'Generated' || 'Generating' }} `CHANGELOG` and PR for `${{ github.head_ref || github.ref_name }}`"
+    name: "🔖 Evaluating Release"
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run release-please-action
+        uses: googleapis/release-please-action@v4
         id: release
         with:
           token: ${{ secrets.GH_TOKEN }}
