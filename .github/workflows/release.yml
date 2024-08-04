@@ -1,5 +1,5 @@
-name: 🚥 Create Release, Tag, and Changelog
-run-name: "🔖 ${{ env.LATEST_TAG && format('Releasing {0}', env.LATEST_TAG) || 'Analyzing Release...' }}"
+name: 🚀 Release
+run-name: "🔖 ${{ steps.set_run_name.outputs.run_name }}"
 
 on:
   push:
@@ -36,6 +36,15 @@ jobs:
           fi
 
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+
+      - name: Set run name
+        id: set_run_name
+        run: |
+          if [ -z "$LATEST_TAG" ]; then
+            echo "run_name=Analyzing Release.." >> $GITHUB_OUTPUT
+          else
+            echo "run_name=Releasing $LATEST_TAG" >> $GITHUB_OUTPUT
+          fi
 
       - uses: googleapis/release-please-action@v4
         id: release

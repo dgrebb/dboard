@@ -1,5 +1,5 @@
-name: 🚥 Release PR
-run-name: "🔖 Create release PR from `${{ github.head_ref || github.ref_name }}`."
+name: 🚢 Release PR
+run-name: "🚢 Create release PR from `${{ github.head_ref || github.ref_name }}`"
 
 on:
   push:
@@ -12,13 +12,13 @@ permissions:
 
 jobs:
   release-please:
-    name: "🔖 Evaluating Release"
+    name: "🤔 Evaluating Release"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run release-please-action
+      - name: "🚢 Create Release PR"
         uses: googleapis/release-please-action@v4
         id: release
         with:
