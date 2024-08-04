@@ -1,5 +1,5 @@
 name: 🚥 Create Release, Tag, and Changelog
-run-name: "${{ steps.release.outputs.releases_created && 'Created' || 'Creating' }} `${{ github.head_ref || github.ref_name }}`"
+run-name: "🔖 ${{ env.LATEST_TAG && format('Releasing {0}', env.LATEST_TAG) || 'Analyzing Release...' }}"
 
 on:
   push:
@@ -12,9 +12,31 @@ permissions:
 
 jobs:
   release-please:
-    name: "Releasing `${{ github.head_ref || github.ref_name }}`"
+    name: "Releasing `${{ env.LATEST_TAG }}`"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch all tags
+        run: git fetch --tags
+
+      - name: Check if HEAD or previous commit is tagged
+        id: check_tag
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+
+          TAG_AT_HEAD=$(git tag --contains HEAD)
+          TAG_AT_PREV=$(git tag --contains HEAD^1)
+
+          if [ -z "$TAG_AT_HEAD" ] && [ -z "$TAG_AT_PREV" ]; then
+            echo "## 🚨 No tag at HEAD or previous commit" >> $GITHUB_STEP_SUMMARY
+            echo "The latest available tag is [$LATEST_TAG](https://github.com/${{ github.repository }}/releases/tag/$LATEST_TAG)" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+
       - uses: googleapis/release-please-action@v4
         id: release
         with:
