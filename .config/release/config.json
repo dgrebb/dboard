@@ -4,16 +4,13 @@
       "changelog-path": "CHANGELOG.md",
       "repo-url": "dgrebb/dboard",
       "extra-label": "RELEASE",
-      "target-branch": "main",
       "release-type": "node",
       "config-file": ".config/release/config.json",
       "manifest-file": ".config/release/.manifest.json",
       "bump-minor-pre-major": false,
       "bump-patch-for-minor-pre-major": false,
-      "draft": true,
-      "draft-pull-request": true,
-      "include-v-in-tags": false,
-      "prerelease": false,
+      "include-component-in-tag": false,
+      "include-v-in-tag": false,
       "extra-files": [
         {
           "type": "json",
