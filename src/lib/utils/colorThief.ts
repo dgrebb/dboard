@@ -14,6 +14,9 @@ const seedRandom = () => {
 
 const getRandomAngle = () => Math.floor(Math.random() * 361);
 
+const getRandomOffset = () =>
+  `${Math.floor(Math.random() * 100)}% ${Math.floor(Math.random() * 100)}%`;
+
 // Function to adjust color components randomly
 const randomizeColorComponent = (
   component: number,
@@ -24,7 +27,16 @@ const randomizeColorComponent = (
   return Math.min(255, Math.max(0, newComponent));
 };
 
-// Function to randomize colors
+// Function to randomize colors with alpha
+const randomizeColorWithAlpha = (
+  color: number[],
+  random: () => number,
+  alpha = 1
+): string => {
+  return `rgba(${randomizeColorComponent(color[0], random)}, ${randomizeColorComponent(color[1], random)}, ${randomizeColorComponent(color[2], random)}, ${alpha})`;
+};
+
+// Function to randomize colors without alpha
 const randomizeColor = (color: number[], random: () => number): string => {
   return `rgb(${randomizeColorComponent(color[0], random)}, ${randomizeColorComponent(color[1], random)}, ${randomizeColorComponent(color[2], random)})`;
 };
@@ -32,6 +44,10 @@ const randomizeColor = (color: number[], random: () => number): string => {
 // Function to create contrasting color by inverting the RGB values
 const invertColor = (color: number[]): number[] => {
   return [255 - color[0], 255 - color[1], 255 - color[2]];
+};
+
+const isVibrant = (color: number[]): boolean => {
+  return !(color[0] > 200 && color[1] > 200 && color[2] > 200); // Filter out whites
 };
 
 interface ColorThiefResult {
@@ -111,8 +127,8 @@ export const colorThief = async (
       const imageData = ctx.getImageData(0, 0, width, img.height);
       const color = fac.getColorFromArray4(imageData.data);
 
-      // Ensure the color is valid
-      if (color && color.length >= 3) {
+      // Ensure the color is valid and vibrant
+      if (color && color.length >= 3 && isVibrant(color)) {
         const randomizedColor = randomizeColor(color, random);
         backgroundColors.push(randomizedColor);
 
@@ -123,13 +139,36 @@ export const colorThief = async (
 
         foregroundColors.push(randomizedInvertedColor);
       } else {
-        console.error('Invalid color data:', color); // Debug log
+        console.error('Invalid or non-vibrant color data:', color); // Debug log
       }
     }
 
-    // Create gradient strings using the captured and randomized colors
-    const backgroundGradient = `linear-gradient(${getRandomAngle()}deg, ${backgroundColors.join(', ')})`;
+    // Adding two additional random colors
+    for (let i = 0; i < 2; i++) {
+      const color = [
+        Math.floor(random() * 256),
+        Math.floor(random() * 256),
+        Math.floor(random() * 256),
+      ];
+      if (isVibrant(color)) {
+        backgroundColors.push(randomizeColor(color, random));
+        const invertedColor = invertColor(color);
+        foregroundColors.push(randomizeColor(invertedColor, random));
+      }
+    }
+
+    // Shuffle colors
+    backgroundColors.sort(() => random() - 0.5);
+    foregroundColors.sort(() => random() - 0.5);
+
+    // Create combined gradient strings
+    const radialGradient = `radial-gradient(circle at ${getRandomOffset()}, ${backgroundColors.map((color) => randomizeColorWithAlpha(color.split('(')[1].split(')')[0].split(',').map(Number), random, 0.2)).join(', ')})`;
+    const linearGradient1 = `linear-gradient(${getRandomAngle()}deg, ${foregroundColors.map((color) => randomizeColorWithAlpha(color.split('(')[1].split(')')[0].split(',').map(Number), random)).join(', ')})`;
+    const linearGradient2 = `linear-gradient(${getRandomAngle()}deg, ${foregroundColors.map((color) => randomizeColorWithAlpha(color.split('(')[1].split(')')[0].split(',').map(Number), random)).join(', ')})`;
+
+    const backgroundGradient = `${radialGradient}, ${linearGradient1}, ${linearGradient2}`;
     const foregroundGradient = `linear-gradient(${getRandomAngle()}deg, ${foregroundColors.join(', ')})`;
+
     return { backgroundGradient, foregroundGradient };
   } catch (error) {
     console.error(error);

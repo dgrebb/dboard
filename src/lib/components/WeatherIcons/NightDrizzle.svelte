@@ -1,6 +1,8 @@
 <script lang="ts">
 </script>
 
+<img src="/weather/NightDrizzle.gif" alt="night drizzle" />
+<!-- 
 <svg
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -236,4 +238,4 @@
     height="57"
     transform="translate(191.5 343.5)"
   />
-</svg>
+</svg> -->

@@ -124,8 +124,21 @@ body {
     min-height: 100%;
     pointer-events: none;
     content: '';
-    html.dark & {
+  }
+  html.dark & {
+    &:after {
       background: linear-gradient(to top, var(--skyBaseColor) 5%, transparent);
+    }
+  }
+  &.pre-dawn {
+    html.dark & {
+      &:after {
+        background: linear-gradient(
+          to bottom,
+          var(--skyBaseColor) 5%,
+          transparent
+        );
+      }
     }
   }
   .dboard {

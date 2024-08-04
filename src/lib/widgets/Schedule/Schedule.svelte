@@ -440,28 +440,31 @@
                 ></div>
               </div>
             {/each}
-            {#each scheduleItems as event}
-              {#if event && scheduleWidget.getCalendarDisplay(event.calendar) && shouldDisplayCalendar(scheduleWidget.getCalendarDisplaySchedule(event.calendar))}
-                <div
-                  class="event border-10 border-blue-600"
-                  data-calendar-name={event.calendar}
-                  style="top: {event.top * zoomLevel}px; height: {event.height *
-                    zoomLevel}px; width: {event.width}%; left: {event.left}%;"
-                >
-                  <h2 class="title">{event.title}</h2>
-                  <h3 class="start">{event.start_at}</h3>
-                  <ul class="event-details">
-                    <li class="duration">
-                      {formatMinutesToDuration(event.duration)}
-                    </li>
-                    <li class="times">
-                      {event.start_at} &rarr; {event.end_at}
-                    </li>
-                    <li class="calendar">{event.calendar}</li>
-                  </ul>
-                </div>
-              {/if}
-            {/each}
+            {#key scheduleItems}
+              {#each scheduleItems as event}
+                {#if event && scheduleWidget.getCalendarDisplay(event.calendar) && shouldDisplayCalendar(scheduleWidget.getCalendarDisplaySchedule(event.calendar))}
+                  <div
+                    class="event border-10 border-blue-600"
+                    data-calendar-name={event.calendar}
+                    style="top: {event.top *
+                      zoomLevel}px; height: {event.height *
+                      zoomLevel}px; width: {event.width}%; left: {event.left}%;"
+                  >
+                    <h2 class="title">{event.title}</h2>
+                    <h3 class="start">{event.start_at}</h3>
+                    <ul class="event-details">
+                      <li class="duration">
+                        {formatMinutesToDuration(event.duration)}
+                      </li>
+                      <li class="times">
+                        {event.start_at} &rarr; {event.end_at}
+                      </li>
+                      <li class="calendar">{event.calendar}</li>
+                    </ul>
+                  </div>
+                {/if}
+              {/each}
+            {/key}
             {#if currentPage === 0}
               <div
                 class="current-time-line"
