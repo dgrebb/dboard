@@ -1,11 +1,9 @@
-name: 🚥 Release
-run-name: "Releasing `${{ github.head_ref || github.ref_name }}`"
+name: 🚀 Release
+run-name: "🔖 ${{ steps.set_run_name.outputs.run_name }}"
 
 on:
-  push:
-    branches: [release/*]
-  pull_request:
-    branches: [main]
+  # push:
+  #   branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -14,14 +12,43 @@ permissions:
 
 jobs:
   release-please:
-    name: "Generating release notes and PR for `${{ github.head_ref || github.ref_name }}`"
+    name: "Releasing `${{ env.LATEST_TAG }}`"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch all tags
+        run: git fetch --tags
+
+      - name: Check if HEAD or previous commit is tagged
+        id: check_tag
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+
+          TAG_AT_HEAD=$(git tag --contains HEAD)
+          TAG_AT_PREV=$(git tag --contains HEAD^1)
+
+          if [ -z "$TAG_AT_HEAD" ] && [ -z "$TAG_AT_PREV" ]; then
+            echo "## 🚨 No tag at HEAD or previous commit" >> $GITHUB_STEP_SUMMARY
+            echo "The latest available tag is [$LATEST_TAG](https://github.com/${{ github.repository }}/releases/tag/$LATEST_TAG)" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+
+      - name: Set run name
+        id: set_run_name
+        run: |
+          if [ -z "$LATEST_TAG" ]; then
+            echo "run_name=Analyzing Release.." >> $GITHUB_OUTPUT
+          else
+            echo "run_name=Releasing $LATEST_TAG" >> $GITHUB_OUTPUT
+          fi
+
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
-          release-type: node
           token: ${{ secrets.GH_TOKEN }}
           config-file: .config/release/config.json
           manifest-file: .config/release/.manifest.json
-          target-branch: main
-          include-component-in-tag: false

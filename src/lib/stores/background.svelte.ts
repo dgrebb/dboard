@@ -1,6 +1,23 @@
 import { type WeatherData } from '@types';
 import { nightDay } from '../utils/nightDay';
 
+// Threshold in milliseconds (30 minutes)
+const TWILIGHT_THRESHOLD = 30 * 60 * 1000;
+
+function isTwilight(
+  currentTime: number,
+  sunrise: number,
+  sunset: number
+): boolean {
+  const morningTwilightStart = sunrise - TWILIGHT_THRESHOLD;
+  const eveningTwilightEnd = sunset + TWILIGHT_THRESHOLD;
+
+  return (
+    (currentTime >= morningTwilightStart && currentTime <= sunrise) ||
+    (currentTime >= sunset && currentTime <= eveningTwilightEnd)
+  );
+}
+
 // Function to calculate the background color gradient based on current time, sunrise, and sunset
 function calculateBackgroundColorGradient(
   currentTime: number,
@@ -9,7 +26,6 @@ function calculateBackgroundColorGradient(
 ): string {
   const dawnStart: number = sunrise - 3600000; // Dawn starts 1 hour before sunrise
   const dawnEnd: number = sunrise; // Dawn ends at sunrise
-  // const duskStart: number = sunset; // Dusk starts at sunset
   const duskEnd: number = sunset + 3600000; // Dusk ends 1 hour after sunset
 
   // Define colors for different times of the day
@@ -19,7 +35,6 @@ function calculateBackgroundColorGradient(
   const nightColor: number[] = [11, 11, 51]; // Dark blue
 
   let color: number[];
-  // let sky: string;
 
   // Interpolate between different colors based on current time
   if (currentTime >= dawnStart && currentTime < dawnEnd) {
@@ -134,6 +149,16 @@ export default async function updateBackgroundColorGradient(
   bgColor = await calculateBaseBackgroundColorGradient(currentTime, rise, set);
   body.style.setProperty('--skyBaseColor', gradientColor);
   body.style.setProperty('--bgColor', bgColor);
+
+  // Update twilight class based on isTwilight function
+  const twilight = isTwilight(currentTime, rise, set);
+  body.classList.toggle('twilight', twilight);
+
+  // Flip gradient direction based on the time of day
+  const currentDate = new Date(currentTime);
+  const preDawn = currentDate.getHours() >= 3 && currentDate.getHours() < 9;
+  body.classList.toggle('pre-dawn', preDawn);
+
   body.classList.toggle('ready', true);
 }
 

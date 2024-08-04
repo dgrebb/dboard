@@ -83,7 +83,9 @@
   });
 
   $effect(() => {
-    nightScoutGraph.setOption(option);
+    return () => {
+      nightScoutGraph.setOption(option);
+    };
   });
 </script>
 
