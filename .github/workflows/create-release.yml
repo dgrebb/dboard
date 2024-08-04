@@ -1,9 +1,9 @@
-name: 🚥 Create Release, Tag, and Changelog
-run-name: "${{ steps.release.outputs.releases_created && 'Created' || 'Creating' }} `${{ github.head_ref || github.ref_name }}`"
+name: 🔀 Release PR
+run-name: "${{ steps.release.outputs.prs_created && 'Created' || 'Creating' }} Release PR from `${{ github.head_ref || github.ref_name }}`"
 
 on:
   push:
-    branches: [main]
+    branches: [release/*]
   workflow_dispatch:
 
 permissions:
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   release-please:
-    name: "Releasing `${{ github.head_ref || github.ref_name }}`"
+    name: "${{ steps.release.outputs.prs_created && 'Generated' || 'Generating' }} `CHANGELOG` and PR for `${{ github.head_ref || github.ref_name }}`"
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
@@ -21,3 +21,4 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           config-file: .config/release/config.json
           manifest-file: .config/release/.manifest.json
+          skip-github-release: true
