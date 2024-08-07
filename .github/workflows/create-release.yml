@@ -2,8 +2,8 @@ name: 🤖 Auto-Release
 run-name: "🔖 Analyzing Release"
 
 on:
-  push:
-    branches: [release/*]
+  # push:
+  #   branches: [release/*]
   workflow_dispatch:
 
 permissions:
