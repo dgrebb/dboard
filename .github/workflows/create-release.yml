@@ -1,5 +1,5 @@
-name: 🚢 Release PR
-run-name: "🚢 Create release PR from `${{ github.head_ref || github.ref_name }}`"
+name: 🤖 Auto-Release
+run-name: "🔖 Analyzing Release"
 
 on:
   push:
@@ -12,17 +12,14 @@ permissions:
 
 jobs:
   release-please:
-    name: "🤔 Evaluating Release"
+    name: "Creating release from `${{ github.ref_name }}`"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: "🚢 Create Release PR"
-        uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v4
         id: release
         with:
           token: ${{ secrets.GH_TOKEN }}
           config-file: .config/release/config.json
           manifest-file: .config/release/.manifest.json
           skip-github-release: true
+          target-branch: ${{ github.ref_name }}
