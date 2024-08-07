@@ -29,10 +29,7 @@
     "test.unit": "vitest",
     "trash": "rm -rf .svelte-kit build",
     "prepare": "husky",
-    "release": "release-please --config-file=\".config/release/config.json\" --manifest-file=\".config/release/.manifest.json\" github-release --token=$(gh auth token) --repo-url=\"dgrebb/dboard\"",
-    "release.dr": "release-please --config-file=\".config/release/config.json\" --manifest-file=\".config/release/.manifest.json\" github-release --token=$(gh auth token) --repo-url=\"dgrebb/dboard\" --dry-run",
-    "release.pr": "release-please --config-file=\".config/release/config.json\" --manifest-file=\".config/release/.manifest.json\" --token=$(gh auth token) --repo-url=\"dgrebb/dboard\" release-pr --dry-run",
-    "release.prdr": "release-please --config-file=\".config/release/config.json\" --manifest-file=\".config/release/.manifest.json\" --token=$(gh auth token) --repo-url=\"dgrebb/dboard\" release-pr --dry-run",
+    "release": "cz bump",
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm i",
     "chokidar": "chokidar-cli"
   },
