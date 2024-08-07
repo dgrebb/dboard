@@ -2,8 +2,8 @@ name: 🚀 Release
 run-name: "🔖 ${{ steps.set_run_name.outputs.run_name }}"
 
 on:
-  push:
-    branches: [main]
+  # push:
+  #   branches: [main]
   workflow_dispatch:
 
 permissions:
