@@ -2,13 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/dgrebb/dboard/compare/1.0.0...1.1.0) (2024-08-07)
+
+
+### Features
+
+* **music:** improve album gradient vibrancy and direction variance ([#142](https://github.com/dgrebb/dboard/issues/142)) ([#153](https://github.com/dgrebb/dboard/issues/153)) ([518398d](https://github.com/dgrebb/dboard/commit/518398dee5b5c7ebd7a78356138f99ef77299413))
+
 ## 1.0.0 (2024-08-03)
 
 
 ### Features
 
-* add color to current temp widget ([897c60f](https://github.com/dgrebb/dboard/commit/897c60fdda9051a720c4449a076bc558d84ea435))
-* adjust clear/cloudy ([618c6de](https://github.com/dgrebb/dboard/commit/618c6de61a48a7a9219df27463f635b7b6184379))
+* **weather:** color to current temp widget ([897c60f](https://github.com/dgrebb/dboard/commit/897c60fdda9051a720c4449a076bc558d84ea435))
+* **weather:** adjust clear/cloudy ([618c6de](https://github.com/dgrebb/dboard/commit/618c6de61a48a7a9219df27463f635b7b6184379))
 * **api:** add default tempo to globals ([340af2d](https://github.com/dgrebb/dboard/commit/340af2d482b042eb9e2c214340ec0e586c1e7fd1))
 * **app:** add animations, normalize data, and add weatherCode icons ([93ca725](https://github.com/dgrebb/dboard/commit/93ca725cc42338b8a22137c62a78c82772209423))
 * **app:** add controls panel and hide buttons ([cd78036](https://github.com/dgrebb/dboard/commit/cd78036afc40d860b0c54b5ea45d8a928dead9db))
