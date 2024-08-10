@@ -132,7 +132,7 @@ export const nightIconMap: IconMap = {
   },
   2: {
     icon: 'fluent:weather-partly-cloudy-night-20-filled',
-    component: 'NightCloudy',
+    component: 'NightPartlyCloudy',
     color: paleBlueGreenGray,
     name: 'Partly Cloudy',
   },
