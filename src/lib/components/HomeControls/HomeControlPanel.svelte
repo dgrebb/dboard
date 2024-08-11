@@ -16,13 +16,12 @@
     <Sheet.Trigger>Open</Sheet.Trigger>
     <Sheet.Content>
       <Sheet.Header>
-        <Sheet.Title>Are you sure absolutely sure?</Sheet.Title>
+        <Sheet.Title>Play around with some settings</Sheet.Title>
         <Sheet.Description>
-          This action cannot be undone. This will permanently delete your
-          account and remove your data from our servers.
+          These will be saved to your browser's storage for now.
         </Sheet.Description>
-        <OnOff />
       </Sheet.Header>
+      <OnOff />
     </Sheet.Content>
   </Sheet.Root>
 </div>

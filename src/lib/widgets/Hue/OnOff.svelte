@@ -1,13 +1,17 @@
 <script lang="ts">
   /* global RequestInit */
   /* global RequestRedirect */
-  import { PUBLIC_HUE_USERNAME as username } from '$env/static/public';
+  import {
+    PUBLIC_HUE_USERNAME as username,
+    PUBLIC_HUE_API as hueAPI,
+  } from '$env/static/public';
   import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
   // import lights from '@stores/solar';
   import { hue } from '@root/.config/settings';
   import { type HueActionType } from '@types';
   import { isHueActionType } from '@guards';
+  import Switch from '$lib/components/ui/switch/switch.svelte';
 
   let { actions } = $state(hue);
 
@@ -25,7 +29,7 @@
       redirect: 'follow' as RequestRedirect,
     };
     fetch(
-      `http://192.168.50.227/api/${username}/${actionType}/${id}/${apiPath}`,
+      `${hueAPI}/api/${username}/${actionType}/${id}/${apiPath}`,
       requestOptions
     ).then((response) =>
       response
@@ -48,7 +52,7 @@
     };
     actions.forEach(async (action, i) => {
       const actionState = await fetch(
-        `http://192.168.50.227/api/${username}/${action.light.actionType}/${action.light.id}`,
+        `${hueAPI}/api/${username}/${action.light.actionType}/${action.light.id}`,
         requestOptions
       )
         .then((response) => response.json())
@@ -70,7 +74,7 @@
   <div class="hue-button-container flex h-full flex-col overflow-y-scroll">
     {#each actions as { light: { name, id, on, actionType } }}
       {#if isHueActionType(actionType)}
-        <Button
+        <!-- <Button
           type="button"
           size="xl"
           onclick={() => {
@@ -80,7 +84,17 @@
             lightSwitch(actionType, id);
           }}
           color={on ? 'yellow' : 'dark'}>{name}</Button
-        >
+        > -->
+        {name}
+        <Switch
+          onclick={() => {
+            lightSwitch(actionType, id);
+          }}
+          onkeydown={() => {
+            lightSwitch(actionType, id);
+          }}
+          checked={on}
+        />
       {/if}
     {/each}
   </div>
