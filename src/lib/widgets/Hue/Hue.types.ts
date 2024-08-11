@@ -1,1 +1,1 @@
-export type HueActionType = 'lights' | 'groups';
+export type HueActionType = 'lights' | 'groups' | 'sensors';

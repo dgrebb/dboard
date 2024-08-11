@@ -2,7 +2,7 @@
   import type { StreamsType } from '@types';
   // import { generateID } from '@utils/strings';
   import { streams } from '@stores/streams.svelte';
-  import { Button } from 'flowbite-svelte';
+  import { Button } from '$lib/components/ui/button';
   import { onMount } from 'svelte';
 
   let streamList: StreamsType = $state(streams.getAll);
