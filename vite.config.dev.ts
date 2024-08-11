@@ -38,8 +38,6 @@ const keyPath = path.resolve('./.config/ssl/dboard.server+7-key.pem');
 
 const { SECRET_AUDIO_CONTROL_IP_ADDRESS, PUBLIC_HUE_API, PUBLIC_HUE_USERNAME } =
   process.env;
-console.log('🚀 ~ PUBLIC_HUE_API:', PUBLIC_HUE_API);
-console.log('🚀 ~ PUBLIC_HUE_USERNAME:', PUBLIC_HUE_USERNAME);
 
 export default defineConfig({
   plugins: [sveltekit()],
