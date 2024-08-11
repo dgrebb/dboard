@@ -68,5 +68,19 @@ export const hue = {
         actionType: 'groups',
       },
     },
+    {
+      light: {
+        name: '🎧 Music Lights',
+        id: 83,
+        on: false,
+        actionType: 'groups',
+      },
+    },
+  ],
+  sensors: [
+    {
+      name: 'Hue temperature sensor 1',
+      id: 153,
+    },
   ],
 };

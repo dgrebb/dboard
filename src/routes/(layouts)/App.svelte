@@ -15,7 +15,6 @@
 
   // TODO: Kiosk Prop Implementation
   // import { browser } from '$app/environment';
-  // import type { CheckboxEvents } from 'flowbite-svelte/Checkbox.svelte';
 
   // TODO: Integrations for Kiosk Pro
   // let idleTimer = $state(true);
@@ -89,7 +88,7 @@
   <p class="app-time">
     {#key clock}{clock}{/key}
   </p>
-  <HomeControlPanel shoes="" />
+  <HomeControlPanel />
   <Controls />
 </header>
 

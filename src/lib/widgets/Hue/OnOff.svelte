@@ -1,19 +1,17 @@
 <script lang="ts">
   /* global RequestInit */
   /* global RequestRedirect */
-  import {
-    PUBLIC_HUE_USERNAME as username,
-    PUBLIC_HUE_API as hueAPI,
-  } from '$env/static/public';
-  import { Button } from 'flowbite-svelte';
   import { onMount } from 'svelte';
   // import lights from '@stores/solar';
+  import Switch from '$lib/components/ui/switch/switch.svelte';
+  import { isHueActionType } from '@guards';
   import { hue } from '@root/.config/settings';
   import { type HueActionType } from '@types';
-  import { isHueActionType } from '@guards';
-  import Switch from '$lib/components/ui/switch/switch.svelte';
+  import { convertCentiDegreesToFahrenheit } from '$lib/utils/mathAndScience';
 
-  let { actions } = $state(hue);
+  let { actions, sensors } = $state(hue);
+  let insideTemperature = $state(0.0);
+  let temp = $derived(convertCentiDegreesToFahrenheit(insideTemperature));
 
   function lightSwitch(actionType: HueActionType, id: number) {
     const actionIndex = actions.findIndex((action) => action.light.id === id);
@@ -29,7 +27,7 @@
       redirect: 'follow' as RequestRedirect,
     };
     fetch(
-      `${hueAPI}/api/${username}/${actionType}/${id}/${apiPath}`,
+      `/api/control/hue/${actionType}/${id}/${apiPath}`,
       requestOptions
     ).then((response) =>
       response
@@ -45,6 +43,20 @@
     );
   }
 
+  // const turnLightOnOrOff = async (lightId, on, hue, sat, bri) => {
+  //   const url = `http://${process.env.HUE_BRIDGE_IP}/api/${process.env.HUE_USERNAME}/lights/${lightId}/state`;
+  //   try {
+  //     return await axios.put(url, {
+  //       on,
+  //       ...(hue && { hue }),
+  //       ...(sat && { sat }),
+  //       ...(bri && { bri }),
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
   onMount(async () => {
     const requestOptions: RequestInit = {
       method: 'GET',
@@ -52,7 +64,7 @@
     };
     actions.forEach(async (action, i) => {
       const actionState = await fetch(
-        `${hueAPI}/api/${username}/${action.light.actionType}/${action.light.id}`,
+        `/api/control/hue/${action.light.actionType}/${action.light.id}`,
         requestOptions
       )
         .then((response) => response.json())
@@ -67,24 +79,24 @@
             : actionState.state.on;
       }
     });
+    insideTemperature = await fetch(
+      `/api/control/hue/sensors/${sensors[0].id}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => data.state.temperature);
   });
 </script>
+
+<div class="home-sensors">
+  <h2>Interior Temperature</h2>
+  <p>{temp}</p>
+</div>
 
 {#key actions}
   <div class="hue-button-container flex h-full flex-col overflow-y-scroll">
     {#each actions as { light: { name, id, on, actionType } }}
       {#if isHueActionType(actionType)}
-        <!-- <Button
-          type="button"
-          size="xl"
-          onclick={() => {
-            lightSwitch(actionType, id);
-          }}
-          onkeydown={() => {
-            lightSwitch(actionType, id);
-          }}
-          color={on ? 'yellow' : 'dark'}>{name}</Button
-        > -->
         {name}
         <Switch
           onclick={() => {
