@@ -10,8 +10,18 @@ interface TransitionParams {
 }
 
 interface TransitionAttribute {
-  fn: (node: Element, params: TransitionParams) => TransitionConfig;
+  fn: (node: Element, params?: TransitionParams) => TransitionConfig;
   params?: TransitionParams;
+}
+
+declare module 'svelte/elements' {
+  interface HTMLAttributes {
+    transition?:
+      | TransitionAttribute
+      | ((node: Element, params?: TransitionParams) => TransitionConfig);
+    in?: TransitionAttribute;
+    out?: TransitionAttribute;
+  }
 }
 
 declare module 'svelte/elements' {
