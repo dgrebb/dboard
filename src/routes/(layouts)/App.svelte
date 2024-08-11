@@ -2,15 +2,16 @@
   // import { invalidateAll } from '$app/navigation';
   import BackgroundFrame from '@components/Board/BackgroundFrame.svelte';
   import ForegroundFrame from '@components/Board/ForegroundFrame.svelte';
-  import { pullToRefresh } from '$lib/actions/pullToRefresh';
-  import ClearOrCloudy from '$lib/components/Board/Backgrounds/ClearOrCloudy.svelte';
-  import Controls from '$lib/components/Controls/Controls.svelte';
+  import { pullToRefresh } from '@actions/pullToRefresh';
+  import ClearOrCloudy from '@components/Board/Backgrounds/ClearOrCloudy.svelte';
+  import Controls from '@components/Controls/Controls.svelte';
   import type { QuarterHours } from '@types';
   import { uiState } from '@stores';
   import { timeState } from '@stores';
   import type { Snippet } from 'svelte';
   import { onDestroy, onMount } from 'svelte';
   import { isTouchDevice } from '@utils';
+  import HomeControlPanel from '@components/HomeControls/HomeControlPanel.svelte';
 
   // TODO: Kiosk Prop Implementation
   // import { browser } from '$app/environment';
@@ -88,6 +89,7 @@
   <p class="app-time">
     {#key clock}{clock}{/key}
   </p>
+  <HomeControlPanel shoes="" />
   <Controls />
 </header>
 
