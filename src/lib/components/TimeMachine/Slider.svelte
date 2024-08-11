@@ -1,14 +1,11 @@
 <script lang="ts">
-  import legTime from '@stores/legTime';
-  import { Range } from 'flowbite-svelte';
+  // import legTime from '@stores/legTime';
 
-  let minutesPerDay = 24 * 60;
+  // let minutesPerDay = 24 * 60;
   // let timeOfDay = 12 * 60;
 </script>
 
-<div class="time-machine">
-  <Range min="0" max={minutesPerDay} size="md" bind:value={$legTime} />
-</div>
+<div class="time-machine"></div>
 
 <style>
   .time-machine {

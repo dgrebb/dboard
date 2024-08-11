@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button } from 'flowbite-svelte';
+  import { Button } from '$lib/components/ui/button';
   import './controls.css';
 
   import Debugger from '@components/Debugger/Debugger.svelte';
