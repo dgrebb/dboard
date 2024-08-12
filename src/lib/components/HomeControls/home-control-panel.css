@@ -4,3 +4,13 @@
   bottom: 1rem;
   z-index: 20;
 }
+
+.home-climate {
+  &__sensors {
+    .interior-temperature {
+      & + .interior-temperature {
+        display: none;
+      }
+    }
+  }
+}
