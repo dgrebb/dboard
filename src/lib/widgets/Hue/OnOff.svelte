@@ -6,7 +6,7 @@
 
   interface Props {
     action: HueAction;
-    lightSwitch: (actionType: string, id: number) => void;
+    lightSwitch: (actionType: string, id: string) => void;
   }
 
   let { action, lightSwitch }: Props = $props();

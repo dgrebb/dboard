@@ -6,7 +6,7 @@ export interface HueSensor {
 export interface HueAction {
   light: {
     name: string;
-    id: number;
+    id: string;
     on: boolean;
     actionType: string;
   };
@@ -14,7 +14,7 @@ export interface HueAction {
 
 export interface HomeDevices {
   hue: {
-    actions: HueAction[];
+    lights: HueAction[];
     sensors: HueSensor[];
   };
 }

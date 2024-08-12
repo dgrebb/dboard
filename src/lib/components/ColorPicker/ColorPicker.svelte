@@ -7,7 +7,7 @@
   import './color-picker.css';
 
   interface Props {
-    id: number;
+    id: string;
     actionType: string;
   }
 
@@ -48,7 +48,7 @@
 
   const setLightState = async (
     actionType: string,
-    lightId: number,
+    lightId: string,
     XY: number[],
     bri: number
   ) => {
