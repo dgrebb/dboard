@@ -84,11 +84,15 @@
   opacity: 0;
   z-index: 10;
   mix-blend-mode: difference;
-  transition: 150ms opacity linear 2s;
+  transition: 150ms opacity linear;
+  padding: 1rem;
+  width: 1rem;
+  height: 1rem;
   color: rgba(255, 255, 255, 0.8);
 
-  .dboard__grid__item:hover & {
+  .dboard__grid__item:hover &,
+  .dboard__grid__item:focus & {
     opacity: 1;
-    transition: 1s opacity linear 0;
+    transition: 333s opacity linear 0;
   }
 }
