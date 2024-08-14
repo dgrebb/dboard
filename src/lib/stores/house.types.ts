@@ -51,13 +51,14 @@ export interface HouseType {
 
 export interface SensorState {
   lastupdated: string;
+  temperature?: number;
   [key: string]: unknown;
 }
 
-export interface SensorInfo {
+export interface Sensor {
   state: SensorState;
   name: string;
   type: string;
 }
 
-export type FilteredSensors = SensorInfo[];
+export type FilteredSensors = (Sensor & { id: string })[];

@@ -1,16 +1,16 @@
-import type { Group, Light, SensorInfo } from './house.types';
+import type { FilteredGroups, FilteredLights, FilteredSensors } from '@types';
 
 export interface HouseState {
-  lights: Record<string, Light>;
-  groups: Record<string, Group>;
-  sensors: Record<string, SensorInfo>;
+  lights: FilteredLights;
+  groups: FilteredGroups;
+  sensors: FilteredSensors;
 }
 
 export const createHouseState = () => {
   let houseState: HouseState = $state({
-    lights: {},
-    groups: {},
-    sensors: {},
+    lights: [] as FilteredLights,
+    groups: [] as FilteredGroups,
+    sensors: [] as FilteredSensors,
   });
 
   return {
@@ -21,30 +21,21 @@ export const createHouseState = () => {
     setLights: (lights: HouseState['lights']) => {
       houseState = {
         ...houseState,
-        lights: {
-          ...houseState.lights,
-          ...lights,
-        },
+        lights: [...houseState.lights, ...lights],
       };
     },
 
     setGroups: (groups: HouseState['groups']) => {
       houseState = {
         ...houseState,
-        groups: {
-          ...houseState.groups,
-          ...groups,
-        },
+        groups: [...houseState.groups, ...groups],
       };
     },
 
     setSensors: (sensors: HouseState['sensors']) => {
       houseState = {
         ...houseState,
-        sensors: {
-          ...houseState.sensors,
-          ...sensors,
-        },
+        sensors: [...houseState.sensors, ...sensors],
       };
     },
 
@@ -60,6 +51,14 @@ export const createHouseState = () => {
       return houseState.sensors;
     },
 
+    getSensor: (id: string) => {
+      if (Array.isArray(houseState.sensors)) {
+        const sensor = houseState.sensors.find((sensor) => sensor.id === id);
+        if (sensor) return sensor.state;
+      }
+      return undefined;
+    },
+
     setLightOn: async (id: string, onState: boolean) => {
       const headers = new Headers();
       const raw = JSON.stringify({
@@ -72,7 +71,11 @@ export const createHouseState = () => {
         redirect: 'follow' as RequestRedirect,
       };
       await fetch(`/api/control/hue/lights/${id}/state`, requestOptions);
-      houseState.lights[id].state.on = onState;
+
+      const light = houseState.lights.find((light) => light.id === id);
+      if (light) {
+        light.state.on = onState;
+      }
     },
   };
 };

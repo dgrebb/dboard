@@ -3,18 +3,18 @@
   /* global RequestRedirect */
   import { Button } from '$lib/components/ui/button';
   import * as Sheet from '$lib/components/ui/sheet';
-  import type { Group, Light, SensorInfo } from '$lib/types';
+  import type { Group, Light } from '$lib/types';
   import * as Card from '@components/ui/card';
   import * as DropdownMenu from '@components/ui/dropdown-menu';
   import { Separator } from '@components/ui/separator';
   import { houseState } from '@stores';
   import { EllipsisVertical } from 'lucide-svelte';
   import { onMount } from 'svelte';
-  import Switch from '../ui/switch/switch.svelte';
-  import Climate from './Climate.svelte';
+  import Climate from '@components/HomeControl/Climate.svelte';
 
-  import './home-control-panel.css';
   import ColorPicker from '../ColorPicker/ColorPicker.svelte';
+  import './home-control-panel.css';
+  import { Switch } from '../ui/switch';
 
   let loaded = $state(false);
 
@@ -27,20 +27,12 @@
     )
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const groups = $derived(
     Object.entries(houseState.getGroups()).map(
       ([id, group]: [string, Group]) => ({
         id,
         ...group,
-      })
-    )
-  );
-
-  const sensors = $derived(
-    Object.entries(houseState.getSensors()).map(
-      ([id, sensor]: [string, SensorInfo]) => ({
-        id,
-        ...sensor,
       })
     )
   );
@@ -76,9 +68,9 @@
     }
   }
 
-  $effect(() => {
-    console.log(lights, groups, sensors);
-  });
+  // $effect(() => {
+  //   console.log('lights: ', lights, 'groups: ', groups);
+  // });
 
   onMount(async () => {
     const requestOptions: RequestInit = {
@@ -100,7 +92,11 @@
       );
 
       const [lights, groups, sensors] = await Promise.all(fetchPromises);
-      houseState.setHouseState({ lights, groups, sensors });
+      houseState.setHouseState({
+        lights: lights.data,
+        groups: groups.data,
+        sensors: sensors.data,
+      });
 
       loaded = true;
     } catch (error) {
