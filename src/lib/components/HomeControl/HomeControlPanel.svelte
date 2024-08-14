@@ -10,7 +10,7 @@
   import { houseState } from '@stores';
   import { EllipsisVertical } from 'lucide-svelte';
   import { onMount } from 'svelte';
-  import Climate from '@components/HomeControl/Climate.svelte';
+  import Climate from '$lib/components/HomeControl/Climate.svelte';
 
   import ColorPicker from '../ColorPicker/ColorPicker.svelte';
   import './home-control-panel.css';
