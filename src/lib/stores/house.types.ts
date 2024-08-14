@@ -1,17 +1,4 @@
 export interface Light {
-  state: object;
-  type: string;
-  name: string;
-}
-
-export interface Group {
-  name: string;
-  lights: string[];
-  state: object;
-  action: object;
-}
-
-export interface LightInfo {
   state: {
     on: boolean;
     bri: number;
@@ -29,7 +16,7 @@ export interface LightInfo {
   name: string;
 }
 
-export type FilteredLights = LightInfo[];
+export type FilteredLights = (Light & { id: string })[];
 
 export interface GroupState {
   all_on: boolean;
@@ -48,15 +35,14 @@ export interface GroupAction {
   colormode?: string;
 }
 
-export interface GroupInfo {
-  id: string;
+export interface Group {
   name: string;
   lights: string[];
   state: GroupState;
   action: GroupAction;
 }
 
-export type FilteredGroups = GroupInfo[];
+export type FilteredGroups = (Group & { id: string })[];
 
 export interface HouseType {
   lights?: FilteredLights;
@@ -69,7 +55,6 @@ export interface SensorState {
 }
 
 export interface SensorInfo {
-  id: string;
   state: SensorState;
   name: string;
   type: string;

@@ -3,7 +3,7 @@
   /* global RequestRedirect */
   import { Button } from '$lib/components/ui/button';
   import * as Sheet from '$lib/components/ui/sheet';
-  import type { LightInfo } from '$lib/types';
+  import type { Group, Light, SensorInfo } from '$lib/types';
   import * as Card from '@components/ui/card';
   import * as DropdownMenu from '@components/ui/dropdown-menu';
   import { Separator } from '@components/ui/separator';
@@ -20,9 +20,27 @@
 
   const lights = $derived(
     Object.entries(houseState.getLights()).map(
-      ([id, light]: [string, LightInfo]) => ({
+      ([id, light]: [string, Light]) => ({
         id,
         ...light,
+      })
+    )
+  );
+
+  const groups = $derived(
+    Object.entries(houseState.getGroups()).map(
+      ([id, group]: [string, Group]) => ({
+        id,
+        ...group,
+      })
+    )
+  );
+
+  const sensors = $derived(
+    Object.entries(houseState.getSensors()).map(
+      ([id, sensor]: [string, SensorInfo]) => ({
+        id,
+        ...sensor,
       })
     )
   );
@@ -57,6 +75,10 @@
       }
     }
   }
+
+  $effect(() => {
+    console.log(lights, groups, sensors);
+  });
 
   onMount(async () => {
     const requestOptions: RequestInit = {

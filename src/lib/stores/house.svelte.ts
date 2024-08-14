@@ -1,51 +1,8 @@
-// import type {} from '$lib/types';
-// import type {
-//   Light,
-//   Group,
-//   FilteredLights,
-//   FilteredGroups,
-//   FilteredSensors,
-//   SensorState,
-// } from '@types';
-
-import type { GroupInfo, LightInfo, SensorInfo } from './house.types';
-
-// export const filterLights = (
-//   lights: Record<string, unknown>
-// ): FilteredLights => {
-//   return Object.keys(lights).map((id) => {
-//     const { state, type, name } = lights[id] as Light;
-//     return { id, state, type, name };
-//   });
-// };
-
-// export const filterGroups = (
-//   groups: Record<string, unknown>
-// ): FilteredGroups => {
-//   return Object.keys(groups).map((id) => {
-//     const { name, lights, state, action } = groups[id] as Group;
-//     return { id, name, lights, state, action };
-//   });
-// };
-
-// export function filterSensors(
-//   sensors: Record<string, unknown>
-// ): FilteredSensors {
-//   return Object.keys(sensors).map((id) => {
-//     const sensor = sensors[id] as {
-//       state: SensorState;
-//       name: string;
-//       type: string;
-//     };
-//     return { id, state: sensor.state, name: sensor.name, type: sensor.type };
-//   });
-// }
-
-// export const getInitialLights
+import type { Group, Light, SensorInfo } from './house.types';
 
 export interface HouseState {
-  lights: Record<string, LightInfo>;
-  groups: Record<string, GroupInfo>;
+  lights: Record<string, Light>;
+  groups: Record<string, Group>;
   sensors: Record<string, SensorInfo>;
 }
 
@@ -71,8 +28,36 @@ export const createHouseState = () => {
       };
     },
 
+    setGroups: (groups: HouseState['groups']) => {
+      houseState = {
+        ...houseState,
+        groups: {
+          ...houseState.groups,
+          ...groups,
+        },
+      };
+    },
+
+    setSensors: (sensors: HouseState['sensors']) => {
+      houseState = {
+        ...houseState,
+        sensors: {
+          ...houseState.sensors,
+          ...sensors,
+        },
+      };
+    },
+
     getLights: () => {
       return houseState.lights;
+    },
+
+    getGroups: () => {
+      return houseState.groups;
+    },
+
+    getSensors: () => {
+      return houseState.sensors;
     },
 
     setLightOn: async (id: string, onState: boolean) => {
