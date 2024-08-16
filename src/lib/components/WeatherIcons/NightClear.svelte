@@ -2,151 +2,60 @@
 </script>
 
 <svg
+  viewBox="0 0 100 100"
   xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  viewBox="0 0 512 512"
+  width="200"
+  height="200"
+  style="display: block; background: transparent;"
 >
-  <defs>
-    <linearGradient
-      id="NightClear_b"
-      x1="54.3"
-      x2="187.2"
-      y1="29"
-      y2="259.1"
-      gradientUnits="userSpaceOnUse"
-    >
-      <stop offset="0" stop-color="#86c3db" />
-      <stop offset=".5" stop-color="#86c3db" />
-      <stop offset="1" stop-color="#5eafcf" />
-    </linearGradient>
-    <linearGradient
-      id="NightClear_a"
-      x1="294"
-      x2="330"
-      y1="112.8"
-      y2="175.2"
-      gradientUnits="userSpaceOnUse"
-    >
-      <stop offset="0" stop-color="#fcd966" />
-      <stop offset=".5" stop-color="#fcd966" />
-      <stop offset="1" stop-color="#fccd34" />
-    </linearGradient>
-    <linearGradient
-      xlink:href="#NightClear_a"
-      id="NightClear_c"
-      x1="295.5"
-      x2="316.5"
-      y1="185.9"
-      y2="222.1"
-    />
-    <linearGradient
-      xlink:href="#NightClear_a"
-      id="NightClear_d"
-      x1="356.3"
-      x2="387.7"
-      y1="194.8"
-      y2="249.2"
-    />
-    <symbol id="NightClear_e" overflow="visible" viewBox="0 0 270 270">
-      <path
-        fill="url(#NightClear_b)"
-        stroke="#72b9d5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="6"
-        d="M252.3 168.6A133.4 133.4 0 0 1 118 36.2 130.5 130.5 0 0 1 122.5 3 133 133 0 0 0 3 134.6C3 207.7 63 267 137.2 267c62.5 0 114.8-42.2 129.8-99.2a135.6 135.6 0 0 1-14.8.8Z"
+  <g style="transform-origin: 50% 50%; transform: rotate(0deg) scale(0.8);">
+    <g>
+      <g
+        style="transform-box: view-box; transform-origin: 50px 50px; transform: matrix3d(0.995, -0.105, 0, 0, 0.105, 0.995, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); animation: 6.25s linear -4.6875s infinite forwards animate;"
       >
-        <animateTransform
-          additive="sum"
-          attributeName="transform"
-          dur="6s"
-          repeatCount="indefinite"
-          type="rotate"
-          values="-15 135 135; 9 135 135; -15 135 135"
+        <path
+          d="M56.48,70.7c-15.01,0-27.18-12.17-27.18-27.18c0-2.98,0.48-5.84,1.37-8.52C19.83,38.57,12,48.78,12,60.82C12,75.83,24.17,88,39.18,88C51.22,88,61.43,80.17,65,69.33C62.32,70.22,59.46,70.7,56.48,70.7z"
+          fill="#FFF7A9"
+          stroke="#DCD155"
+          stroke-width="0.63"
         />
-      </path>
-    </symbol>
-  </defs>
-  <path
-    fill="url(#NightClear_a)"
-    stroke="#fcd34d"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    stroke-width="2"
-    d="m282.8 162.8 25-6.4a1.8 1.8 0 0 1 1.7.5l18.3 18a1.8 1.8 0 0 0 3-1.7l-6.4-25a1.8 1.8 0 0 1 .5-1.7l18-18.4a1.8 1.8 0 0 0-1.8-3l-24.9 6.5a1.8 1.8 0 0 1-1.7-.5l-18.4-18a1.8 1.8 0 0 0-3 1.7l6.5 25a1.8 1.8 0 0 1-.5 1.7l-18 18.3a1.8 1.8 0 0 0 1.7 3Z"
-  >
-    <animateTransform
-      additive="sum"
-      attributeName="transform"
-      calcMode="spline"
-      dur="6s"
-      keySplines=".42, 0, .58, 1; .42, 0, .58, 1"
-      repeatCount="indefinite"
-      type="rotate"
-      values="-15 312 144; 15 312 144; -15 312 144"
-    />
-    <animate
-      attributeName="opacity"
-      dur="6s"
-      values="1; .75; 1; .75; 1; .75; 1"
-    />
-  </path>
-  <path
-    fill="url(#NightClear_c)"
-    stroke="#fcd34d"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    stroke-width="2"
-    d="m285.4 193.4 12 12.3a1.2 1.2 0 0 1 .3 1.1l-4.3 16.6a1.2 1.2 0 0 0 2 1.2l12.3-12a1.2 1.2 0 0 1 1.1-.3l16.6 4.3a1.2 1.2 0 0 0 1.2-2l-12-12.3a1.2 1.2 0 0 1-.3-1.1l4.3-16.6a1.2 1.2 0 0 0-2-1.2l-12.3 12a1.2 1.2 0 0 1-1.1.3l-16.7-4.3a1.2 1.2 0 0 0-1.1 2Z"
-  >
-    <animateTransform
-      additive="sum"
-      attributeName="transform"
-      begin="-.33s"
-      calcMode="spline"
-      dur="6s"
-      keySplines=".42, 0, .58, 1; .42, 0, .58, 1"
-      repeatCount="indefinite"
-      type="rotate"
-      values="-15 306 204; 15 306 204; -15 306 204"
-    />
-    <animate
-      attributeName="opacity"
-      begin="-.33s"
-      dur="6s"
-      values="1; .75; 1; .75; 1; .75; 1"
-    />
-  </path>
-  <path
-    fill="url(#NightClear_d)"
-    stroke="#fcd34d"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    stroke-width="2"
-    d="m337.3 223.7 24.8 7a1.8 1.8 0 0 1 1.3 1.2l6.9 24.8a1.8 1.8 0 0 0 3.4 0l7-24.8a1.8 1.8 0 0 1 1.2-1.3l24.8-6.9a1.8 1.8 0 0 0 0-3.4l-24.8-7a1.8 1.8 0 0 1-1.3-1.2l-6.9-24.8a1.8 1.8 0 0 0-3.4 0l-7 24.8a1.8 1.8 0 0 1-1.2 1.3l-24.8 6.9a1.8 1.8 0 0 0 0 3.4Z"
-  >
-    <animateTransform
-      additive="sum"
-      attributeName="transform"
-      begin="-.67s"
-      calcMode="spline"
-      dur="6s"
-      keySplines=".42, 0, .58, 1; .42, 0, .58, 1"
-      repeatCount="indefinite"
-      type="rotate"
-      values="-15 372 222; 15 372 222; -15 372 222"
-    />
-    <animate
-      attributeName="opacity"
-      begin="-.67s"
-      dur="6s"
-      values="1; .75; 1; .75; 1; .75; 1"
-    />
-  </path>
-  <use
-    xlink:href="#NightClear_e"
-    width="270"
-    height="270"
-    transform="translate(121 121)"
-  />
+      </g>
+    </g>
+    <g
+      style="transform-box: view-box; transform-origin: 50px 50px; transform: matrix3d(0.995, -0.105, 0, 0, 0.105, 0.995, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); animation: 6.25s linear -6.25s infinite forwards animate;"
+    >
+      <polygon
+        points="52,11.19 56.16,19.62 65.47,20.98 58.73,27.54 60.32,36.81 52,32.43 43.68,36.81 45.27,27.54 38.53,20.98 47.84,19.62"
+        fill="#E8FCFF"
+        stroke="#DCD155"
+        stroke-width="0.63"
+      />
+      <polygon
+        points="72.71,43.72 78.56,46.79 84.41,43.72 83.29,50.23 88.02,54.84 81.48,55.79 78.56,61.72 75.63,55.79 69.1,54.84 73.83,50.23"
+        fill="#E8FCFF"
+        stroke="#DCD155"
+        stroke-width="0.63"
+      />
+    </g>
+  </g>
+  <style>
+    @keyframes animate {
+      0% {
+        transform: rotate(-6deg);
+        opacity: 1;
+      }
+      26% {
+        transform: rotate(0.6deg);
+      }
+      50% {
+        transform: rotate(6deg);
+      }
+      76% {
+        transform: rotate(-0.6deg);
+      }
+      100% {
+        transform: rotate(-6deg);
+      }
+    }
+  </style>
 </svg>
