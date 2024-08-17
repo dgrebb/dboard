@@ -126,7 +126,7 @@
               </Button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content align="end">
-              <DropdownMenu.Item>Edit</DropdownMenu.Item>
+              <DropdownMenu.Item>Lights</DropdownMenu.Item>
               <DropdownMenu.Item>Export</DropdownMenu.Item>
               <DropdownMenu.Separator />
               <DropdownMenu.Item>Trash</DropdownMenu.Item>
@@ -150,7 +150,11 @@
                     }}
                   />
 
-                  <ColorPicker id={light.id} actionType="lights" />
+                  <ColorPicker
+                    id={light.id}
+                    lightState={light.state}
+                    actionType="lights"
+                  />
                 </fieldset>
                 <Separator class="my-2" />
               </div>

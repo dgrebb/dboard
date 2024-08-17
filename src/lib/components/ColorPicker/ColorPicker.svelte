@@ -1,90 +1,63 @@
 <script lang="ts">
-  /* global RequestInit */
-  /* global RequestRedirect */
-  import { RGBtoXY } from '$lib/utils';
+  import { houseState } from '$lib/stores';
+  import type { LightAction } from '@types';
+  import { rgbToXyBri } from '$lib/utils';
   import ColorPicker from 'svelte-awesome-color-picker';
   import Button from '../ui/button/button.svelte';
   import './color-picker.css';
-
   interface Props {
     id: string;
-    actionType: string;
+    lightState: LightAction;
+    on: boolean;
   }
 
-  let { id, actionType }: Props = $props();
-
-  let hex = $state('#4b38fa');
+  let { id, lightState }: Props = $props();
 
   let rgb = $state({
     r: 75,
     g: 56,
     b: 250,
-    a: 1,
+    a: 1.0,
   });
 
-  let hsv = $state({
-    h: 246,
-    s: 77.75,
-    v: 98.09166717529297,
-    a: 1,
-  });
-
-  let { r, g, b, a } = $derived(rgb);
-  let x: number = $state(0);
-  let y: number = $state(0);
-  let bri: number = $state(0);
-  let lightState: Record<string, unknown> = {
-    on: true,
-    xy: [0, 0],
-    bri: 0,
-  };
-
-  let XY: number[] = $derived(RGBtoXY(r, g, b));
+  let x: number = $state(0),
+    y: number = $state(0),
+    bri: number = $state(0);
 
   $effect(() => {
-    [x, y] = XY;
-    bri = a * 100;
-  });
-
-  const setLightState = async (
-    actionType: string,
-    lightId: string,
-    XY: number[],
-    bri: number
-  ) => {
+    const { r, g, b, a } = rgb;
+    ({ x, y, bri } = rgbToXyBri({ r, g, b }, a));
     lightState = {
-      on: true,
-      xy: XY,
+      on: lightState.on,
+      xy: [x, y],
       bri,
     };
-    const apiPath = actionType === 'groups' ? 'action' : 'state';
-    const url = `/api/control/hue/${actionType}/${lightId}/${apiPath}`;
-    const headers = new Headers();
-    const requestOptions: RequestInit = {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify(lightState),
-      redirect: 'follow' as RequestRedirect,
-    };
-    try {
-      return await fetch(url, requestOptions);
-    } catch (err) {
-      console.error(err);
-    }
+  });
+
+  const setLightState = async (lightId: string) => {
+    houseState.setLightState(lightId, lightState);
   };
 </script>
 
-<ul>
-  <li>x: {x}</li>
-  <li>y: {y}</li>
-  <li>b: {bri}</li>
-</ul>
-<ColorPicker bind:hex bind:rgb bind:hsv position="responsive" />
-<Button
-  onclick={() => {
-    setLightState(actionType, id, XY, bri);
-  }}>Apply COlor</Button
->
+<!-- <ul>
+  <li>x: {x.toFixed(4)}</li>
+  <li>y: {y.toFixed(4)}</li>
+  <li>bri: {bri}</li>
+</ul> -->
+<ColorPicker
+  bind:rgb
+  position="responsive"
+  isAlpha
+  isDark={true}
+  isTextInput={false}
+/>
+<div class="color-dialog">
+  <Button
+    onclick={() => {
+      setLightState(id);
+    }}>Apply COlor</Button
+  >
+</div>
 
 <style>
 </style>

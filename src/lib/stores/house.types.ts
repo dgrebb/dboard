@@ -2,15 +2,7 @@ export interface Light {
   state: {
     on: boolean;
     bri: number;
-    hue: number;
-    sat: number;
-    effect: string;
     xy: [number, number];
-    ct: number;
-    alert: string;
-    colormode: string;
-    mode: string;
-    reachable: boolean;
   };
   type: string;
   name: string;
@@ -23,23 +15,17 @@ export interface GroupState {
   any_on: boolean;
 }
 
-export interface GroupAction {
+export interface LightAction {
   on: boolean;
-  bri: number;
-  hue?: number;
-  sat?: number;
-  effect?: string;
+  bri?: number;
   xy?: [number, number];
-  ct?: number;
-  alert: string;
-  colormode?: string;
 }
 
 export interface Group {
   name: string;
   lights: string[];
   state: GroupState;
-  action: GroupAction;
+  action: LightAction;
 }
 
 export type FilteredGroups = (Group & { id: string })[];

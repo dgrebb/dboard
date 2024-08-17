@@ -1,4 +1,9 @@
-import type { FilteredGroups, FilteredLights, FilteredSensors } from '@types';
+import type {
+  FilteredGroups,
+  FilteredLights,
+  FilteredSensors,
+  LightAction,
+} from '@types';
 
 export interface HouseState {
   lights: FilteredLights;
@@ -75,6 +80,50 @@ export const createHouseState = () => {
       const light = houseState.lights.find((light) => light.id === id);
       if (light) {
         light.state.on = onState;
+      }
+    },
+
+    setLightState: async (id: string, lightState: LightAction) => {
+      const headers = new Headers();
+      const raw = JSON.stringify({
+        ...lightState,
+      });
+      const requestOptions: RequestInit = {
+        method: 'PUT',
+        headers,
+        body: raw,
+        redirect: 'follow' as RequestRedirect,
+      };
+      await fetch(`/api/control/hue/lights/${id}/state`, requestOptions);
+
+      const light = houseState.lights.find((light) => light.id === id);
+      if (light) {
+        light.state = {
+          ...light.state,
+          ...lightState,
+        };
+      }
+    },
+
+    setGroupState: async (id: string, lightState: LightAction) => {
+      const headers = new Headers();
+      const raw = JSON.stringify({
+        ...lightState,
+      });
+      const requestOptions: RequestInit = {
+        method: 'PUT',
+        headers,
+        body: raw,
+        redirect: 'follow' as RequestRedirect,
+      };
+      await fetch(`/api/control/hue/lights/${id}/action`, requestOptions);
+
+      const light = houseState.lights.find((light) => light.id === id);
+      if (light) {
+        light.state = {
+          ...light.state,
+          ...lightState,
+        };
       }
     },
   };

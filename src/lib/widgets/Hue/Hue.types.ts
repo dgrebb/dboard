@@ -18,3 +18,15 @@ export interface HomeDevices {
     sensors: HueSensor[];
   };
 }
+
+export interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
+export interface XYBri {
+  x: number;
+  y: number;
+  bri: number;
+}
