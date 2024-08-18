@@ -37,7 +37,8 @@ jobs:
         uses: ./.github/actions/set-env
         with:
           SECRET_NIGHTSCOUT_TOKEN: ${{ secrets.SECRET_NIGHTSCOUT_TOKEN }}
-          PUBLIC_HUE_USERNAME: ${{ secrets.PUBLIC_HUE_USERNAME }}
+          SECRET_HUE_USERNAME: ${{ secrets.SECRET_HUE_USERNAME }}
+          SECRET_HUE_IP_ADDRESS: ${{ secrets.SECRET_HUE_IP_ADDRESS }}
           SECRET_NEST_CLIENT: ${{ secrets.SECRET_NEST_CLIENT }}
           SECRET_NEST_CLIENT_SECRET: ${{ secrets.SECRET_NEST_CLIENT_SECRET }}
           SECRET_AUDIO_CONTROL_IP_ADDRESS: ${{ secrets.SECRET_AUDIO_CONTROL_IP_ADDRESS }}

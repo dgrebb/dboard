@@ -9,8 +9,11 @@ import {
 
 dotenv.config();
 
-const { SECRET_AUDIO_CONTROL_IP_ADDRESS, PUBLIC_HUE_API, PUBLIC_HUE_USERNAME } =
-  process.env;
+const {
+  SECRET_AUDIO_CONTROL_IP_ADDRESS,
+  SECRET_HUE_IP_ADDRESS,
+  SECRET_HUE_USERNAME,
+} = process.env;
 
 export default defineConfig({
   plugins: [
@@ -46,15 +49,15 @@ export default defineConfig({
         },
       },
       '^/api/control/hue/.*': {
-        target: `${PUBLIC_HUE_API}`,
+        target: `${SECRET_HUE_IP_ADDRESS}`,
         changeOrigin: true,
         secure: false,
         rewrite: (path) =>
-          path.replace(/^\/api\/control\/hue/, `/api/${PUBLIC_HUE_USERNAME}/`),
+          path.replace(/^\/api\/control\/hue/, `/api/${SECRET_HUE_USERNAME}/`),
         configure: (proxy) => {
           proxy.on('proxyRes', (proxyRes) => {
             proxyRes.headers['Access-Control-Allow-Origin'] =
-              `${PUBLIC_HUE_API}`;
+              `${SECRET_HUE_IP_ADDRESS}`;
             proxyRes.headers['Access-Control-Allow-Methods'] =
               'GET, POST, PUT, DELETE, OPTIONS';
             proxyRes.headers['Access-Control-Allow-Headers'] =
