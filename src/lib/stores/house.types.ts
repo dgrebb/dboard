@@ -1,3 +1,17 @@
+export interface HouseState extends HueState {
+  global: GlobalHouseSettings;
+}
+
+export interface HueState {
+  lights: FilteredLights;
+  groups: FilteredGroups;
+  sensors: FilteredSensors;
+}
+
+export interface GlobalHouseSettings {
+  syncLightsToMusic: boolean;
+}
+
 export interface Light {
   state: LightState;
   type: string;

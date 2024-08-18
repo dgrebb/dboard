@@ -3,17 +3,16 @@ import type {
   FilteredLights,
   FilteredSensors,
   GroupAction,
+  HouseState,
+  HueState,
   LightAction,
 } from '@types';
 
-export interface HouseState {
-  lights: FilteredLights;
-  groups: FilteredGroups;
-  sensors: FilteredSensors;
-}
-
 export const createHouseState = () => {
   let houseState: HouseState = $state({
+    global: {
+      syncLightsToMusic: false,
+    },
     lights: [] as FilteredLights,
     groups: [] as FilteredGroups,
     sensors: [] as FilteredSensors,
@@ -22,6 +21,13 @@ export const createHouseState = () => {
   return {
     setHouseState: (state: HouseState) => {
       houseState = state;
+    },
+
+    setHueState: (state: HueState) => {
+      houseState = {
+        ...houseState,
+        ...state,
+      };
     },
 
     setLights: (lights: HouseState['lights']) => {
@@ -146,6 +152,14 @@ export const createHouseState = () => {
           ...state,
         };
       }
+    },
+
+    setSyncLightsToMusic: async (state: boolean) => {
+      houseState.global.syncLightsToMusic = state;
+    },
+
+    getSyncLightsToMusic: () => {
+      return houseState.global.syncLightsToMusic;
     },
   };
 };

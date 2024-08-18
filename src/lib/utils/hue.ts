@@ -56,3 +56,63 @@ export const rgbToXyBri = (rgb: RGB, alpha: number): XYBri => {
 
   return { x, y, bri };
 };
+
+export const rgbToXy = (r: number, g: number, b: number): [number, number] => {
+  const red = r / 255;
+  const green = g / 255;
+  const blue = b / 255;
+
+  const X = red * 0.649926 + green * 0.103455 + blue * 0.197109;
+  const Y = red * 0.234327 + green * 0.743075 + blue * 0.022598;
+  const Z = red * 0.0 + green * 0.053077 + blue * 1.035763;
+
+  const x = X / (X + Y + Z);
+  const y = Y / (X + Y + Z);
+
+  return [x, y];
+};
+
+export const getVibrantColors = (gradient: string): number[][] => {
+  const colors = gradient.match(
+    /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/g
+  );
+
+  if (!colors) {
+    return [
+      [255, 0, 0],
+      [0, 255, 0],
+      [0, 0, 255],
+    ]; // Default to primary colors if no colors found
+  }
+
+  const colorArray = colors
+    .map((color) => {
+      const matched = color.match(/\d+/g);
+      if (!matched) {
+        return { r: 0, g: 0, b: 0 }; // Fallback in case of unexpected null
+      }
+      const [r, g, b] = matched.map(Number);
+      return { r, g, b };
+    })
+    .filter(({ r, g, b }) => {
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      return max - min > 50 && max > 50 && min < 200;
+    })
+    .map(({ r, g, b }) => {
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const chroma = max - min;
+      const saturation = max === 0 ? 0 : chroma / max;
+      const value = max / 255;
+
+      const vibrancy = saturation * value;
+
+      return { r, g, b, vibrancy };
+    });
+
+  return colorArray
+    .sort((a, b) => b.vibrancy - a.vibrancy)
+    .slice(0, 3)
+    .map(({ r, g, b }) => [r, g, b]);
+};

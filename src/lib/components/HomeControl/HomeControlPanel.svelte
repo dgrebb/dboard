@@ -8,12 +8,13 @@
   import { Separator } from '@components/ui/separator';
   import { houseState } from '@stores';
   import { onMount } from 'svelte';
-
   import { Tabs } from 'bits-ui';
   import ColorPicker from '../ColorPicker/ColorPicker.svelte';
   import { Switch } from '../ui/switch';
   import './home-control-panel.css';
+  import Icon from '@iconify/svelte';
 
+  let syncLightsToMusic = $derived(houseState.getSyncLightsToMusic());
   let loaded = $state(false);
 
   const lights = $derived(
@@ -34,6 +35,7 @@
     )
   );
 
+  // TODO: Extract fetchWithRetry into a utility function
   async function fetchWithRetry(
     url: string,
     options: RequestInit,
@@ -44,9 +46,8 @@
       const response = await fetch(url, options);
 
       if (response.status === 429 && retries > 0) {
-        // Handle rate limiting by waiting for some time before retrying
         await new Promise((resolve) => setTimeout(resolve, delay));
-        return fetchWithRetry(url, options, retries - 1, delay * 2); // Exponential backoff
+        return fetchWithRetry(url, options, retries - 1, delay * 2);
       }
 
       if (!response.ok) {
@@ -57,7 +58,7 @@
     } catch (error) {
       if (retries > 0) {
         await new Promise((resolve) => setTimeout(resolve, delay));
-        return fetchWithRetry(url, options, retries - 1, delay * 2); // Exponential backoff
+        return fetchWithRetry(url, options, retries - 1, delay * 2);
       } else {
         console.error(`Failed to fetch ${url}:`, error);
         throw error;
@@ -72,20 +73,13 @@
     };
 
     try {
-      const fetchPromises = [];
+      const [lights, groups, sensors] = await Promise.all([
+        fetchWithRetry(`/api/control/hue/lights`, requestOptions),
+        fetchWithRetry(`/api/control/hue/groups`, requestOptions),
+        fetchWithRetry(`/api/control/hue/sensors`, requestOptions),
+      ]);
 
-      fetchPromises.push(
-        fetchWithRetry(`/api/control/hue/lights`, requestOptions)
-      );
-      fetchPromises.push(
-        fetchWithRetry(`/api/control/hue/groups`, requestOptions)
-      );
-      fetchPromises.push(
-        fetchWithRetry(`/api/control/hue/sensors`, requestOptions)
-      );
-
-      const [lights, groups, sensors] = await Promise.all(fetchPromises);
-      houseState.setHouseState({
+      houseState.setHueState({
         lights: lights.data,
         groups: groups.data,
         sensors: sensors.data,
@@ -107,6 +101,33 @@
           <Sheet.Header>
             <Sheet.Title>Home Controls</Sheet.Title>
             <Climate />
+            <Card.Root class="music-controls flex">
+              <Card.Content>
+                <div class="grid gap-3">
+                  <fieldset>
+                    <legend class="mb-4 text-lg font-medium"
+                      >Global Settings</legend
+                    >
+                    <div class="flex flex-row">
+                      <Switch
+                        onclick={() =>
+                          houseState.setSyncLightsToMusic(!syncLightsToMusic)}
+                        name="sync-lights-music-toggle"
+                      />
+                      <label
+                        for="sync-lights-music-toggle"
+                        class="flex flex-row"
+                      >
+                        <Icon icon="ion:bulb" />
+                        <Icon icon="material-symbols-light:sync-alt" />
+                        <Icon icon="basil:music-solid" />
+                      </label>
+                    </div>
+                  </fieldset>
+                </div>
+                <Separator class="my-2" />
+              </Card.Content>
+            </Card.Root>
             <Tabs.List>
               <Tabs.Trigger value="lights">Lights</Tabs.Trigger>
               <Tabs.Trigger value="groups">Groups</Tabs.Trigger>
@@ -122,7 +143,7 @@
           >
             {#if lights}
               <Tabs.Content value="lights">
-                {#each lights as light}
+                {#each lights as light (light.id)}
                   <Card.Content class="p-6 text-sm">
                     <div class="grid gap-3">
                       <fieldset>
@@ -131,11 +152,11 @@
                         >
                         <Switch
                           checked={light.state.on}
+                          id={light.id}
                           onclick={() => {
                             houseState.setLightOn(light.id, !light.state.on);
                           }}
                         />
-
                         <ColorPicker
                           id={light.id}
                           collectionState={light.state}
@@ -152,7 +173,7 @@
 
             {#if groups}
               <Tabs.Content value="groups">
-                {#each groups as group}
+                {#each groups as group (group.id)}
                   <Card.Content class="p-6 text-sm">
                     <div class="grid gap-3">
                       <fieldset>
@@ -168,7 +189,6 @@
                             );
                           }}
                         />
-
                         <ColorPicker
                           id={group.id}
                           collectionState={group.state}
@@ -182,20 +202,6 @@
                 {/each}
               </Tabs.Content>
             {/if}
-            <!-- {#each actions as action}
-            <Card.Content class="p-6 text-sm">
-              <div class="grid gap-3">
-                <fieldset>
-                  <legend class="mb-4 text-lg font-medium"
-                    >{action.light.name}</legend
-                  >
-                  <OnOff {action} {lightSwitch} />
-                </fieldset>
-                <Separator class="my-2" />
-              </div>
-              <Separator class="my-4" />
-            </Card.Content>
-          {/each} -->
           </Card.Root>
         </Tabs.Root>
       </Sheet.Content>

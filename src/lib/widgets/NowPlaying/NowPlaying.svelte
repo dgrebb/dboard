@@ -1,7 +1,13 @@
 <script lang="ts">
-  import { healthState, homeState, musicState, uiState } from '@stores';
-  import type { ModalState, Timer } from '@types';
-  import { timeStringToSeconds } from '@utils/strings';
+  import {
+    healthState,
+    homeState,
+    houseState,
+    musicState,
+    uiState,
+  } from '@stores';
+  import type { LightAction, ModalState, Timer } from '@types';
+  import { getVibrantColors, rgbToXy, timeStringToSeconds } from '@utils';
   import { onDestroy, onMount } from 'svelte';
   import Modal from './Modal.svelte';
   import Widget from './Widget.svelte';
@@ -34,6 +40,7 @@
   );
   let transitionGradient = $state(false);
   let transitionForegroundGradient = $state(false);
+  let syncLightsToMusic = $state(houseState.getSyncLightsToMusic());
   let timer = $state(0);
   let timeInterval: Timer | null = $state(null);
   let previousAlbum = $state('Unknown');
@@ -173,8 +180,11 @@
   }
 
   $effect(() => {
+    syncLightsToMusic = houseState.getSyncLightsToMusic();
+  });
+
+  $effect(() => {
     const delay = 3300;
-    // if (foreTimeout || backTimeout) return;
     transitionGradient = true;
     transitionForegroundGradient = true;
     ({ backgroundGradient, foregroundGradient } = musicState.gradients());
@@ -185,8 +195,30 @@
     foreTimeout = setTimeout(() => {
       setGradientCSSVars('previous', 'Fore', foregroundGradient);
     }, delay / 4.25);
+
     backTimeout = setTimeout(() => {
       setGradientCSSVars('previous', 'Back', backgroundGradient);
+
+      if (syncLightsToMusic) {
+        // Extract the three most vibrant colors from the background gradient
+        const vibrantColors = getVibrantColors(backgroundGradient);
+
+        // Set the light states for each of the three lights
+        ['25', '14', '32'].forEach((lightId, index) => {
+          const [r, g, b] = vibrantColors[index];
+          const [x, y] = rgbToXy(r, g, b);
+          const bri = Math.floor(Math.random() * (200 - 150 + 1)) + 150;
+
+          const lightState: LightAction = {
+            on: true,
+            xy: [x, y],
+            bri: bri,
+          };
+
+          houseState.setLightState(lightId, lightState);
+        });
+      }
+
       currentArt = art;
       transitionGradient = false;
       transitionForegroundGradient = false;
