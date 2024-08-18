@@ -103,7 +103,7 @@
     <Sheet.Root>
       <Sheet.Trigger>Open</Sheet.Trigger>
       <Sheet.Content>
-        <Tabs.Root>
+        <Tabs.Root class="h-full">
           <Sheet.Header>
             <Sheet.Title>Home Controls</Sheet.Title>
             <Climate />
