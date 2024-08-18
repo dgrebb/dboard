@@ -93,7 +93,7 @@
 </header>
 
 <ForegroundFrame />
-<BackgroundFrame component={ClearOrCloudy} />
+<BackgroundFrame BackgroundComponent={ClearOrCloudy} />
 
 <main use:pullToRefresh class="dboard" class:modalActive>
   {#if children}

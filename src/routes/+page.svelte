@@ -76,7 +76,8 @@
     <NightScout />
     <NowPlaying />
     {#each loadedWidgets as { type, settings }}
-      <svelte:component this={components[type]} {settings} />
+      {@const Widget = components[type]}
+      <Widget {settings} />
     {/each}
     <Schedule />
     <NextToArrive />
