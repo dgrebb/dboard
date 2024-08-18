@@ -5,7 +5,9 @@ author: dgrebb
 inputs:
   SECRET_NIGHTSCOUT_TOKEN:
     description: Env var for Vite/SvelteKit build
-  PUBLIC_HUE_USERNAME:
+  SECRET_HUE_USERNAME:
+    description: Env var for Vite/SvelteKit build
+  SECRET_HUE_IP_ADDRESS:
     description: Env var for Vite/SvelteKit build
   SECRET_NEST_CLIENT:
     description: Env var for Vite/SvelteKit build
@@ -26,7 +28,8 @@ runs:
       run: |
         touch .env
         echo SECRET_NIGHTSCOUT_TOKEN='${{ inputs.SECRET_NIGHTSCOUT_TOKEN }}' >> .env
-        echo PUBLIC_HUE_USERNAME='${{ inputs.PUBLIC_HUE_USERNAME }}' >> .env
+        echo SECRET_HUE_USERNAME='${{ inputs.SECRET_HUE_USERNAME }}' >> .env
+        echo SECRET_HUE_IP_ADDRESS='${{ inputs.SECRET_HUE_IP_ADDRESS }}' >> .env
         echo SECRET_NEST_CLIENT='${{ inputs.SECRET_NEST_CLIENT }}' >> .env
         echo SECRET_NEST_CLIENT_SECRET='${{ inputs.SECRET_NEST_CLIENT_SECRET }}' >> .env
         echo SECRET_AUDIO_CONTROL_IP_ADDRESS='${{ inputs.SECRET_AUDIO_CONTROL_IP_ADDRESS }}' >> .env

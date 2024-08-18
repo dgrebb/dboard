@@ -381,7 +381,8 @@
   });
 </script>
 
-<div class="dboard__grid__item schedule push-to-refresh">
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<div class="dboard__grid__item schedule push-to-refresh" tabindex="0">
   {#if !displayWidgetSettings}
     <div class="dboard__card" transition:fade>
       <div class="controls">

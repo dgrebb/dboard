@@ -76,6 +76,14 @@ export const hue = {
         actionType: 'groups',
       },
     },
+    {
+      light: {
+        name: 'Office Light Bar',
+        id: 34,
+        on: false,
+        actionType: 'lights',
+      },
+    },
   ],
   sensors: [
     {

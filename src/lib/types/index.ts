@@ -2,6 +2,7 @@ export * from './app.types';
 export * from './api/Request';
 export * from '../components/WeatherIcons/WeatherIcons.types';
 export * from '../stores/home.types';
+export * from '../stores/house.types';
 export * from '../stores/health.types';
 export * from '../stores/solar.types';
 export * from '../stores/widget.types';

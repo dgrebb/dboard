@@ -33,7 +33,7 @@ export const dayIconMap: IconMap = {
   },
   3: {
     icon: 'fluent:weather-cloudy-20-filled',
-    component: 'DayOvercast',
+    component: 'DayCloudy',
     color: '#62788d',
     name: 'Overcast',
   },
