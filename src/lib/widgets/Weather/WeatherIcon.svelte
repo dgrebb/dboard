@@ -11,6 +11,7 @@
    * @type {Record<string, Component<object>>}
    */
   let weatherIconComponents: Record<string, Component<object>> = components;
+  let IconComponent = $state(weatherIconComponents['']);
 
   /**
    * Properties for the WeatherIcon component.
@@ -34,6 +35,7 @@
     const mappedIcon = mapWeatherIcon(weatherCode, isDay);
     component = mappedIcon.component || component; // Ensure component is either string or false
     name = mappedIcon.name;
+    IconComponent = weatherIconComponents[component];
     // icon = mappedIcon.icon;
     // color = mappedIcon.color;
   });
@@ -41,9 +43,5 @@
 
 <div class="big-icon-wow">
   <span data-test="weather-icon-code">{weatherCode}</span>
-  <svelte:component
-    this={weatherIconComponents[component]}
-    {weatherCode}
-    {name}
-  />
+  <IconComponent {weatherCode} {name} />
 </div>
