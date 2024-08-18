@@ -1,7 +1,7 @@
 export * from './isLocationSettings';
 export * from './isCurrentWeatherData';
 export * from './isDailyWeatherData';
-export * from './isHueActionType';
+// export * from './isHueActionType';
 export * from './isLocationSettings';
 export * from './isNightScoutData';
 export * from './isSeptaNextToArriveData';

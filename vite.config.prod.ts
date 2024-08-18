@@ -19,8 +19,11 @@ dotenv.config();
 const certPath = path.resolve('./.config/ssl/dboard.server+7.pem');
 const keyPath = path.resolve('./.config/ssl/dboard.server+7-key.pem');
 
-const SECRET_AUDIO_CONTROL_IP_ADDRESS =
-  process.env.SECRET_AUDIO_CONTROL_IP_ADDRESS;
+const {
+  SECRET_AUDIO_CONTROL_IP_ADDRESS,
+  SECRET_HUE_IP_ADDRESS,
+  SECRET_HUE_USERNAME,
+} = process.env;
 
 export default defineConfig({
   plugins: [
@@ -54,6 +57,23 @@ export default defineConfig({
           proxy.on('proxyRes', (proxyRes) => {
             proxyRes.headers['Access-Control-Allow-Origin'] =
               `${SECRET_AUDIO_CONTROL_IP_ADDRESS}`;
+            proxyRes.headers['Access-Control-Allow-Methods'] =
+              'GET, POST, PUT, DELETE, OPTIONS';
+            proxyRes.headers['Access-Control-Allow-Headers'] =
+              'Content-Type, Authorization';
+          });
+        },
+      },
+      '^/api/control/hue/.*': {
+        target: `${SECRET_HUE_IP_ADDRESS}`,
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) =>
+          path.replace(/^\/api\/control\/hue/, `/api/${SECRET_HUE_USERNAME}/`),
+        configure: (proxy) => {
+          proxy.on('proxyRes', (proxyRes) => {
+            proxyRes.headers['Access-Control-Allow-Origin'] =
+              `${SECRET_HUE_IP_ADDRESS}`;
             proxyRes.headers['Access-Control-Allow-Methods'] =
               'GET, POST, PUT, DELETE, OPTIONS';
             proxyRes.headers['Access-Control-Allow-Headers'] =
