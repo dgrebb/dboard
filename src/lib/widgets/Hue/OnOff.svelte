@@ -1,6 +1,5 @@
 <script lang="ts">
   // import lights from '@stores/solar';
-  import ColorPicker from '@components/ColorPicker/ColorPicker.svelte';
   import Switch from '@components/ui/switch/switch.svelte';
   import { type HueAction } from '@types';
 
@@ -24,6 +23,5 @@
       }}
       bind:checked={action.light.on}
     />
-    <ColorPicker id={action.light.id} actionType={action.light.actionType} />
   </div>
 {/key}

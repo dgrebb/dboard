@@ -1,20 +1,18 @@
 <script lang="ts">
   /* global RequestInit */
   /* global RequestRedirect */
-  import { Button } from '$lib/components/ui/button';
+  import Climate from '$lib/components/HomeControl/Climate.svelte';
   import * as Sheet from '$lib/components/ui/sheet';
   import type { Group, Light } from '$lib/types';
   import * as Card from '@components/ui/card';
-  import * as DropdownMenu from '@components/ui/dropdown-menu';
   import { Separator } from '@components/ui/separator';
   import { houseState } from '@stores';
-  import { EllipsisVertical } from 'lucide-svelte';
   import { onMount } from 'svelte';
-  import Climate from '$lib/components/HomeControl/Climate.svelte';
 
+  import { Tabs } from 'bits-ui';
   import ColorPicker from '../ColorPicker/ColorPicker.svelte';
-  import './home-control-panel.css';
   import { Switch } from '../ui/switch';
+  import './home-control-panel.css';
 
   let loaded = $state(false);
 
@@ -27,7 +25,6 @@
     )
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const groups = $derived(
     Object.entries(houseState.getGroups()).map(
       ([id, group]: [string, Group]) => ({
@@ -110,58 +107,86 @@
     <Sheet.Root>
       <Sheet.Trigger>Open</Sheet.Trigger>
       <Sheet.Content>
-        <Sheet.Header>
-          <Sheet.Title>Home Controls</Sheet.Title>
-          <Climate />
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild let:builder>
-              <Button
-                builders={[builder]}
-                size="icon"
-                variant="outline"
-                class="h-8 w-8"
-              >
-                <EllipsisVertical class="h-3.5 w-3.5" />
-                <span class="sr-only">More</span>
-              </Button>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content align="end">
-              <DropdownMenu.Item>Lights</DropdownMenu.Item>
-              <DropdownMenu.Item>Export</DropdownMenu.Item>
-              <DropdownMenu.Separator />
-              <DropdownMenu.Item>Trash</DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
-        </Sheet.Header>
-        <Card.Root
-          class="h-[80%] overflow-y-scroll"
-          data-x-chunk-name="dashboard-05-chunk-4"
-          data-x-chunk-description="An order details card with order details, shipping information, customer information and payment information."
-        >
-          {#each lights as light}
-            <Card.Content class="p-6 text-sm">
-              <div class="grid gap-3">
-                <fieldset>
-                  <legend class="mb-4 text-lg font-medium">{light.name}</legend>
-                  <Switch
-                    checked={light.state.on}
-                    onclick={() => {
-                      houseState.setLightOn(light.id, !light.state.on);
-                    }}
-                  />
+        <Tabs.Root>
+          <Sheet.Header>
+            <Sheet.Title>Home Controls</Sheet.Title>
+            <Climate />
+            <Tabs.List>
+              <Tabs.Trigger value="lights">Lights</Tabs.Trigger>
+              <Tabs.Trigger value="groups">Groups</Tabs.Trigger>
+              <Tabs.Trigger value="scenes">Scenes</Tabs.Trigger>
+              <Tabs.Trigger value="zones">Zones</Tabs.Trigger>
+              <Tabs.Trigger value="rooms">Rooms</Tabs.Trigger>
+            </Tabs.List>
+          </Sheet.Header>
+          <Card.Root
+            class="h-[80%] overflow-y-scroll"
+            data-x-chunk-name="dashboard-05-chunk-4"
+            data-x-chunk-description="An order details card with order details, shipping information, customer information and payment information."
+          >
+            {#if lights}
+              <Tabs.Content value="lights">
+                {#each lights as light}
+                  <Card.Content class="p-6 text-sm">
+                    <div class="grid gap-3">
+                      <fieldset>
+                        <legend class="mb-4 text-lg font-medium"
+                          >{light.name}</legend
+                        >
+                        <Switch
+                          checked={light.state.on}
+                          onclick={() => {
+                            houseState.setLightOn(light.id, !light.state.on);
+                          }}
+                        />
 
-                  <ColorPicker
-                    id={light.id}
-                    lightState={light.state}
-                    actionType="lights"
-                  />
-                </fieldset>
-                <Separator class="my-2" />
-              </div>
-              <Separator class="my-4" />
-            </Card.Content>
-          {/each}
-          <!-- {#each actions as action}
+                        <ColorPicker
+                          id={light.id}
+                          lightState={light.state}
+                          actionType="lights"
+                        />
+                      </fieldset>
+                      <Separator class="my-2" />
+                    </div>
+                    <Separator class="my-4" />
+                  </Card.Content>
+                {/each}
+              </Tabs.Content>
+            {/if}
+
+            {#if groups}
+              <Tabs.Content value="groups">
+                {#each groups as group}
+                  <Card.Content class="p-6 text-sm">
+                    <div class="grid gap-3">
+                      <fieldset>
+                        <legend class="mb-4 text-lg font-medium"
+                          >{group.name}</legend
+                        >
+                        <Switch
+                          checked={group.state.any_on}
+                          onclick={() => {
+                            houseState.setGroupOn(
+                              group.id,
+                              !group.state.any_on
+                            );
+                          }}
+                        />
+
+                        <ColorPicker
+                          id={group.id}
+                          groupState={group.state}
+                          actionType="lights"
+                        />
+                      </fieldset>
+                      <Separator class="my-2" />
+                    </div>
+                    <Separator class="my-4" />
+                  </Card.Content>
+                {/each}
+              </Tabs.Content>
+            {/if}
+            <!-- {#each actions as action}
             <Card.Content class="p-6 text-sm">
               <div class="grid gap-3">
                 <fieldset>
@@ -175,7 +200,8 @@
               <Separator class="my-4" />
             </Card.Content>
           {/each} -->
-        </Card.Root>
+          </Card.Root>
+        </Tabs.Root>
       </Sheet.Content>
     </Sheet.Root>
   </div>
