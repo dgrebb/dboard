@@ -56,8 +56,3 @@ export const rgbToXyBri = (rgb: RGB, alpha: number): XYBri => {
 
   return { x, y, bri };
 };
-
-// Example usage:
-// const rgb: RGB = { r: 255, g: 200, b: 100 };
-// const result: XYBri = rgbToXyBri(rgb);
-// console.log(result); // {x: 0.5139, y: 0.4147, bri: 213}

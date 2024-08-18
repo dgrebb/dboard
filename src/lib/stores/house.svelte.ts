@@ -2,6 +2,7 @@ import type {
   FilteredGroups,
   FilteredLights,
   FilteredSensors,
+  GroupAction,
   LightAction,
 } from '@types';
 
@@ -83,6 +84,26 @@ export const createHouseState = () => {
       }
     },
 
+    setGroupOn: async (id: string, onState: boolean) => {
+      const headers = new Headers();
+      const raw = JSON.stringify({
+        on: onState,
+      });
+      const requestOptions: RequestInit = {
+        method: 'PUT',
+        headers,
+        body: raw,
+        redirect: 'follow' as RequestRedirect,
+      };
+      await fetch(`/api/control/hue/groups/${id}/action`, requestOptions);
+
+      const group = houseState.groups.find((group) => group.id === id);
+      if (group) {
+        group.state.any_on = onState;
+        group.state.all_on = onState;
+      }
+    },
+
     setLightState: async (id: string, lightState: LightAction) => {
       const headers = new Headers();
       const raw = JSON.stringify({
@@ -105,10 +126,10 @@ export const createHouseState = () => {
       }
     },
 
-    setGroupState: async (id: string, lightState: LightAction) => {
+    setGroupState: async (id: string, state: GroupAction) => {
       const headers = new Headers();
       const raw = JSON.stringify({
-        ...lightState,
+        ...state,
       });
       const requestOptions: RequestInit = {
         method: 'PUT',
@@ -116,13 +137,13 @@ export const createHouseState = () => {
         body: raw,
         redirect: 'follow' as RequestRedirect,
       };
-      await fetch(`/api/control/hue/lights/${id}/action`, requestOptions);
+      await fetch(`/api/control/hue/groups/${id}/action`, requestOptions);
 
-      const light = houseState.lights.find((light) => light.id === id);
-      if (light) {
-        light.state = {
-          ...light.state,
-          ...lightState,
+      const group = houseState.groups.find((group) => group.id === id);
+      if (group) {
+        group.state = {
+          ...group.state,
+          ...state,
         };
       }
     },

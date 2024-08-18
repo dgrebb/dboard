@@ -1,14 +1,16 @@
 export interface Light {
-  state: {
-    on: boolean;
-    bri: number;
-    xy: [number, number];
-  };
+  state: LightState;
   type: string;
   name: string;
 }
 
 export type FilteredLights = (Light & { id: string })[];
+
+export interface LightState {
+  on: boolean;
+  bri: number;
+  xy: [number, number];
+}
 
 export interface GroupState {
   all_on: boolean;
@@ -16,6 +18,12 @@ export interface GroupState {
 }
 
 export interface LightAction {
+  on: boolean;
+  bri?: number;
+  xy?: [number, number];
+}
+
+export interface GroupAction {
   on: boolean;
   bri?: number;
   xy?: [number, number];

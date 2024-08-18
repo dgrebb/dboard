@@ -65,10 +65,6 @@
     }
   }
 
-  // $effect(() => {
-  //   console.log('lights: ', lights, 'groups: ', groups);
-  // });
-
   onMount(async () => {
     const requestOptions: RequestInit = {
       method: 'GET',
@@ -142,7 +138,7 @@
 
                         <ColorPicker
                           id={light.id}
-                          lightState={light.state}
+                          collectionState={light.state}
                           actionType="lights"
                         />
                       </fieldset>
@@ -175,8 +171,8 @@
 
                         <ColorPicker
                           id={group.id}
-                          groupState={group.state}
-                          actionType="lights"
+                          collectionState={group.state}
+                          actionType="groups"
                         />
                       </fieldset>
                       <Separator class="my-2" />

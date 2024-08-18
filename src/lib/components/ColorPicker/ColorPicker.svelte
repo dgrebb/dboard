@@ -1,17 +1,22 @@
 <script lang="ts">
   import { houseState } from '$lib/stores';
-  import type { LightAction } from '@types';
+  import type {
+    GroupAction,
+    GroupState,
+    LightAction,
+    LightState,
+  } from '@types';
   import { rgbToXyBri } from '$lib/utils';
   import ColorPicker from 'svelte-awesome-color-picker';
   import Button from '../ui/button/button.svelte';
   import './color-picker.css';
   interface Props {
     id: string;
-    lightState: LightAction;
-    on: boolean;
+    actionType: string;
+    collectionState: LightState | GroupState;
   }
 
-  let { id, lightState }: Props = $props();
+  let { id, actionType, collectionState }: Props = $props();
 
   let rgb = $state({
     r: 75,
@@ -27,15 +32,41 @@
   $effect(() => {
     const { r, g, b, a } = rgb;
     ({ x, y, bri } = rgbToXyBri({ r, g, b }, a));
-    lightState = {
-      on: lightState.on,
-      xy: [x, y],
-      bri,
-    };
+
+    if (actionType === 'lights') {
+      // Type guard to ensure collectionState is treated as LightState
+      const lightState = collectionState as LightState;
+
+      // Ensure that 'bri' is not undefined
+      if (bri === undefined) {
+        bri = 0; // or any default value you deem appropriate
+      }
+
+      collectionState = {
+        ...lightState,
+        on: lightState.on || false,
+        xy: [x, y],
+        bri,
+      };
+    } else {
+      // Type guard to ensure collectionState is treated as GroupState
+      const groupState = collectionState as GroupState;
+
+      collectionState = {
+        ...groupState,
+        on: groupState.any_on || false,
+        xy: [x, y],
+        bri,
+      };
+    }
   });
 
-  const setLightState = async (lightId: string) => {
-    houseState.setLightState(lightId, lightState);
+  const setState = async (id: string, actionType: string) => {
+    if (actionType === 'lights') {
+      houseState.setLightState(id, collectionState as LightAction);
+    } else {
+      houseState.setGroupState(id, collectionState as GroupAction);
+    }
   };
 </script>
 
@@ -54,8 +85,8 @@
 <div class="color-dialog">
   <Button
     onclick={() => {
-      setLightState(id);
-    }}>Apply COlor</Button
+      setState(id, actionType);
+    }}>Apply Color</Button
   >
 </div>
 

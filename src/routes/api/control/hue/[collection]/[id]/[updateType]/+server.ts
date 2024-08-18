@@ -24,11 +24,7 @@ export const PUT: RequestHandler = async ({
   };
   const requestURL = `https://${SECRET_HUE_IP_ADDRESS}/api/${SECRET_HUE_USERNAME}/${collection}${id ? `/${id}` : ''}${updateType ? `/${updateType}` : ''}`;
   await fetch(requestURL, requestOptions)
-    .then((response) => {
-      const result = response.json();
-      console.info(result);
-      return result;
-    })
+    .then((response) => response.json())
     .then((result) => console.info(result))
     .catch((error) => console.error(error));
   return json({ success: true });
