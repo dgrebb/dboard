@@ -74,8 +74,8 @@ html.light {
     opacity: 0;
     z-index: 3;
     mix-blend-mode: hard-light;
-    width: 9rem;
-    height: 7rem;
+    width: 11rem;
+    height: 9rem;
 
     body.ready & {
       opacity: 0.77;
