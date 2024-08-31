@@ -2,10 +2,10 @@
   import { selfOffsetBackground } from '@actions/selfOffsetBackground';
   import LovedHeart from '@components/Animations/LovedHeart.svelte';
   import SafeHtml from '@components/SafeHTML.svelte';
+  import Icon from '@iconify/svelte';
   import { homeState, uiState } from '@stores';
   import type { CurrentWeatherData, ModalState } from '@types';
   import { addHtmlLineBreaks } from '@utils/strings';
-  import Icon from '@iconify/svelte';
   import { blur, fade } from 'svelte/transition';
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './TrackProgress.svelte';
@@ -87,6 +87,25 @@
     }
   };
 
+  /**
+   * Send a command to control music loved status.
+   *
+   * @param event - The mouse event triggered by the button click.
+   * @param status - The favorite status to set for the track
+   */
+  const toggleLoved = async (e: MouseEvent | TouchEvent, status: boolean) => {
+    console.log(`🙋 hello wrorld`);
+    if (e instanceof MouseEvent && e.button === 2) return;
+    e.stopPropagation();
+
+    try {
+      await fetch(`/api/stream/music?loved=${status}`, { method: 'POST' });
+      // send a stream event after toggling the status
+    } catch (error) {
+      console.error(`Error setting the music status to: ${status}`, error);
+    }
+  };
+
   $effect(() => {
     modal = uiState.modal();
   });
@@ -156,7 +175,17 @@
         aria-checked={modal.isActive}
         onclick={(e: MouseEvent | TouchEvent) => toggleModal(e)}
       >
-        <LovedHeart {loved} size={56} />
+        {#if showControls === true}
+          <button
+            class="love-toggle"
+            onclick={(e) => toggleLoved(e, !loved)}
+            transition:fade
+          >
+            <LovedHeart loved={true} size={56} />
+          </button>
+        {:else}
+          <LovedHeart {loved} size={56} />
+        {/if}
         <div class="image-container">
           {#key newArt}
             <img

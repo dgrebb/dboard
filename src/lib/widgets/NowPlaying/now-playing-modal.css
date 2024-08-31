@@ -134,11 +134,18 @@
       /* display: none; */
       position: absolute;
     }
+
+    .love-toggle {
+      position: absolute;
+      right: -0.5rem;
+      bottom: -0.5rem;
+    }
   }
 
   .loved {
     right: -0.5rem;
     bottom: -0.5rem;
+    z-index: 3;
   }
 
   .loved-heart {
@@ -258,6 +265,10 @@
     }
     .audio-player {
       display: none;
+
+      & + .audio-player {
+        display: none;
+      }
     }
 
     svg {
@@ -457,13 +468,16 @@
         bottom: 1rem;
         left: 0;
         opacity: 0;
-        transition: 333ms opacity cubic-bezier(0.075, 0.82, 0.165, 1);
+        transition: 333ms opacity max-height cubic-bezier(0.075, 0.82, 0.165, 1)
+          333ms;
         width: 100%;
         height: 0;
+        max-height: 0;
         overflow: hidden;
         &.expanded {
           opacity: 1;
-          height: auto;
+          height: 100%;
+          max-height: none;
         }
       }
     }
