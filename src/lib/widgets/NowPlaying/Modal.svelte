@@ -109,7 +109,7 @@
       {#key currentValue}
         <div class="reading nightscout-reading" in:fade class:showHud>
           <h1
-            class="current-music__modal__headline bg"
+            class="current-music__modal__headline bg engrave"
             use:selfOffsetBackground
           >
             {currentValue}
@@ -130,7 +130,10 @@
           transition:blur={{ duration: 500 }}
           class:showHud
         >
-          <h1 class="current-music__modal__headline" use:selfOffsetBackground>
+          <h1
+            class="current-music__modal__headline engrave"
+            use:selfOffsetBackground
+          >
             {temperature}ºF
           </h1>
           <h2 class="text-md">
