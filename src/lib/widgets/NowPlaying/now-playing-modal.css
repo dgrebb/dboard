@@ -55,7 +55,6 @@
   h2,
   h3 {
     display: block;
-    opacity: 0.5;
   }
 
   h1 {
@@ -172,33 +171,12 @@
 
     h1,
     h2 {
+      mix-blend-mode: hard-light;
       line-height: 1;
-    }
-
-    h1 {
-      color: #e0e0e0;
-      text-shadow:
-        1px 1px 0 #000,
-        -1px -1px 0 #000,
-        2px 2px 0 #000,
-        -2px -2px 0 #000,
-        3px 3px 0 #000,
-        -3px -3px 0 #000;
-
-      /* &.bg {
-        mix-blend-mode: hard-light;
-        color: rgba(255, 133, 133, 1);
-      } */
     }
 
     h2 {
       flex-direction: flex-row;
-      color: #e0e0e0;
-      text-shadow:
-        1px 1px 0 #000,
-        -1px -1px 0 #000,
-        2px 2px 0 #000,
-        -2px -2px 0 #000;
     }
   }
 
@@ -691,7 +669,6 @@
         h2,
         h3 {
           display: block;
-          opacity: 0.5;
         }
 
         h1 {
