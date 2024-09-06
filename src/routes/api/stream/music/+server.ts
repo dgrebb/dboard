@@ -9,12 +9,20 @@ import type {
   NowPlayingData,
   Timer,
 } from '@types';
-import { SECRET_AUDIO_CONTROL_IP_ADDRESS } from '$env/static/private';
+import {
+  SECRET_AUDIO_CONTROL_IP_ADDRESS,
+  SECRET_KM_FAVORITE,
+} from '$env/static/private';
 import { colorThief } from '@utils/colorThief';
 import { timeStringToSeconds } from '@utils/strings';
 import { fetchMediaInfo } from '@utils/wiim';
 
 export const prerender = false;
+
+const getOptions: FetchOptions = {
+  method: 'GET',
+  redirect: 'follow',
+};
 
 let refreshInterval = 1000; // 1 second
 let retryTimeout: number | undefined;
@@ -245,14 +253,9 @@ const handlePlayerCommand = async (
   command: string,
   fetch: Fetch
 ): Promise<void> => {
-  const requestOptions: FetchOptions = {
-    method: 'GET',
-    redirect: 'follow',
-  };
-
   await fetch(
     `https://${SECRET_AUDIO_CONTROL_IP_ADDRESS}/httpapi.asp?command=setPlayerCmd:${command}`,
-    requestOptions
+    getOptions
   )
     .then((response) => response.text())
     .then((result) => console.info(result))
@@ -332,11 +335,19 @@ export const GET: RequestHandler = async (event: RequestEvent) => {
   const fetch = event.fetch as Fetch;
   const clientIp = event.getClientAddress();
   const command = event.url.searchParams.get('command');
+  const loved = event.url.searchParams.get('loved');
   const generateGradient = event.url.searchParams.get('generateGradient');
 
   if (command) {
     // Handle the command and return the result
     await handlePlayerCommand(command, fetch);
+    return json({ success: true });
+  }
+
+  if (loved) {
+    const stream = `data: ${JSON.stringify({ loved })}\n\n`;
+    await fetch(SECRET_KM_FAVORITE, getOptions);
+    broadcast(new TextEncoder().encode(stream));
     return json({ success: true });
   }
 

@@ -3,7 +3,7 @@
   import LovedHeart from '@components/Animations/LovedHeart.svelte';
   import SafeHtml from '@components/SafeHTML.svelte';
   import Icon from '@iconify/svelte';
-  import { homeState, uiState } from '@stores';
+  import { homeState, musicState, uiState } from '@stores';
   import type { CurrentWeatherData, ModalState } from '@types';
   import { addHtmlLineBreaks } from '@utils/strings';
   import { blur, fade } from 'svelte/transition';
@@ -93,16 +93,20 @@
    * @param event - The mouse event triggered by the button click.
    * @param status - The favorite status to set for the track
    */
-  const toggleLoved = async (e: MouseEvent | TouchEvent, status: boolean) => {
-    console.log(`🙋 hello wrorld`);
+  const toggleLoved = async (
+    e: MouseEvent | TouchEvent,
+    lovedState: boolean
+  ) => {
     if (e instanceof MouseEvent && e.button === 2) return;
     e.stopPropagation();
 
     try {
-      await fetch(`/api/stream/music?loved=${status}`, { method: 'POST' });
-      // send a stream event after toggling the status
+      await fetch(`/api/stream/music?loved=${lovedState}`, { method: 'GET' });
     } catch (error) {
-      console.error(`Error setting the music status to: ${status}`, error);
+      console.error(
+        `Error setting the music lovedState to: ${lovedState}`,
+        error
+      );
     }
   };
 
@@ -112,6 +116,10 @@
 
   $effect(() => {
     temperature = homeState.currentRoundTemperature();
+  });
+
+  $effect(() => {
+    loved = musicState.getLoved();
   });
 </script>
 
@@ -175,10 +183,12 @@
             onclick={(e) => toggleLoved(e, !loved)}
             transition:fade
           >
-            <LovedHeart loved={true} size={56} />
+            <LovedHeart loved={true} unloved={!loved} size={56} />
           </button>
         {:else}
-          <LovedHeart {loved} size={56} />
+          {#key loved}
+            <LovedHeart {loved} unloved={false} size={56} />
+          {/key}
         {/if}
         <div class="image-container">
           {#key newArt}

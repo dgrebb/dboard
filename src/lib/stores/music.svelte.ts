@@ -44,11 +44,15 @@ export const createMusicState = () => {
       };
     },
 
-    setLoved: (loved: boolean) => {
+    setLoved: async (loved: boolean) => {
       musicStore = {
         ...musicStore,
         loved,
       };
+    },
+
+    getLoved: () => {
+      return musicStore.loved;
     },
   };
 };

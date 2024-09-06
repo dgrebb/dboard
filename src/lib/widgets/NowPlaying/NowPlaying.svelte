@@ -22,7 +22,7 @@
   let title = $state('');
   let album = $state('');
   let artist = $state('');
-  let loved = $state(false);
+  let loved = $state(musicState.getLoved());
   let totalTime: string | number = $state(0);
   let totalSeconds = $state(0);
   let relativeTimePosition: string | number = $state(0);
@@ -123,7 +123,7 @@
         retryCount = 0;
       } else if (data.loved !== undefined) {
         loved = data.loved;
-        musicState.setLoved(data.loved);
+        musicState.setLoved(data.loved === 'true' || data.loved === true);
       } else if (data.backgroundGradient && data.foregroundGradient) {
         if (
           transitionForegroundGradient === true ||
