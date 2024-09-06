@@ -178,78 +178,6 @@
       clearTimeout(retryTimeout);
     }
   }
-
-  $effect(() => {
-    syncLightsToMusic = houseState.getSyncLightsToMusic();
-  });
-
-  $effect(() => {
-    const delay = 3300;
-    transitionGradient = true;
-    transitionForegroundGradient = true;
-    ({ backgroundGradient, foregroundGradient } = musicState.gradients());
-    setGradientCSSVars('next', 'Fore', foregroundGradient);
-    setGradientCSSVars('next', 'Back', backgroundGradient);
-    loaded = true;
-
-    foreTimeout = setTimeout(() => {
-      setGradientCSSVars('previous', 'Fore', foregroundGradient);
-    }, delay / 4.25);
-
-    backTimeout = setTimeout(() => {
-      setGradientCSSVars('previous', 'Back', backgroundGradient);
-
-      if (syncLightsToMusic) {
-        // Extract the three most vibrant colors from the background gradient
-        const vibrantColors = getVibrantColors(backgroundGradient);
-
-        // Set the light states for each of the three lights
-        ['25', '14', '32'].forEach((lightId, index) => {
-          const [r, g, b] = vibrantColors[index];
-          const [x, y] = rgbToXy(r, g, b);
-          const bri = Math.floor(Math.random() * (200 - 150 + 1)) + 150;
-
-          const lightState: LightAction = {
-            on: true,
-            xy: [x, y],
-            bri: bri,
-          };
-
-          houseState.setLightState(lightId, lightState);
-        });
-      }
-
-      currentArt = art;
-      transitionGradient = false;
-      transitionForegroundGradient = false;
-      newArt = undefined;
-    }, delay);
-
-    return () => {
-      if (foreTimeout) clearTimeout(foreTimeout);
-      if (backTimeout) clearTimeout(backTimeout);
-      foreTimeout = null;
-      backTimeout = null;
-    };
-  });
-
-  $effect(() => {
-    return () => {
-      transitionGradient = false;
-      transitionForegroundGradient = false;
-      previousAlbum = album;
-    };
-  });
-
-  $effect(() => {
-    const currentHealthData = healthState.getCurrentData() || false;
-    if (currentHealthData !== false) {
-      directionIcon = healthState.getDirectionIcon();
-      ({ direction, sgv: currentValue } = currentHealthData);
-      difference = healthState.getDifference();
-    }
-  });
-
   const setGradientCSSVars = (
     whichState: 'next' | 'previous',
     whichGround: 'Fore' | 'Back',
@@ -326,6 +254,77 @@
       console.error('Failed to generate gradient:', error);
     }
   };
+
+  $effect(() => {
+    syncLightsToMusic = houseState.getSyncLightsToMusic();
+  });
+
+  $effect(() => {
+    const delay = 3300;
+    transitionGradient = true;
+    transitionForegroundGradient = true;
+    ({ backgroundGradient, foregroundGradient } = musicState.gradients());
+    setGradientCSSVars('next', 'Fore', foregroundGradient);
+    setGradientCSSVars('next', 'Back', backgroundGradient);
+    loaded = true;
+
+    foreTimeout = setTimeout(() => {
+      setGradientCSSVars('previous', 'Fore', foregroundGradient);
+    }, delay / 4.25);
+
+    backTimeout = setTimeout(() => {
+      setGradientCSSVars('previous', 'Back', backgroundGradient);
+
+      if (syncLightsToMusic) {
+        // Extract the three most vibrant colors from the background gradient
+        const vibrantColors = getVibrantColors(backgroundGradient);
+
+        // Set the light states for each of the three lights
+        ['25', '14', '32'].forEach((lightId, index) => {
+          const [r, g, b] = vibrantColors[index];
+          const [x, y] = rgbToXy(r, g, b);
+          const bri = Math.floor(Math.random() * (200 - 150 + 1)) + 150;
+
+          const lightState: LightAction = {
+            on: true,
+            xy: [x, y],
+            bri: bri,
+          };
+
+          houseState.setLightState(lightId, lightState);
+        });
+      }
+
+      currentArt = art;
+      transitionGradient = false;
+      transitionForegroundGradient = false;
+      newArt = undefined;
+    }, delay);
+
+    return () => {
+      if (foreTimeout) clearTimeout(foreTimeout);
+      if (backTimeout) clearTimeout(backTimeout);
+      foreTimeout = null;
+      backTimeout = null;
+    };
+  });
+
+  $effect(() => {
+    return () => {
+      transitionGradient = false;
+      transitionForegroundGradient = false;
+      previousAlbum = album;
+    };
+  });
+
+  $effect(() => {
+    const currentHealthData = healthState.getCurrentData() || false;
+    if (currentHealthData !== false) {
+      directionIcon = healthState.getDirectionIcon();
+      ({ direction, sgv: currentValue } = currentHealthData);
+      difference = healthState.getDifference();
+    }
+  });
 
   onMount(async () => {
     await setupEventSource();
