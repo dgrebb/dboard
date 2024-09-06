@@ -2,10 +2,10 @@
   import { selfOffsetBackground } from '@actions/selfOffsetBackground';
   import LovedHeart from '@components/Animations/LovedHeart.svelte';
   import SafeHtml from '@components/SafeHTML.svelte';
-  import { homeState, uiState } from '@stores';
+  import Icon from '@iconify/svelte';
+  import { homeState, musicState, uiState } from '@stores';
   import type { CurrentWeatherData, ModalState } from '@types';
   import { addHtmlLineBreaks } from '@utils/strings';
-  import Icon from '@iconify/svelte';
   import { blur, fade } from 'svelte/transition';
   import PlaybackControls from './PlaybackControls.svelte';
   import PlayHead from './TrackProgress.svelte';
@@ -87,12 +87,39 @@
     }
   };
 
+  /**
+   * Send a command to control music loved status.
+   *
+   * @param event - The mouse event triggered by the button click.
+   * @param status - The favorite status to set for the track
+   */
+  const toggleLoved = async (
+    e: MouseEvent | TouchEvent,
+    lovedState: boolean
+  ) => {
+    if (e instanceof MouseEvent && e.button === 2) return;
+    e.stopPropagation();
+
+    try {
+      await fetch(`/api/stream/music?loved=${lovedState}`, { method: 'GET' });
+    } catch (error) {
+      console.error(
+        `Error setting the music lovedState to: ${lovedState}`,
+        error
+      );
+    }
+  };
+
   $effect(() => {
     modal = uiState.modal();
   });
 
   $effect(() => {
     temperature = homeState.currentRoundTemperature();
+  });
+
+  $effect(() => {
+    loved = musicState.getLoved();
   });
 </script>
 
@@ -108,10 +135,7 @@
     <header>
       {#key currentValue}
         <div class="reading nightscout-reading" in:fade class:showHud>
-          <h1
-            class="current-music__modal__headline bg engrave"
-            use:selfOffsetBackground
-          >
+          <h1 class="current-music__modal__headline bg engrave">
             {currentValue}
           </h1>
           <h2 class="text-md">
@@ -130,10 +154,7 @@
           transition:blur={{ duration: 500 }}
           class:showHud
         >
-          <h1
-            class="current-music__modal__headline engrave"
-            use:selfOffsetBackground
-          >
+          <h1 class="current-music__modal__headline engrave">
             {temperature}ºF
           </h1>
           <h2 class="text-md">
@@ -156,7 +177,19 @@
         aria-checked={modal.isActive}
         onclick={(e: MouseEvent | TouchEvent) => toggleModal(e)}
       >
-        <LovedHeart {loved} size={56} />
+        {#if showControls === true}
+          <button
+            class="love-toggle"
+            onclick={(e) => toggleLoved(e, !loved)}
+            transition:fade
+          >
+            <LovedHeart loved={true} unloved={!loved} size={56} />
+          </button>
+        {:else}
+          {#key loved}
+            <LovedHeart {loved} unloved={false} size={56} />
+          {/key}
+        {/if}
         <div class="image-container">
           {#key newArt}
             <img

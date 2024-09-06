@@ -75,7 +75,7 @@
         <h3 class="album-title">
           <SafeHtml html={addHtmlLineBreaks(album)} />
         </h3>
-        <LovedHeart {loved} size={33} />
+        <LovedHeart {loved} unloved={false} size={33} />
       </div>
       <div
         class="track-details"

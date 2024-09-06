@@ -3,10 +3,11 @@
 
   interface Props {
     loved: boolean;
+    unloved: boolean;
     size: number;
   }
 
-  let { loved, size = 33 }: Props = $props();
+  let { loved, unloved, size = 33 }: Props = $props();
 
   function bounceIn(node: Node, { delay = 0, duration = 400 } = {}) {
     return {
@@ -38,7 +39,7 @@
 </script>
 
 {#if loved === true}
-  <div class="loved" in:bounceIn out:bounceOut>
+  <div class="loved" class:unloved in:bounceIn out:bounceOut>
     <Icon
       icon="emojione-monotone:heart-decoration"
       width={size}
