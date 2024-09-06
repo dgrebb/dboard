@@ -17,6 +17,8 @@ inputs:
     description: Env var for Vite/SvelteKit build
   SECRET_WIIM_SOAP_API_PORT:
     description: Env var for Vite/SvelteKit build
+  SECRET_KM_FAVORITE:
+    description: Env var for Vite/SvelteKit build
   PUBLIC_HOST_URL:
     description: Env var for Vite/SvelteKit build
 
@@ -34,4 +36,5 @@ runs:
         echo SECRET_NEST_CLIENT_SECRET='${{ inputs.SECRET_NEST_CLIENT_SECRET }}' >> .env
         echo SECRET_AUDIO_CONTROL_IP_ADDRESS='${{ inputs.SECRET_AUDIO_CONTROL_IP_ADDRESS }}' >> .env
         echo SECRET_WIIM_SOAP_API_PORT='${{ inputs.SECRET_WIIM_SOAP_API_PORT }}' >> .env
+        echo SECRET_KM_FAVORITE='${{ inputs.SECRET_KM_FAVORITE }}' >> .env
         echo PUBLIC_HOST_URL='${{ inputs.PUBLIC_HOST_URL }}' >> .env

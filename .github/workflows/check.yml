@@ -43,6 +43,7 @@ jobs:
           SECRET_NEST_CLIENT_SECRET: ${{ secrets.SECRET_NEST_CLIENT_SECRET }}
           SECRET_AUDIO_CONTROL_IP_ADDRESS: ${{ secrets.SECRET_AUDIO_CONTROL_IP_ADDRESS }}
           SECRET_WIIM_SOAP_API_PORT: ${{ secrets.SECRET_WIIM_SOAP_API_PORT }}
+          SECRET_KM_FAVORITE: ${{ secrets.SECRET_KM_FAVORITE }}
           PUBLIC_HOST_URL: ${{ secrets.PUBLIC_HOST_URL }}
 
       - name: 🧐 Check
