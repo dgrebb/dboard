@@ -53,13 +53,13 @@ importers:
         version: 1.46.1
       '@sveltejs/adapter-node':
         specifier: ^5.2.2
-        version: 5.2.2(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))
+        version: 5.2.2(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))
       '@sveltejs/kit':
         specifier: ^2.5.25
-        version: 2.5.25(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
+        version: 2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
       '@sveltejs/vite-plugin-svelte':
-        specifier: ^3.1.2
-        version: 3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
+        specifier: ^4.0.0-next.6
+        version: 4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
       '@types/cors':
         specifier: ^2.8.17
         version: 2.8.17
@@ -633,19 +633,19 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       vite: ^5.0.3
 
-  '@sveltejs/vite-plugin-svelte-inspector@2.1.0':
-    resolution: {integrity: sha512-9QX28IymvBlSCqsCll5t0kQVxipsfhFFL+L2t3nTWfXnddYwxBuAEtTtlaVQpRz9c37BhJjltSeY4AJSC03SSg==}
-    engines: {node: ^18.0.0 || >=20}
+  '@sveltejs/vite-plugin-svelte-inspector@3.0.0-next.3':
+    resolution: {integrity: sha512-kuGJ2CZ5lAw3gKF8Kw0AfKtUJWbwdlDHY14K413B0MCyrzvQvsKTorwmwZcky0+QqY6RnVIZ/5FttB9bQmkLXg==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22}
     peerDependencies:
-      '@sveltejs/vite-plugin-svelte': ^3.0.0
-      svelte: ^4.0.0 || ^5.0.0-next.0
+      '@sveltejs/vite-plugin-svelte': ^4.0.0-next.0||^4.0.0
+      svelte: ^5.0.0-next.96 || ^5.0.0
       vite: ^5.0.0
 
-  '@sveltejs/vite-plugin-svelte@3.1.2':
-    resolution: {integrity: sha512-Txsm1tJvtiYeLUVRNqxZGKR/mI+CzuIQuc2gn+YCs9rMTowpNZ2Nqt53JdL8KF9bLhAf2ruR/dr9eZCwdTriRA==}
-    engines: {node: ^18.0.0 || >=20}
+  '@sveltejs/vite-plugin-svelte@4.0.0-next.7':
+    resolution: {integrity: sha512-yMUnAqquoayvBDztk1rWUgdtvjv7YcHgopCAB7sWl9SQht8U/7lqwTlJU0ZTAY09pFFRe6bbakd7YoiyyIvJiA==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22}
     peerDependencies:
-      svelte: ^4.0.0 || ^5.0.0-next.0
+      svelte: ^5.0.0-next.96 || ^5.0.0
       vite: ^5.0.0
 
   '@swc/helpers@0.5.12':
@@ -3178,12 +3178,6 @@ packages:
   svelte-grid@5.1.2:
     resolution: {integrity: sha512-Suwgb+L3LALhTyA7z4vn87UOJ+xBY6EeKa6MdWqDv/lZOtQgIZ21ry/I6txIn9IC0p8of4AiOXupkSMcZ+DEug==}
 
-  svelte-hmr@0.16.0:
-    resolution: {integrity: sha512-Gyc7cOS3VJzLlfj7wKS0ZnzDVdv3Pn2IuVeJPk9m2skfhcu5bq3wtIZyQGggr7/Iim5rH5cncyQft/kRLupcnA==}
-    engines: {node: ^12.20 || ^14.13.1 || >= 16}
-    peerDependencies:
-      svelte: ^3.19.0 || ^4.0.0
-
   svelte-preprocess@5.1.4:
     resolution: {integrity: sha512-IvnbQ6D6Ao3Gg6ftiM5tdbR6aAETwjhHV+UKGf5bHGYR69RQvF1ho0JKPcbUON4vy4R7zom13jPjgdOWCQ5hDA==}
     engines: {node: '>= 16.0.0'}
@@ -3464,8 +3458,8 @@ packages:
       terser:
         optional: true
 
-  vitefu@0.2.5:
-    resolution: {integrity: sha512-SgHtMLoqaeeGnd2evZ849ZbACbnwQCIwRH57t18FxcXoZop0uQu0uzlIhJBlF/eWVzuce0sHeqPcDo+evVcg8Q==}
+  vitefu@1.0.2:
+    resolution: {integrity: sha512-0/iAvbXyM3RiPPJ4lyD4w6Mjgtf4ejTK6TPvTNG3H32PLwuT0N/ZjJLiXug7ETE/LWtTeHw9WRv7uX/tIKYyKg==}
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0
     peerDependenciesMeta:
@@ -3984,17 +3978,17 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.21.2':
     optional: true
 
-  '@sveltejs/adapter-node@5.2.2(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))':
+  '@sveltejs/adapter-node@5.2.2(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))':
     dependencies:
       '@rollup/plugin-commonjs': 26.0.1(rollup@4.21.2)
       '@rollup/plugin-json': 6.1.0(rollup@4.21.2)
       '@rollup/plugin-node-resolve': 15.2.3(rollup@4.21.2)
-      '@sveltejs/kit': 2.5.25(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
+      '@sveltejs/kit': 2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
       rollup: 4.21.2
 
-  '@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))':
+  '@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
+      '@sveltejs/vite-plugin-svelte': 4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
       '@types/cookie': 0.6.0
       cookie: 0.6.0
       devalue: 5.0.0
@@ -4010,26 +4004,25 @@ snapshots:
       tiny-glob: 0.2.9
       vite: 5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))
 
-  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))':
+  '@sveltejs/vite-plugin-svelte-inspector@3.0.0-next.3(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
+      '@sveltejs/vite-plugin-svelte': 4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
       debug: 4.3.6
       svelte: 5.0.0-next.242
       vite: 5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))':
+  '@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
+      '@sveltejs/vite-plugin-svelte-inspector': 3.0.0-next.3(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
       debug: 4.3.6
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.11
       svelte: 5.0.0-next.242
-      svelte-hmr: 0.16.0(svelte@5.0.0-next.242)
       vite: 5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))
-      vitefu: 0.2.5(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
+      vitefu: 1.0.2(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42)))
     transitivePeerDependencies:
       - supports-color
 
@@ -6636,10 +6629,6 @@ snapshots:
 
   svelte-grid@5.1.2: {}
 
-  svelte-hmr@0.16.0(svelte@5.0.0-next.242):
-    dependencies:
-      svelte: 5.0.0-next.242
-
   svelte-preprocess@5.1.4(postcss-load-config@6.0.1(jiti@1.21.6)(postcss@8.4.42)(yaml@2.5.0))(postcss@8.4.42)(sugarss@4.0.1(postcss@8.4.42))(svelte@5.0.0-next.242)(typescript@5.5.4):
     dependencies:
       '@types/pug': 2.0.10
@@ -6895,7 +6884,7 @@ snapshots:
       fsevents: 2.3.3
       sugarss: 4.0.1(postcss@8.4.42)
 
-  vitefu@0.2.5(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))):
+  vitefu@1.0.2(vite@5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))):
     optionalDependencies:
       vite: 5.4.2(@types/node@22.5.1)(sugarss@4.0.1(postcss@8.4.42))
 

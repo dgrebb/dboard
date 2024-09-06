@@ -11,6 +11,14 @@
     align-items: center;
     z-index: 30;
     border-radius: 50%;
+    &.unloved {
+      &::before {
+        background-color: transparent;
+        html.dark & {
+          background-color: transparent;
+        }
+      }
+    }
 
     &::before {
       position: absolute;
