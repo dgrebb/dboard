@@ -280,7 +280,10 @@
         const vibrantColors = getVibrantColors(backgroundGradient);
 
         // Set the light states for each of the three lights
-        ['25', '14', '32'].forEach((lightId, index) => {
+        // TODO: create a store value for the array of lights sycing to music
+        // when the toggle is enabled, add checkboxes next to each light - enabling their
+        // inclusion in this array
+        ['25', '14'].forEach((lightId, index) => {
           const [r, g, b] = vibrantColors[index];
           const [x, y] = rgbToXy(r, g, b);
           const bri = Math.floor(Math.random() * (200 - 150 + 1)) + 150;
