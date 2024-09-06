@@ -20,6 +20,13 @@ export const PUT: RequestHandler = async ({
     redirect: 'follow',
     body: JSON.stringify({
       ...state,
+      transitiontime: 50,
+      effect: null,
+      ct: null,
+      alert: null,
+      colormode: null,
+      mode: null,
+      reachable: null,
     }),
   };
   const requestURL = `https://${SECRET_HUE_IP_ADDRESS}/api/${SECRET_HUE_USERNAME}/${collection}${id ? `/${id}` : ''}${updateType ? `/${updateType}` : ''}`;
