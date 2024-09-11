@@ -1,7 +1,6 @@
-import { FastAverageColor } from 'fast-average-color';
-import { createCanvas, loadImage } from 'canvas';
 import { PUBLIC_HOST_URL } from '$env/static/public';
-import type { GradientResult } from '@types';
+import { createCanvas, loadImage } from 'canvas';
+import { FastAverageColor } from 'fast-average-color';
 
 // Simple seeded random number generator
 const seedRandom = () => {
@@ -54,30 +53,6 @@ interface ColorThiefResult {
   backgroundGradient: string;
   foregroundGradient: string;
 }
-
-export const createGradient = async (
-  image: string
-): Promise<GradientResult | boolean> => {
-  if (typeof image !== 'string') return false;
-
-  try {
-    const gradientResult = await colorThief(image);
-    let backgroundGradient: string | undefined;
-    let foregroundGradient: string | undefined;
-
-    if (gradientResult && typeof gradientResult !== 'boolean') {
-      ({ backgroundGradient, foregroundGradient } = gradientResult);
-    }
-
-    return {
-      backgroundGradient: backgroundGradient || '',
-      foregroundGradient: foregroundGradient || '',
-    };
-  } catch (error) {
-    console.error('Error creating gradient:', error);
-    return false;
-  }
-};
 
 export const colorThief = async (
   imageSrc: string
