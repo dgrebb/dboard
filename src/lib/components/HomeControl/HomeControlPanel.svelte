@@ -95,10 +95,10 @@
 {#if loaded}
   <div class="home-control-panel">
     <Sheet.Root>
-      <Sheet.Trigger>Open</Sheet.Trigger>
+      <Sheet.Trigger class="r-0 b-0 px-9 py-8">Open</Sheet.Trigger>
       <Sheet.Content>
         <Tabs.Root class="h-full">
-          <Sheet.Header>
+          <Sheet.Header class="my-5">
             <Sheet.Title>Home Controls</Sheet.Title>
             <Climate />
             <Card.Root class="music-controls flex">
@@ -144,29 +144,35 @@
             {#if lights}
               <Tabs.Content value="lights">
                 {#each lights as light (light.id)}
-                  <Card.Content class="p-6 text-sm">
+                  <Card.Content
+                    class="light-control px-6 pb-2 pt-0 text-sm first:pt-4"
+                  >
                     <div class="grid gap-3">
-                      <fieldset>
-                        <legend class="mb-4 text-lg font-medium"
-                          >{light.name}</legend
+                      <fieldset class="flex justify-between">
+                        <label
+                          for="light-{light.id}"
+                          class="mb-4 text-lg font-medium">{light.name}</label
                         >
                         <Switch
+                          name="light-{light.id}"
+                          class=""
                           checked={light.state.on}
                           id={light.id}
                           onclick={() => {
                             houseState.setLightOn(light.id, !light.state.on);
                           }}
                         />
+                      </fieldset>
+                      <fieldset class="flex justify-between">
                         <ColorPicker
                           id={light.id}
                           collectionState={light.state}
                           actionType="lights"
                         />
                       </fieldset>
-                      <Separator class="my-2" />
                     </div>
-                    <Separator class="my-4" />
                   </Card.Content>
+                  <Separator class="my-4" />
                 {/each}
               </Tabs.Content>
             {/if}
@@ -174,13 +180,18 @@
             {#if groups}
               <Tabs.Content value="groups">
                 {#each groups as group (group.id)}
-                  <Card.Content class="p-6 text-sm">
+                  <Card.Content
+                    class="light-control px-6 pb-2 pt-0 text-sm first:pt-4"
+                  >
                     <div class="grid gap-3">
-                      <fieldset>
-                        <legend class="mb-4 text-lg font-medium"
-                          >{group.name}</legend
+                      <fieldset class="flex justify-between">
+                        <label
+                          for="light-{group.id}"
+                          class="mb-4 text-lg font-medium">{group.name}</label
                         >
                         <Switch
+                          name="group-{group.id}"
+                          class=""
                           checked={group.state.any_on}
                           onclick={() => {
                             houseState.setGroupOn(
@@ -189,16 +200,17 @@
                             );
                           }}
                         />
+                      </fieldset>
+                      <fieldset class="flex justify-between">
                         <ColorPicker
                           id={group.id}
                           collectionState={group.state}
                           actionType="groups"
                         />
                       </fieldset>
-                      <Separator class="my-2" />
                     </div>
-                    <Separator class="my-4" />
                   </Card.Content>
+                  <Separator class="my-4" />
                 {/each}
               </Tabs.Content>
             {/if}

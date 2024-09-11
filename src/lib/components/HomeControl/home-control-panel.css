@@ -14,3 +14,9 @@
     }
   }
 }
+
+.light-control {
+  .colorpicker .color-picker .container {
+    padding: 0;
+  }
+}
