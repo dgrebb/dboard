@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/dgrebb/dboard/compare/1.1.0...1.2.0) (2024-09-11)
+
+
+### Features
+
+* **app:** `HomeControlPanel` with placeholder Hue compoenent ([#173](https://github.com/dgrebb/dboard/issues/173)) ([cc6b1e3](https://github.com/dgrebb/dboard/commit/cc6b1e3ed18e5d3cea40c7d76ef0738c551d5801))
+* **home:** inside temperature display in global settings panel ([#173](https://github.com/dgrebb/dboard/issues/173)) ([a65b293](https://github.com/dgrebb/dboard/commit/a65b293435acf375f8336a4c1feab3b5501ebb17))
+* **home:** style panel toggles and hook up API ([#173](https://github.com/dgrebb/dboard/issues/173)) ([692e54a](https://github.com/dgrebb/dboard/commit/692e54a921ba73aa61e5bfecd5333e1ef65e8b7b))
+* **house:** sync music gradients with surrounding lights via global Home Panel toggle ([#173](https://github.com/dgrebb/dboard/issues/173)) ([3861f29](https://github.com/dgrebb/dboard/commit/3861f298375b6985dc50ef538b96d45a3cf3306a))
+* **hue:** `transitiontime` for fade effect; empty side-effecting properties ([#179](https://github.com/dgrebb/dboard/issues/179)) ([e035c43](https://github.com/dgrebb/dboard/commit/e035c430f4bcb9a52e7d015ad2a8c9907663c22f))
+
 ## [1.1.0](https://github.com/dgrebb/dboard/compare/1.0.0...1.1.0) (2024-08-07)
 
 
