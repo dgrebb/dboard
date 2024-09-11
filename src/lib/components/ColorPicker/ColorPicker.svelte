@@ -75,14 +75,15 @@
   <li>y: {y.toFixed(4)}</li>
   <li>bri: {bri}</li>
 </ul> -->
-<ColorPicker
-  bind:rgb
-  position="responsive"
-  isAlpha
-  isDark={true}
-  isTextInput={false}
-/>
-<div class="color-dialog">
+<div class="colorpicker flex w-full justify-between">
+  <ColorPicker
+    bind:rgb
+    position="responsive"
+    isAlpha
+    isDark={true}
+    isTextInput={false}
+  />
+  <div class="color-dialog"></div>
   <Button
     onclick={() => {
       setState(id, actionType);
