@@ -51,6 +51,40 @@
     }
   }
 
+  .reading {
+    filter: invert(1);
+  }
+
+  &__headline.engrave,
+  &__sub-headline {
+    display: block;
+    position: relative;
+    /* filter: invert(1); */
+    transition-duration: 600ms;
+    transition-property: color, opacity;
+    transition-timing-function: ease-in-out;
+    padding: 0.25rem;
+    color: transparent;
+    text-wrap: balance;
+
+    &.transitionForegroundGradient {
+      opacity: 0.5;
+      /* color: white; */
+    }
+  }
+
+  &__headline.engrave {
+    text-shadow:
+      -2px 1px 0px rgba(0, 0, 0, 0.3),
+      -1px 1px 0px rgba(0, 0, 0, 0.5);
+  }
+
+  &__sub-headline {
+    text-shadow:
+      -1px 1px 0px rgba(0, 0, 0, 0.5),
+      -1px 1px 0px rgba(0, 0, 0, 0.3);
+  }
+
   h1,
   h2,
   h3 {
@@ -59,10 +93,6 @@
 
   h1 {
     margin-top: 0.5rem;
-  }
-
-  h2 {
-    opacity: 0.77;
   }
 
   main,
@@ -178,7 +208,6 @@
 
     h1,
     h2 {
-      mix-blend-mode: hard-light;
       line-height: 1;
     }
 
@@ -199,12 +228,10 @@
       content: '';
     }
     .track-info {
-      display: flex;
+      display: block;
       position: relative;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       z-index: 0;
+      filter: invert(1);
       padding: 2rem 1rem;
       width: 100%;
 
@@ -221,12 +248,12 @@
         transition-duration: 600ms;
         transition-property: color, opacity;
         transition-timing-function: ease-in-out;
-        background-image: var(--previousForegroundGradient);
+        background-image: var(--nextForegroundGradient);
         background-size: 100vw 100vh;
         background-clip: text;
         -webkit-background-clip: text;
         padding: 0.25rem;
-        color: transparent;
+        /* color: transparent; */
         text-wrap: balance;
       }
 
@@ -299,7 +326,7 @@
         opacity: 0.67;
         z-index: 3;
         transition: width 2s linear;
-        background-image: var(--previousForegroundGradient);
+        background-image: var(--nextForegroundGradient);
         background-size: 100vw 100vh;
         width: var(--percent);
         height: 100%;
@@ -314,7 +341,7 @@
         mix-blend-mode: normal;
         mix-blend-mode: difference;
         transition: left 2s linear;
-        background-image: var(--previousForegroundGradient);
+        background-image: var(--nextForegroundGradient);
         background-position: bottom left;
         width: 0.25rem;
         height: 1rem;
@@ -334,7 +361,7 @@
       opacity: 0.67;
       z-index: 3;
       transition: opacity 1s ease-out;
-      background-image: var(--previousForegroundGradient);
+      background-image: var(--nextForegroundGradient);
       background-size: 100vw 100vh;
       background-clip: text;
       -webkit-background-clip: text;
@@ -508,7 +535,7 @@
         padding: 0;
         h1 {
           opacity: 1;
-          background-image: var(--previousForegroundGradient);
+          background-image: var(--nextForegroundGradient);
           background-size: 100vw 100vh;
           background-clip: text;
           -webkit-background-clip: text;
@@ -689,10 +716,6 @@
           margin-top: 0.5rem;
         }
 
-        h2 {
-          opacity: 0.77;
-        }
-
         main,
         header,
         footer {
@@ -859,7 +882,7 @@
             h3.track-time {
               display: block;
               z-index: 3;
-              background-image: var(--previousForegroundGradient);
+              background-image: var(--nextForegroundGradient);
               background-size: 100vw 100vh;
               background-clip: text;
               -webkit-background-clip: text;
@@ -931,7 +954,7 @@
               opacity: 0.67;
               z-index: 3;
               transition: width 2s linear;
-              background-image: var(--previousForegroundGradient);
+              background-image: var(--nextForegroundGradient);
               background-size: 100vw 100vh;
               width: var(--percent);
               height: 100%;
@@ -946,7 +969,7 @@
               mix-blend-mode: normal;
               mix-blend-mode: difference;
               transition: left 2s linear;
-              background-image: var(--previousForegroundGradient);
+              background-image: var(--nextForegroundGradient);
               background-position: bottom left;
               width: 0.25rem;
               height: 1rem;
@@ -966,7 +989,7 @@
             opacity: 0.67;
             z-index: 3;
             transition: opacity 1s ease-out;
-            background-image: var(--previousForegroundGradient);
+            background-image: var(--nextForegroundGradient);
             background-size: 100vw 100vh;
             background-clip: text;
             -webkit-background-clip: text;
@@ -1137,7 +1160,7 @@
               padding: 0;
               h1 {
                 opacity: 1;
-                background-image: var(--previousForegroundGradient);
+                background-image: var(--nextForegroundGradient);
                 background-size: 100vw 100vh;
                 background-clip: text;
                 -webkit-background-clip: text;
