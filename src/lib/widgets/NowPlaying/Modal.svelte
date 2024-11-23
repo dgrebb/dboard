@@ -135,10 +135,16 @@
     <header>
       {#key currentValue}
         <div class="reading nightscout-reading" in:fade class:showHud>
-          <h1 class="current-music__modal__headline bg engrave">
+          <h1
+            class="current-music__modal__headline bg engrave"
+            use:selfOffsetBackground
+          >
             {currentValue}
           </h1>
-          <h2 class="text-md">
+          <h2
+            class="text-md current-music__modal__sub-headline"
+            use:selfOffsetBackground
+          >
             {difference} | {direction}
             <Icon
               icon={directionIcon}
@@ -154,10 +160,16 @@
           transition:blur={{ duration: 500 }}
           class:showHud
         >
-          <h1 class="current-music__modal__headline engrave">
+          <h1
+            class="current-music__modal__headline engrave"
+            use:selfOffsetBackground
+          >
             {temperature}ºF
           </h1>
-          <h2 class="text-md">
+          <h2
+            class="text-md current-music__modal__sub-headline"
+            use:selfOffsetBackground
+          >
             {locationName}
             <Icon
               icon="line-md:map-marker"
