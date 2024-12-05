@@ -1,6 +1,7 @@
 #!/bin/sh
 
-MOZ_ENABLE_WAYLAND=1 firefox-esr --kiosk https://dboard.server
+# Tell X Window System which display to use.
+export DISPLAY=:0
 
-# or with chromium
-# chromium-browser --start-maximized --kiosk --touch-events=enabled --enable-features=OverlayScrollbar,OverlayScrollbarFlashAfterAnyScr>
+# Set Firefox to use Wayland
+MOZ_ENABLE_WAYLAND=1 firefox-esr --kiosk https://dboard.server
