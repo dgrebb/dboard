@@ -20,7 +20,6 @@
     title: string;
     album: string;
     previousAlbum: string;
-    art: string;
     newArt: string | undefined;
     currentArt: string | null;
     loved: boolean;

@@ -47,40 +47,43 @@
   let currentArt: string | null = $state(musicState.nowPlayingArt());
   let newArt: string | undefined = $state(undefined);
 
-  const imageCache = new Map<string, boolean>();
-  const cacheOrder: string[] = [];
   let foreTimeout: Timer | null = null;
   let backTimeout: Timer | null = null;
 
   /**
-   * Preloads an image and returns a promise that resolves when the image is loaded.
-   * Stores the last three images by default.
+   * Preloads an image and retries up to `maxRetries` times before rejecting.
    * @param {string} url - The URL of the image to preload.
+   * @param {number} maxRetries - Maximum number of retry attempts.
+   * @param {number} retryDelay - Delay between retries in milliseconds.
    * @returns {Promise<void>}
    */
-  const preloadImage = (url: string): Promise<void> => {
-    if (imageCache.has(url)) {
-      return Promise.resolve();
-    }
+  const preloadImageWithRetries = async (
+    url: string,
+    maxRetries = 3,
+    retryDelay = 1000
+  ): Promise<void> => {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const img = new Image();
+        img.src = url;
 
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        imageCache.set(url, true);
-        cacheOrder.push(url);
+        await new Promise<Event>((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
 
-        if (cacheOrder.length > 3) {
-          const oldestUrl = cacheOrder.shift();
-          if (oldestUrl) {
-            imageCache.delete(oldestUrl);
-          }
+        console.info(`Image loaded successfully on attempt ${attempt}`);
+        return;
+      } catch (error) {
+        console.warn(`Attempt ${attempt} failed for image: ${url}`);
+        if (attempt < maxRetries) {
+          await new Promise((resolve) => setTimeout(resolve, retryDelay));
+        } else {
+          console.error(error);
         }
-
-        resolve();
-      };
-      img.onerror = (error) => reject(error);
-    });
+      }
+    }
+    throw new Error(`Failed to load image after ${maxRetries} attempts`);
   };
 
   async function setupEventSource() {
@@ -91,7 +94,26 @@
     eventSource = new EventSource(`/api/stream/music`);
 
     eventSource.onmessage = async (event) => {
+      currentArt = art;
       const data = await JSON.parse(event.data);
+      if (data.artist && data.album && data.title) {
+        ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
+
+        let cachebust = Math.round(Date.now() / 1000);
+        let artUrl = art.includes('?')
+          ? `${art}&bust=${cachebust}`
+          : `${art}?bust=${cachebust}`;
+
+        try {
+          await preloadImageWithRetries(artUrl, 3, 1000); // 3 retries with 1s delay
+          newArt = artUrl; // Only update if successful
+        } catch (error) {
+          console.error('Image failed to load after retries:', error);
+          newArt = '/missing-album-art.png'; // Fallback to default
+        }
+
+        await musicState.setNowPlaying(data);
+      }
       if (data.artist && data.album && data.title) {
         ({ artist, album, title, art, totalTime, relativeTimePosition } = data);
 
@@ -104,20 +126,17 @@
         keepTime(time, totalSeconds);
 
         let cachebust = Math.round(Date.now() / 1000);
+        let artUrl = art.includes('?')
+          ? `${art}&bust=${cachebust}`
+          : `${art}?bust=${cachebust}`;
 
-        if (art.includes('?')) {
-          art = art + `&bust=${cachebust}`;
-        } else {
-          art = art + `?bust=${cachebust}`;
+        try {
+          await preloadImageWithRetries(artUrl, 3, 1000); // 3 retries with 1s delay
+          newArt = artUrl; // Only update if successful
+        } catch (error) {
+          console.error('Image failed to load after retries:', error);
+          newArt = '/missing-album-art.png'; // Fallback to default
         }
-
-        preloadImage(art)
-          .then(() => {
-            newArt = art;
-          })
-          .catch((error) => {
-            console.error('Image failed to load', error);
-          });
 
         await musicState.setNowPlaying(data);
         retryCount = 0;
@@ -363,7 +382,6 @@
   <Modal
     {artist}
     {album}
-    {art}
     {newArt}
     {currentArt}
     {previousAlbum}
