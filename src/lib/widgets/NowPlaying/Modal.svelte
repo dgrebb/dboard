@@ -20,7 +20,7 @@
     title: string;
     album: string;
     previousAlbum: string;
-    newArt: string | undefined;
+    newArt: string | null;
     currentArt: string | null;
     loved: boolean;
     timer: number;
@@ -119,6 +119,12 @@
 
   $effect(() => {
     loved = musicState.getLoved();
+  });
+
+  $effect(() => {
+    setTimeout(() => {
+      currentArt = newArt;
+    });
   });
 </script>
 

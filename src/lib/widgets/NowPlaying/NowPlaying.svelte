@@ -45,7 +45,7 @@
   let timeInterval: Timer | null = $state(null);
   let previousAlbum = $state('Unknown');
   let currentArt: string | null = $state(musicState.nowPlayingArt());
-  let newArt: string | undefined = $state(undefined);
+  let newArt: string | null = $state(null);
 
   let foreTimeout: Timer | null = null;
   let backTimeout: Timer | null = null;
@@ -320,7 +320,7 @@
       currentArt = art;
       transitionGradient = false;
       transitionForegroundGradient = false;
-      newArt = undefined;
+      newArt = null;
     }, delay);
 
     return () => {
