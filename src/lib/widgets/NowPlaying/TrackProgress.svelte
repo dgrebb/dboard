@@ -33,7 +33,7 @@
     value={percent}
   /> -->
     <!-- ${percent}% -->
-    <button class={`playhead`}></button>
+    <button class={`playhead`} aria-label="Track playhead location."></button>
   </div>
 </div>
 
