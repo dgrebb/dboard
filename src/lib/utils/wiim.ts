@@ -81,7 +81,7 @@ const parsePositionInfoResponse = (responseXml: string): PositionInfo => {
 };
 
 export const fetchMediaInfo = async (fetch: Fetch): Promise<NowPlayingAPI> => {
-  const controlUrl = `https://${SECRET_AUDIO_CONTROL_IP_ADDRESS}:${SECRET_WIIM_SOAP_API_PORT}/upnp/control/rendertransport1`;
+  const controlUrl = `http://${SECRET_AUDIO_CONTROL_IP_ADDRESS}:${SECRET_WIIM_SOAP_API_PORT}/upnp/control/rendertransport1`;
 
   try {
     const mediaInfoXml = await performSoapAction(
