@@ -141,7 +141,7 @@
       {#key currentValue}
         <div class="reading nightscout-reading" in:fade class:showHud>
           <h1
-            class="current-music__modal__headline bg engrave"
+            class="current-music__modal__headline engrave"
             use:selfOffsetBackground
           >
             {currentValue}
