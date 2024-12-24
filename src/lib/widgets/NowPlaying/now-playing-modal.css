@@ -51,7 +51,7 @@
     }
   }
 
-  .reading {
+  /* .reading {
     filter: invert(1);
   }
 
@@ -59,7 +59,7 @@
   &__sub-headline {
     display: block;
     position: relative;
-    /* filter: invert(1); */
+    /* filter: invert(1); 
     transition-duration: 600ms;
     transition-property: color, opacity;
     transition-timing-function: ease-in-out;
@@ -69,7 +69,7 @@
 
     &.transitionForegroundGradient {
       opacity: 0.5;
-      /* color: white; */
+      /* color: white; 
     }
   }
 
@@ -84,6 +84,8 @@
       -1px 1px 0px rgba(0, 0, 0, 0.5),
       -1px 1px 0px rgba(0, 0, 0, 0.3);
   }
+
+**/
 
   h1,
   h2,
