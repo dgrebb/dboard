@@ -9,7 +9,7 @@
   import NextToArrive from '@widgets/Septa/NextToArrive/NextToArrive.svelte';
   import { onMount, tick, type Component } from 'svelte';
   import Board from './(layouts)/Board.svelte';
-  import Schedule from '@widgets/Schedule/Schedule.svelte';
+  // import Schedule from '@widgets/Schedule/Schedule.svelte';
 
   let mounted = $state(false);
 
@@ -79,7 +79,7 @@
       {@const Widget = components[type]}
       <Widget {settings} />
     {/each}
-    <Schedule />
+    <!-- <Schedule /> -->
     <NextToArrive />
     <!-- <NewWidget /> -->
   </Board>
