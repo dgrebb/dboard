@@ -11,7 +11,7 @@
   import type { Snippet } from 'svelte';
   import { onDestroy, onMount } from 'svelte';
   import { isTouchDevice } from '@utils';
-  import HomeControlPanel from '$lib/components/HomeControl/HomeControlPanel.svelte';
+  // import HomeControlPanel from '$lib/components/HomeControl/HomeControlPanel.svelte';
 
   // TODO: Kiosk Prop Implementation
   // import { browser } from '$app/environment';
@@ -88,7 +88,7 @@
   <p class="app-time">
     {#key clock}{clock}{/key}
   </p>
-  <HomeControlPanel />
+  <!-- <HomeControlPanel /> -->
   <Controls />
 </header>
 
