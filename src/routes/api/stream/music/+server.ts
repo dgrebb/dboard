@@ -33,6 +33,9 @@ const clients = new Set<{
   isClosed: boolean;
   ip: string;
 }>();
+// Regex to match local 10.0/24.0/24.0/24 addresses
+const ipAddressPattern =
+  /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
 let interval: Timer | null = null;
 let previousState: NowPlayingData = {
   artist: '',
@@ -191,8 +194,6 @@ const processMediaInfo = async (fetch: Fetch) => {
     let art = data.art || '/missing-album-art.png';
     const gradientArt = art;
 
-    const ipAddressPattern =
-      /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
     art = art.includes('/data/AirplayArtWorkData.png')
       ? art.replace(ipAddressPattern, '')
       : art;
@@ -266,8 +267,6 @@ const handlePlayerCommand = async (
 
   let art = data.art || '/missing-album-art.png';
   const timestamp = Date.now();
-  const ipAddressPattern =
-    /^(https?:\/\/)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?/;
   art = art.includes('/data/AirplayArtWorkData.png')
     ? art.replace(ipAddressPattern, '')
     : art;
