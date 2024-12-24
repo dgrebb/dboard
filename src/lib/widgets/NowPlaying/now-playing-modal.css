@@ -51,7 +51,7 @@
     }
   }
 
-  /* .reading {
+  .reading {
     filter: invert(1);
   }
 
@@ -59,24 +59,27 @@
   &__sub-headline {
     display: block;
     position: relative;
-    /* filter: invert(1); 
+    /* filter: invert(1); */
     transition-duration: 600ms;
     transition-property: color, opacity;
     transition-timing-function: ease-in-out;
+    background-image: var(--nextForegroundGradient);
+    background-size: 100vw 100vh;
+    background-clip: text;
     padding: 0.25rem;
-    color: transparent;
+    color: rgba(255, 255, 255, 0.2);
     text-wrap: balance;
 
     &.transitionForegroundGradient {
       opacity: 0.5;
-      /* color: white; 
+      /* color: white; */
     }
   }
 
   &__headline.engrave {
     text-shadow:
-      -2px 1px 0px rgba(0, 0, 0, 0.3),
-      -1px 1px 0px rgba(0, 0, 0, 0.5);
+      -1px 1px 0px rgba(0, 0, 0, 0.3),
+      -1px 1px 0px rgba(0, 0, 0, 0.3);
   }
 
   &__sub-headline {
@@ -84,8 +87,6 @@
       -1px 1px 0px rgba(0, 0, 0, 0.5),
       -1px 1px 0px rgba(0, 0, 0, 0.3);
   }
-
-**/
 
   h1,
   h2,
